@@ -1,29 +1,29 @@
 # Bunnoi
 
-Section 33
+## Section 33
 
 ## Member
 
-* บรรณ อุทัยธิรัตน์   5731068921
-  + https://github.com/bunoi
+* 5731035121 ณัฐภัทร กิระวิทยา
+  + <https://github.com/nutstick>
 
-* ณัฐภัทร กิระวิทยา   5731035121
-  + https://github.com/nutstick
+* 5731065021 นัทธ์ ศรีเรือนทอง
+  + <https://github.com/natns>
 
-* ชนาธิป แซ่เตีย  5730108121
-  + https://github.com/ChanatipSaetia
+* 5731068921 บรรณ อุทัยธิรัตน์
+  + <https://github.com/bunoi>
 
-* ภานุพงศ์ ทองธวัช 5731088421
-  + https://github.com/5731088421-PT
+* 5731071721 ปธานิน โลกโบว์
+  + <https://github.com/pathanin>
 
-* ปธานิน โลกโบว์ 5731071721
-  + https://github.com/pathanin
+* 5730108121 ชนาธิป แซ่เตีย
+  + <https://github.com/ChanatipSaetia>
 
-* นัทธ์ ศรีเรือนทอง 5731065021
-  + https://github.com/natns
+* 5731008221 กิติพงษ์ ศิริเรืองสกุล
+  + <https://github.com/RogerKSI>
 
-* กิติพงษ์ ศิริเรืองสกุล 5731008221
-  + https://github.com/RogerKSI
-  
-* อัมรินทร์ เจตน์ฐากูร 5731114021
-  + http://www.github.com/ammarinjtk
+* 5731088421 ภานุพงศ์ ทองธวัช
+  + <https://github.com/5731088421-PT>
+
+* 5731114021 อัมรินทร์ เจตน์ฐากูร
+  + <https://github.com/5731114021AJ>
