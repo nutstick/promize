@@ -1,0 +1,45 @@
+:root {
+  /*
+   * Typography
+   * ======================================================================== */
+
+  --font-family-base: 'Segoe UI', 'HelveticaNeue-Light', sans-serif;
+
+  /*
+   * Layout
+   * ======================================================================== */
+
+  --max-content-width: 1000px;
+
+  /*
+   * Media queries breakpoints
+   * ======================================================================== */
+
+  --screen-xs-min: 480px;  /* Extra small screen / phone */
+  --screen-sm-min: 768px;  /* Small screen / tablet */
+  --screen-md-min: 992px;  /* Medium screen / desktop */
+  --screen-lg-min: 1200px; /* Large screen / wide desktop */
+
+  --dark-grey: #2d2d2d;
+  --grey: #b2b2b2;
+  --light-color: #ffffff;
+  --dark-color: #f2f2f2;
+
+  --primary-color: #087378;
+  --secondary-color: #5a6669;
+
+  @custom-media --small-xs (width >= 480px);
+  @custom-media --small-sm (width >= 768px);
+  @custom-media --small-md (width >= 992px);
+  @custom-media --small-lg (width >= 1200px);
+
+  --flex {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+  }
+
+  --sidebar-width: 180px;
+  --minus-sidebar-width: -180px;
+  --search-width: 300px;
+}

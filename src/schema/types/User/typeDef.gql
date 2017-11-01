@@ -1,0 +1,15 @@
+# Account type
+type Account {
+  email: String
+  facebookAccessCode: String
+  googleAccessCode: String
+}
+# A user
+type User implements Node {
+  _id: ID!
+  name: String!
+  avatar: String
+  createAt: Date!
+  updateAt: Date!
+  account: Account
+}
