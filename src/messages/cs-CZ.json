@@ -1,14 +1,5 @@
 [
   {
-    "id": "header.banner.desc",
-    "description": "Description in header",
-    "defaultMessage": "Complex web apps made easy",
-    "message": "",
-    "files": [
-      "src/components/Header/Header.tsx"
-    ]
-  },
-  {
     "id": "header.banner.title",
     "description": "Title in page header",
     "defaultMessage": "Reacts",
@@ -69,6 +60,15 @@
     "message": "",
     "files": [
       "src/components/Navigation/Navigation.tsx"
+    ]
+  },
+  {
+    "id": "header.banner.descsss",
+    "description": "Description in header",
+    "defaultMessage": "Complex web apps made easy",
+    "message": "",
+    "files": [
+      "src/components/Header/Header.tsx"
     ]
   }
 ]
