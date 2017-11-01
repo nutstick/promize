@@ -1,0 +1,12 @@
+# Dependency directories
+node_modules
+
+# Compiled assets
+dist
+output/babelcache
+.awcache
+
+# Logs
+npm-debug.log*
+yarn-error.log*
+yarn.lock
