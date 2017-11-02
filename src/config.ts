@@ -25,7 +25,11 @@ export const locales = [
 
 export const port = process.env.PORT || 3000;
 
-export const mongodb = process.env.MONGODB || `ts-reactql-starter-kit`;
+export const mongodb = {
+  host: process.env.MONGO_HOST || `localhost`,
+  port: parseInt(process.env.MONGO_PORT, 10) || 27017,
+  database: process.env.MONGO_DB || 'promize',
+};
 
 export const api = {
   // API URL to be used in the client-side code
