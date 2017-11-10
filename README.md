@@ -13,4 +13,4 @@
 | 5730108121 | นายชนาธิป แซ่เตีย        | [@ChanatipSaetia](https://github.com/ChanatipSaetia)  |
 | 5731008221 | นายกิติพงษ์ ศิริเรืองสกุล    | [@RogerKSI](https://github.com/RogerKSI)        |
 | 5731088421 | นายภานุพงศ์ ทองธวัช     | [@5731088421-PT](https://github.com/5731088421-PT)    |
-| 5731114021 | นายอัมรินทร์ เจตน์ฐากูร    | [@5731114021AJ](https://github.com/5731114021AJ)     |
+| 5731114021 | นายอัมรินทร์ เจตน์ฐากูร    | [@ammarinjtk](https://github.com/ammarinjtk)     |
