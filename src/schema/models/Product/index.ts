@@ -2,26 +2,29 @@ import * as Iridium from 'iridium';
 import { Collection, Index, Instance, Model, ObjectID, Property } from 'iridium';
 
 interface IProductDocument {
-    _id?: string;
-    name: string;
-    description?: string;
+  _id?: string;
+  name: string;
+  description?: string;
 
-    price: number;
+  price: number;
 
-    picture?: string[];
-    hashtag?: string[];
-    colors?: string[];
-    sizes?: string[];
+  picture?: string[];
+  hashtag?: string[];
+  colors?: string[];
+  sizes?: string[];
 
-    promotion_start: Date;
-    createAt?: Date;
-    updateAt?: Date;
+  promotion_start: Date;
+  promotion_end: Date;
+  owner_name: string;
+
+  createAt?: Date;
+  updateAt?: Date;
 }
 
 @Index({
-    name: 1,
-    hastag: 1,
-    promotion_start: 0,
+  name: 1,
+  hastag: 1,
+  promotion_start: 0,
 })
 @Collection('products')
 class Product extends Instance<IProductDocument, Product> implements IProductDocument {
@@ -46,6 +49,12 @@ class Product extends Instance<IProductDocument, Product> implements IProductDoc
 
   @Property(Date, true)
   promotion_start: Date;
+  @Property(Date, true)
+  promotion_end: Date;
+
+  @Property(String, true)
+  owner_name: string;
+
   @Property(Date, false)
   createAt: Date;
   @Property(Date, false)
