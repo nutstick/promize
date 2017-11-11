@@ -1,11 +1,18 @@
 import * as Iridium from 'iridium';
 import { Collection, Index, Instance, Model, ObjectID, Property } from 'iridium';
 import { Account, IAccountDocument } from './account';
+import { Address, IAddress } from './address';
+import { IPaymentMethod, PaymentMethod } from './paymentmethod';
 
 interface IUserDocument {
   _id?: string;
-  name: string;
+  first_name: string;
+  middle_name?: string;
+  last_name: string;
+  tel_number: string;
   account: IAccountDocument;
+  addresses?: IAddress[];
+  payment_methods?: IPaymentMethod[];
   avatar: string;
   createAt?: Date;
   updateAt?: Date;
@@ -21,10 +28,21 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
   @ObjectID
   _id: string;
   @Property(/^.+$/, true)
-  name: string;
+  first_name: string;
+  @Property(/^.+$/, true)
+  middle_name: string;
+  @Property(/^.+$/, true)
+  last_name: string;
+
+  @Property(/^.+$/, true)
+  tel_number: string;
 
   @Property(Account, true)
   account: IAccountDocument;
+  @Property(Address, true)
+  address: IAddress;
+  @Property(PaymentMethod, true)
+  payment_method: IPaymentMethod;
 
   @Property(String, true)
   avatar: string;
