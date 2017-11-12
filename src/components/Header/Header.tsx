@@ -1,12 +1,18 @@
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
+
 // import LanguageSwitcher from '../LanguageSwitcher';
 import { Link } from '../Link';
 import { Navigation } from '../Navigation';
 import * as s from './Header.css';
-import * as logoUrl from './logo-small.png';
-import * as logoUrl2x from './logo-small@2x.png';
+import * as logoUrl from './logo.png';
+import * as logoUrl2x from './logo@2x.png';
+import * as logoUrl3x from './logo@3x.png';
+import * as search from './searchicon.png';
+import * as arrowLeft from './arrowleft.png';
+import * as arrowRight from './arrowright.png';
+
 
 const messages = defineMessages({
   brand: {
@@ -32,20 +38,38 @@ export class Header extends React.Component<{}> {
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <Navigation />
-          <Link className={s.brand} to="/">
-            {<img src={logoUrl} srcSet={`${logoUrl2x} 2x`} width="38" height="38" alt="React" />}
-            <span className={s.brandTxt}>
-              <FormattedMessage {...messages.brand} />
-            </span>
+          {/* <Navigation /> */}
+          <div className={s.head}>
+          <Link to="/">
+            <img className={s.logo} src={logoUrl} srcSet={`${logoUrl} 1x, ${logoUrl2x} 2x, ${logoUrl3x} 3x`} alt="Promize" />            
           </Link>
-          {/* <LanguageSwitcher /> */}
-          <div className={s.banner}>
-            <h1 className={s.bannerTitle}>
-              <FormattedMessage {...messages.bannerTitle} />
-            </h1>
-            <FormattedMessage tagName="p" {...messages.bannerDesc} />
+          <form className={s.form}>
+            <input className={s.searchInput} placeholder="Search"/>
+          </form>
+
           </div>
+          
+          <div className={s.trendingBanner}>
+            <div className={s.trendingHastags}>Trending Hastags</div>
+            <div className={s.trendingButton}>
+              <div className={s.circleButton}>
+                <img className={s.buttonArrow} src={arrowLeft}/>
+              </div>
+              <div className={s.circleButton}>
+                <img className={s.buttonArrow} src={arrowRight}/>
+              </div>
+            </div>
+            <div className={s.trendingBlock}>
+              <div className={s.trendingBlockText}>
+                50 Percent Off
+              </div>
+              <div className={s.trendingBlockDecorate}/>
+            </div>
+            
+          </div>
+         
+          {/* <LanguageSwitcher /> */}
+          
         </div>
       </div>
     );
