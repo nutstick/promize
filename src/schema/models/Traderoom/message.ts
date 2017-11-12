@@ -1,6 +1,3 @@
-import * as Iridium from 'iridium';
-import { Collection, Index, Instance, Model, ObjectID, Property } from 'iridium';
-
 interface IMessage {
     owner: string;
     create_at: Date;

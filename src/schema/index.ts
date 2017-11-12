@@ -1,10 +1,9 @@
-import { GraphQLSchema, GraphQLString } from 'graphql';
 import * as GraphQLDate from 'graphql-date';
 import { makeExecutableSchema } from 'graphql-tools';
 import { print } from 'graphql/language';
 import * as SchemaType from './schema.gql';
 import * as IntlMessage from './types/IntlMessage';
-import * as Mutation from './types/Mutation';
+// import * as Mutation from './types/Mutation';
 import * as Pagination from './types/Pagination';
 import * as Query from './types/Query';
 import * as User from './types/User';

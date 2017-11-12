@@ -15,7 +15,6 @@ import * as React from 'react';
 import { getDataFromTree } from 'react-apollo';
 import * as ReactDOM from 'react-dom/server';
 import { IntlProvider } from 'react-intl';
-import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
 import * as assets from './assets.json';
 import App from './components/App';
@@ -155,14 +154,14 @@ app.get('*', async (req, res, next) => {
     // apolloClient,
   });
 
-  const state = {
-    locales: {
-      availableLocales: locales,
-    },
-    runtimeVariable: {
-      initialNow: Date.now(),
-    },
-  };
+  // const state = {
+  //   locales: {
+  //     availableLocales: locales,
+  //   },
+  //   runtimeVariable: {
+  //     initialNow: Date.now(),
+  //   },
+  // };
 
   // Fetch locale's messages
   const locale = req.language;

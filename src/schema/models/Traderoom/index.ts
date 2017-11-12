@@ -1,5 +1,5 @@
 import * as Iridium from 'iridium';
-import { Collection, Index, Instance, Model, ObjectID, Property } from 'iridium';
+import { Collection, Instance, ObjectID, Property } from 'iridium';
 import { IMessage, Message } from './message';
 
 interface ITraderoom {
