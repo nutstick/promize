@@ -33,3 +33,4 @@ install:
 script:
   - yarn build
   - yarn lint
+  - yarn test
