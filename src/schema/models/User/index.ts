@@ -1,11 +1,18 @@
 import * as Iridium from 'iridium';
 import { Collection, Index, Instance, Model, ObjectID, Property } from 'iridium';
 import { Account, IAccountDocument } from './account';
+import { Address, IAddress } from './address';
+import { IPaymentMethod, PaymentMethod } from './paymentmethod';
 
 interface IUserDocument {
   _id?: string;
-  name: string;
+  first_name: string;
+  middle_name?: string;
+  last_name: string;
+  tel_number?: string;
   account: IAccountDocument;
+  addresses?: IAddress[];
+  payment_methods?: IPaymentMethod[];
   avatar: string;
   createAt?: Date;
   updateAt?: Date;
@@ -21,10 +28,21 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
   @ObjectID
   _id: string;
   @Property(/^.+$/, true)
-  name: string;
+  first_name: string;
+  @Property(/^.+$/, false)
+  middle_name: string;
+  @Property(/^.+$/, true)
+  last_name: string;
+
+  @Property(/^[0-9-]+$/, false)
+  tel_number: string;
 
   @Property(Account, true)
   account: IAccountDocument;
+  @Property(Address, false)
+  address: IAddress;
+  @Property(PaymentMethod, false)
+  payment_method: IPaymentMethod;
 
   @Property(String, true)
   avatar: string;
@@ -34,8 +52,11 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
   updateAt: Date;
 
   static onCreating(user: IUserDocument) {
+    user.addresses = [];
+    user.payment_methods = [];
     user.createAt = new Date();
     user.updateAt = new Date();
+
     if (!user.account.facebook && !user.account.password) {
       return Promise.reject(new Error('expected one login method'));
     }
