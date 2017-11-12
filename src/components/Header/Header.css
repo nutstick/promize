@@ -1,12 +1,12 @@
 @import '../variables.css';
 
 :root {
-  --brand-color: #61dafb;
+  --brand-color: #FE8C24;
 }
 
 .root {
-  background: #373277;
-  color: #fff;
+  background: #ffffff;
+  /* color: #fff; */
 }
 
 .container {
@@ -15,10 +15,102 @@
   max-width: var(--max-content-width);
 }
 
-.brand {
-  color: color(var(--brand-color) lightness(+10%));
-  text-decoration: none;
-  font-size: 1.75em; /* ~28px */
+.head{
+  width: 100%;
+}
+
+.logo{
+  width: 356px;
+	height: 160px;
+  object-fit: contain;
+  display: inline-block;
+}
+
+.form{
+  vertical-align: middle;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.searchInput{
+  width: 100%;  
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  height: 40px;
+  border-radius: 20px;
+  outline: none;
+  margin-left: 20px;
+  margin-top: 30px;
+  padding: 0px 20px;
+}
+
+.searchInput:focus{
+  border: 1px solid #FE8C24;  
+}
+
+.trendingBanner{
+  width: 100%;
+	height: 250px;
+	border-radius: 8px;
+  background-image: url(./pattern.png), linear-gradient(255deg, #fa5849, #ff9320);
+  background-repeat: no-repeat;
+  background-size: 90%,100%;
+  background-position: center;
+}
+
+.trendingHastags {
+	font-size: 30px;
+  font-weight: 500;
+  padding-top: 30px;
+	text-align: center;
+	color: #ffffff;
+}
+
+.trendingButton{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.circleButton{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  background-color: #ffffff;
+  margin: 0px 20px;
+  box-shadow: 0 2px 23px 0 rgba(0, 0, 0, 0.06);
+}
+
+.buttonArrow{
+  width: 11px;
+  height: 20px;
+  display: table;
+}
+
+.trendingBlock{
+  width: 190px;
+  height: 70px;
+  margin: 20px;
+	border-radius: 4px;
+  background-color: #ffffff;
+  box-shadow: 0 10px 25px 0 rgba(0, 0, 0, 0.29);  
+}
+
+.trendingBlockText{
+  font-size: 17px;
+  font-weight: 200;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+.trendingBlockDecorate{
+  width: 36px;
+	height: 4px;
+	border-radius: 1px;
+	background-color: #fe8a26;
+  margin: auto;
 }
 
 .brandTxt {
