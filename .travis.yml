@@ -4,7 +4,7 @@ language: node_js
 node_js:
   - "8.4.0"
 env:
-  - DOCKER_COMPOSE_VERSION=1.8.0
+  - DOCKER_COMPOSE_VERSION=3.3
 
 cache:
   yarn: true

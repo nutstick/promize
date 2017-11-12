@@ -1,16 +1,12 @@
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
 import { graphiqlExpress, graphqlExpress } from 'apollo-server-express';
 import * as BluebirdPromise from 'bluebird';
 import * as bodyParser from 'body-parser';
-import * as chalk from 'chalk';
 import * as cookieParser from 'cookie-parser';
-import * as dotenv from 'dotenv';
 import * as express from 'express';
 // import * as expressGraphQL from 'express-graphql';
 import * as expressJwt from 'express-jwt';
 import { UnauthorizedError as Jwt401Error } from 'express-jwt';
-import gql from 'graphql-tag';
 import * as jwt from 'jsonwebtoken';
 import * as nodeFetch from 'node-fetch';
 import * as path from 'path';

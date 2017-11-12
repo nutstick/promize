@@ -14,5 +14,9 @@
     "outDir": "dist",
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true
-  }
+  },
+  "exclude": [
+    "**/__tests__/*.ts",
+    "**/__tests__/*.tsx"
+  ]
 }

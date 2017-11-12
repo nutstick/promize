@@ -177,29 +177,6 @@
     "extractMessages": "./node_modules/.bin/ts-node tools/run extractMessages",
     "copy": "./node_modules/.bin/ts-node tools/run copy",
     "clean": "./node_modules/.bin/ts-node tools/run clean",
-    "lint": "./node_modules/.bin/tslint --project tsconfig.json 'src/**/*.ts?(x)'"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx"
-    ],
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleDirectories": [
-      "node_modules"
-    ],
-    "moduleNameMapper": {
-      "^.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)$": "<rootDir>/test/mocks/fileMock.js",
-      "^.+\\.(css|less|scss)$": "identity-obj-proxy"
-    },
-    "globals": {
-      "DEVELOPMENT": false,
-      "FAKE_SERVER": false
-    }
+    "lint": "./node_modules/.bin/tslint --project tsconfig.json 'src/**/*.tsx?'"
   }
 }

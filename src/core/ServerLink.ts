@@ -1,9 +1,7 @@
-import { ApolloLink, Observable, RequestHandler } from 'apollo-link';
+import { ApolloLink, Observable } from 'apollo-link';
 import {
   execute,
   GraphQLSchema,
-  specifiedRules,
-  validate,
 } from 'graphql';
 
 interface FetchOptions {

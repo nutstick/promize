@@ -105,7 +105,7 @@ const config: Configuration = {
             ],
           },
         },
-        exclude: /node_modules/,
+        exclude: [/node_modules/],
       },
       {
         test: /react-icons\/(.)*(.js)$/,

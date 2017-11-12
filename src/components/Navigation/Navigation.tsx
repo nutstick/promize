@@ -2,7 +2,6 @@ import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import * as l from '../Header/logo-small.png';
 import { Link } from '../Link';
 import * as s from './Navigation.css';
 

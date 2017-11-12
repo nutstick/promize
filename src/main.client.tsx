@@ -11,7 +11,6 @@ import { HttpLink } from 'apollo-link-http';
 import * as FontFaceObserver from 'fontfaceobserver';
 import { createPath } from 'history/PathUtils';
 import * as React from 'react';
-import { ApolloProvider } from 'react-apollo';
 import * as ReactDOM from 'react-dom';
 import { addLocaleData, IntlProvider } from 'react-intl';
 /* @intl-code-template import ${lang} from 'react-intl/locale-data/${lang}'; */
@@ -26,7 +25,6 @@ import { ErrorReporter } from './core/devUtils';
 import { updateMeta } from './core/DOMUtils';
 import history from './core/history';
 import createFetch from './createFetch';
-import { local } from './local';
 
 /*
   Apollo Client v2
@@ -37,7 +35,7 @@ const http = new HttpLink({
 });
 
 const apolloClient = createApolloClient({
-  link: local.concat(http),
+  link: http,
   cache: new InMemoryCache(),
   ssrForceFetchDelay: 100,
 });
@@ -160,6 +158,7 @@ async function onLocationChange(location?, action?) {
       </BrowserRouter>
     </App>,
     container,
+    () => onRenderComplete(Routes, location),
   );
 }
 
