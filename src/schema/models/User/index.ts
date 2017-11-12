@@ -9,7 +9,7 @@ interface IUserDocument {
   first_name: string;
   middle_name?: string;
   last_name: string;
-  tel_number: string;
+  tel_number?: string;
   account: IAccountDocument;
   addresses?: IAddress[];
   payment_methods?: IPaymentMethod[];
@@ -29,19 +29,19 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
   _id: string;
   @Property(/^.+$/, true)
   first_name: string;
-  @Property(/^.+$/, true)
+  @Property(/^.+$/, false)
   middle_name: string;
   @Property(/^.+$/, true)
   last_name: string;
 
-  @Property(/^.+$/, true)
+  @Property(/^[0-9-]+$/, false)
   tel_number: string;
 
   @Property(Account, true)
   account: IAccountDocument;
-  @Property(Address, true)
+  @Property(Address, false)
   address: IAddress;
-  @Property(PaymentMethod, true)
+  @Property(PaymentMethod, false)
   payment_method: IPaymentMethod;
 
   @Property(String, true)
@@ -52,8 +52,11 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
   updateAt: Date;
 
   static onCreating(user: IUserDocument) {
+    user.addresses = [];
+    user.payment_methods = [];
     user.createAt = new Date();
     user.updateAt = new Date();
+
     if (!user.account.facebook && !user.account.password) {
       return Promise.reject(new Error('expected one login method'));
     }
