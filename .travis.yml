@@ -1,9 +1,10 @@
-sudo: false
+sudo: required
 dist: trusty
 language: node_js
 node_js:
   - "8.4.0"
-
+env:
+  - DOCKER_COMPOSE_VERSION=1.8.0
 
 cache:
   yarn: true
@@ -21,7 +22,7 @@ before_install:
   - sudo apt-get -y install docker-ce
   # Docker Compose
   - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/1.11.1/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
 

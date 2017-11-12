@@ -12,9 +12,7 @@ const core = new Core({
 
 const model = new Model<IUserDocument, User>(core, User);
 
-beforeAll(() => {
-  return core.connect()
-});
+beforeAll(() => core.connect());
 
 afterAll(() => core.close());
 
