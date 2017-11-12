@@ -32,6 +32,5 @@ install:
   - docker-compose up --build -d
 
 script:
-  - yarn build
-  - yarn lint
-  - yarn test
+  - docker-compose exec server yarn lint
+  - docker-compose exec server yarn test
