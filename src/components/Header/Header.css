@@ -6,6 +6,7 @@
 
 .root {
   background: #ffffff;
+  maring-bottom: 1em;
   /* color: #fff; */
 }
 
@@ -17,126 +18,80 @@
 
 .head{
   width: 100%;
+  padding: 0 1em;
+  margin: 1em 0;
+
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+.logoWrapper {
+  width: 240px;
+  float: left;
 }
 
 .logo{
-  width: 356px;
-	height: 160px;
+  /* width: 356px; */
+  /* height: 160px; */
+  width: 100%;
   object-fit: contain;
-  display: inline-block;
 }
 
-.form{
-  vertical-align: middle;
-  display: inline-block;
-  box-sizing: border-box;
+.searchWrapper {
+  overflow: hidden;
+  margin: 1em;
+  flex-grow: 2;
 }
 
 .searchInput{
-  width: 100%;  
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  height: 40px;
-  border-radius: 20px;
-  outline: none;
-  margin-left: 20px;
-  margin-top: 30px;
-  padding: 0px 20px;
-}
-
-.searchInput:focus{
-  border: 1px solid #FE8C24;  
-}
-
-.trendingBanner{
   width: 100%;
-	height: 250px;
-	border-radius: 8px;
-  background-image: url(./pattern.png), linear-gradient(255deg, #fa5849, #ff9320);
-  background-repeat: no-repeat;
-  background-size: 90%,100%;
-  background-position: center;
+  max-width: 500px;
 }
 
-.trendingHastags {
-	font-size: 30px;
-  font-weight: 500;
-  padding-top: 30px;
-	text-align: center;
-	color: #ffffff;
+.searchInput :global(input) {
+  border-radius: 2em !important;
 }
 
-.trendingButton{
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
+.searchInput :global input:focus {
+  border-color: var(--primary-color) !important;
 }
 
-.circleButton{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
-  background-color: #ffffff;
-  margin: 0px 20px;
-  box-shadow: 0 2px 23px 0 rgba(0, 0, 0, 0.06);
+.searchInput :global input:focus~i.icon {
+  color: var(--primary-color);
 }
 
-.buttonArrow{
-  width: 11px;
-  height: 20px;
-  display: table;
+.menu {
+  border: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  margin-bottom: 0 !important;
+
+  background: var(--dark-color) !important;
 }
 
-.trendingBlock{
-  width: 190px;
-  height: 70px;
-  margin: 20px;
-	border-radius: 4px;
-  background-color: #ffffff;
-  box-shadow: 0 10px 25px 0 rgba(0, 0, 0, 0.29);  
+.menu :global .item {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
-.trendingBlockText{
-  font-size: 17px;
-  font-weight: 200;
-  text-align: center;
-  padding-top: 20px;
-  padding-bottom: 10px;
-}
-.trendingBlockDecorate{
-  width: 36px;
-	height: 4px;
-	border-radius: 1px;
-	background-color: #fe8a26;
-  margin: auto;
+@media only screen and (min-width: 768px) {
+  :global .ui.menu:not(.secondary):not(.text):not(.tabular):not(.borderless)>.container>.item:not(.right):not(.borderless):first-child {
+    border-left: none !important;
+  }
 }
 
-.brandTxt {
-  margin-left: 10px;
+.menu :global .item::before {
+  content: none !important;
 }
 
-.nav {
-  float: right;
-  margin-top: 6px;
+.welcome {
+  padding-left: 1.14285714em !important;
+  padding-right: 1.14285714em !important;
 }
 
-.banner {
-  text-align: center;
-}
-
-.bannerTitle {
-  margin: 0;
-  padding: 10px;
-  font-weight: normal;
-  font-size: 4em;
-  line-height: 1em;
-}
-
-.bannerDesc {
-  padding: 0;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 1.25em;
-  margin: 0;
+.highlightedText {
+  color: var(--primary-color);
+  font-weight: 600;
+  padding: 0 0.15em;
 }

@@ -1,4 +1,6 @@
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+// external-global styles must be imported in your JS.
+import * as normalizeCss from 'normalize.css';
 import * as React from 'react';
 import { Header } from '../Header';
 import { Main } from '../Main';
@@ -13,7 +15,7 @@ namespace Layout {
   export type Props = any;
 }
 
-@withStyles(s)
+@withStyles(normalizeCss, s)
 export class Layout extends React.Component<Layout.Props> {
   public render() {
     return (

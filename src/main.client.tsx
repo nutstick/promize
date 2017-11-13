@@ -94,8 +94,6 @@ let onRenderComplete = function initialRenderComplete(route?, location?) {
     elem.parentNode.removeChild(elem);
   }
   onRenderComplete = function renderComplete(route_, location_) {
-    document.title = route_.title;
-
     updateMeta('description', route_.description);
     // Update necessary tags in <head> at runtime here, ie:
     // updateMeta('keywords', route.keywords);

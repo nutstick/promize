@@ -1,10 +1,10 @@
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
+import * as semanticsCss from 'semantic-ui-css/semantic.min.css';
+import { Button, Container, Icon, Input, Menu } from 'semantic-ui-react';
 // import { defineMessages } from 'react-intl';
 // import LanguageSwitcher from '../LanguageSwitcher';
 import { Link } from '../Link';
-import * as arrowLeft from './arrowleft.png';
-import * as arrowRight from './arrowright.png';
 // import { Navigation } from '../Navigation';
 import * as s from './Header.css';
 import * as logoUrl from './logo.png';
@@ -29,49 +29,86 @@ import * as logoUrl3x from './logo@3x.png';
 //   },
 // });
 
-@withStyles(s)
+@withStyles(semanticsCss, s)
 export class Header extends React.Component<{}> {
   render() {
     return (
-      <div className={s.root}>
-        <div className={s.container}>
-          <div className={s.head}>
-            {/* Header */}
-            <Link to="/">
-              <img
-                className={s.logo}
-                src={logoUrl}
-                srcSet={`${logoUrl} 1x, ${logoUrl2x} 2x, ${logoUrl3x} 3x`} alt="Promize" />
-            </Link>
-            <div className={s.searchWrapper}>
-              <input className={s.searchInput} placeholder="Search"/>
-            </div>
+      <div className={s.root}> 
+        <Menu className={s.menu} size="small">
+          <Container>
+            <Menu.Item className={s.welcome}as="welcome">
+              Welcome to Promize!
+              <span className={s.highlightedText}>Join Free</span>
+              or
+              <span className={s.highlightedText}>Sign in</span>
+            </Menu.Item>
+            <Menu.Menu position="right">
+              <Menu.Item className={s.item}>
+                <Link to="/login">
+                  <Icon name="lock" /> Login
+                </Link>
+              </Menu.Item>
+              <Menu.Item>
+                {/* TODO: Language Switcher */}
+                English
+              </Menu.Item>
+            </Menu.Menu>
+          </Container>
+        </Menu>
+        <div className={s.head}>
+          {/* Header */}
+          <Link className={s.logoWrapper} to="/">
+            <img
+              className={s.logo}
+              src={logoUrl}
+              srcSet={`${logoUrl} 1x, ${logoUrl2x} 2x, ${logoUrl3x} 3x`} alt="Promize" />
+          </Link>
+          <div className={s.searchWrapper}>
+            <Input className={s.searchInput} icon="search" placeholder="Search..." />
           </div>
-
-          {/* <Navigation /> */}
-          <div className={s.trendingBanner}>
-            <div className={s.trendingHastags}>Trending Hastags</div>
-            <div className={s.trendingButton}>
-              <div className={s.circleButton}>
-                <img className={s.buttonArrow} src={arrowLeft}/>
-              </div>
-              <div className={s.circleButton}>
-                <img className={s.buttonArrow} src={arrowRight}/>
-              </div>
-            </div>
-            <div className={s.trendingBlock}>
-              <div className={s.trendingBlockText}>
-                50 Percent Off
-              </div>
-              <div className={s.trendingBlockDecorate}/>
-            </div>
-
-          </div>
-
-          {/* <LanguageSwitcher /> */}
-
         </div>
       </div>
     );
+    // return (
+    //   <div className={s.root}>
+    //     <div className={s.container}>
+    //       <div className={s.head}>
+    //         {/* Header */}
+    //         <Link className={s.logoWrapper} to="/">
+    //           <img
+    //             className={s.logo}
+    //             src={logoUrl}
+    //             srcSet={`${logoUrl} 1x, ${logoUrl2x} 2x, ${logoUrl3x} 3x`} alt="Promize" />
+    //         </Link>
+    //         <div className={s.searchWrapper}>
+    //           <input className={s.searchInput} placeholder="Search"/>
+    //         </div>
+    //       </div>
+
+    //       {/* <Navigation /> */}
+    //       <div className={s.trendingBanner}>
+    //         <div className={s.trendingHastags}>Trending Hastags</div>
+    //         <div className={s.trendingButton}>
+    //           <div className={s.circleButton}>
+    //             <img className={s.buttonArrow} src={arrowLeft}/>
+    //           </div>
+    //           <div className={s.circleButton}>
+    //             <img className={s.buttonArrow} src={arrowRight}/>
+    //           </div>
+    //         </div>
+    //         <div className={s.trendingBlock}>
+    //           <div className={s.trendingBlockText}>
+    //             50 Percent Off
+    //           </div>
+    //           <div className={s.trendingBlockDecorate}/>
+    //         </div>
+
+    //       </div>
+
+    //       {/* <LanguageSwitcher /> */}
+
+    //     </div>
+    //   </div>
+    // );
   }
 }

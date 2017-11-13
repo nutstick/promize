@@ -62,5 +62,5 @@ declare module 'isomorphic-style-loader/lib/withStyles' {
   //   (component: CompositeComponent<TOwnProps>): ComponentClass<TOwnProps>;
   // }
   export type ComponentDecorator<TOwnProps> = (component: CompositeComponent<TOwnProps>) => ComponentClass<TOwnProps>;
-  export default function withStyles<TProps = {}>(styles?: any): ComponentDecorator<TProps>;
+  export default function withStyles<TProps = {}>(...styles?: any): ComponentDecorator<TProps>;
 }
