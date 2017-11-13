@@ -1,5 +1,6 @@
 import * as Iridium from 'iridium';
-import { Collection, Index, Instance, ObjectID, Property } from 'iridium';
+import { Collection, Index, Instance, ObjectID, Property, Transform } from 'iridium';
+import { ObjectID as id } from 'mongodb';
 import { Account, IAccountDocument } from './account';
 import { Address, IAddress } from './address';
 import { IPaymentMethod, PaymentMethod } from './paymentmethod';
@@ -27,6 +28,7 @@ interface IUserDocument {
 class User extends Instance<IUserDocument, User> implements IUserDocument {
   @ObjectID
   _id: string;
+  // Name
   @Property(/^.+$/, true)
   first_name: string;
   @Property(/^.+$/, false)
@@ -39,13 +41,25 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
 
   @Property(Account, true)
   account: IAccountDocument;
+
+  // Address
+  @Transform(
+    (value) => value,
+    (value) => value.map((address) => address._id ? address : { ...address, _id: new id() }),
+  )
   @Property(Address, false)
   address: IAddress;
+  // Payment method
+  @Transform(
+    (value) => value,
+    (value) => value.map((paymentMethod) => paymentMethod._id ? paymentMethod : { ...paymentMethod, _id: new id() }),
+  )
   @Property(PaymentMethod, false)
   payment_method: IPaymentMethod;
 
   @Property(String, true)
   avatar: string;
+
   @Property(Date, false)
   createAt: Date;
   @Property(Date, false)

@@ -4,12 +4,38 @@ type Account {
   facebookAccessCode: String
   googleAccessCode: String
 }
+
+type Address implements Node {
+  _id: ID!
+  address: String!
+  city: String!
+  country: String!
+  zip: String!
+}
+
+type PaymentMethod implements Node {
+  _id: ID!
+  creditCardNumber: String!
+}
+
 # A user
 type User implements Node {
   _id: ID!
-  name: String!
+  
+  firstName: String!
+  middleName: String
+  lastName: String!
+
+  telNumber: String
+
+  account: Account
+
+  addresses: [Address]
+
+  payment_methods: [PaymentMethod]
+
   avatar: String
+
   createAt: Date!
   updateAt: Date!
-  account: Account
 }
