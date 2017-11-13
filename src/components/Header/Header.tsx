@@ -1,7 +1,7 @@
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import * as semanticsCss from 'semantic-ui-css/semantic.min.css';
-import { Button, Container, Icon, Input, Menu } from 'semantic-ui-react';
+import { Container, Icon, Input, Menu } from 'semantic-ui-react';
 // import { defineMessages } from 'react-intl';
 // import LanguageSwitcher from '../LanguageSwitcher';
 import { Link } from '../Link';
@@ -33,7 +33,7 @@ import * as logoUrl3x from './logo@3x.png';
 export class Header extends React.Component<{}> {
   render() {
     return (
-      <div className={s.root}> 
+      <div className={s.root}>
         <Menu className={s.menu} size="small">
           <Container>
             <Menu.Item className={s.welcome}as="welcome">
