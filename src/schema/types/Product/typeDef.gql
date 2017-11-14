@@ -1,0 +1,22 @@
+# Product type
+# A product
+type Product implements Node {
+
+  _id: ID!
+  name: String!
+  description: String
+
+  price: Number!
+
+  picture: [String]
+  hashtag: [String]
+  colors: [String]!
+  sizes: [String]!
+
+  promotionStart: Date!
+  promotionEnd: Date!
+  ownerName: String!
+  
+  createAt: Date!
+  updateAt: Date!
+}
