@@ -1,10 +1,10 @@
 import { ApolloCache } from 'apollo-cache';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
-import { ApolloLink, Observable } from 'apollo-link';
+import { ApolloLink } from 'apollo-link';
 import { withClientState } from 'apollo-link-state';
 
-import * as ADDTODOMUTATION from './AddTodoMutation.gql';
+// import * as ADDTODOMUTATION from './AddTodoMutation.gql';
 import * as GETTASKQUERY from './GetTaskQuery.gql';
 
 interface IOptions {

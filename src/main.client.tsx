@@ -6,7 +6,6 @@
 // Import all the third party stuff
 import 'whatwg-fetch';
 
-import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import * as FontFaceObserver from 'fontfaceobserver';
 import { createPath } from 'history/PathUtils';
@@ -74,7 +73,7 @@ const context = {
   },
   fetch,
   // For react-apollo
-  client: apolloClient,
+  client,
   // intl instance as it can be get with injectIntl
   intl,
 };

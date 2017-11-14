@@ -1,4 +1,3 @@
-import { InMemoryCache } from 'apollo-cache-inmemory';
 import { graphiqlExpress, graphqlExpress } from 'apollo-server-express';
 import * as BluebirdPromise from 'bluebird';
 import * as bodyParser from 'body-parser';
