@@ -61,6 +61,7 @@
     "react-intl": "^2.4.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
+    "react-stack-grid": "^0.6.0",
     "react-transition-group": "^2.2.1",
     "semantic-ui-css": "^2.2.12",
     "semantic-ui-react": "^0.75.1",
@@ -179,5 +180,8 @@
     "clean": "./node_modules/.bin/ts-node tools/run clean",
     "lint": "./node_modules/.bin/tslint --project tsconfig.json -e 'src/**/*.test.ts' 'src/**/*.ts?(x)'"
   },
-  "pre-commit": ["lint", "test"]  
+  "pre-commit": [
+    "lint",
+    "test"
+  ]
 }

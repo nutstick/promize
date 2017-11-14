@@ -1,4 +1,6 @@
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
+import * as s from './Link.css';
 
 function isLeftClickEvent(event) {
   return event.button === 0;
@@ -18,6 +20,7 @@ export namespace Link {
   export type Props = IProps;
 }
 
+@withStyles(s)
 export class Link extends React.Component<Link.Props> {
   static defaultProps = {
     onClick: null,
@@ -42,6 +45,6 @@ export class Link extends React.Component<Link.Props> {
 
   public render() {
     const { to, children, ...props } = this.props;
-    return (<a href={to} {...props} onClick={this.handleClick}>{children}</a>);
+    return (<a className={s.root} href={to} {...props} onClick={this.handleClick}>{children}</a>);
   }
 }

@@ -9,7 +9,8 @@
    * Layout
    * ======================================================================== */
 
-  --max-content-width: 1000px;
+  --max-content-width: 800px;
+  --max-outter-content-width: 1000px;
 
   /*
    * Media queries breakpoints

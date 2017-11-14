@@ -1,0 +1,5 @@
+@import '../../components/variables.css';
+
+.root {
+  color: var(--primary-color);
+}

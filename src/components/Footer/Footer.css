@@ -1,0 +1,13 @@
+@import '../../components/variables.css';
+
+.root {
+  width: 100%;
+  min-height: 80px;
+  background: var(--dark-grey);
+  padding: 1em;
+
+  display: flex;
+  align-items: flex-end;
+
+  color: #bbb;
+}

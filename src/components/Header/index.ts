@@ -1,1 +1,1 @@
-export { Header } from './Header';
+export { HeaderWithRouter as Header } from './Header';
