@@ -15,7 +15,7 @@ interface IProductDocument {
 
   promotion_start: Date;
   promotion_end: Date;
-  owner_name: string;
+  owner: string;
 
   createAt?: Date;
   updateAt?: Date;
@@ -53,7 +53,7 @@ class Product extends Instance<IProductDocument, Product> implements IProductDoc
   promotion_end: Date;
 
   @Property(String, true)
-  owner_name: string;
+  owner: string;
 
   @Property(Date, false)
   createAt: Date;

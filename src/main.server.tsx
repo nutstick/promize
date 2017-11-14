@@ -125,7 +125,14 @@ app.get('/logout', (req, res) => {
 // }));
 
 // app.use('/graphql', graphqlMiddleware);
-app.use('/graphql', bodyParser.json(), graphqlExpress({ schema: Schema }));
+app.use('/graphql', bodyParser.json(), graphqlExpress((req) => ({
+  schema: Schema,
+  context: {
+    database,
+    user: req.user,
+  },
+  rootValue: { request: req },
+})));
 app.get('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
 
 //

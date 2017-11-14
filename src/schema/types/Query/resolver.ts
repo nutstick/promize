@@ -37,6 +37,23 @@ const resolver: IResolver<any, any> = {
 
       return JSON.parse(localeData);
     },
+
+    search(_, { keyword, first, after }, { database }) {
+      // FIXME: Sure error when search with owner
+      let products = database.Product.find({
+          $or: [
+              { hashtag: keyword },
+              { name: keyword },
+              { owner_name: keyword },
+          ],
+      });
+      if (first) {
+        products = products.skip(after);
+      }
+      if (after) {
+        products = products.limit(first);
+      }
+  },
   },
 };
 

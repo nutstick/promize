@@ -1,27 +1,39 @@
 import { IResolver } from '../index';
 
 const resolver: IResolver<any, any> = {
-    Product: {
-        promotionStart({ promotion_start }) {
-            return promotion_start;
-        },
-        promotionEnd({ promotion_end }) {
-            return promotion_end;
-        },
-        ownerName({ owner_name }) {
-            return owner_name;
-        },
-        async search(_, { keyword }, { database }) {
-            return await database.Product.find({
-                $or: [
-                    { hashtag: keyword },
-                    { name: keyword },
-                    { owner_name: keyword },
-                ],
-            });
-        },
+  ProductEdges: {
+    node(root) {
+      return root;
     },
-
+    cursor({ _id }) {
+      return _id;
+    },
+  },
+  ProductPage: {
+    async totalCount(root) {
+      return await root.count();
+    },
+    async edges(root) {
+      return await root.toArray();
+    },
+    pageInfo(root) {
+      return {
+        endCursor: root.next(),
+        hasNextPage: root.cursor.hasNext(),
+      };
+    },
+  },
+  Product: {
+    promotionStart({ promotion_start }) {
+      return promotion_start;
+    },
+    promotionEnd({ promotion_end }) {
+      return promotion_end;
+    },
+    async owner({ owner }, _, { database }) {
+      return await database.User.findOne(owner);
+    },
+  },
 };
 
 export default resolver;

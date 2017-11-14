@@ -1,12 +1,23 @@
-# Product type
-# A product
-type Product implements Node {
+# Edges for ProductQuery
+type ProductEdges implements Edges {
+  node: Product!
+  cursor: ID!
+}
 
+# Product relay-style pagination query
+type ProductPage implements Page {
+  totalCount: Int!
+  edges: [ProductEdges]
+  pageInfo: PageInfo
+}
+
+# Product
+type Product implements Node {
   _id: ID!
   name: String!
   description: String
 
-  price: Number!
+  price: Int!
 
   picture: [String]
   hashtag: [String]
@@ -15,7 +26,7 @@ type Product implements Node {
 
   promotionStart: Date!
   promotionEnd: Date!
-  ownerName: String!
+  owner: User!
   
   createAt: Date!
   updateAt: Date!
