@@ -16,11 +16,11 @@ import { getDataFromTree } from 'react-apollo';
 import * as ReactDOM from 'react-dom/server';
 import { IntlProvider } from 'react-intl';
 import { StaticRouter } from 'react-router';
+import { createApolloClient } from './apollo';
 import * as assets from './assets.json';
 import App from './components/App';
 import { Html } from './components/Html';
 import { api, auth, locales, port } from './config';
-import createApolloClient from './core/createApolloClient';
 import passport from './core/passport';
 import { requestLanguage } from './core/requestLanguage';
 import { ServerLink } from './core/ServerLink';
@@ -139,11 +139,6 @@ app.get('*', async (req, res, next) => {
       schema: Schema,
       rootValue: { request: req },
     }),
-    // networkInterface: new ServerInterface({
-    //   schema: Schema,
-    //   rootValue: { request: req },
-    // }),
-    cache: new InMemoryCache(),
     ssrMode: true,
   });
 

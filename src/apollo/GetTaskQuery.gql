@@ -1,0 +1,6 @@
+query GetTasks {
+  todos @client {
+    message
+    title
+  }
+}

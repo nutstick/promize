@@ -19,8 +19,8 @@ import en from 'react-intl/locale-data/en';
 import th from 'react-intl/locale-data/th';
 /* @intl-code-template-end */
 import { BrowserRouter } from 'react-router-dom';
+import { createApolloClient } from './apollo';
 import App from './components/App';
-import createApolloClient from './core/createApolloClient';
 import { ErrorReporter } from './core/devUtils';
 import { updateMeta } from './core/DOMUtils';
 import history from './core/history';
@@ -33,10 +33,8 @@ const http = new HttpLink({
   uri: '/graphql',
   credentials: 'include',
 });
-
-const apolloClient = createApolloClient({
+const client = createApolloClient({
   link: http,
-  cache: new InMemoryCache(),
   ssrForceFetchDelay: 100,
 });
 
