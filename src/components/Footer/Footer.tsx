@@ -1,6 +1,5 @@
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
-import { Menu } from 'semantic-ui-react';
 
 import * as s from './Footer.css';
 namespace Footer {

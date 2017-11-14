@@ -3,7 +3,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import * as semanticsCss from 'semantic-ui-css/semantic.min.css';
-import { Container, Icon, Input, Menu, Responsive } from 'semantic-ui-react';
+import { Container, Icon, Input, Menu } from 'semantic-ui-react';
 // import { defineMessages } from 'react-intl';
 // import LanguageSwitcher from '../LanguageSwitcher';
 import { Link } from '../Link';

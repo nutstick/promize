@@ -5,7 +5,6 @@ import * as MdAvTimerIcon from 'react-icons/lib/md/av-timer';
 import * as MdDashboardIcon from 'react-icons/lib/md/dashboard';
 import * as HotIcon from 'react-icons/lib/md/whatshot';
 import StackGrid, { easings, transitions } from 'react-stack-grid';
-import { Container } from 'semantic-ui-react';
 import { Category } from './Category';
 import { Hashtag } from './Hashtag';
 import * as s from './Home.css';
