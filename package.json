@@ -86,7 +86,7 @@
     "@types/graphql": "^0.11.5",
     "@types/isomorphic-fetch": "^0.0.34",
     "@types/mkdirp": "^0.5.1",
-    "@types/passport": "^0.3.5",
+    "@types/passport": "^0.4.1",
     "@types/passport-facebook": "^2.1.7",
     "@types/react-helmet": "^5.0.3",
     "@types/react-redux": "^5.0.12",
@@ -178,7 +178,8 @@
     "extractMessages": "./node_modules/.bin/ts-node tools/run extractMessages",
     "copy": "./node_modules/.bin/ts-node tools/run copy",
     "clean": "./node_modules/.bin/ts-node tools/run clean",
-    "lint": "./node_modules/.bin/tslint --project tsconfig.json -e 'src/**/*.test.ts' 'src/**/*.ts?(x)'"
+    "lint": "./node_modules/.bin/tslint --project tsconfig.json -e 'src/**/*.test.ts' 'src/**/*.ts?(x)'",
+    "seeds": "./node_modules/.bin/ts-node tools/run seeds"
   },
   "pre-commit": [
     "lint",
