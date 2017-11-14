@@ -14,3 +14,10 @@
 | 5731008221 | นายกิติพงษ์ ศิริเรืองสกุล    | [@RogerKSI](https://github.com/RogerKSI)        |
 | 5731088421 | นายภานุพงศ์ ทองธวัช     | [@5731088421-PT](https://github.com/5731088421-PT)    |
 | 5731114021 | นายอัมรินทร์ เจตน์ฐากูร    | [@ammarinjtk](https://github.com/ammarinjtk)     |
+
+
+## How to install
+ - docker-compose build
+ - docker-compose up
+ - (Window) url: http://192.168.99.100:3000/
+ - (Other) url: http://localhost:3000/
