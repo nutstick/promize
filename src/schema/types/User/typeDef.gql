@@ -32,7 +32,7 @@ type User implements Node {
 
   addresses: [Address]
 
-  payment_methods: [PaymentMethod]
+  paymentMethods: [PaymentMethod]
 
   avatar: String
 

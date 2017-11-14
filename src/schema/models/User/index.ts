@@ -47,15 +47,15 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
     (value) => value,
     (value) => value.map((address) => address._id ? address : { ...address, _id: new id() }),
   )
-  @Property(Address, false)
-  address: IAddress;
+  @Property([Address], false)
+  addresses: IAddress[];
   // Payment method
   @Transform(
     (value) => value,
     (value) => value.map((paymentMethod) => paymentMethod._id ? paymentMethod : { ...paymentMethod, _id: new id() }),
   )
-  @Property(PaymentMethod, false)
-  payment_method: IPaymentMethod;
+  @Property([PaymentMethod], false)
+  payment_methods: IPaymentMethod[];
 
   @Property(String, true)
   avatar: string;

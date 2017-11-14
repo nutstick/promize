@@ -28,6 +28,9 @@ const resolver: IResolver<any, any> = {
     telNumber({ tel_number }) {
       return tel_number;
     },
+    paymentMethods({ payment_methods }) {
+      return payment_methods;
+    },
   },
 };
 
