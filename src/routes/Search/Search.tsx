@@ -4,7 +4,7 @@ import * as React from 'react';
 import * as FaFilterIcon from 'react-icons/lib/fa/filter';
 import * as MdSortIcon from 'react-icons/lib/md/sort';
 import StackGrid, { easings, transitions } from 'react-stack-grid';
-import { Header, Sticky } from 'semantic-ui-react';
+import { Sticky } from 'semantic-ui-react';
 import { Card, contentClass, headingClass } from '../../components/Card';
 import * as s from './Search.css';
 
@@ -116,6 +116,6 @@ export class Search extends React.Component<Search.Props> {
           </div>
         </Card>
       </div>
-    )
+    );
   }
 }
