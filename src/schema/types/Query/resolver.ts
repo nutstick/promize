@@ -41,11 +41,11 @@ const resolver: IResolver<any, any> = {
     search(_, { keyword, first, after }, { database }) {
       // FIXME: Sure error when search with owner
       let products = database.Product.find({
-          $or: [
-              { hashtag: keyword },
-              { name: keyword },
-              { owner_name: keyword },
-          ],
+        $or: [
+          { hashtag: keyword },
+          { name: keyword },
+          { owner_name: keyword },
+        ],
       });
       if (first) {
         products = products.skip(after);
@@ -53,7 +53,8 @@ const resolver: IResolver<any, any> = {
       if (after) {
         products = products.limit(first);
       }
-  },
+      return products;
+    },
   },
 };
 
