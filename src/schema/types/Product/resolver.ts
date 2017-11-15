@@ -30,6 +30,9 @@ const resolver: IResolver<any, any> = {
     promotionEnd({ promotion_end }) {
       return promotion_end;
     },
+    orginalPrice({ orginal_price }) {
+      return orginal_price;
+    },
     async owner({ owner }, _, { database }) {
       return await database.User.findOne(owner);
     },

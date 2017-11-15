@@ -6,6 +6,8 @@ interface IProductDocument {
   name: string;
   description?: string;
 
+  type: string;
+  original_price?: number;
   price: number;
 
   picture?: string[];

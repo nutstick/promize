@@ -6,6 +6,8 @@ interface IProduct {
     name: string;
     description?: string;
 
+    type: string;
+    originalPrice?: number;
     price: number;
 
     picture?: string[];
