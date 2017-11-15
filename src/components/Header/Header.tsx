@@ -1,15 +1,22 @@
+import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 // import { defineMessages } from 'react-intl';
 // import LanguageSwitcher from '../LanguageSwitcher';
-import { Link } from '../Link';
-import * as arrowLeft from './arrowleft.png';
-import * as arrowRight from './arrowright.png';
-// import { Navigation } from '../Navigation';
+import { Link } from 'react-router-dom';
+import { Button, Container, Icon, Input, Menu } from 'semantic-ui-react';
+import { parseSearch } from '../../core/urlParser';
 import * as s from './Header.css';
-import * as logoUrl from './logo.png';
-import * as logoUrl2x from './logo@2x.png';
-import * as logoUrl3x from './logo@3x.png';
+import * as logoUrl from './promizeLogoWhite.svg';
+
+namespace Header {
+  export type Props = RouteComponentProps<{}>;
+
+  export interface State {
+    search?: string | string[];
+  }
+}
 
 // const messages = defineMessages({
 //   brand: {
@@ -30,48 +37,102 @@ import * as logoUrl3x from './logo@3x.png';
 // });
 
 @withStyles(s)
-export class Header extends React.Component<{}> {
-  render() {
+export class Header extends React.Component<Header.Props, Header.State> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      search: parseSearch(this.props.location) || '',
+    };
+  }
+
+  private onSearchChanged(event: React.SyntheticEvent<HTMLInputElement>): void {
+    this.setState({
+      search: (event.target as any).value,
+    });
+  }
+
+  private onSearchKeyPress(event: React.KeyboardEventHandler<HTMLInputElement>): void {
+    if ((event as any).key === 'Enter') {
+      this.props.history.push(`/search?keyword=${this.state.search}`);
+    }
+  }
+
+  private onSearchButtonClicked(event: React.SyntheticEvent<HTMLInputElement>): void {
+    this.props.history.push(`/search?keyword=${this.state.search}`);
+  }
+
+  private onRouteChanged() {
+    const search = parseSearch(this.props.location);
+    if (search) {
+      this.setState({
+        search,
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.location !== prevProps.location) {
+      this.onRouteChanged();
+    }
+  }
+
+  public render() {
     return (
-      <div className={s.root}>
-        <div className={s.container}>
-          <div className={s.head}>
-            {/* Header */}
-            <Link to="/">
+      <div className={cx(s.root, s.bg)}>
+        <Menu className={s.menu} size="small" borderless>
+          <Container>
+            <Menu.Item className={s.welcome}as="welcome">
+              Welcome to Promize!
+              <div className={s.hideOnMobile}>
+                <span className={s.highlightedText}>Join Free</span>
+                or
+                <span className={s.highlightedText}>Sign in</span>
+              </div>
+            </Menu.Item>
+            <Menu.Menu position="right">
+              <Menu.Item className={s.item}>
+                <Link to="/login">
+                  <Icon name="lock" /> Login
+                </Link>
+              </Menu.Item>
+              <Menu.Item>
+                {/* TODO: Language Switcher */}
+                English
+              </Menu.Item>
+            </Menu.Menu>
+          </Container>
+        </Menu>
+        <Container>
+          <div className={cx(s.head, { [s.home]: this.props.location.pathname === '/' })}>
+            <Link className={s.logoWrapper} to="/">
               <img
                 className={s.logo}
                 src={logoUrl}
-                srcSet={`${logoUrl} 1x, ${logoUrl2x} 2x, ${logoUrl3x} 3x`} alt="Promize" />
+                alt="Promize" />
             </Link>
             <div className={s.searchWrapper}>
-              <input className={s.searchInput} placeholder="Search"/>
+              <Input
+                className={s.searchInput}
+                action
+                placeholder="Search...">
+                <input
+                  value={this.state.search}
+                  onChange={this.onSearchChanged.bind(this)}
+                  onKeyPress={this.onSearchKeyPress.bind(this)}/>
+                <Button
+                  className={s.searchButton}
+                  type="submit"
+                  icon="search"
+                  color="black"
+                  onClick={this.onSearchButtonClicked.bind(this)} />
+              </Input>
             </div>
           </div>
-
-          {/* <Navigation /> */}
-          <div className={s.trendingBanner}>
-            <div className={s.trendingHastags}>Trending Hastags</div>
-            <div className={s.trendingButton}>
-              <div className={s.circleButton}>
-                <img className={s.buttonArrow} src={arrowLeft}/>
-              </div>
-              <div className={s.circleButton}>
-                <img className={s.buttonArrow} src={arrowRight}/>
-              </div>
-            </div>
-            <div className={s.trendingBlock}>
-              <div className={s.trendingBlockText}>
-                50 Percent Off
-              </div>
-              <div className={s.trendingBlockDecorate}/>
-            </div>
-
-          </div>
-
-          {/* <LanguageSwitcher /> */}
-
-        </div>
+        </Container>
       </div>
     );
   }
 }
+
+export default withRouter<{}>(Header);

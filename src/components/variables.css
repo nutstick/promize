@@ -9,7 +9,8 @@
    * Layout
    * ======================================================================== */
 
-  --max-content-width: 1000px;
+  --max-content-width: 800px;
+  --max-outter-content-width: 1000px;
 
   /*
    * Media queries breakpoints
@@ -25,7 +26,7 @@
   --light-color: #ffffff;
   --dark-color: #f2f2f2;
 
-  --primary-color: #087378;
+  --primary-color: #ff9521;
   --secondary-color: #5a6669;
 
   @custom-media --small-xs (width >= 480px);

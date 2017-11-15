@@ -30,7 +30,6 @@ export class ServerLink extends ApolloLink {
   public request(operation) {
     return new Observable((observer) => {
       let canceled = false;
-
       execute(
         this.schema,
         operation.query,

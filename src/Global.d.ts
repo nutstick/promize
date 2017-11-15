@@ -56,11 +56,16 @@ declare module '*.png' {
   export = _;
 }
 
+declare module '*.svg' {
+  const _: any;
+  export = _;
+}
+
 declare module 'isomorphic-style-loader/lib/withStyles' {
   export declare type CompositeComponent<P> = React.ComponentClass<P> | React.StatelessComponent<P>;
   // export interface ComponentDecorator<TOwnProps> {
   //   (component: CompositeComponent<TOwnProps>): ComponentClass<TOwnProps>;
   // }
   export type ComponentDecorator<TOwnProps> = (component: CompositeComponent<TOwnProps>) => ComponentClass<TOwnProps>;
-  export default function withStyles<TProps = {}>(styles?: any): ComponentDecorator<TProps>;
+  export default function withStyles<TProps = {}>(...styles?: any): ComponentDecorator<TProps>;
 }

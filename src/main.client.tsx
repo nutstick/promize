@@ -6,7 +6,6 @@
 // Import all the third party stuff
 import 'whatwg-fetch';
 
-import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import * as FontFaceObserver from 'fontfaceobserver';
 import { createPath } from 'history/PathUtils';
@@ -19,8 +18,8 @@ import en from 'react-intl/locale-data/en';
 import th from 'react-intl/locale-data/th';
 /* @intl-code-template-end */
 import { BrowserRouter } from 'react-router-dom';
+import { createApolloClient } from './apollo';
 import App from './components/App';
-import createApolloClient from './core/createApolloClient';
 import { ErrorReporter } from './core/devUtils';
 import { updateMeta } from './core/DOMUtils';
 import history from './core/history';
@@ -33,10 +32,8 @@ const http = new HttpLink({
   uri: '/graphql',
   credentials: 'include',
 });
-
-const apolloClient = createApolloClient({
+const client = createApolloClient({
   link: http,
-  cache: new InMemoryCache(),
   ssrForceFetchDelay: 100,
 });
 
@@ -76,7 +73,7 @@ const context = {
   },
   fetch,
   // For react-apollo
-  client: apolloClient,
+  client,
   // intl instance as it can be get with injectIntl
   intl,
 };
@@ -94,8 +91,6 @@ let onRenderComplete = function initialRenderComplete(route?, location?) {
     elem.parentNode.removeChild(elem);
   }
   onRenderComplete = function renderComplete(route_, location_) {
-    document.title = route_.title;
-
     updateMeta('description', route_.description);
     // Update necessary tags in <head> at runtime here, ie:
     // updateMeta('keywords', route.keywords);

@@ -1,4 +1,3 @@
-import { InMemoryCache } from 'apollo-cache-inmemory';
 import { graphiqlExpress, graphqlExpress } from 'apollo-server-express';
 import * as BluebirdPromise from 'bluebird';
 import * as bodyParser from 'body-parser';
@@ -16,11 +15,11 @@ import { getDataFromTree } from 'react-apollo';
 import * as ReactDOM from 'react-dom/server';
 import { IntlProvider } from 'react-intl';
 import { StaticRouter } from 'react-router';
+import { createApolloClient } from './apollo';
 import * as assets from './assets.json';
 import App from './components/App';
 import { Html } from './components/Html';
 import { api, auth, locales, port } from './config';
-import createApolloClient from './core/createApolloClient';
 import passport from './core/passport';
 import { requestLanguage } from './core/requestLanguage';
 import { ServerLink } from './core/ServerLink';
@@ -43,6 +42,8 @@ const app = express() as HotExpress;
 // Tell any CSS tooling (such as Material UI) to use all vendor prefixes if the
 // user agent is not known.
 // -----------------------------------------------------------------------------
+declare var global: any;
+
 global.navigator = global.navigator || {};
 global.navigator.userAgent = global.navigator.userAgent || 'all';
 
@@ -125,7 +126,14 @@ app.get('/logout', (req, res) => {
 // }));
 
 // app.use('/graphql', graphqlMiddleware);
-app.use('/graphql', bodyParser.json(), graphqlExpress({ schema: Schema }));
+app.use('/graphql', bodyParser.json(), graphqlExpress((req) => ({
+  schema: Schema,
+  context: {
+    database,
+    user: req.user,
+  },
+  rootValue: { request: req },
+})));
 app.get('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
 
 //
@@ -137,13 +145,12 @@ app.get('*', async (req, res, next) => {
   const client = createApolloClient({
     link: new ServerLink({
       schema: Schema,
-      rootValue: { request: req },
+      rootValue: {request: req },
+      context: {
+        database,
+        user: req.user,
+      },
     }),
-    // networkInterface: new ServerInterface({
-    //   schema: Schema,
-    //   rootValue: { request: req },
-    // }),
-    cache: new InMemoryCache(),
     ssrMode: true,
   });
 
