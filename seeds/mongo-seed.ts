@@ -35,7 +35,7 @@ export async function seed(database: Database) {
 
         // price: m.integer(100, 2000),
 
-        picture: array_of(Math.floor(Math.random() * 3), () => m.random_element([
+        picture: array_of(Math.floor(Math.random() * 3) + 1, () => m.random_element([
           'https://th-live-02.slatic.net/p/7/hequ-1483111676-123106' +
           '5-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg',
           'https://www.fjallraven.com/media/catalog/product/cache/all/base/522x/' +
