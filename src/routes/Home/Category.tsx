@@ -1,6 +1,7 @@
 import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import * as s from './Category.css';
 
 export namespace Category {
@@ -16,7 +17,7 @@ export namespace Category {
 export class Category extends React.Component<Category.Props> {
   public render() {
     return (
-      <div className={cx(s.root, this.props.className)}>
+      <Link className={cx(s.root, this.props.className)} to={`/search?${this.props.text}`}>
         <img
           className={s.icon}
           src={this.props.icon}
@@ -24,7 +25,7 @@ export class Category extends React.Component<Category.Props> {
         <div className={s.content}>
           {this.props.text || this.props.children}
         </div>
-      </div>
+      </Link>
     );
   }
 }

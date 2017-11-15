@@ -4,6 +4,22 @@
   --brand-color: #FE8C24;
 }
 
+:global {
+  a {
+    color: var(--primary-color);
+  }
+
+  a:hover {
+    color: var(--secondary-color);
+    text-decoration: none;
+  }
+
+  a:active {
+    color: var(--secondary-color);
+    text-decoration: none;
+  }
+}
+
 .root {
   /* background: #ffffff; */
   /* margin-bottom: 2.5em; */
@@ -92,7 +108,7 @@
   padding-right: 1.14285714em !important;
 }
 
-@media only screen and (max-width: 424px) {
+@media only screen and (max-width: 485px) {
   .hideOnMobile {
     display: none;
   }

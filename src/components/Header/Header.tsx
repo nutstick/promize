@@ -2,12 +2,11 @@ import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import * as semanticsCss from 'semantic-ui-css/semantic.min.css';
-import { Container, Icon, Input, Menu } from 'semantic-ui-react';
 // import { defineMessages } from 'react-intl';
 // import LanguageSwitcher from '../LanguageSwitcher';
-import { Link } from '../Link';
-// import { Navigation } from '../Navigation';
+import { Link } from 'react-router-dom';
+import * as semanticsCss from 'semantic-ui-css/semantic.min.css';
+import { Container, Icon, Input, Menu } from 'semantic-ui-react';
 import * as s from './Header.css';
 import * as logoUrl from './logo.png';
 import * as logoUrl2x from './logo@2x.png';
@@ -93,47 +92,6 @@ export class Header extends React.Component<Header.Props> {
         </Container>
       </div>
     );
-    // return (
-    //   <div className={s.root}>
-    //     <div className={s.container}>
-    //       <div className={s.head}>
-    //         {/* Header */}
-    //         <Link className={s.logoWrapper} to="/">
-    //           <img
-    //             className={s.logo}
-    //             src={logoUrl}
-    //             srcSet={`${logoUrl} 1x, ${logoUrl2x} 2x, ${logoUrl3x} 3x`} alt="Promize" />
-    //         </Link>
-    //         <div className={s.searchWrapper}>
-    //           <input className={s.searchInput} placeholder="Search"/>
-    //         </div>
-    //       </div>
-
-    //       {/* <Navigation /> */}
-    //       <div className={s.trendingBanner}>
-    //         <div className={s.trendingHastags}>Trending Hastags</div>
-    //         <div className={s.trendingButton}>
-    //           <div className={s.circleButton}>
-    //             <img className={s.buttonArrow} src={arrowLeft}/>
-    //           </div>
-    //           <div className={s.circleButton}>
-    //             <img className={s.buttonArrow} src={arrowRight}/>
-    //           </div>
-    //         </div>
-    //         <div className={s.trendingBlock}>
-    //           <div className={s.trendingBlockText}>
-    //             50 Percent Off
-    //           </div>
-    //           <div className={s.trendingBlockDecorate}/>
-    //         </div>
-
-    //       </div>
-
-    //       {/* <LanguageSwitcher /> */}
-
-    //     </div>
-    //   </div>
-    // );
   }
 }
 

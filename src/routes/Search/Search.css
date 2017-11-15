@@ -1,0 +1,56 @@
+@import '../../components/variables.css';
+
+.root {
+  margin: 0 auto;
+  margin-top: -120px;
+  padding: 0.6em 0 40px;
+}
+
+.left {
+  position: absolute;
+  width: 100%;
+  max-width: 24.6%;
+}
+
+.results {
+  margin-left: 24.6% !important;
+}
+
+.content {
+  padding: 0.65em 1em;
+}
+
+.item {
+  display: block;
+  width: 100%;
+}
+
+.item--gray {
+  background: #b8bbbe;
+}
+
+.item--gray-light {
+  background: #dfe0df;
+}
+
+.item--gray-dark {
+  background: #47484a;
+}
+
+.item--yellow {
+  background: #e1c531;
+}
+
+.item--pink {
+  background: #d59c90;
+}
+
+.item--purple {
+  background: #c9cae3;
+}
+
+.productList {
+  > :global(*) {
+    width: 100%;
+  }
+}

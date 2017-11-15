@@ -5,6 +5,7 @@ import * as MdAvTimerIcon from 'react-icons/lib/md/av-timer';
 import * as MdDashboardIcon from 'react-icons/lib/md/dashboard';
 import * as HotIcon from 'react-icons/lib/md/whatshot';
 import StackGrid, { easings, transitions } from 'react-stack-grid';
+import { Card, contentClass, headingClass } from '../../components/Card';
 import { Category } from './Category';
 import { Hashtag } from './Hashtag';
 import * as s from './Home.css';
@@ -20,6 +21,7 @@ import * as washingMachineImage from './icons8-washing-machine.png';
 
 const transition = transitions.scaleDown;
 
+// TODO: Change to real picture
 const itemModifier = [
   'gray',
   'gray-light',
@@ -48,10 +50,6 @@ export namespace Home {
 
 @withStyles(s)
 export class Home extends React.Component<Home.Props> {
-  constructor(props) {
-    super(props);
-  }
-
   private createItem(): Home.IItem {
     const id = Math.random().toString(36).substr(2, 9);
     const height = Math.floor((Math.random() * (300 - 80)) + 80);
@@ -105,14 +103,14 @@ export class Home extends React.Component<Home.Props> {
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <div className={s.card}>
-            <div className={cx(s.heading)}>
+          <Card>
+            <div className={headingClass}>
               <HotIcon size={25} style={{
                 marginRight: 2.5,
               }} color="#ff9521" />
               <span>Trending Hashtags</span>
             </div>
-            <div className={cx(s.content, s.hashtags)}>
+            <div className={cx(contentClass, s.hashtags)}>
               <Hashtag text="End soon!" />
               <Hashtag text="50% Off" />
               <Hashtag text="Starbuck 1 FREE 1" />
@@ -124,26 +122,26 @@ export class Home extends React.Component<Home.Props> {
               <Hashtag text="Chulalongkorn" />
             </div>
 
-            <div className={cx(s.heading)}>
+            <div className={headingClass}>
               <MdDashboardIcon size={25} style={{
                 marginRight: 2.5,
               }} color="#ff9521" />
               <span>Category</span>
             </div>
-            <div className={cx(s.content, s.categoryList)}>
+            <div className={cx(contentClass, s.categoryList)}>
               {categoryList.map((category) => (
                 <Category key={category.text} className={s.category} icon={category.icon} text={category.text} />
               ))}
             </div>
 
-            <div className={cx(s.heading)}>
+            <div className={cx(headingClass)}>
               <MdAvTimerIcon size={25} style={{
                 marginRight: 2.5,
               }} color="#ff9521" />
               <span>Ending soon!!</span>
             </div>
 
-            <div className={cx(s.content, s.productList)}>
+            <div className={cx(contentClass, s.productList)}>
               <StackGrid
                 duration={480}
                 columnWidth={200}
@@ -166,7 +164,7 @@ export class Home extends React.Component<Home.Props> {
                 ))}
               </StackGrid>
             </div>
-          </div>
+          </Card>
         </div>
       </div>
     );

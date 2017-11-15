@@ -1,5 +1,6 @@
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import * as s from './Hashtag.css';
 
 export namespace Hashtag {
@@ -14,7 +15,7 @@ export namespace Hashtag {
 export class Hashtag extends React.Component<Hashtag.Props> {
   public render() {
     return (
-      <div className={s.root}>
+      <Link className={s.root} to={`/search?${this.props.text}`}>
         <div className={s.content}>
           <span
             className={s.hashtag}
@@ -22,7 +23,7 @@ export class Hashtag extends React.Component<Hashtag.Props> {
           >#</span>
           {this.props.text || this.props.children}
         </div>
-      </div>
+      </Link>
     );
   }
 }
