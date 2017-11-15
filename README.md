@@ -16,8 +16,8 @@
 | 5731114021 | นายอัมรินทร์ เจตน์ฐากูร    | [@ammarinjtk](https://github.com/ammarinjtk)     |
 
 
-## How to install
+## How to install through docker
  - docker-compose build
  - docker-compose up
- - (Window) url: http://192.168.99.100:3000/
+ - (Docker toolbox) url: http://192.168.99.100:3000/
  - (Other) url: http://localhost:3000/
