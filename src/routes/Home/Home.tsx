@@ -10,14 +10,14 @@ import { Category } from './Category';
 import { Hashtag } from './Hashtag';
 import * as s from './Home.css';
 
-import * as cellphoneImage from './icons8-cell-phone.png';
-import * as clothsImage from './icons8-clothes.png';
-import * as electronicsImage from './icons8-electronics.png';
-import * as gameImage from './icons8-game-controller.png';
-import * as headphonesImage from './icons8-headphones.png';
-import * as lipstickImage from './icons8-lipstick.png';
-import * as cameraImage from './icons8-slr-camera.png';
-import * as washingMachineImage from './icons8-washing-machine.png';
+import * as cellphoneImage from './smartphone.svg';
+import * as clothsImage from './clothes.svg';
+import * as electronicsImage from './electronic.svg';
+import * as gameImage from './gamepad.svg';
+import * as headphonesImage from './headphones.svg';
+import * as lipstickImage from './cosmetics.svg';
+import * as cameraImage from './camera.svg';
+import * as washingMachineImage from './washing-machine.svg';
 
 const transition = transitions.scaleDown;
 

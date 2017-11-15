@@ -8,9 +8,7 @@ import { Link } from 'react-router-dom';
 import * as semanticsCss from 'semantic-ui-css/semantic.min.css';
 import { Container, Icon, Input, Menu } from 'semantic-ui-react';
 import * as s from './Header.css';
-import * as logoUrl from './logo.png';
-import * as logoUrl2x from './logo@2x.png';
-import * as logoUrl3x from './logo@3x.png';
+import * as logoUrl from './promizeLogoWhite.svg';
 
 namespace Header {
   export type Props = RouteComponentProps<{}>;
@@ -69,7 +67,7 @@ export class Header extends React.Component<Header.Props> {
                 <img
                   className={s.logo}
                   src={logoUrl}
-                  srcSet={`${logoUrl} 1x, ${logoUrl2x} 2x, ${logoUrl3x} 3x`} alt="Promize" />
+                  alt="Promize" />
               </Link>
               <div className={s.searchWrapper}>
                 <Input className={s.searchInput} icon="search" placeholder="Search..." />
@@ -82,7 +80,7 @@ export class Header extends React.Component<Header.Props> {
                 <img
                   className={s.logo}
                   src={logoUrl}
-                  srcSet={`${logoUrl} 1x, ${logoUrl2x} 2x, ${logoUrl3x} 3x`} alt="Promize" />
+                  alt="Promize" />
               </Link>
               <div className={s.searchWrapper}>
                 <Input className={s.searchInput} icon="search" placeholder="Search..." />
