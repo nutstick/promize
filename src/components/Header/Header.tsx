@@ -1,5 +1,4 @@
 import * as cx from 'classnames';
-import { Location } from 'history';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
