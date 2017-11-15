@@ -1,17 +1,22 @@
 import * as cx from 'classnames';
+import { Location } from 'history';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 // import { defineMessages } from 'react-intl';
 // import LanguageSwitcher from '../LanguageSwitcher';
 import { Link } from 'react-router-dom';
-import * as semanticsCss from 'semantic-ui-css/semantic.min.css';
-import { Container, Icon, Input, Menu } from 'semantic-ui-react';
+import { Button, Container, Icon, Input, Menu } from 'semantic-ui-react';
+import { parseSearch } from '../../core/urlParser';
 import * as s from './Header.css';
 import * as logoUrl from './promizeLogoWhite.svg';
 
 namespace Header {
   export type Props = RouteComponentProps<{}>;
+
+  export interface State {
+    search?: string | string[];
+  }
 }
 
 // const messages = defineMessages({
@@ -32,9 +37,48 @@ namespace Header {
 //   },
 // });
 
-@withStyles(semanticsCss, s)
-export class Header extends React.Component<Header.Props> {
-  render() {
+@withStyles(s)
+export class Header extends React.Component<Header.Props, Header.State> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      search: parseSearch(this.props.location) || '',
+    };
+  }
+
+  private onSearchChanged(event: React.SyntheticEvent<HTMLInputElement>): void {
+    this.setState({
+      search: (event.target as any).value,
+    });
+  }
+
+  private onSearchKeyPress(event: React.KeyboardEventHandler<HTMLInputElement>): void {
+    if ((event as any).key === 'Enter') {
+      this.props.history.push(`/search?keyword=${this.state.search}`);
+    }
+  }
+
+  private onSearchButtonClicked(event: React.SyntheticEvent<HTMLInputElement>): void {
+    this.props.history.push(`/search?keyword=${this.state.search}`);
+  }
+
+  private onRouteChanged() {
+    const search = parseSearch(this.props.location);
+    if (search) {
+      this.setState({
+        search,
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.location !== prevProps.location) {
+      this.onRouteChanged();
+    }
+  }
+
+  public render() {
     return (
       <div className={cx(s.root, s.bg)}>
         <Menu className={s.menu} size="small" borderless>
@@ -61,36 +105,35 @@ export class Header extends React.Component<Header.Props> {
           </Container>
         </Menu>
         <Container>
-          {this.props.location.pathname === '/' ? (
-            <div className={cx(s.head, s.home)}>
-              <Link className={s.logoWrapper} to="/">
-                <img
-                  className={s.logo}
-                  src={logoUrl}
-                  alt="Promize" />
-              </Link>
-              <div className={s.searchWrapper}>
-                <Input className={s.searchInput} icon="search" placeholder="Search..." />
-              </div>
+          <div className={cx(s.head, { [s.home]: this.props.location.pathname === '/' })}>
+            <Link className={s.logoWrapper} to="/">
+              <img
+                className={s.logo}
+                src={logoUrl}
+                alt="Promize" />
+            </Link>
+            <div className={s.searchWrapper}>
+              <Input
+                className={s.searchInput}
+                action
+                placeholder="Search...">
+                <input
+                  value={this.state.search}
+                  onChange={this.onSearchChanged.bind(this)}
+                  onKeyPress={this.onSearchKeyPress.bind(this)}/>
+                <Button
+                  className={s.searchButton}
+                  type="submit"
+                  icon="search"
+                  color="black"
+                  onClick={this.onSearchButtonClicked.bind(this)} />
+              </Input>
             </div>
-          ) : (
-            <div className={s.head}>
-              {/* Header */}
-              <Link className={s.logoWrapper} to="/">
-                <img
-                  className={s.logo}
-                  src={logoUrl}
-                  alt="Promize" />
-              </Link>
-              <div className={s.searchWrapper}>
-                <Input className={s.searchInput} icon="search" placeholder="Search..." />
-              </div>
-            </div>
-          )}
+          </div>
         </Container>
       </div>
     );
   }
 }
 
-export const HeaderWithRouter = withRouter<{}>(Header);
+export default withRouter<{}>(Header);

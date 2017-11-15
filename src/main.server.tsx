@@ -145,7 +145,11 @@ app.get('*', async (req, res, next) => {
   const client = createApolloClient({
     link: new ServerLink({
       schema: Schema,
-      rootValue: { request: req },
+      rootValue: {request: req },
+      context: {
+        database,
+        user: req.user,
+      },
     }),
     ssrMode: true,
   });

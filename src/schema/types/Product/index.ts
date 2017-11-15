@@ -1,3 +1,4 @@
+import { IUser } from '../User';
 import resolver from './resolver';
 import * as type from './typeDef.gql';
 
@@ -17,7 +18,7 @@ interface IProduct {
 
     promotionStart: Date;
     promotionEnd: Date;
-    ownerName: string;
+    owner: IUser;
 }
 
 export {

@@ -10,13 +10,13 @@ import { Category } from './Category';
 import { Hashtag } from './Hashtag';
 import * as s from './Home.css';
 
-import * as cellphoneImage from './smartphone.svg';
+import * as cameraImage from './camera.svg';
 import * as clothsImage from './clothes.svg';
+import * as lipstickImage from './cosmetics.svg';
 import * as electronicsImage from './electronic.svg';
 import * as gameImage from './gamepad.svg';
 import * as headphonesImage from './headphones.svg';
-import * as lipstickImage from './cosmetics.svg';
-import * as cameraImage from './camera.svg';
+import * as cellphoneImage from './smartphone.svg';
 import * as washingMachineImage from './washing-machine.svg';
 
 const transition = transitions.scaleDown;

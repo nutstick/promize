@@ -70,11 +70,13 @@
 }
 
 .searchInput :global input:focus {
-  border-color: var(--primary-color) !important;
+  border: none;
 }
 
-.searchInput :global input:focus~i.icon {
-  color: var(--primary-color);
+.searchButton {
+  color: var(--primary-color) !important;
+  border-radius: 0 2em 2em 0 !important;
+  background: #fff !important;
 }
 
 .menu {

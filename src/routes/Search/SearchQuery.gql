@@ -1,0 +1,20 @@
+query SearchQuery($keyword: String!) {
+  search(keyword: $keyword) {
+    totalCount
+    edges {
+      node {
+        _id
+        name
+        description
+        hashtag
+        picture
+        owner {
+          _id
+          firstName
+          middleName
+          lastName
+        }
+      }
+    }
+  }
+}

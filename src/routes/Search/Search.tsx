@@ -1,52 +1,51 @@
 import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
+import { ChildProps } from 'react-apollo';
 import * as FaFilterIcon from 'react-icons/lib/fa/filter';
 import * as MdSortIcon from 'react-icons/lib/md/sort';
+import { RouteComponentProps, withRouter } from 'react-router';
 import StackGrid, { easings, transitions } from 'react-stack-grid';
-import { Sticky } from 'semantic-ui-react';
+import { Loader, Sticky } from 'semantic-ui-react';
+import { graphql } from '../../apollo/graphql';
 import { Card, contentClass, headingClass } from '../../components/Card';
+import { ProductCard } from '../../components/ProductCard';
+import { parseSearch } from '../../core/urlParser';
+import { IPage } from '../../schema/types/Pagination';
+import { IProduct } from '../../schema/types/Product';
+import * as NoResultImage from './no-results.png';
 import * as s from './Search.css';
+import * as SEARCHQUERY from './SearchQuery.gql';
 
 const transition = transitions.scaleDown;
 
-// TODO: Change to real picture
-const itemModifier = [
-  'gray',
-  'gray-light',
-  'gray-dark',
-  'yellow',
-  'pink',
-  'purple',
-];
-
 namespace Search {
-  export interface IItem {
-    id: string;
-    height: number;
-    modifier: string;
+  export interface SearchQuery {
+    search: IPage<IProduct>;
   }
 
-  export type Props = any;
+  export type WithRouter = RouteComponentProps<{}>;
+
+  export type Props = ChildProps<WithRouter, SearchQuery>;
 }
 
 @withStyles(s)
+@graphql<Search.WithRouter, Search.SearchQuery>(SEARCHQUERY, {
+  options(props) {
+    return {
+      variables: {
+        keyword: parseSearch(props.location),
+      },
+    };
+  },
+})
+@(withRouter as any)
 export class Search extends React.Component<Search.Props> {
-  private createItem(): Search.IItem {
-    const id = Math.random().toString(36).substr(2, 9);
-    const height = Math.floor((Math.random() * (300 - 100)) + 100);
-    const modifier = itemModifier[Math.floor(Math.random() * itemModifier.length)];
-
-    return { id, height, modifier };
-  }
-
   public componentDidMount() {
     document.title = 'Results';
   }
 
   public render() {
-    const items = Array.apply(null, Array(100)).map(() => this.createItem());
-
     return (
       <div className={s.root}>
         <Sticky className={s.left} bottomOffset={0}>
@@ -91,29 +90,32 @@ export class Search extends React.Component<Search.Props> {
           </Card>
         </Sticky>
         <Card className={s.results}>
-          <div className={cx(contentClass, s.productList)}>
-            <StackGrid
-              duration={480}
-              columnWidth={180}
-              gutterWidth={5}
-              gutterHeight={5}
-              easing={easings.quartOut}
-              appear={transition.appear}
-              appeared={transition.appeared}
-              enter={transition.enter}
-              entered={transition.entered}
-              leaved={transition.leaved}
-              enableSSR={true}
-            >
-              {items.map((item) => (
-                <div
-                  key={item.id}
-                  className={cx(s.item, s[`item--${item.modifier}`])}
-                  style={{ height: item.height }}
-                />
-              ))}
-            </StackGrid>
-          </div>
+          {
+            this.props.data.loading ? <Loader active /> :
+            this.props.data.search.totalCount === 0 ? <div className={s.notFound}>
+              <img src={NoResultImage} alt="No Results founds." />
+              <span className={s.text}>No Results found.</span>
+            </div> :
+            <div className={cx(contentClass, s.productList)}>
+              <StackGrid
+                duration={480}
+                columnWidth={180}
+                gutterWidth={5}
+                gutterHeight={5}
+                easing={easings.quartOut}
+                appear={transition.appear}
+                appeared={transition.appeared}
+                enter={transition.enter}
+                entered={transition.entered}
+                leaved={transition.leaved}
+                enableSSR={true}
+              >
+                {this.props.data.search.edges.map((product) => (
+                  <ProductCard product={product.node} />
+                ))}
+              </StackGrid>
+            </div>
+          }
         </Card>
       </div>
     );
