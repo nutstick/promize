@@ -10,6 +10,11 @@ const MESSAGES_DIR = process.env.MESSAGES_DIR || join(__dirname, './messages');
 
 const readFile = BluebirdPromise.promisify(fs.readFile);
 
+interface ICategory {
+  _id: null;
+  uniqueValues: { $addToSet: '$hashtag' };
+}
+
 const resolver: IResolver<any, any> = {
   Query: {
     helloworld() {
@@ -55,6 +60,26 @@ const resolver: IResolver<any, any> = {
       }
       return products;
     },
+
+    getProductDetail(_, { id, first, after }, { database }) {
+      return database.Product.find({
+        _id: id,
+      });
+    },
+
+    async getAllCategory(_, __, { database }) {
+      const category = await database.Product.aggregate<ICategory>([
+        { $unwind: '$hashtag' },
+        {
+          $group: {
+            _id: null,
+            uniqueValues: { $addToSet: '$hashtag' },
+          },
+        },
+      ]);
+      return category[0].uniqueValues;
+    },
+
   },
 };
 
