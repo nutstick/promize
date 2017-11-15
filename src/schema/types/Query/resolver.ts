@@ -10,6 +10,11 @@ const MESSAGES_DIR = process.env.MESSAGES_DIR || join(__dirname, './messages');
 
 const readFile = BluebirdPromise.promisify(fs.readFile);
 
+interface ICategory {
+  _id: null;
+  uniqueValues: { $addToSet: '$hashtag' };
+}
+
 const resolver: IResolver<any, any> = {
   Query: {
     helloworld() {
@@ -37,6 +42,49 @@ const resolver: IResolver<any, any> = {
 
       return JSON.parse(localeData);
     },
+
+    search(_, { keyword, first, after }, { database }) {
+      // FIXME: Sure error when search with owner
+      let products;
+      if (keyword) {
+         products = database.Product.find({
+          $or: [
+            { hashtag: keyword },
+            { name: keyword },
+            { owner_name: keyword },
+          ],
+        });
+      } else {
+        products = database.Product.find();
+      }
+      if (first) {
+        products = products.skip(after);
+      }
+      if (after) {
+        products = products.limit(first);
+      }
+      return products;
+    },
+
+    async product(_, { id }, { database }) {
+      return await database.Product.find({
+        _id: id,
+      });
+    },
+
+    async categorys(_, __, { database }) {
+      const category = await database.Product.aggregate<ICategory>([
+        { $unwind: '$hashtag' },
+        {
+          $group: {
+            _id: null,
+            uniqueValues: { $addToSet: '$hashtag' },
+          },
+        },
+      ]);
+      return category[0].uniqueValues;
+    },
+
   },
 };
 

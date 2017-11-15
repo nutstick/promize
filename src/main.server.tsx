@@ -42,6 +42,8 @@ const app = express() as HotExpress;
 // Tell any CSS tooling (such as Material UI) to use all vendor prefixes if the
 // user agent is not known.
 // -----------------------------------------------------------------------------
+declare var global: any;
+
 global.navigator = global.navigator || {};
 global.navigator.userAgent = global.navigator.userAgent || 'all';
 
@@ -124,7 +126,14 @@ app.get('/logout', (req, res) => {
 // }));
 
 // app.use('/graphql', graphqlMiddleware);
-app.use('/graphql', bodyParser.json(), graphqlExpress({ schema: Schema }));
+app.use('/graphql', bodyParser.json(), graphqlExpress((req) => ({
+  schema: Schema,
+  context: {
+    database,
+    user: req.user,
+  },
+  rootValue: { request: req },
+})));
 app.get('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
 
 //
