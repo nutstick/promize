@@ -16,7 +16,9 @@ type Product implements Node {
   _id: ID!
   name: String!
   description: String
-
+  
+  type: String!
+  originalPrice: Int
   price: Int!
 
   picture: [String]
