@@ -11,14 +11,19 @@ type ProductPage implements Page {
   pageInfo: PageInfo
 }
 
+enum ProductEnum {
+  Product
+  BuyNowProduct
+}
+
 # Product
 type Product implements Node {
   _id: ID!
   name: String!
   description: String
   
-  type: String!
-  originalPrice: Int
+  originalPrice: Int!
+  type: ProductEnum
   price: Int!
 
   picture: [String]

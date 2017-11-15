@@ -8,7 +8,7 @@ type Query {
   
   search(keyword: String!, first: Int, after: Int): ProductPage
 
-  getProductDetail(id: String!): ProductPage
+  product(id: ID!): Product
 
-  getAllCategory: [String]
+  categorys: [String]
 }

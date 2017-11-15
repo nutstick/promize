@@ -6,9 +6,9 @@ interface IProductDocument {
   name: string;
   description?: string;
 
-  type: string;
+  type?: string;
   original_price?: number;
-  price: number;
+  price?: number;
 
   picture?: string[];
   hashtag?: string[];
@@ -37,7 +37,11 @@ class Product extends Instance<IProductDocument, Product> implements IProductDoc
   @Property(String, false)
   description: string;
 
-  @Property(Number, true)
+  @Property(String, false)
+  type: string;
+  @Property(Number, false)
+  original_price: number;
+  @Property(Number, false)
   price: number;
 
   @Property([String], false)
@@ -65,6 +69,12 @@ class Product extends Instance<IProductDocument, Product> implements IProductDoc
   static onCreating(product: IProductDocument) {
     product.createAt = new Date();
     product.updateAt = new Date();
+
+    if (product.original_price) {
+      product.type = 'BuyNowProduct';
+    } else {
+      product.type = 'Product';
+    }
   }
 
   static onSaving(product: Product, changes: Iridium.Changes) {

@@ -33,7 +33,7 @@ export async function seed(database: Database) {
         name: m.word,
         description: m.description,
 
-        price: m.integer(100, 2000),
+        // price: m.integer(100, 2000),
 
         picture: ['https://th-live-02.slatic.net/p/7/hequ-1483111676-123106' +
           '5-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg'],

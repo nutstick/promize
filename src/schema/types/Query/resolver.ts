@@ -45,13 +45,18 @@ const resolver: IResolver<any, any> = {
 
     search(_, { keyword, first, after }, { database }) {
       // FIXME: Sure error when search with owner
-      let products = database.Product.find({
-        $or: [
-          { hashtag: keyword },
-          { name: keyword },
-          { owner_name: keyword },
-        ],
-      });
+      let products;
+      if (keyword) {
+         products = database.Product.find({
+          $or: [
+            { hashtag: keyword },
+            { name: keyword },
+            { owner_name: keyword },
+          ],
+        });
+      } else {
+        products = database.Product.find();
+      }
       if (first) {
         products = products.skip(after);
       }
@@ -61,13 +66,13 @@ const resolver: IResolver<any, any> = {
       return products;
     },
 
-    getProductDetail(_, { id, first, after }, { database }) {
-      return database.Product.find({
+    async product(_, { id }, { database }) {
+      return await database.Product.find({
         _id: id,
       });
     },
 
-    async getAllCategory(_, __, { database }) {
+    async categorys(_, __, { database }) {
       const category = await database.Product.aggregate<ICategory>([
         { $unwind: '$hashtag' },
         {

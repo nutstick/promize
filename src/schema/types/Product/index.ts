@@ -8,7 +8,7 @@ interface IProduct {
 
     type: string;
     originalPrice?: number;
-    price: number;
+    price?: number;
 
     picture?: string[];
     hashtag?: string[];
