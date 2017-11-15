@@ -98,11 +98,13 @@ export class Search extends React.Component<Search.Props> {
             </div> :
             <div className={cx(contentClass, s.productList)}>
               <StackGrid
-                duration={480}
+                monitorImagesLoaded
+                duration={600}
                 columnWidth={180}
                 gutterWidth={5}
                 gutterHeight={5}
-                easing={easings.quartOut}
+                easing={easings.cubicOut}
+                appearDelay={60}
                 appear={transition.appear}
                 appeared={transition.appeared}
                 enter={transition.enter}

@@ -111,15 +111,9 @@ export class Home extends React.Component<Home.Props> {
               <span>Trending Hashtags</span>
             </div>
             <div className={cx(contentClass, s.hashtags)}>
-              <Hashtag text="End soon!" />
-              <Hashtag text="50% Off" />
-              <Hashtag text="Starbuck 1 FREE 1" />
-              <Hashtag text="SE!!!" />
-              <Hashtag text="TestTextBabLong" />
-              <Hashtag text="TestTextBabLongLong" />
-              <Hashtag text="คำไทย" />
-              <Hashtag text="โปรโมชั่นบัตรเครดิตอิออน" />
-              <Hashtag text="Chulalongkorn" />
+              {['End soon!', '50% Off', 'uniqlo', 'HandM', 'AIIZ', 'GAP', 'Crocs', 'anello', 'kanken',
+                'Chulalongkorn', 'SE!!!']
+                .map((text) => (<Hashtag text={text} />))}
             </div>
 
             <div className={headingClass}>
