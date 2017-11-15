@@ -68,10 +68,10 @@ export async function seed(database: Database) {
           '424-72902911-dc6fe5a76db1271801bfe09daefc8587-catalog_233.jpg',
         ])),
         hashtag: array_of(Math.floor(Math.random() * 3), () => m.random_element([
-          'uniqlo', 'H&M', 'AIIZ', 'GAP', 'Crocs', 'anello', 'kanSken',
+          'uniqlo', 'HandM', 'AIIZ', 'GAP', 'Crocs', 'anello', 'kanken',
         ])),
         colors: array_of(Math.floor(Math.random() * 3), () => m.color_name),
-        sizes: array_of(Math.floor(Math.random() * 3), () => m.random_element(['S', 'M', 'L'])),
+        sizes: array_of(Math.floor(Math.random() * 3), () => m.random_element(['S', 'M', 'L', 'XL', 'XXL'])),
 
         promotion_start: start_date.toDate(),
         promotion_end: end_date.toDate(),
