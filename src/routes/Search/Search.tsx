@@ -92,11 +92,13 @@ export class Search extends React.Component<Search.Props> {
         <Card className={s.results}>
           {
             this.props.data.loading ? <Loader active /> :
-            this.props.data.search.totalCount === 0 ? <div className={s.notFound}>
+            this.props.data.error ? this.props.data.error :
+            this.props.data.search && this.props.data.search.totalCount === 0 ?
+            <div className={s.notFound}>
               <img src={NoResultImage} alt="No Results founds." />
               <span className={s.text}>No Results found.</span>
             </div> :
-            <div className={cx(contentClass, s.productList)}>
+            this.props.data.search && <div className={cx(contentClass, s.productList)}>
               <StackGrid
                 monitorImagesLoaded
                 duration={600}
@@ -110,10 +112,10 @@ export class Search extends React.Component<Search.Props> {
                 enter={transition.enter}
                 entered={transition.entered}
                 leaved={transition.leaved}
-                enableSSR={true}
+                enableSSR={false}
               >
                 {this.props.data.search.edges.map((product) => (
-                  <ProductCard product={product.node} />
+                  <ProductCard key={`PRODUCT-${product.node._id}`} product={product.node} />
                 ))}
               </StackGrid>
             </div>

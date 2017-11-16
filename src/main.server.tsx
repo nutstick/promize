@@ -1,9 +1,9 @@
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import { graphiqlExpress, graphqlExpress } from 'apollo-server-express';
 import * as BluebirdPromise from 'bluebird';
 import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
 import * as express from 'express';
-// import * as expressGraphQL from 'express-graphql';
 import * as expressJwt from 'express-jwt';
 import { UnauthorizedError as Jwt401Error } from 'express-jwt';
 import * as jwt from 'jsonwebtoken';
@@ -16,6 +16,9 @@ import * as ReactDOM from 'react-dom/server';
 import { IntlProvider } from 'react-intl';
 import { StaticRouter } from 'react-router';
 import { createApolloClient } from './apollo';
+import * as INTLINITIALNOWQUERY from './apollo/IntlInitialNowQuery.gql';
+import * as LOCALEQUERY from './apollo/LocaleQuery.gql';
+import * as SETLOCALEMUTATION from './apollo/SetLocaleMutation.gql';
 import * as assets from './assets.json';
 import App from './components/App';
 import { Html } from './components/Html';
@@ -29,6 +32,11 @@ import ErrorPage from './routes/Error/ErrorPage';
 import * as errorPageStyle from './routes/Error/ErrorPage.css';
 import { Schema } from './schema';
 import { database } from './schema/models';
+
+import { ApolloClient } from 'apollo-client';
+import { IntlQuery } from './apollo/intl';
+import * as INTLQUERY from './apollo/IntlQuery.gql';
+
 /**
  * Express app
  */
@@ -118,14 +126,6 @@ app.get('/logout', (req, res) => {
 //
 // Register API middleware
 // -----------------------------------------------------------------------------
-// const graphqlMiddleware = expressGraphQL((req) => ({
-//   schema: Schema,
-//   graphiql: __DEV__,
-//   rootValue: { request: req },
-//   pretty: __DEV__,
-// }));
-
-// app.use('/graphql', graphqlMiddleware);
 app.use('/graphql', bodyParser.json(), graphqlExpress((req) => ({
   schema: Schema,
   context: {
@@ -139,8 +139,46 @@ app.get('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
 //
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
+// TODO: Wait for apollo-link-state to support promise
+const setLocale = async (client: ApolloClient<any>, { locale, initialNow }, { cache }) => {
+  const { data } = await client.query<IntlQuery>({
+    query: INTLQUERY,
+    variables: { locale },
+  });
+
+  const messages = data.intl.reduce((msgs, msg) => {
+    msgs[msg.id] = msg.message;
+    return msgs;
+  }, {});
+
+  client.writeQuery({
+    query: LOCALEQUERY,
+    variables: {
+      locale,
+      initialNow,
+      availableLocales: locales,
+    },
+    data: {
+      locale,
+      initialNow,
+      availableLocales: locales,
+    },
+  });
+
+  const provider = new IntlProvider({
+    initialNow,
+    locale,
+    messages,
+    defaultLocale: 'en-US',
+  });
+
+  return provider.getChildContext().intl;
+};
+
 app.get('*', async (req, res, next) => {
   const location = req.url;
+
+  const cache = new InMemoryCache();
 
   const client = createApolloClient({
     link: new ServerLink({
@@ -152,6 +190,7 @@ app.get('*', async (req, res, next) => {
       },
     }),
     ssrMode: true,
+    cache,
   });
 
   // Universal HTTP client
@@ -172,13 +211,19 @@ app.get('*', async (req, res, next) => {
 
   // Fetch locale's messages
   const locale = req.language;
-  // TODO: messages: localeMessages
-  const intl = new IntlProvider({
-    initialNow: Date.now(),
+  const intl = await setLocale(client, {
     locale,
-    messages: {},
-    defaultLocale: 'en-US',
-  }).getChildContext().intl;
+    initialNow: Date.now(),
+  }, { cache });
+
+  // client.writeQuery({ query: INTLINITIALNOWQUERY, data: { intialNow: Date.now() } });
+  // TODO: messages: localeMessages
+  // const intl = new IntlProvider({
+  //   initialNow: Date.now(),
+  //   locale,
+  //   messages: {},
+  //   defaultLocale: 'en-US',
+  // }).getChildContext().intl;
 
   const css = new Set();
 
@@ -206,9 +251,10 @@ app.get('*', async (req, res, next) => {
     </App>
   );
   // set children to match context
+  // FIXME: https://github.com/apollographql/react-apollo/issues/425
   await getDataFromTree(component);
-  await BluebirdPromise.delay(0);
-  const children = await ReactDOM.renderToString(component);
+  // await BluebirdPromise.delay(0);
+  const children = ReactDOM.renderToString(component);
 
   const data: Html.IProps = {
     title: 'Typescript ReactQL Starter Kit',
@@ -219,7 +265,7 @@ app.get('*', async (req, res, next) => {
     scripts: [assets.vendor.js, assets.client.js],
     app: {
       apiUrl: api.clientUrl,
-      // state: context.store.getState(),
+      apollo: cache.extract(),
       lang: locale,
     },
     children,
@@ -279,7 +325,6 @@ if (!module.hot) {
 // -----------------------------------------------------------------------------
 if (module.hot) {
   app.hot = module.hot;
-  // module.hot.accept('./routes');
 
   module.hot.accept();
 }

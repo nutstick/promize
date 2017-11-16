@@ -1,12 +1,12 @@
 import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
+import { defineMessages, FormattedMessage, IntlProvider } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-// import { defineMessages } from 'react-intl';
-// import LanguageSwitcher from '../LanguageSwitcher';
 import { Link } from 'react-router-dom';
 import { Button, Container, Icon, Input, Menu } from 'semantic-ui-react';
 import { parseSearch } from '../../core/urlParser';
+import { LanguageSwitcher } from '../LanguageSwitcher';
 import * as s from './Header.css';
 import * as logoUrl from './promizeLogoWhite.svg';
 
@@ -18,26 +18,35 @@ namespace Header {
   }
 }
 
-// const messages = defineMessages({
-//   brand: {
-//     id: 'header.brand',
-//     defaultMessage: 'Your Company Brand',
-//     description: 'Brand name displayed in header',
-//   },
-//   bannerTitle: {
-//     id: 'header.banner.title',
-//     defaultMessage: 'Reacts',
-//     description: 'Title in page header',
-//   },
-//   bannerDesc: {
-//     id: 'header.banner.descsss',
-//     defaultMessage: 'Complex web apps made easy',
-//     description: 'Description in header',
-//   },
-// });
+const messages = defineMessages({
+  welcome: {
+    id: 'header.welcome',
+    defaultMessage: 'Welcome to Promize!',
+    description: 'Welcome message in header',
+  },
+  join: {
+    id: 'header.join',
+    defaultMessage: 'Join Free',
+    description: 'Join Free message in header',
+  },
+  logIn: {
+    id: 'header.logIn',
+    defaultMessage: 'Log in',
+    description: 'Log in message in header',
+  },
+  search: {
+    id: 'header.search',
+    defaultMessage: 'Search...',
+    description: 'Search place holder on header',
+  },
+});
 
 @withStyles(s)
 export class Header extends React.Component<Header.Props, Header.State> {
+  static contextTypes = {
+    intl: IntlProvider.childContextTypes.intl,
+  };
+
   constructor(props) {
     super(props);
 
@@ -83,22 +92,27 @@ export class Header extends React.Component<Header.Props, Header.State> {
         <Menu className={s.menu} size="small" borderless>
           <Container>
             <Menu.Item className={s.welcome}as="welcome">
-              Welcome to Promize!
+              <FormattedMessage {...messages.welcome} />
               <div className={s.hideOnMobile}>
-                <span className={s.highlightedText}>Join Free</span>
+                <span className={s.highlightedText}>
+                  <FormattedMessage {...messages.join} />
+                </span>
                 or
-                <span className={s.highlightedText}>Sign in</span>
+                <span className={s.highlightedText}>
+                  <FormattedMessage {...messages.logIn} />
+                </span>
               </div>
             </Menu.Item>
             <Menu.Menu position="right">
               <Menu.Item className={s.item}>
                 <Link to="/login">
-                  <Icon name="lock" /> Login
+                  <Icon name="lock" />
+                  <FormattedMessage {...messages.logIn} />
                 </Link>
               </Menu.Item>
               <Menu.Item>
                 {/* TODO: Language Switcher */}
-                English
+                <LanguageSwitcher />
               </Menu.Item>
             </Menu.Menu>
           </Container>
@@ -115,7 +129,7 @@ export class Header extends React.Component<Header.Props, Header.State> {
               <Input
                 className={s.searchInput}
                 action
-                placeholder="Search...">
+                placeholder={this.context.intl.formatMessage(messages.search)}>
                 <input
                   value={this.state.search}
                   onChange={this.onSearchChanged.bind(this)}

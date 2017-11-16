@@ -1,74 +1,137 @@
 [
   {
-    "id": "header.banner.title",
-    "description": "Title in page header",
-    "defaultMessage": "Reacts",
+    "id": "header.join",
+    "description": "Join Free message in header",
+    "defaultMessage": "Join Free",
     "message": "",
     "files": [
       "src/components/Header/Header.tsx"
     ]
   },
   {
-    "id": "header.brand",
-    "description": "Brand name displayed in header",
-    "defaultMessage": "Your Company Brand",
+    "id": "header.welcome",
+    "description": "Welcome message in header",
+    "defaultMessage": "Welcome to Promize!",
     "message": "",
     "files": [
       "src/components/Header/Header.tsx"
     ]
   },
   {
-    "id": "navigation.about",
-    "description": "About link in header",
-    "defaultMessage": "About",
-    "message": "",
-    "files": [
-      "src/components/Navigation/Navigation.tsx"
-    ]
-  },
-  {
-    "id": "navigation.login",
-    "description": "Log in link in header",
+    "id": "header.logIn",
+    "description": "Log in message in header",
     "defaultMessage": "Log in",
     "message": "",
     "files": [
-      "src/components/Navigation/Navigation.tsx"
+      "src/components/Header/Header.tsx"
     ]
   },
   {
-    "id": "navigation.separator.or",
-    "description": "Last separator in list, lowercase \"or\"",
-    "defaultMessage": "or",
-    "message": "",
-    "files": [
-      "src/components/Navigation/Navigation.tsx"
-    ]
-  },
-  {
-    "id": "navigation.signup",
-    "description": "Sign up link in header",
-    "defaultMessage": "Sign up",
-    "message": "",
-    "files": [
-      "src/components/Navigation/Navigation.tsx"
-    ]
-  },
-  {
-    "id": "navigation.todos",
-    "description": "Todos link in header",
-    "defaultMessage": "Todo",
-    "message": "",
-    "files": [
-      "src/components/Navigation/Navigation.tsx"
-    ]
-  },
-  {
-    "id": "header.banner.descsss",
-    "description": "Description in header",
-    "defaultMessage": "Complex web apps made easy",
+    "id": "header.search",
+    "description": "Search place holder on header",
+    "defaultMessage": "Search...",
     "message": "",
     "files": [
       "src/components/Header/Header.tsx"
+    ]
+  },
+  {
+    "id": "header.category.audiophile",
+    "description": "Audiophile category",
+    "defaultMessage": "Audiophile",
+    "message": "",
+    "files": [
+      "src/routes/Home/Home.tsx"
+    ]
+  },
+  {
+    "id": "header.category.beauty",
+    "description": "Beauty category",
+    "defaultMessage": "Beauty",
+    "message": "",
+    "files": [
+      "src/routes/Home/Home.tsx"
+    ]
+  },
+  {
+    "id": "header.category.cellphone",
+    "description": "Cellphone category",
+    "defaultMessage": "Cellphone",
+    "message": "",
+    "files": [
+      "src/routes/Home/Home.tsx"
+    ]
+  },
+  {
+    "id": "header.category.cloths",
+    "description": "Cloths category",
+    "defaultMessage": "Cloths",
+    "message": "",
+    "files": [
+      "src/routes/Home/Home.tsx"
+    ]
+  },
+  {
+    "id": "header.category.electronics",
+    "description": "Electronics category",
+    "defaultMessage": "Electronics",
+    "message": "",
+    "files": [
+      "src/routes/Home/Home.tsx"
+    ]
+  },
+  {
+    "id": "header.category.games",
+    "description": "Games category",
+    "defaultMessage": "Games",
+    "message": "",
+    "files": [
+      "src/routes/Home/Home.tsx"
+    ]
+  },
+  {
+    "id": "header.category.photography",
+    "description": "Photography category",
+    "defaultMessage": "Photography",
+    "message": "",
+    "files": [
+      "src/routes/Home/Home.tsx"
+    ]
+  },
+  {
+    "id": "header.category.tech",
+    "description": "Tech category",
+    "defaultMessage": "Tech",
+    "message": "",
+    "files": [
+      "src/routes/Home/Home.tsx"
+    ]
+  },
+  {
+    "id": "home.category",
+    "description": "Category display in home page",
+    "defaultMessage": "Category",
+    "message": "",
+    "files": [
+      "src/routes/Home/Home.tsx"
+    ]
+  },
+  {
+    "id": "home.endingSoon",
+    "description": "Ending Soon display in home page",
+    "defaultMessage": "Ending Soon!!",
+    "message": "",
+    "files": [
+      "src/routes/Home/Home.tsx"
+    ]
+  },
+  {
+    "id": "home.trendingHashtags",
+    "description": "Trending Hashtags display in home page",
+    "defaultMessage": "Trending Hashtags",
+    "message": "",
+    "files": [
+      "src/routes/Home/Home.tsx"
     ]
   }
 ]

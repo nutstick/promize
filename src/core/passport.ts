@@ -38,8 +38,9 @@ passport.use(new FacebookStrategy({
           done(null);
         } else {
           user = await database.User.insert({
-            first_name: `${profile.name.givenName}`,
-            last_name: `${profile.name.familyName}`,
+            first_name: profile.name.givenName,
+            middle_name: profile.name.middleName,
+            last_name: profile.name.familyName,
             account: {
               email: profile._json.email,
               facebook: {

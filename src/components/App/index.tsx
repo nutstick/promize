@@ -1,13 +1,17 @@
+import { ApolloClient } from 'apollo-client';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import { IntlProvider } from 'react-intl';
+import { IntlQuery, LocaleQuery } from '../../apollo/intl';
+import * as INTLQUERY from '../../apollo/IntlQuery.gql';
+import * as LOCALEQUERY from '../../apollo/LocaleQuery.gql';
 
 namespace App {
   export interface Context {
     insertCss: any;
     fetch: any;
-    client: any;
+    client: ApolloClient<any>;
     intl: any;
   }
 
@@ -16,9 +20,13 @@ namespace App {
   }
 
   export type Props = IProps;
+
+  export interface State {
+    intl: any;
+  }
 }
 
-class App extends React.Component<App.Props> {
+class App extends React.Component<App.Props, App.State> {
   context: App.Context;
   unsubscribe: () => void;
   intl: {
@@ -26,6 +34,14 @@ class App extends React.Component<App.Props> {
     locale?: string,
     messages?: string,
   };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      intl: props.context.intl,
+    };
+  }
 
   static childContextTypes = {
     // Enables critical path CSS rendering
@@ -40,12 +56,50 @@ class App extends React.Component<App.Props> {
   };
 
   public getChildContext() {
-    return this.props.context;
+    return {
+      ...this.props.context,
+      ...this.state,
+    };
   }
 
-  render() {
+  public componentDidMount() {
+    const s = this.setState.bind(this);
+    const { client } = this.props.context;
+
+    const subscribe = client.watchQuery<LocaleQuery>({
+      query: LOCALEQUERY,
+    }).subscribe({
+      next({ data }) {
+        const { locale, initialNow } = data;
+        // TODO: fetchPolicy network-only to manage some way
+        client.query<IntlQuery>({
+          query: INTLQUERY,
+          variables: { locale },
+          fetchPolicy: 'network-only',
+        })
+          .then(({ data: x }) => {
+            const messages = x.intl.reduce((msgs, msg) => {
+              msgs[msg.id] = msg.message;
+              return msgs;
+            }, {});
+
+            s({
+              intl: new IntlProvider({
+                initialNow,
+                locale,
+                messages,
+                defaultLocale: 'en-US',
+              }).getChildContext().intl,
+            });
+          });
+      },
+    });
+  }
+
+  public render() {
     // Here, we are at universe level, sure? ;-)
     const { client } = this.props.context;
+
     // NOTE: If you need to add or modify header, footer etc. of the app,
     // please do that inside the Layout component.
     return (
