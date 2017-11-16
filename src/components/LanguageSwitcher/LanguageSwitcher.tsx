@@ -22,7 +22,6 @@ export class LanguageSwitcher extends React.Component<LanguageSwitcher.Props> {
 
   public render() {
     const { locale, availableLocales } = this.props.data;
-    const isSelected = (locale_) => locale_ === locale;
     const localeDict = {
       /* @intl-code-template '${lang}-${COUNTRY}': '${Name}', */
       'en-US': 'English',

@@ -1,6 +1,6 @@
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloClient } from 'apollo-client';
 import { graphiqlExpress, graphqlExpress } from 'apollo-server-express';
-import * as BluebirdPromise from 'bluebird';
 import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
 import * as express from 'express';
@@ -16,9 +16,9 @@ import * as ReactDOM from 'react-dom/server';
 import { IntlProvider } from 'react-intl';
 import { StaticRouter } from 'react-router';
 import { createApolloClient } from './apollo';
-import * as INTLINITIALNOWQUERY from './apollo/IntlInitialNowQuery.gql';
+import { IntlQuery } from './apollo/intl';
+import * as INTLQUERY from './apollo/IntlQuery.gql';
 import * as LOCALEQUERY from './apollo/LocaleQuery.gql';
-import * as SETLOCALEMUTATION from './apollo/SetLocaleMutation.gql';
 import * as assets from './assets.json';
 import App from './components/App';
 import { Html } from './components/Html';
@@ -32,10 +32,6 @@ import ErrorPage from './routes/Error/ErrorPage';
 import * as errorPageStyle from './routes/Error/ErrorPage.css';
 import { Schema } from './schema';
 import { database } from './schema/models';
-
-import { ApolloClient } from 'apollo-client';
-import { IntlQuery } from './apollo/intl';
-import * as INTLQUERY from './apollo/IntlQuery.gql';
 
 /**
  * Express app

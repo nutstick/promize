@@ -66,7 +66,7 @@ class App extends React.Component<App.Props, App.State> {
     const s = this.setState.bind(this);
     const { client } = this.props.context;
 
-    const subscribe = client.watchQuery<LocaleQuery>({
+    client.watchQuery<LocaleQuery>({
       query: LOCALEQUERY,
     }).subscribe({
       next({ data }) {

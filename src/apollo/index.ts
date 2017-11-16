@@ -3,13 +3,11 @@ import { InMemoryCache } from 'apollo-cache-inmemory/lib/inMemoryCache';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { withClientState } from 'apollo-link-state';
-import { IntlProvider } from 'react-intl';
 import history from '../core/history';
 import { parse, stringify } from '../core/urlParser';
 // import * as ADDTODOMUTATION from './AddTodoMutation.gql';
 import * as GETTASKQUERY from './GetTaskQuery.gql';
 import { IntlQuery, LocaleQuery } from './intl';
-import * as INTLQUERY from './IntlQuery.gql';
 import * as LOCALEQUERY from './LocaleQuery.gql';
 
 interface IOptions {

@@ -11,7 +11,7 @@ import * as FontFaceObserver from 'fontfaceobserver';
 import { createPath } from 'history/PathUtils';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { addLocaleData, IntlProvider } from 'react-intl';
+import { addLocaleData } from 'react-intl';
 /* @intl-code-template import ${lang} from 'react-intl/locale-data/${lang}'; */
 import * as cs from 'react-intl/locale-data/cs';
 import * as en from 'react-intl/locale-data/en';

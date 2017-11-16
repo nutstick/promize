@@ -1,6 +1,5 @@
 import { InMemoryCache } from 'apollo-cache-inmemory/lib/inMemoryCache';
 import { IntlProvider } from 'react-intl';
-import * as INTLINITIALNOWQUERY from './IntlInitialNowQuery.gql';
 import * as INTLQUERY from './IntlQuery.gql';
 import * as LOCALEQUERY from './LocaleQuery.gql';
 
