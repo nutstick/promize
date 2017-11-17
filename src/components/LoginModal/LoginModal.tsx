@@ -24,6 +24,7 @@ export class LoginModal extends React.Component<LoginModal.Props> {
       <div className={s.root} onClick={this.onBackgroundClick.bind(this)}>
         <div className={s.modal} onClick={(e) => e.stopPropagation()}>
           <FacebookButton />
+          <p style={{ margin: 8 }}></p>
           <GoogleButton />
           <Divider horizontal>or</Divider>
           <Form>
@@ -35,11 +36,11 @@ export class LoginModal extends React.Component<LoginModal.Props> {
               <label>Password</label>
               <input placeholder="Password" />
             </Form.Field>
-            <Button type="submit"> Login</Button>
+            <Button type="submit" fluid color="orange"> Log in </Button>
             <br />
             <div style={{
               justifyContent: 'center', alignItems: 'center',
-              textAlign: 'center', paddingTop: 15,
+              textAlign: 'center',
             }}>
               <Link to="/forget-password" >Forget Password</Link>
             </div>
