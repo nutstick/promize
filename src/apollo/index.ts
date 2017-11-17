@@ -4,7 +4,8 @@ import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { withClientState } from 'apollo-link-state';
 import * as GETTASKQUERY from './GetTaskQuery.gql';
-import { state } from './intl';
+import { state as intl } from './intl';
+import { state as login } from './login';
 
 interface IOptions {
   link: ApolloLink;
@@ -23,13 +24,15 @@ export const createApolloClient = ({ link, ...options }: IOptions) => {
   const local = withClientState({
     Query: {
       todos: () => [],
-      ...state.Query,
+      ...intl.Query,
+      ...login.Query,
     },
     Mutation: {
       addTodo: update(GETTASKQUERY, ({ todos }, { message, title }) => ({
         todos: todos.concat([{ message, title, __typename: 'Todo' }]),
       })),
-      ...state.Mutation,
+      ...intl.Mutation,
+      ...login.Mutation,
     },
   });
 
