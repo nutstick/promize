@@ -6,6 +6,7 @@
 // Import all the third party stuff
 import 'whatwg-fetch';
 
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import * as FontFaceObserver from 'fontfaceobserver';
 import { createPath } from 'history/PathUtils';
@@ -19,14 +20,12 @@ import * as th from 'react-intl/locale-data/th';
 /* @intl-code-template-end */
 import { Router } from 'react-router-dom';
 import { createApolloClient } from './apollo';
-import { getIntlContext, setLocale } from './apollo/intl';
+import { getIntlContext } from './apollo/intl';
 import App from './components/App';
 import { ErrorReporter } from './core/devUtils';
 import { updateMeta } from './core/DOMUtils';
 import history from './core/history';
 import createFetch from './createFetch';
-
-import { InMemoryCache } from 'apollo-cache-inmemory';
 
 /*
   Apollo Client v2

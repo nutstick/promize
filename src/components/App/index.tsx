@@ -96,7 +96,7 @@ class App extends React.Component<App.Props, App.State> {
     }).unsubscribe;
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     if (this.unsubscribe) {
       this.unsubscribe();
       this.unsubscribe = null;

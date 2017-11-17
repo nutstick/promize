@@ -212,15 +212,6 @@ app.get('*', async (req, res, next) => {
     initialNow: Date.now(),
   }, { cache });
 
-  // client.writeQuery({ query: INTLINITIALNOWQUERY, data: { intialNow: Date.now() } });
-  // TODO: messages: localeMessages
-  // const intl = new IntlProvider({
-  //   initialNow: Date.now(),
-  //   locale,
-  //   messages: {},
-  //   defaultLocale: 'en-US',
-  // }).getChildContext().intl;
-
   const css = new Set();
 
   // Global (context) variables that can be easily accessed from any React component

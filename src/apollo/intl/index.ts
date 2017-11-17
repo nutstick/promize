@@ -12,10 +12,6 @@ export interface IntlQuery {
   }>;
 }
 
-export interface IntlInitialNowQuery {
-  initialNow: number;
-}
-
 export  interface LocaleQuery {
   locale: string;
   initialNow: number;

@@ -41,7 +41,7 @@ export const asyncRoute = (getComponent: () => Promise<any>) => (
       this.mounted = false;
     }
 
-    render() {
+    public render() {
       const { Component } = this.state;
 
       if (Component !== null && process.env.BROWSER) {
