@@ -4,7 +4,7 @@ import * as React from 'react';
 import { ChildProps, MutationFunc } from 'react-apollo';
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
-import { Button, Divider, Form, Icon } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import * as slickThemeCss from 'slick-carousel/slick/slick-theme.css';
 import * as slickCss from 'slick-carousel/slick/slick.css';
 import { graphql } from '../../apollo/graphql';

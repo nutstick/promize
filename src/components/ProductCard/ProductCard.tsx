@@ -1,7 +1,6 @@
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { ChildProps } from 'react-apollo';
-import { Link } from 'react-router-dom';
 import { graphql } from '../../apollo/graphql';
 import * as OPENPRODUCTMODALMUTATION from '../../apollo/productModal/OpenProductModalMutation.gql';
 import { IProduct } from '../../schema/types/Product';

@@ -1,9 +1,7 @@
 import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
-import { ChildProps } from 'react-apollo';
-import { Link } from 'react-router-dom';
-import { Button, DropdownItemProps, Select } from 'semantic-ui-react';
+import { DropdownItemProps, Select } from 'semantic-ui-react';
 import * as s from './ItemSelector.css';
 
 export namespace ItemSelector {

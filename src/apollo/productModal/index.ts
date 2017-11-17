@@ -20,7 +20,6 @@ export const state = {
   Mutation: {
     openProductModal(_, variables, { cache }: { cache: InMemoryCache }) {
       const { id } = variables;
-      const { productModal: { show } } = cache.readQuery<ProductModalQuery>({ query: PRODUCTMODALQUERY });
 
       cache.writeQuery({
         query: PRODUCTMODALQUERY,
