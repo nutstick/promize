@@ -2,7 +2,6 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import * as LOGINQUERY from './LoginQuery.gql';
 
 export interface LoginQuery {
-  // login: false,
   login: {
     modal: boolean,
   };
@@ -14,7 +13,6 @@ export const state = {
       modal: false,
       __typename: 'Login',
     }),
-    // login: () => false,
   },
   Mutation: {
     toggleLoginModal(_, __, { cache }: { cache: InMemoryCache }) {
