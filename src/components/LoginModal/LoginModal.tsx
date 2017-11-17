@@ -36,7 +36,7 @@ export class LoginModal extends React.Component<LoginModal.Props> {
               <label>Password</label>
               <input placeholder="Password" />
             </Form.Field>
-            <Button type="submit" fluid color="orange"> Log in </Button>
+            <Button type="submit" fluid secondary> Log in </Button>
             <br />
             <div style={{
               justifyContent: 'center', alignItems: 'center',
