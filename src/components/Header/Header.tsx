@@ -1,17 +1,21 @@
 import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
+import { ChildProps } from 'react-apollo';
 import { defineMessages, FormattedMessage, IntlProvider } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Button, Container, Icon, Input, Menu } from 'semantic-ui-react';
+import { graphql } from '../../apollo/graphql';
+import * as TOGGLELOGINMODALMUTATION from '../../apollo/login/ToggleLoginModalMutation.gql';
 import { parseSearch } from '../../core/urlParser';
 import { LanguageSwitcher } from '../LanguageSwitcher';
 import * as s from './Header.css';
 import * as logoUrl from './promizeLogoWhite.svg';
 
 namespace Header {
-  export type Props = RouteComponentProps<{}>;
+  export type WithRouter = RouteComponentProps<{}>;
+  export type Props = ChildProps<WithRouter, {}>;
 
   export interface State {
     search?: string | string[];
@@ -42,6 +46,7 @@ const messages = defineMessages({
 });
 
 @withStyles(s)
+@graphql(TOGGLELOGINMODALMUTATION)
 export class Header extends React.Component<Header.Props, Header.State> {
   static contextTypes = {
     intl: IntlProvider.childContextTypes.intl,
@@ -105,10 +110,10 @@ export class Header extends React.Component<Header.Props, Header.State> {
             </Menu.Item>
             <Menu.Menu position="right">
               <Menu.Item className={s.item}>
-                <Link to="/login">
+                <a href="#" onClick={(e) => { this.props.mutate({}); }}>
                   <Icon name="lock" />
                   <FormattedMessage {...messages.logIn} />
-                </Link>
+                </a>
               </Menu.Item>
               <Menu.Item>
                 {/* TODO: Language Switcher */}
@@ -149,4 +154,5 @@ export class Header extends React.Component<Header.Props, Header.State> {
   }
 }
 
+// FIXME: withRouter as decorators
 export default withRouter<{}>(Header);
