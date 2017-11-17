@@ -18,7 +18,7 @@ interface ICategory {
 const resolver: IResolver<any, any> = {
   Query: {
     helloworld() {
-      return 'Hello Word';
+      return 'Hello World';
     },
     async me(_, __, { database, user }) {
       if (user && user._id) {
@@ -67,7 +67,7 @@ const resolver: IResolver<any, any> = {
     },
 
     async product(_, { id }, { database }) {
-      return await database.Product.find({
+      return await database.Product.findOne({
         _id: id,
       });
     },
