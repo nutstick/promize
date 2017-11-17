@@ -1,0 +1,21 @@
+@import '../variables.css';
+
+.root {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 6em;
+  z-index: var(--login-depth);
+  background-color: var(--dimed-dark-grey);
+
+  > .modal {
+    background-color: #fff;
+    margin: auto;
+    max-width: 568px;
+    width: 100%;
+    position: relative;
+    padding: 2em;
+  }
+}
