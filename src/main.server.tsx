@@ -17,8 +17,8 @@ import { IntlProvider } from 'react-intl';
 import { StaticRouter } from 'react-router';
 import { createApolloClient } from './apollo';
 import { IntlQuery } from './apollo/intl';
-import * as INTLQUERY from './apollo/IntlQuery.gql';
-import * as LOCALEQUERY from './apollo/LocaleQuery.gql';
+import * as INTLQUERY from './apollo/intl/IntlQuery.gql';
+import * as LOCALEQUERY from './apollo/intl/LocaleQuery.gql';
 import * as assets from './assets.json';
 import App from './components/App';
 import { Html } from './components/Html';
@@ -253,8 +253,9 @@ app.get('*', async (req, res, next) => {
   const children = ReactDOM.renderToString(component);
 
   const data: Html.IProps = {
-    title: 'Typescript ReactQL Starter Kit',
-    description: 'React starter kit using Typescript 2 and Webpack 2.',
+    title: 'Promize',
+    // TODO: description
+    description: 'Promize.',
     styles: [
       { id: 'css', cssText: [...css].join('') },
     ],

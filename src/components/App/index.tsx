@@ -4,8 +4,8 @@ import * as React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import { IntlProvider } from 'react-intl';
 import { IntlQuery, LocaleQuery } from '../../apollo/intl';
-import * as INTLQUERY from '../../apollo/IntlQuery.gql';
-import * as LOCALEQUERY from '../../apollo/LocaleQuery.gql';
+import * as INTLQUERY from '../../apollo/intl/IntlQuery.gql';
+import * as LOCALEQUERY from '../../apollo/intl/LocaleQuery.gql';
 
 namespace App {
   export interface Context {
@@ -66,7 +66,7 @@ class App extends React.Component<App.Props, App.State> {
     const s = this.setState.bind(this);
     const { client } = this.props.context;
 
-    client.watchQuery<LocaleQuery>({
+    this.unsubscribe = client.watchQuery<LocaleQuery>({
       query: LOCALEQUERY,
     }).subscribe({
       next({ data }) {
@@ -93,7 +93,14 @@ class App extends React.Component<App.Props, App.State> {
             });
           });
       },
-    });
+    }).unsubscribe;
+  }
+
+  componentWillUnmount() {
+    if (this.unsubscribe) {
+      this.unsubscribe();
+      this.unsubscribe = null;
+    }
   }
 
   public render() {

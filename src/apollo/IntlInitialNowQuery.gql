@@ -1,3 +1,0 @@
-query locale {
-  initialNow @client
-}

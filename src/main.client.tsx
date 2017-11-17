@@ -19,9 +19,7 @@ import * as th from 'react-intl/locale-data/th';
 /* @intl-code-template-end */
 import { Router } from 'react-router-dom';
 import { createApolloClient } from './apollo';
-import { getIntlContext, LocaleQuery } from './apollo/intl';
-import * as LOCALEQUERY from './apollo/LocaleQuery.gql';
-import * as SETLOCALEMUTATION from './apollo/SetLocaleMutation.gql';
+import { getIntlContext, setLocale } from './apollo/intl';
 import App from './components/App';
 import { ErrorReporter } from './core/devUtils';
 import { updateMeta } from './core/DOMUtils';
@@ -64,12 +62,6 @@ const fetch = createFetch(self.fetch, {
 });
 
 // Set locale
-client.watchQuery<LocaleQuery>({ query: LOCALEQUERY }).subscribe({
-  next: ({ data }) => {
-    const { locale } = data;
-    client.mutate({ mutation: SETLOCALEMUTATION, variables: { locale } });
-  },
-});
 
 const context = {
   // Enables critical path CSS rendering

@@ -4,8 +4,8 @@ import { ChildProps } from 'react-apollo';
 import { Dropdown } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
 import { LocaleQuery } from '../../apollo/intl';
-import * as LOCALEQUERY from '../../apollo/LocaleQuery.gql';
-import * as SETLOCALEMUTATION from '../../apollo/SetLocaleMutation.gql';
+import * as LOCALEQUERY from '../../apollo/intl/LocaleQuery.gql';
+import * as SETLOCALEMUTATION from '../../apollo/intl/SetLocaleMutation.gql';
 import * as s from './LanguageSwitcher.css';
 
 namespace LanguageSwitcher {
