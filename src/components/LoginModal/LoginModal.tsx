@@ -24,24 +24,35 @@ export class LoginModal extends React.Component<LoginModal.Props> {
       <div className={s.root} onClick={this.onBackgroundClick.bind(this)}>
         <div className={s.modal} onClick={(e) => e.stopPropagation()}>
           <FacebookButton />
+          <p style={{ margin: 8 }}></p>
           <GoogleButton />
           <Divider horizontal>or</Divider>
           <Form>
             <Form.Field>
               <label>Email</label>
-              <input placeholder="Email" />
+              <input placeholder="Email Address" />
             </Form.Field>
             <Form.Field>
               <label>Password</label>
               <input placeholder="Password" />
             </Form.Field>
-            <Button type="submit">Login</Button>
-            <Link to="/forget-password">Forget Password</Link>
+            <Button type="submit" fluid secondary> Log in </Button>
+            <br />
+            <div style={{
+              justifyContent: 'center', alignItems: 'center',
+              textAlign: 'center',
+            }}>
+              <Link to="/forget-password" >Forget Password</Link>
+            </div>
           </Form>
           <hr />
-          <div>
+          <div style={{
+            justifyContent: 'center', alignItems: 'center', textAlign: 'center',
+          }}>
             Don't have an account?
-            <Link to="/register">Sign up</Link>
+            <Link to="/register" style={{
+              paddingLeft: 10,
+            }}>Sign up</Link>
           </div>
         </div>
       </div>

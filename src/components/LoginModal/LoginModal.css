@@ -19,3 +19,7 @@
     padding: 2em;
   }
 }
+
+.ui.form input:not([type]):focus {
+    border-color: #000000 !important;
+}
