@@ -1,6 +1,6 @@
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
-import { Button, Divider, Form } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import { Icon } from 'semantic-ui-react';
 import * as s from './FacebookButton.css';
 
