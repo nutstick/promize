@@ -17,7 +17,7 @@ export class FacebookButton extends React.Component<{}> {
           fluid
           color="facebook"
         >
-          <Icon name="facebook f" />
+          <i><Icon name="facebook f" /></i>
           Log in with Facebook
         </Button>
       </a>
