@@ -4,6 +4,7 @@ import * as LOGINQUERY from './LoginQuery.gql';
 export interface LoginQuery {
   login: {
     modal: boolean,
+    __typename?: string;
   };
 }
 
@@ -18,7 +19,7 @@ export const state = {
     toggleLoginModal(_, __, { cache }: { cache: InMemoryCache }) {
       const { login: { modal } } = cache.readQuery<LoginQuery>({ query: LOGINQUERY });
 
-      cache.writeQuery({ query: LOGINQUERY, data: { login: { modal: !modal } } });
+      cache.writeQuery({ query: LOGINQUERY, data: { login: { modal: !modal, __typename: 'Login' } } });
 
       return null;
     },
