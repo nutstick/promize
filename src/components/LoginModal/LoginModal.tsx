@@ -29,19 +29,29 @@ export class LoginModal extends React.Component<LoginModal.Props> {
           <Form>
             <Form.Field>
               <label>Email</label>
-              <input placeholder="Email" />
+              <input placeholder="Email Address" />
             </Form.Field>
             <Form.Field>
               <label>Password</label>
               <input placeholder="Password" />
             </Form.Field>
             <Button type="submit">Login</Button>
-            <Link to="/forget-password">Forget Password</Link>
+            <br />
+            <div style={{
+              justifyContent: 'center', alignItems: 'center',
+              textAlign: 'center', paddingTop: 15,
+            }}>
+              <Link to="/forget-password" >Forget Password</Link>
+            </div>
           </Form>
           <hr />
-          <div>
+          <div style={{
+            justifyContent: 'center', alignItems: 'center', textAlign: 'center',
+          }}>
             Don't have an account?
-            <Link to="/register">Sign up</Link>
+            <Link to="/register" style={{
+              paddingLeft: 10,
+            }}>Sign up</Link>
           </div>
         </div>
       </div>
