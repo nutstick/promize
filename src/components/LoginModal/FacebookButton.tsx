@@ -13,7 +13,10 @@ export class FacebookButton extends React.Component<{}> {
   public render() {
     return (
       <a href="/login/facebook">
-        <Button>
+        <Button
+          fluid
+          color="facebook"
+        >
           <Icon name="facebook f" />
           Log in with Facebook
         </Button>
