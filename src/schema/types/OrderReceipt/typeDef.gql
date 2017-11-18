@@ -1,4 +1,6 @@
 type OrderReceipt implements Node {
+  _id: ID!
+
   product: Product!
 
   creator: UserType!
