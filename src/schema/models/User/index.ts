@@ -1,6 +1,7 @@
 import * as Iridium from 'iridium';
 import { Collection, Index, Instance, ObjectID, Property, Transform } from 'iridium';
 import { ObjectID as id } from 'mongodb';
+import { IProductDocument, Product } from '../Product/index';
 import { Account, IAccountDocument } from './account';
 import { Address, IAddress } from './address';
 import { IPaymentMethod, PaymentMethod } from './paymentmethod';
@@ -15,6 +16,10 @@ interface IUserDocument {
   addresses?: IAddress[];
   payment_methods?: IPaymentMethod[];
   avatar: string;
+  type?: string;
+
+  products?: IProductDocument[];
+
   createAt?: Date;
   updateAt?: Date;
 }
@@ -60,6 +65,13 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
   @Property(String, true)
   avatar: string;
 
+  // TODO: Order receipt
+  @Property(/^User|CoSeller|Admin$/, false)
+  type: string;
+
+  @Property([Product], false)
+  products: IProductDocument[];
+
   @Property(Date, false)
   createAt: Date;
   @Property(Date, false)
@@ -71,8 +83,14 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
     user.createAt = new Date();
     user.updateAt = new Date();
 
+    user.type = user.type || 'User';
+
     if (!user.account.facebook && !user.account.password) {
       return Promise.reject(new Error('expected one login method'));
+    }
+
+    if (user.type !== 'CoSeller' && user.products) {
+      return Promise.reject(new Error('only co-seller can have products'));
     }
   }
 

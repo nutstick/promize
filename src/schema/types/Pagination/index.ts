@@ -1,6 +1,10 @@
 import resolver from './resolver';
 import * as type from './typeDef.gql';
 
+interface INode {
+  _id?: string;
+}
+
 interface IPageInfo {
   endCurosr?: string;
   hasNextPage?: boolean;
@@ -20,6 +24,7 @@ interface IPage<T> {
 export {
   resolver,
   type,
+  INode,
   IEdge,
   IPage,
 };

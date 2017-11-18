@@ -1,8 +1,8 @@
+import { INode } from '../Pagination';
 import resolver from './resolver';
 import * as type from './typeDef.gql';
 
-interface IProduct {
-    _id?: string;
+interface IProduct extends INode {
     name: string;
     description?: string;
 
