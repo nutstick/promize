@@ -13,99 +13,47 @@ const resolver: IResolver<any, any> = {
       });
       return await database.Product.findOne({ _id: product });
     },
-    async addPicture(_, { product, pictures }, { database }) {
+    async editPicture(_, { product, pictures }, { database }) {
       await database.Product.update({ _id: product }, {
-        $push: {
+        $set: {
           picture: pictures,
-        },
-        $set: {
-          updateAt: Date.now(),
+          updateAt: new Date(),
         },
       });
       return await database.Product.findOne({ _id: product });
     },
-    async addHashtag(_, { product, hashtags }, { database }) {
+    async editHashtag(_, { product, hashtags }, { database }) {
       await database.Product.update({ _id: product }, {
-        $push: {
+        $set: {
           hashtag: hashtags,
-        },
-        $set: {
-          updateAt: Date.now(),
+          updateAt: new Date(),
         },
       });
       return await database.Product.findOne({ _id: product });
     },
-    async addSize(_, { product, size }, { database }) {
+    async editSize(_, { product, size }, { database }) {
       await database.Product.update({ _id: product }, {
-        $push: {
+        $set: {
           sizes: size,
-        },
-        $set: {
-          updateAt: Date.now(),
+          updateAt: new Date(),
         },
       });
       return await database.Product.findOne({ _id: product });
     },
-    async addColor(_, { product, color }, { database }) {
+    async editColor(_, { product, color }, { database }) {
       await database.Product.update({ _id: product }, {
-        $push: {
+        $set: {
           colors: color,
-        },
-        $set: {
-          updateAt: Date.now(),
-        },
-      });
-      return await database.Product.findOne({ _id: product });
-    },
-    async removePicture(_, { product, pictures }, { database }) {
-      await database.Product.update({ _id: product }, {
-        $pull: {
-          picture: pictures,
-        },
-        $set: {
-          updateAt: Date.now(),
-        },
-      });
-      return await database.Product.findOne({ _id: product });
-    },
-    async removeHashtag(_, { product, hashtags }, { database }) {
-      await database.Product.update({ _id: product }, {
-        $pull: {
-          hashtag: hashtags,
-        },
-        $set: {
-          updateAt: Date.now(),
-        },
-      });
-      return await database.Product.findOne({ _id: product });
-    },
-    async removeColor(_, { product, color }, { database }) {
-      await database.Product.update({ _id: product }, {
-        $push: {
-          colors: color,
-        },
-        $set: {
-          updateAt: Date.now(),
-        },
-      });
-      return await database.Product.findOne({ _id: product });
-    },
-    async removeSize(_, { product, size }, { database }) {
-      await database.Product.update({ _id: product }, {
-        $push: {
-          sizes: size,
-        },
-        $set: {
-          updateAt: Date.now(),
+          updateAt: new Date(),
         },
       });
       return await database.Product.findOne({ _id: product });
     },
     async createProduct(_, { input }, { database }) {
-      console.log(input);
+      // console.log(input);
       input.owner = '';
-      input.promotion_start = Date.now();
-      input.promotion_end = Date.now();
+      input.promotion_start = new Date();
+      input.promotion_end = new Date();
       // console.log(product);
       return await database.Product.insert(input);
     },

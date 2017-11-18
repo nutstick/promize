@@ -42,7 +42,7 @@ describe('Product Model', () => {
         const product = await model.create({
             name: m.word,
             description: m.description,
-
+            type: 'BuyNowProduct',
             // price: m.integer(100, 2000),
 
             picture: array_of(Math.floor(Math.random() * 3) + 1, () => m.random_element([
