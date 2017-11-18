@@ -1,4 +1,5 @@
 scalar Date
+scalar Keyword
 
 schema {
   query: Query

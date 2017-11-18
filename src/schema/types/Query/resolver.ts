@@ -43,16 +43,41 @@ const resolver: IResolver<any, any> = {
       return JSON.parse(localeData);
     },
 
-    search(_, { keyword, first, after }, { database }) {
+    search(_, { keywords, first, after }, { database }) {
       // FIXME: Sure error when search with owner
       let products;
-      if (keyword) {
-         products = database.Product.find({
-          $or: [
-            { hashtag: keyword },
-            { name: keyword },
-            { owner_name: keyword },
-          ],
+      const list_of_keyword = [];
+      if (keywords) {
+        for (const i in keywords) {
+          if (keywords[i].id) {
+            list_of_keyword.push({
+              owner: keywords[i].id,
+            });
+          } else if (keywords[i].special_keyword) {
+            const special = keywords[i].special_keyword;
+            if (special === 'endsoon') {
+              const next_3 = new Date();
+              next_3.setDate(next_3.getDate() + 3);
+              list_of_keyword.push({
+                promotion_end: {
+                  $lte: next_3,
+                },
+              });
+            }
+          } else {
+            const keyword = keywords[i].keyword;
+            list_of_keyword.push({
+              $or: [
+                { hashtag: keyword },
+                { colors: keyword },
+                { sizes: keyword },
+                { name: keyword },
+              ],
+            });
+          }
+        }
+        products = database.Product.find({
+          $and: list_of_keyword,
         });
       } else {
         products = database.Product.find();

@@ -6,7 +6,7 @@ type Query {
 
   intl(locale: String!): [IntlMessage]
   
-  search(keyword: String!, first: Int, after: Int): ProductPage
+  search(keywords: [Keyword], first: Int, after: Int): ProductPage
 
   product(id: ID!): Product
 
