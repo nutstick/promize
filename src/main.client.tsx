@@ -6,19 +6,21 @@
 // Import all the third party stuff
 import 'whatwg-fetch';
 
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import * as FontFaceObserver from 'fontfaceobserver';
 import { createPath } from 'history/PathUtils';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { addLocaleData, IntlProvider } from 'react-intl';
+import { addLocaleData } from 'react-intl';
 /* @intl-code-template import ${lang} from 'react-intl/locale-data/${lang}'; */
-import cs from 'react-intl/locale-data/cs';
-import en from 'react-intl/locale-data/en';
-import th from 'react-intl/locale-data/th';
+import * as cs from 'react-intl/locale-data/cs';
+import * as en from 'react-intl/locale-data/en';
+import * as th from 'react-intl/locale-data/th';
 /* @intl-code-template-end */
-import { BrowserRouter } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import { createApolloClient } from './apollo';
+import { getIntlContext } from './apollo/intl';
 import App from './components/App';
 import { ErrorReporter } from './core/devUtils';
 import { updateMeta } from './core/DOMUtils';
@@ -32,9 +34,11 @@ const http = new HttpLink({
   uri: '/graphql',
   credentials: 'include',
 });
+const cache = new InMemoryCache().restore(window.App.apollo);
 const client = createApolloClient({
   link: http,
   ssrForceFetchDelay: 100,
+  cache,
 });
 
 /* @intl-code-template addLocaleData(${lang}); */
@@ -56,12 +60,7 @@ const fetch = createFetch(self.fetch, {
   baseUrl: window.App.apiUrl,
 });
 
-const intl = new IntlProvider({
-  initialNow: Date.now(),
-  // locale,
-  messages: {},
-  defaultLocale: 'en-US',
-}).getChildContext().intl;
+// Set locale
 
 const context = {
   // Enables critical path CSS rendering
@@ -75,7 +74,7 @@ const context = {
   // For react-apollo
   client,
   // intl instance as it can be get with injectIntl
-  intl,
+  intl: getIntlContext(cache),
 };
 
 // Switch off the native scroll restoration behavior and handle it manually
@@ -148,9 +147,9 @@ async function onLocationChange(location?, action?) {
   currentLocation = location;
   appInstance = ReactDOM.hydrate(
     <App context={context}>
-      <BrowserRouter>
+      <Router history={history}>
         <Routes />
-      </BrowserRouter>
+      </Router>
     </App>,
     container,
     () => onRenderComplete(Routes, location),

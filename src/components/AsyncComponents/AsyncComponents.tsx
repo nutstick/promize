@@ -1,13 +1,8 @@
 import * as React from 'react';
-// import { asyncComponent } from 'react-async-component';
 
 interface IAsyncComponentState {
   Component?: any;
 }
-
-// export const asyncRoute = (getComponent: () => Promise<any>) => asyncComponent({
-//   resolve: getComponent,
-// });
 
 export const asyncRoute = (getComponent: () => Promise<any>) => (
   class AsyncComponent extends React.Component<any, IAsyncComponentState> {
@@ -41,7 +36,7 @@ export const asyncRoute = (getComponent: () => Promise<any>) => (
       this.mounted = false;
     }
 
-    render() {
+    public render() {
       const { Component } = this.state;
 
       if (Component !== null && process.env.BROWSER) {

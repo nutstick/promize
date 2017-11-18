@@ -4,6 +4,7 @@ import * as React from 'react';
 import * as MdAvTimerIcon from 'react-icons/lib/md/av-timer';
 import * as MdDashboardIcon from 'react-icons/lib/md/dashboard';
 import * as HotIcon from 'react-icons/lib/md/whatshot';
+import { defineMessages, FormattedMessage, IntlProvider } from 'react-intl';
 import StackGrid, { easings, transitions } from 'react-stack-grid';
 import { Card, contentClass, headingClass } from '../../components/Card';
 import { Category } from './Category';
@@ -48,8 +49,70 @@ export namespace Home {
   export type Props = any;
 }
 
+const messages = defineMessages({
+  trendingHashtags: {
+    id: 'home.trendingHashtags',
+    defaultMessage: 'Trending Hashtags',
+    description: 'Trending Hashtags display in home page',
+  },
+  category: {
+    id: 'home.category',
+    defaultMessage: 'Category',
+    description: 'Category display in home page',
+  },
+  endingSoon: {
+    id: 'home.endingSoon',
+    defaultMessage: 'Ending Soon!!',
+    description: 'Ending Soon display in home page',
+  },
+  cloths: {
+    id: 'header.category.cloths',
+    defaultMessage: 'Cloths',
+    description: 'Cloths category',
+  },
+  beauty: {
+    id: 'header.category.beauty',
+    defaultMessage: 'Beauty',
+    description: 'Beauty category',
+  },
+  audiophile: {
+    id: 'header.category.audiophile',
+    defaultMessage: 'Audiophile',
+    description: 'Audiophile category',
+  },
+  cellphone: {
+    id: 'header.category.cellphone',
+    defaultMessage: 'Cellphone',
+    description: 'Cellphone category',
+  },
+  tech: {
+    id: 'header.category.tech',
+    defaultMessage: 'Tech',
+    description: 'Tech category',
+  },
+  games: {
+    id: 'header.category.games',
+    defaultMessage: 'Games',
+    description: 'Games category',
+  },
+  photography: {
+    id: 'header.category.photography',
+    defaultMessage: 'Photography',
+    description: 'Photography category',
+  },
+  electronics: {
+    id: 'header.category.electronics',
+    defaultMessage: 'Electronics',
+    description: 'Electronics category',
+  },
+});
+
 @withStyles(s)
 export class Home extends React.Component<Home.Props> {
+  static contextTypes = {
+    intl: IntlProvider.childContextTypes.intl,
+  };
+
   private createItem(): Home.IItem {
     const id = Math.random().toString(36).substr(2, 9);
     const height = Math.floor((Math.random() * (300 - 80)) + 80);
@@ -66,35 +129,35 @@ export class Home extends React.Component<Home.Props> {
     const categoryList = [
       {
         icon: clothsImage,
-        text: 'Cloths',
+        text: this.context.intl.formatMessage(messages.cloths),
       },
       {
         icon: lipstickImage,
-        text: 'Beauty',
+        text: this.context.intl.formatMessage(messages.beauty),
       },
       {
         icon: headphonesImage,
-        text: 'Audiophile',
+        text: this.context.intl.formatMessage(messages.audiophile),
       },
       {
         icon: cellphoneImage,
-        text: 'Cellphone',
+        text: this.context.intl.formatMessage(messages.cellphone),
       },
       {
         icon: electronicsImage,
-        text: 'Tech',
+        text: this.context.intl.formatMessage(messages.tech),
       },
       {
         icon: gameImage,
-        text: 'Games',
+        text: this.context.intl.formatMessage(messages.games),
       },
       {
         icon: cameraImage,
-        text: 'Photography',
+        text: this.context.intl.formatMessage(messages.photography),
       },
       {
         icon: washingMachineImage,
-        text: 'Electronics',
+        text: this.context.intl.formatMessage(messages.electronics),
       },
     ];
 
@@ -108,19 +171,19 @@ export class Home extends React.Component<Home.Props> {
               <HotIcon size={25} style={{
                 marginRight: 2.5,
               }} color="#ff9521" />
-              <span>Trending Hashtags</span>
+              <span><FormattedMessage {...messages.trendingHashtags} /></span>
             </div>
             <div className={cx(contentClass, s.hashtags)}>
               {['End soon!', '50% Off', 'uniqlo', 'HandM', 'AIIZ', 'GAP', 'Crocs', 'anello', 'kanken',
                 'Chulalongkorn', 'SE!!!']
-                .map((text) => (<Hashtag text={text} />))}
+                .map((text) => (<Hashtag key={`HASHTAG-${text}`} text={text} />))}
             </div>
 
             <div className={headingClass}>
               <MdDashboardIcon size={25} style={{
                 marginRight: 2.5,
               }} color="#ff9521" />
-              <span>Category</span>
+              <span><FormattedMessage {...messages.category} /></span>
             </div>
             <div className={cx(contentClass, s.categoryList)}>
               {categoryList.map((category) => (
@@ -132,7 +195,7 @@ export class Home extends React.Component<Home.Props> {
               <MdAvTimerIcon size={25} style={{
                 marginRight: 2.5,
               }} color="#ff9521" />
-              <span>Ending soon!!</span>
+              <span><FormattedMessage {...messages.endingSoon} /></span>
             </div>
 
             <div className={cx(contentClass, s.productList)}>
@@ -147,7 +210,7 @@ export class Home extends React.Component<Home.Props> {
                 enter={transition.enter}
                 entered={transition.entered}
                 leaved={transition.leaved}
-                enableSSR={true}
+                enableSSR={false}
               >
                 {items.map((item) => (
                   <div

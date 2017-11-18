@@ -1,0 +1,3 @@
+mutation ToggleLoginModal {
+  toggleLoginModal @client
+}

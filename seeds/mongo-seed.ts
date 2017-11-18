@@ -32,10 +32,10 @@ export async function seed(database: Database) {
       await database.Product.create({
         name: m.word,
         description: m.description,
-
+        type: 'BuyNowProduct',
         // price: m.integer(100, 2000),
 
-        picture: array_of(Math.floor(Math.random() * 3) + 1, () => m.random_element([
+        pictures: array_of(Math.floor(Math.random() * 3) + 1, () => m.random_element([
           'https://th-live-02.slatic.net/p/7/hequ-1483111676-123106' +
           '5-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg',
           'https://www.fjallraven.com/media/catalog/product/cache/all/base/522x/' +
@@ -57,8 +57,8 @@ export async function seed(database: Database) {
           'http://www.mixytrend.com/attachments/product/images_1-1953773.jpg',
           'http://www.mixytrend.com/attachments/product/images_1-1944858.jpg',
           'https://f.ptcdn.info/144/041/000/o4fn49dowqyEVv46x81-o.jpg',
-          'https://th-live.slatic.net/p/7/kaangekngsaelkhe-wyuued-4009-9009409-ab7fca3d9e73' +
-          'fb0cd3674c958ec21c58-webp-zoom_850x850.jpg',
+          // 'https://th-live.slatic.net/p/7/kaangekngsaelkhe-wyuued-4009-9009409-ab7fca3d9e73' +
+          // 'fb0cd3674c958ec21c58-webp-zoom_850x850.jpg',
           'https://pbs.twimg.com/media/CyrAVXoWgAAkK7f.jpg',
           'https://th-live-01.slatic.net/p/7/orawan-closet-1453777645-9137834-1-product.jpg',
           'https://www.daradaily.com/module/ckfinder/userfiles/images/Gucci.jpg',
@@ -67,7 +67,7 @@ export async function seed(database: Database) {
           'https://th-live-02.slatic.net/p/7/wonderful-story-v2-black-1487311' +
           '424-72902911-dc6fe5a76db1271801bfe09daefc8587-catalog_233.jpg',
         ])),
-        hashtag: array_of(Math.floor(Math.random() * 3), () => m.random_element([
+        hashtags: array_of(Math.floor(Math.random() * 3), () => m.random_element([
           'uniqlo', 'HandM', 'AIIZ', 'GAP', 'Crocs', 'anello', 'kanken',
         ])),
         colors: array_of(Math.floor(Math.random() * 3), () => m.color_name),

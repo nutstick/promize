@@ -6,7 +6,7 @@ import * as FaFilterIcon from 'react-icons/lib/fa/filter';
 import * as MdSortIcon from 'react-icons/lib/md/sort';
 import { RouteComponentProps, withRouter } from 'react-router';
 import StackGrid, { easings, transitions } from 'react-stack-grid';
-import { Loader, Sticky } from 'semantic-ui-react';
+import { Checkbox, Loader, Radio, Sticky } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
 import { Card, contentClass, headingClass } from '../../components/Card';
 import { ProductCard } from '../../components/ProductCard';
@@ -46,6 +46,7 @@ export class Search extends React.Component<Search.Props> {
   }
 
   public render() {
+
     return (
       <div className={s.root}>
         <Sticky className={s.left} bottomOffset={0}>
@@ -59,22 +60,21 @@ export class Search extends React.Component<Search.Props> {
             <div className={s.content}>
               <span>Shipped From</span>
               <ul>
-                <li>Metro Manila</li>
-                <li>North Luzon</li>
-                <li>South Luzon</li>
-                <li>Visayas</li>
+                <Checkbox label="Metro Luzon" /><br/>
+                <Checkbox label="North Luzon" /><br/>
+                <Checkbox label="South Luzon" /><br/>
+                <Checkbox label="Vizayas" />
               </ul>
               <hr />
               <span>Condition</span>
               <ul>
-                <li>New Prodcut</li>
-                <li>Buy now</li>
+                <Checkbox label="New product" defaultChecked/><br/>
+                <Checkbox label="Buy now" defaultChecked/>
               </ul>
-              <hr />
+            <hr />
               <span>Price Range</span>
               <ul>
-                <li>Min</li>
-                <li>Max</li>
+                <input type="range" min={0} max={5} /><br/>
               </ul>
             </div>
 
@@ -86,17 +86,24 @@ export class Search extends React.Component<Search.Props> {
               <span>Sort</span>
             </div>
             <div className={s.content}>
+              <ul>
+                <Radio name="sortBy" label="Price" /><br/>
+                <Radio name="sortBy" label="View" /><br/>
+                <Radio name="sortBy" label="Hot" /><br/>
+              </ul>
             </div>
           </Card>
         </Sticky>
         <Card className={s.results}>
           {
             this.props.data.loading ? <Loader active /> :
-            this.props.data.search.totalCount === 0 ? <div className={s.notFound}>
+            this.props.data.error ? this.props.data.error :
+            this.props.data.search && this.props.data.search.totalCount === 0 ?
+            <div className={s.notFound}>
               <img src={NoResultImage} alt="No Results founds." />
               <span className={s.text}>No Results found.</span>
             </div> :
-            <div className={cx(contentClass, s.productList)}>
+            this.props.data.search && <div className={cx(contentClass, s.productList)}>
               <StackGrid
                 monitorImagesLoaded
                 duration={600}
@@ -110,10 +117,10 @@ export class Search extends React.Component<Search.Props> {
                 enter={transition.enter}
                 entered={transition.entered}
                 leaved={transition.leaved}
-                enableSSR={true}
+                enableSSR={false}
               >
                 {this.props.data.search.edges.map((product) => (
-                  <ProductCard product={product.node} />
+                  <ProductCard key={`PRODUCT-${product.node._id}`} product={product.node} />
                 ))}
               </StackGrid>
             </div>

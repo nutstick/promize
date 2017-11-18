@@ -83,7 +83,7 @@ module.exports = {
   // setupFiles: // [array]
   // setupTestFrameworkScriptFile: // [string]
   // snapshotSerializers: // [array<string>]
-  // testEnvironment: // [string]
+  testEnvironment: 'node',
   // testMatch: // [array<string>]
   // testPathIgnorePatterns: // [array<string>]
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
@@ -94,13 +94,15 @@ module.exports = {
 
   transform: {
     '\\.tsx?$': '<rootDir>/node_modules/ts-jest/preprocessor.js',
+    '\\.(gql|graphql)$': '<rootDir>/tools/lib/gqlTransformer.js',
     '\\.(js|jsx)$': '<rootDir>/node_modules/babel-jest',
     '^(?!.*\\.(js|jsx|json|css|less|styl|scss|sass|sss)$)':
       '<rootDir>/tools/lib/fileTransformer.js',
+    '.*': '<rootDir>/node_modules/ts-jest/preprocessor.js',
   },
 
   // transformIgnorePatterns: // [array<string>]
   // unmockedModulePathPatterns: // [array<string>]
 
-  verbose: true, // [boolean]
+  // verbose: true, // [boolean]
 };

@@ -1,74 +1,137 @@
 [
   {
-    "id": "header.banner.title",
-    "description": "Title in page header",
-    "defaultMessage": "Reacts",
-    "message": "",
+    "id": "header.join",
+    "description": "Join Free message in header",
+    "defaultMessage": "Join Free",
+    "message": "เข้าร่วม ฟรี",
     "files": [
       "src/components/Header/Header.tsx"
     ]
   },
   {
-    "id": "header.brand",
-    "description": "Brand name displayed in header",
-    "defaultMessage": "Your Company Brand",
-    "message": "",
+    "id": "header.welcome",
+    "description": "Welcome message in header",
+    "defaultMessage": "Welcome to Promize!",
+    "message": "ยินดีต้อนรับ",
     "files": [
       "src/components/Header/Header.tsx"
     ]
   },
   {
-    "id": "navigation.about",
-    "description": "About link in header",
-    "defaultMessage": "About",
-    "message": "",
-    "files": [
-      "src/components/Navigation/Navigation.tsx"
-    ]
-  },
-  {
-    "id": "navigation.login",
-    "description": "Log in link in header",
+    "id": "header.logIn",
+    "description": "Log in message in header",
     "defaultMessage": "Log in",
-    "message": "",
-    "files": [
-      "src/components/Navigation/Navigation.tsx"
-    ]
-  },
-  {
-    "id": "navigation.separator.or",
-    "description": "Last separator in list, lowercase \"or\"",
-    "defaultMessage": "or",
-    "message": "",
-    "files": [
-      "src/components/Navigation/Navigation.tsx"
-    ]
-  },
-  {
-    "id": "navigation.signup",
-    "description": "Sign up link in header",
-    "defaultMessage": "Sign up",
-    "message": "",
-    "files": [
-      "src/components/Navigation/Navigation.tsx"
-    ]
-  },
-  {
-    "id": "navigation.todos",
-    "description": "Todos link in header",
-    "defaultMessage": "Todo",
-    "message": "",
-    "files": [
-      "src/components/Navigation/Navigation.tsx"
-    ]
-  },
-  {
-    "id": "header.banner.descsss",
-    "description": "Description in header",
-    "defaultMessage": "Complex web apps made easy",
-    "message": "",
+    "message": "ลงชื่อเข้าใช้",
     "files": [
       "src/components/Header/Header.tsx"
+    ]
+  },
+  {
+    "id": "header.search",
+    "description": "Search place holder on header",
+    "defaultMessage": "Search...",
+    "message": "ค้นหา",
+    "files": [
+      "src/components/Header/Header.tsx"
+    ]
+  },
+  {
+    "id": "header.category.audiophile",
+    "description": "Audiophile category",
+    "defaultMessage": "Audiophile",
+    "message": "เครื่องเสียง",
+    "files": [
+      "src/routes/Home/Home.tsx"
+    ]
+  },
+  {
+    "id": "header.category.beauty",
+    "description": "Beauty category",
+    "defaultMessage": "Beauty",
+    "message": "เครื่องสำอาง",
+    "files": [
+      "src/routes/Home/Home.tsx"
+    ]
+  },
+  {
+    "id": "header.category.cellphone",
+    "description": "Cellphone category",
+    "defaultMessage": "Cellphone",
+    "message": "โทรศัพท์",
+    "files": [
+      "src/routes/Home/Home.tsx"
+    ]
+  },
+  {
+    "id": "header.category.cloths",
+    "description": "Cloths category",
+    "defaultMessage": "Cloths",
+    "message": "เสื้อผ้า",
+    "files": [
+      "src/routes/Home/Home.tsx"
+    ]
+  },
+  {
+    "id": "header.category.electronics",
+    "description": "Electronics category",
+    "defaultMessage": "Electronics",
+    "message": "อิเล็กโทรนิค",
+    "files": [
+      "src/routes/Home/Home.tsx"
+    ]
+  },
+  {
+    "id": "header.category.games",
+    "description": "Games category",
+    "defaultMessage": "Games",
+    "message": "เกมส์",
+    "files": [
+      "src/routes/Home/Home.tsx"
+    ]
+  },
+  {
+    "id": "header.category.photography",
+    "description": "Photography category",
+    "defaultMessage": "Photography",
+    "message": "อุปกรณ์ถ่ายรูป",
+    "files": [
+      "src/routes/Home/Home.tsx"
+    ]
+  },
+  {
+    "id": "header.category.tech",
+    "description": "Tech category",
+    "defaultMessage": "Tech",
+    "message": "เครื่องใช้ไฟฟ้า",
+    "files": [
+      "src/routes/Home/Home.tsx"
+    ]
+  },
+  {
+    "id": "home.category",
+    "description": "Category display in home page",
+    "defaultMessage": "Category",
+    "message": "ประเภทสินค้า",
+    "files": [
+      "src/routes/Home/Home.tsx"
+    ]
+  },
+  {
+    "id": "home.endingSoon",
+    "description": "Ending Soon display in home page",
+    "defaultMessage": "Ending Soon!!",
+    "message": "กำลังจะหมดโปรโมชั่น!!",
+    "files": [
+      "src/routes/Home/Home.tsx"
+    ]
+  },
+  {
+    "id": "home.trendingHashtags",
+    "description": "Trending Hashtags display in home page",
+    "defaultMessage": "Trending Hashtags",
+    "message": "แฮชแท็กยอดฮิต",
+    "files": [
+      "src/routes/Home/Home.tsx"
     ]
   }
 ]

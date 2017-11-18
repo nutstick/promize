@@ -1,6 +1,5 @@
 import * as AssetsPlugin from 'assets-webpack-plugin';
 import * as cssnano from 'cssnano';
-import * as ExtractTextPlugin from 'extract-text-webpack-plugin';
 import * as path from 'path';
 import * as webpack from 'webpack';
 import { Configuration, Resolve } from 'webpack';

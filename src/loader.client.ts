@@ -22,7 +22,7 @@ if (!global.Intl) {
       'intl',
       /* @intl-code-template 'intl/locale-data/jsonp/${lang}.js', */
       'intl/locale-data/jsonp/en.js',
-      'intl/locale-data/jsonp/cs.js',
+      'intl/locale-data/jsonp/th.js',
       /* @intl-code-template-end */
     ],
     (require) => {
@@ -31,7 +31,7 @@ if (!global.Intl) {
       // TODO: This is bad. You should only require one language dynamically
       /* @intl-code-template require('intl/locale-data/jsonp/${lang}.js'); */
       require('intl/locale-data/jsonp/en.js');
-      require('intl/locale-data/jsonp/cs.js');
+      require('intl/locale-data/jsonp/th.js');
       /* @intl-code-template-end */
       run();
     },

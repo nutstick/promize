@@ -1,0 +1,3 @@
+mutation OpenProductModal($id: ID) {
+  openProductModal(id: $id) @client
+}
