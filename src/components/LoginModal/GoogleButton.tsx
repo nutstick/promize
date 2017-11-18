@@ -16,11 +16,10 @@ export class GoogleButton extends React.Component<{}> {
         fluid
         basic
         color="black"
+        href="/login/google"
       >
-        <a href="/login/google">
-          <Icon name="google" />
-          Log in with Google
-      </a>
+        <Icon name="google" />
+        Log in with Google
       </Button >
     );
   }

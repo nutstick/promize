@@ -15,11 +15,10 @@ export class FacebookButton extends React.Component<{}> {
       <Button
         fluid
         color="facebook"
+        href="/login/facebook"
       >
-        <a href="/login/facebook">
-          <i><Icon name="facebook f" /></i>
-          Log in with Facebook
-      </a>
+        <i><Icon name="facebook f" /></i>
+        Log in with Facebook
       </Button>
     );
   }
