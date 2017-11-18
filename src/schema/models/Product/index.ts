@@ -6,12 +6,12 @@ interface IProductDocument {
   name: string;
   description?: string;
 
-  type: string;
+  type?: string;
   original_price?: number;
   price?: number;
 
-  picture: string[];
-  hashtag: string[];
+  pictures: string[];
+  hashtags: string[];
   colors?: string[];
   sizes?: string[];
 
@@ -44,10 +44,10 @@ class Product extends Instance<IProductDocument, Product> implements IProductDoc
   @Property(Number, false)
   price: number;
 
-  @Property([String], false)
-  picture: string[];
-  @Property([String], false)
-  hashtag: string[];
+  @Property([String], true)
+  pictures: string[];
+  @Property([String], true)
+  hashtags: string[];
   @Property([String], false)
   colors: string[];
   @Property([String], false)
