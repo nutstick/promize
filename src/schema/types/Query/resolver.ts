@@ -49,7 +49,7 @@ const resolver: IResolver<any, any> = {
       if (keyword) {
          products = database.Product.find({
           $or: [
-            { hashtag: keyword },
+            { hashtags: keyword },
             { name: keyword },
             { owner_name: keyword },
           ],

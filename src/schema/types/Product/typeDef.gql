@@ -26,8 +26,8 @@ type Product implements Node {
   type: ProductEnum!
   price: Int
 
-  picture: [String]!
-  hashtag: [String]!
+  pictures: [String]!
+  hashtags: [String]!
   colors: [String]
   sizes: [String]
 

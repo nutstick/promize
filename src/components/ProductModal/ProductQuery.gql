@@ -6,8 +6,8 @@ query Product($id: ID!) {
     originalPrice
     type
     price
-    picture
-    hashtag
+    pictures
+    hashtags
     colors
     sizes
     promotionStart

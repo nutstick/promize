@@ -11,8 +11,8 @@ interface IProduct extends INode {
     originalPrice?: number;
     price?: number;
 
-    picture: string[];
-    hashtag: string[];
+    pictures: string[];
+    hashtags: string[];
     colors?: string[];
     sizes?: string[];
 

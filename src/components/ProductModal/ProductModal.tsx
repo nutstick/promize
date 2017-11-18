@@ -100,7 +100,7 @@ export class ProductModal extends React.Component<ProductModal.Props> {
                     speed={500}
                     slidesToShow={1}
                     slidesToScroll={1}>
-                    {product.picture.map((pic, index) => (
+                    {product.pictures.map((pic, index) => (
                       <div className={s.pictureWrapper}>
                         <img key={`Product-${product._id}-picture-${index}`} className={s.image} src={pic} />
                       </div>
@@ -119,7 +119,7 @@ export class ProductModal extends React.Component<ProductModal.Props> {
                   <div className={s.textWrapper}>
                     <div className={s.description}>{product.description}</div>
                     <div className={s.hashtags}>
-                      {product.hashtag.map((h) =>
+                      {product.hashtags.map((h) =>
                         (<Link to={`/search?keyword=${h}`} className={s.hashtag}>#{h}</Link>),
                       )}
                     </div>
