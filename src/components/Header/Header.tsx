@@ -5,7 +5,11 @@ import { ChildProps } from 'react-apollo';
 import { defineMessages, FormattedMessage, IntlProvider } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+<<<<<<< HEAD
 import { Button, Container, Dropdown, Icon, Image, Input, Menu } from 'semantic-ui-react';
+=======
+import { Button, Container, Icon, Image, Input, Menu, Dropdown } from 'semantic-ui-react';
+>>>>>>> d70124388cd8af5feda1b681c29e6b52aab04403
 import { graphql } from '../../apollo/graphql';
 import * as TOGGLELOGINMODALMUTATION from '../../apollo/login/ToggleLoginModalMutation.gql';
 import { parseSearch } from '../../core/urlParser';
