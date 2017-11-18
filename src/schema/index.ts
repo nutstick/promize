@@ -3,7 +3,7 @@ import { makeExecutableSchema } from 'graphql-tools';
 import { print } from 'graphql/language';
 import * as SchemaType from './schema.gql';
 import * as IntlMessage from './types/IntlMessage';
-// import * as Mutation from './types/Mutation';
+import * as Mutation from './types/Mutation';
 import * as Pagination from './types/Pagination';
 import * as Product from './types/Product';
 import * as Query from './types/Query';
@@ -16,7 +16,7 @@ const modules = [
   IntlMessage,
   Query,
   Product,
-  // Mutation,
+  Mutation,
 ];
 
 const resolvers = Object.assign({

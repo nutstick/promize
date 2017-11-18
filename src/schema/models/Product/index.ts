@@ -6,12 +6,12 @@ interface IProductDocument {
   name: string;
   description?: string;
 
-  type?: string;
+  type: string;
   original_price?: number;
   price?: number;
 
-  picture?: string[];
-  hashtag?: string[];
+  picture: string[];
+  hashtag: string[];
   colors?: string[];
   sizes?: string[];
 
