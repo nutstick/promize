@@ -102,12 +102,11 @@ const resolver: IResolver<any, any> = {
       return await database.Product.findOne({ _id: product });
     },
     async createProduct(_, { input }, { database }) {
-      console.log(input);
-      input.owner = '';
-      input.promotion_start = Date.now();
-      input.promotion_end = Date.now();
-      // console.log(product);
-      return await database.Product.insert(input);
+      return await database.Product.insert({
+        ...input,
+        promotion_start: input.promotionStart,
+        promotion_end: input.promotionEnd,
+      });
     },
   },
 };

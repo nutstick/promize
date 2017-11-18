@@ -3,19 +3,26 @@ import { Schema } from '../../../';
 import { mongodb } from '../../../../config';
 import { Database } from '../../../models';
 import resolver from '../resolver';
-// tslint:disable-next-line:no-var-requires
-const m = require('casual');
+
 const database = new Database({
   ...mongodb,
   database: 'test',
 
 });
 
+let user;
+
 beforeAll(async () => {
   await database.connect();
   await database.connection.dropDatabase();
+
+  // Fixed new Date
+  const FIXED_DATE = new Date('2017-06-13T04:41:20');
+  (global as any).Date = jest.fn(() => FIXED_DATE);
+
   // Init test database
-  const user = await database.User.create({
+  user = await database.User.create({
+    _id: '5a10494ee67657f236e6b0a2',
     first_name: 'Ammarin',
     last_name: 'Jetthakun',
     tel_number: '0123456789',
@@ -25,41 +32,52 @@ beforeAll(async () => {
     },
     avatar: 'someurl',
   });
-  await database.Product.create({
-    name: 'Zara',
-    description: 'Zara clothes',
-    original_price: 1000,
-    type: 'BuyNowProduct',
-    price: 800,
-    picture: ['https://th-live-02.slatic.net/p/7/hequ-1483111676-123106' +
-      '5-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg'],
-    hashtag: ['uniqlo'],
-    colors: ['red'],
-    sizes: ['S'],
-    promotion_start: m.moment.toDate(),
-    promotion_end: m.moment.toDate(),
-    owner: user._id,
-    createAt: m.moment.toDate(),
-    updateAt: m.moment.toDate(),
-  });
+
+  // await database.Product.create({
+  //   name: 'Zara',
+  //   description: 'Zara clothes',
+  //   original_price: 1000,
+  //   type: 'BuyNowProduct',
+  //   price: 800,
+  //   picture: ['https://th-live-02.slatic.net/p/7/hequ-1483111676-123106' +
+  //     '5-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg'],
+  //   hashtag: ['uniqlo'],
+  //   colors: ['red'],
+  //   sizes: ['S'],
+  //   promotion_start: new Date(2017, 13, 1, 12),
+  //   promotion_end: new Date(2017, 14, 1, 19),
+  //   owner: user._id,
+  //   createAt: new Date(2017, 13, 1, 8),
+  //   updateAt: new Date(2017, 13, 1, 8),
+  // });
 });
 
 afterAll(() => database.close());
 
 it('Mutation createProduct should insert new product into mongodb', async () => {
-  const user = await database.User.findOne({
-    first_name: 'Ammarin',
-  });
-  // console.log(user)
-  await resolver.Mutation.createProduct({
-    name: 'a',
-    original_price: 800,
-    colors: ['red'],
-    size: ['S'],
-    promotion_start: m.moment.toDate(),
-    promotion_end: m.moment.toDate(),
-    owner: user._id,
-  });
-  expect(await database.Product.findOne({ name: 'a' }))
-    .toEqual(expect.anything());
+  await resolver.Mutation.createProduct({}, {
+    input: {
+      _id: '585b11e7adb8b5f2d655da01',
+      name: 'a',
+      type: 'Product',
+      pictures: ['https://th-live-02.slatic.net/p/7/hequ-1483111676-123106' +
+        '5-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg'],
+      hashtags: ['a', 'b', 'c'],
+      colors: ['red'],
+      size: ['S'],
+      promotionStart: new Date(2017, 13, 1, 12),
+      promotionEnd: new Date(2017, 14, 1, 19),
+      owner: user._id,
+    },
+  }, { database });
+
+  // Number of product in database should be 1.
+  const count = await database.Product.find().count;
+  expect(count).toMatchSnapshot();
+  // Product should create in database.
+  const products = await database.Product.find().toArray();
+  expect(products).toMatchSnapshot();
+  // Should be able to find a product that has been created.
+  const product = await database.Product.findOne({ name: 'a' });
+  expect(product).toMatchSnapshot();
 });

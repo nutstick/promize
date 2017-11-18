@@ -1,20 +1,22 @@
 # Input
 input productInput {
-    name: String!
-    description: String
-  
-    originalPrice: Int
-    type: ProductEnum!
-    price: Int
+  _id: String
 
-    picture: [String]!
-    hashtag: [String]!
-    colors: [String]
-    sizes: [String]
+  name: String!
+  description: String
 
-    # promotionStart: Date!
-    # promotionEnd: Date!	
-  }
+  originalPrice: Int
+  type: ProductEnum!
+  price: Int
+
+  pictures: [String]!
+  hashtags: [String]!
+  colors: [String]
+  sizes: [String]
+
+  promotionStart: Date!
+  promotionEnd: Date!	
+}
 # Mutations
 type Mutation {
   # Edit product price
