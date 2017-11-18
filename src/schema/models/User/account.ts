@@ -1,5 +1,5 @@
 interface IAccountDocument {
-  email: string;
+  email?: string;
   password?: string;
   facebook?: {
     id: string;
@@ -12,7 +12,10 @@ interface IAccountDocument {
 }
 
 const Account = {
-  email: String,
+  email: {
+    $required: false,
+    $type: String,
+  },
   password: {
     $required: false,
     $type: String,

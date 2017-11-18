@@ -163,9 +163,9 @@
   "scripts": {
     "mongo": "mongod --dbpath db",
     "lint": "./node_modules/.bin/tslint --project tsconfig.json -e 'src/**/*.test.ts' 'src/**/*.ts?(x)'",
-    "test": "jest",
-    "test:watch": "yarn run test -- --watch --notify",
-    "test:cover": "yarn run test -- --coverage",
+    "test": "TZ=America/New_York jest",
+    "test:watch": "TZ=America/New_York yarn run test -- --watch --notify",
+    "test:cover": "TZ=America/New_York yarn run test -- --coverage",
     "coverage": "yarn run test:cover && opn coverage/lcov-report/index.html",
     "clean": "./node_modules/.bin/ts-node tools/run clean",
     "copy": "./node_modules/.bin/ts-node tools/run copy",

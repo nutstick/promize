@@ -35,7 +35,7 @@ export async function seed(database: Database) {
         type: 'BuyNowProduct',
         // price: m.integer(100, 2000),
 
-        picture: array_of(Math.floor(Math.random() * 3) + 1, () => m.random_element([
+        pictures: array_of(Math.floor(Math.random() * 3) + 1, () => m.random_element([
           'https://th-live-02.slatic.net/p/7/hequ-1483111676-123106' +
           '5-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg',
           'https://www.fjallraven.com/media/catalog/product/cache/all/base/522x/' +
@@ -67,7 +67,7 @@ export async function seed(database: Database) {
           'https://th-live-02.slatic.net/p/7/wonderful-story-v2-black-1487311' +
           '424-72902911-dc6fe5a76db1271801bfe09daefc8587-catalog_233.jpg',
         ])),
-        hashtag: array_of(Math.floor(Math.random() * 3), () => m.random_element([
+        hashtags: array_of(Math.floor(Math.random() * 3), () => m.random_element([
           'uniqlo', 'HandM', 'AIIZ', 'GAP', 'Crocs', 'anello', 'kanken',
         ])),
         colors: array_of(Math.floor(Math.random() * 3), () => m.color_name),
