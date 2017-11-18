@@ -1,6 +1,4 @@
 import { IResolver } from '../index';
-// tslint:disable-next-line:no-var-requires
-const m = require('casual');
 
 const resolver: IResolver<any, any> = {
   Mutation: {

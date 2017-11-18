@@ -4,8 +4,7 @@ input productInput {
 
   name: String!
   description: String
-
-<<<<<<< HEAD
+  
   originalPrice: Int
   type: ProductEnum!
   price: Int
@@ -18,11 +17,6 @@ input productInput {
   promotionStart: Date!
   promotionEnd: Date!	
 }
-=======
-    promotionStart: Date!
-    promotionEnd: Date!	
-  }
->>>>>>> bca2a439d522af2f8a3462811acaa7e9c2a9575e
 # Mutations
 type Mutation {
   # Edit product price
