@@ -1,4 +1,5 @@
 import { INode } from '../Pagination';
+import { IUser } from '../User';
 import resolver from './resolver';
 import * as type from './typeDef.gql';
 
@@ -10,14 +11,14 @@ interface IProduct extends INode {
     originalPrice?: number;
     price?: number;
 
-    picture?: string[];
-    hashtag?: string[];
+    picture: string[];
+    hashtag: string[];
     colors?: string[];
     sizes?: string[];
 
     promotionStart: Date;
     promotionEnd: Date;
-    ownerName: string;
+    owner: IUser;
 }
 
 export {
