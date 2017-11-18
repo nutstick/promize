@@ -34,7 +34,7 @@ export class Html extends React.Component<Html.Props> {
           </title>
           <meta name="description" content={description} />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          {scripts.map((script) =>
+          {scripts && scripts.map((script) =>
             <link key={script} rel="preload" href={script} {...{ as: 'script' }} />,
           )}
           <link rel="apple-touch-icon" href="apple-touch-icon.png" />
@@ -51,7 +51,7 @@ export class Html extends React.Component<Html.Props> {
           <script
             dangerouslySetInnerHTML={{ __html: `window.App=${serialize(app)}` }}
           />
-          {scripts.map((script) => <script key={script} src={script} />)}
+          {scripts && scripts.map((script) => <script key={script} src={script} />)}
           {analytics.googleTrackingId &&
             <script
               dangerouslySetInnerHTML={{
