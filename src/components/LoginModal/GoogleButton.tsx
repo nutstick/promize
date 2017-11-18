@@ -12,16 +12,16 @@ namespace GoogleButton {
 export class GoogleButton extends React.Component<{}> {
   public render() {
     return (
-      <a href="/login/google">
-        <Button
-          fluid
-          basic
-          color="black"
-        >
+      <Button
+        fluid
+        basic
+        color="black"
+      >
+        <a href="/login/google">
           <Icon name="google" />
           Log in with Google
-      </Button>
       </a>
+      </Button >
     );
   }
 }

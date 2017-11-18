@@ -12,15 +12,15 @@ namespace FacebookButton {
 export class FacebookButton extends React.Component<{}> {
   public render() {
     return (
-      <a href="/login/facebook">
-        <Button
-          fluid
-          color="facebook"
-        >
+      <Button
+        fluid
+        color="facebook"
+      >
+        <a href="/login/facebook">
           <i><Icon name="facebook f" /></i>
           Log in with Facebook
-        </Button>
       </a>
+      </Button>
     );
   }
 }
