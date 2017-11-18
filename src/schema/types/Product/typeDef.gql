@@ -22,19 +22,21 @@ type Product implements Node {
   name: String!
   description: String
   
-  originalPrice: Int!
-  type: ProductEnum
-  price: Int!
+  originalPrice: Int
+  type: ProductEnum!
+  price: Int
 
-  picture: [String]
-  hashtag: [String]
-  colors: [String]!
-  sizes: [String]!
+  picture: [String]!
+  hashtag: [String]!
+  colors: [String]
+  sizes: [String]
 
   promotionStart: Date!
   promotionEnd: Date!
-  owner: User!
+  owner: CoSeller!
   
   createAt: Date!
   updateAt: Date!
+
+  suggestProducts: [Product]
 }

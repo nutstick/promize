@@ -32,7 +32,7 @@ export async function seed(database: Database) {
       await database.Product.create({
         name: m.word,
         description: m.description,
-
+        type: 'BuyNowProduct',
         // price: m.integer(100, 2000),
 
         picture: array_of(Math.floor(Math.random() * 3) + 1, () => m.random_element([
@@ -57,8 +57,8 @@ export async function seed(database: Database) {
           'http://www.mixytrend.com/attachments/product/images_1-1953773.jpg',
           'http://www.mixytrend.com/attachments/product/images_1-1944858.jpg',
           'https://f.ptcdn.info/144/041/000/o4fn49dowqyEVv46x81-o.jpg',
-          'https://th-live.slatic.net/p/7/kaangekngsaelkhe-wyuued-4009-9009409-ab7fca3d9e73' +
-          'fb0cd3674c958ec21c58-webp-zoom_850x850.jpg',
+          // 'https://th-live.slatic.net/p/7/kaangekngsaelkhe-wyuued-4009-9009409-ab7fca3d9e73' +
+          // 'fb0cd3674c958ec21c58-webp-zoom_850x850.jpg',
           'https://pbs.twimg.com/media/CyrAVXoWgAAkK7f.jpg',
           'https://th-live-01.slatic.net/p/7/orawan-closet-1453777645-9137834-1-product.jpg',
           'https://www.daradaily.com/module/ckfinder/userfiles/images/Gucci.jpg',

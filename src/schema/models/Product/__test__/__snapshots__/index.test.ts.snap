@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Product Model Product create correctly 1`] = `[Function]`;
+
+exports[`Product Model Product create correctly 2`] = `
+Array [
+  Object {
+    "_id": "585b11e7adb8b5f2d655da01",
+    "colors": Array [
+      "red",
+      "blue",
+    ],
+    "createAt": 2017-06-12T21:41:20.000Z,
+    "description": "Zara clothes",
+    "hashtags": Array [
+      "uniqlo",
+      "HandM",
+      "AIIZ",
+      "GAP",
+      "Crocs",
+      "anello",
+      "kanken",
+    ],
+    "name": "Zara",
+    "original_price": 1000,
+    "owner": "5a10494ee67657f236e6b0a2",
+    "pictures": Array [
+      "https://th-live-02.slatic.net/p/7/hequ-1483111676-1231065-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg",
+    ],
+    "price": 800,
+    "promotion_end": 2017-06-12T21:41:20.000Z,
+    "promotion_start": 2017-06-12T21:41:20.000Z,
+    "sizes": Array [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL",
+    ],
+    "type": "BuyNowProduct",
+    "updateAt": 2017-06-12T21:41:20.000Z,
+  },
+]
+`;
+
+exports[`Product Model Product create correctly 3`] = `
+Object {
+  "_id": "585b11e7adb8b5f2d655da01",
+  "colors": Array [
+    "red",
+    "blue",
+  ],
+  "createAt": 2017-06-12T21:41:20.000Z,
+  "description": "Zara clothes",
+  "hashtags": Array [
+    "uniqlo",
+    "HandM",
+    "AIIZ",
+    "GAP",
+    "Crocs",
+    "anello",
+    "kanken",
+  ],
+  "name": "Zara",
+  "original_price": 1000,
+  "owner": "5a10494ee67657f236e6b0a2",
+  "pictures": Array [
+    "https://th-live-02.slatic.net/p/7/hequ-1483111676-1231065-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg",
+  ],
+  "price": 800,
+  "promotion_end": 2017-06-12T21:41:20.000Z,
+  "promotion_start": 2017-06-12T21:41:20.000Z,
+  "sizes": Array [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "XXL",
+  ],
+  "type": "BuyNowProduct",
+  "updateAt": 2017-06-12T21:41:20.000Z,
+}
+`;

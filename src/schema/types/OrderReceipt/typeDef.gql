@@ -1,0 +1,12 @@
+type OrderReceipt implements Node {
+  _id: ID!
+
+  product: Product!
+
+  creator: UserType!
+
+  # TODO: Add require fields
+
+  createAt: Date!
+  updateAt: Date!
+}

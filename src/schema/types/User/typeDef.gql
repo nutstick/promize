@@ -1,40 +1,113 @@
-# Account type
+# Account data type
 type Account {
+  # Email
   email: String
+  # Facebook access code
   facebookAccessCode: String
+  # Google access code
   googleAccessCode: String
 }
 
+# Address type
 type Address implements Node {
   _id: ID!
+  # Address detail
   address: String!
+  # City
   city: String!
+  # Country
   country: String!
+  # Zip code
   zip: String!
 }
 
+# Payment Method type
 type PaymentMethod implements Node {
   _id: ID!
+  # Credit card number
   creditCardNumber: String!
 }
 
-# A user
-type User implements Node {
-  _id: ID!
-  
+# User interface
+interface UserType {
+  # First name
   firstName: String!
+  # Middle name
   middleName: String
+  # Last name
   lastName: String!
-
+  # Telephone number
   telNumber: String
-
+  # Account data
   account: Account
-
+  # Addresses
   addresses: [Address]
-
+  # Paymethods
   paymentMethods: [PaymentMethod]
-
+  # User avatar
   avatar: String
+
+  # Order receipts
+  orderReceipts: [OrderReceipt]
+
+  createAt: Date!
+  updateAt: Date!
+}
+
+# User type
+type User implements UserType, Node {
+  _id: ID!
+  # First name
+  firstName: String!
+  # Middle name
+  middleName: String
+  # Last name
+  lastName: String!
+  # Telephone number
+  telNumber: String
+  # Account data
+  account: Account
+  # Addresses
+  addresses: [Address]
+  # Paymethods
+  paymentMethods: [PaymentMethod]
+  # User avatar
+  avatar: String
+
+  # Order receipts
+  orderReceipts: [OrderReceipt]
+
+  createAt: Date!
+  updateAt: Date!
+}
+
+# Co-Seller type
+type CoSeller implements UserType, Node {
+  _id: ID!
+  # First name
+  firstName: String!
+  # Middle name
+  middleName: String
+  # Last name
+  lastName: String!
+  # Telephone number
+  telNumber: String
+  # Account data
+  account: Account
+  # Addresses
+  addresses: [Address]
+  # Paymethods
+  paymentMethods: [PaymentMethod]
+  # User avatar
+  avatar: String
+
+  # Order receipts
+  orderReceipts: [OrderReceipt]
+  
+  # Products's Own
+  products: ProductPage!
+  # Buy order receipts
+  buyOrderReceipts: [OrderReceipt]
 
   createAt: Date!
   updateAt: Date!

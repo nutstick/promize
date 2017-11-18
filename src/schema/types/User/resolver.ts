@@ -15,6 +15,11 @@ const resolver: IResolver<any, any> = {
       return '#'.repeat(credit_card_number.length - 4) + credit_card_number.slice(-4);
     },
   },
+  UserType: {
+    __resolveType({ type }) {
+      return type;
+    },
+  },
   User: {
     firstName({ first_name }) {
       return first_name;

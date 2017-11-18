@@ -2,7 +2,7 @@
 type Query {
   helloworld: String
 
-  me: User
+  me: UserType
 
   intl(locale: String!): [IntlMessage]
   
