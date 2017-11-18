@@ -20,8 +20,6 @@ Array [
     "pictures": Array [
       "https://th-live-02.slatic.net/p/7/hequ-1483111676-1231065-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg",
     ],
-    "promotionEnd": 2017-06-12T21:41:20.000Z,
-    "promotionStart": 2017-06-12T21:41:20.000Z,
     "promotion_end": 2017-06-12T21:41:20.000Z,
     "promotion_start": 2017-06-12T21:41:20.000Z,
     "size": Array [
@@ -50,8 +48,6 @@ Object {
   "pictures": Array [
     "https://th-live-02.slatic.net/p/7/hequ-1483111676-1231065-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg",
   ],
-  "promotionEnd": 2017-06-12T21:41:20.000Z,
-  "promotionStart": 2017-06-12T21:41:20.000Z,
   "promotion_end": 2017-06-12T21:41:20.000Z,
   "promotion_start": 2017-06-12T21:41:20.000Z,
   "size": Array [

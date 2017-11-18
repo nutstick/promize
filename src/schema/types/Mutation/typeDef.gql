@@ -5,6 +5,7 @@ input productInput {
   name: String!
   description: String
 
+<<<<<<< HEAD
   originalPrice: Int
   type: ProductEnum!
   price: Int
@@ -17,26 +18,23 @@ input productInput {
   promotionStart: Date!
   promotionEnd: Date!	
 }
+=======
+    promotionStart: Date!
+    promotionEnd: Date!	
+  }
+>>>>>>> bca2a439d522af2f8a3462811acaa7e9c2a9575e
 # Mutations
 type Mutation {
   # Edit product price
   editPrice(product: ID!, price: Int!): Product
-  # Add product picture
-  addPicture(product: ID!, picture: [String]!): Product
-  # Add product hashtag
-  addHashtag(product: ID!, hashtag: [String]!): Product
-  # Add product color
-  addSize(product: ID!, color: [String]!): Product
-  # Add product size
-  addColor(product: ID!, size: [String]!): Product
-  # Remove product picture
-  removePicture(product: ID!, pictur: [String]!): Product
-  # Remove product hashtag
-  removeHashtag(product: ID!, hashtag: [String]!): Product
-  # Remove product color
-  removeColor(product: ID!, color: [String]!): Product
-  # Remove product size
-  removeSize(product: ID!, size: [String]!): Product
+  # Edit product picture
+  editPicture(product: ID!, pictures: [String]!): Product
+  # Edit product hashtag
+  editHashtag(product: ID!, hashtags: [String]!): Product
+  # Edit product color
+  editSize(product: ID!, size: [String]!): Product
+  # Edit product size
+  editColor(product: ID!, color: [String]!): Product
 
   # Create Product
   createProduct(input: productInput): Product

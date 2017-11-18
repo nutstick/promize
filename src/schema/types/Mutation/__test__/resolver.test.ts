@@ -81,3 +81,19 @@ it('Mutation createProduct should insert new product into mongodb', async () => 
   const product = await database.Product.findOne({ name: 'a' });
   expect(product).toMatchSnapshot();
 });
+
+// it('Mutation editPrice should change price of product', async () => {
+//   const product = await database.Product.findOne({
+//     name: 'Zara',
+//   });
+//   await resolver.Mutation.editPrice({
+//     product: product._id,
+//     price: 100,
+//   });
+
+//   const expect_product = await database.Product.findOne({
+//     name: 'Zara',
+//   });
+//   expect(expect_product.price)
+//     .toEqual(100);
+// });

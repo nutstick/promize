@@ -32,7 +32,7 @@ export async function seed(database: Database) {
       await database.Product.create({
         name: m.word,
         description: m.description,
-
+        type: 'BuyNowProduct',
         // price: m.integer(100, 2000),
 
         picture: array_of(Math.floor(Math.random() * 3) + 1, () => m.random_element([
