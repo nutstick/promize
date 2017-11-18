@@ -27,8 +27,8 @@ beforeAll(async () => {
   await core.connection.dropDatabase();
 
   // Fixed new Date
-  const FIXED_DATE = new Date('2017-06-13T04:41:20');
-  (global as any).Date = jest.fn(() => FIXED_DATE);
+  const FIXED_DATE = new Date(Date.UTC(2017, 7, 9, 8));
+  (global as any).Date = jest.fn((...input) => FIXED_DATE);
 });
 
 afterAll(() => core.close());

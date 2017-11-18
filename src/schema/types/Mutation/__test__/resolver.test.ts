@@ -17,8 +17,8 @@ beforeAll(async () => {
   await database.connection.dropDatabase();
 
   // Fixed new Date
-  const FIXED_DATE = new Date('2017-06-13T04:41:20');
-  (global as any).Date = jest.fn(() => FIXED_DATE);
+  const FIXED_DATE = new Date(Date.UTC(2017, 7, 9, 8));
+  (global as any).Date = jest.fn((...input) => FIXED_DATE);
 
   // Init test database
   user = await database.User.create({
@@ -65,17 +65,18 @@ it('Mutation createProduct should insert new product into mongodb', async () => 
       hashtags: ['a', 'b', 'c'],
       colors: ['red'],
       size: ['S'],
-      promotionStart: new Date(2017, 13, 1, 12),
-      promotionEnd: new Date(2017, 14, 1, 19),
+      promotionStart: new Date(),
+      promotionEnd: new Date(),
       owner: user._id,
     },
   }, { database });
 
   // Number of product in database should be 1.
-  const count = await database.Product.find().count;
+  const count = await database.Product.find().count();
   expect(count).toMatchSnapshot();
   // Product should create in database.
   const products = await database.Product.find().toArray();
+  console.log(products);
   expect(products).toMatchSnapshot();
   // Should be able to find a product that has been created.
   const product = await database.Product.findOne({ name: 'a' });
