@@ -17,9 +17,20 @@
     width: 100%;
     position: relative;
     padding: 2em;
+
   }
 }
 
-.ui.form input:not([type]):focus {
-    border-color: #000000 !important;
+.forgetPassword {
+      justify-content: center; 
+      align-items: center; 
+      text-align: center;
 }
+
+.signUp {
+      justify-content: center; 
+      align-items: center; 
+      text-align: center;
+}
+
+

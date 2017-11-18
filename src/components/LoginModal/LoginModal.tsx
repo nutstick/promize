@@ -38,17 +38,12 @@ export class LoginModal extends React.Component<LoginModal.Props> {
             </Form.Field>
             <Button type="submit" fluid secondary> Log in </Button>
             <br />
-            <div style={{
-              justifyContent: 'center', alignItems: 'center',
-              textAlign: 'center',
-            }}>
+            <div className={s.forgetPassword}>
               <Link to="/forget-password" >Forget Password</Link>
             </div>
           </Form>
           <hr />
-          <div style={{
-            justifyContent: 'center', alignItems: 'center', textAlign: 'center',
-          }}>
+          <div className={s.signUp}>
             Don't have an account?
             <Link to="/register" style={{
               paddingLeft: 10,
