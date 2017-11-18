@@ -76,7 +76,6 @@ it('Mutation createProduct should insert new product into mongodb', async () => 
   expect(count).toMatchSnapshot();
   // Product should create in database.
   const products = await database.Product.find().toArray();
-  console.log(products);
   expect(products).toMatchSnapshot();
   // Should be able to find a product that has been created.
   const product = await database.Product.findOne({ name: 'a' });
