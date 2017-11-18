@@ -114,7 +114,7 @@ app.get('/login/facebook/callback',
 );
 
 app.get('/logout', (req, res) => {
-  res.cookie('id_token', null);
+  res.clearCookie('id_token');
   req.logout();
   res.redirect('/');
 });
@@ -172,101 +172,105 @@ const setLocale = async (client: ApolloClient<any>, { locale, initialNow }, { ca
 };
 
 app.get('*', async (req, res, next) => {
-  const location = req.url;
+  try {
+    const location = req.url;
 
-  const cache = new InMemoryCache();
+    const cache = new InMemoryCache();
 
-  const client = createApolloClient({
-    link: new ServerLink({
-      schema: Schema,
-      rootValue: {request: req },
-      context: {
-        database,
-        user: req.user,
+    const client = createApolloClient({
+      link: new ServerLink({
+        schema: Schema,
+        rootValue: {request: req },
+        context: {
+          database,
+          user: req.user,
+        },
+      }),
+      ssrMode: true,
+      cache,
+    });
+
+    // Universal HTTP client
+    const fetch = createFetch(nodeFetch, {
+      baseUrl: api.serverUrl,
+      cookie: req.headers.cookie,
+      // apolloClient,
+    });
+
+    // const state = {
+    //   locales: {
+    //     availableLocales: locales,
+    //   },
+    //   runtimeVariable: {
+    //     initialNow: Date.now(),
+    //   },
+    // };
+
+    // Fetch locale's messages
+    const locale = req.language;
+    const intl = await setLocale(client, {
+      locale,
+      initialNow: Date.now(),
+    }, { cache });
+
+    const css = new Set();
+
+    // Global (context) variables that can be easily accessed from any React component
+    // https://facebook.github.io/react/docs/context.html
+    const context = {
+      // Enables critical path CSS rendering
+      // https://github.com/kriasoft/isomorphic-style-loader
+      insertCss: (...styles) => {
+        // eslint-disable-next-line no-underscore-dangle
+        styles.forEach((style) => css.add(style._getCss()));
       },
-    }),
-    ssrMode: true,
-    cache,
-  });
+      fetch,
+      // Apollo Client for use with react-apollo
+      client,
+      // intl instance as it can be get with injectIntl
+      intl,
+    };
 
-  // Universal HTTP client
-  const fetch = createFetch(nodeFetch, {
-    baseUrl: api.serverUrl,
-    cookie: req.headers.cookie,
-    // apolloClient,
-  });
+    const component = (
+      <App context={context}>
+        <StaticRouter location={location} context={context}>
+          <Routes />
+        </StaticRouter>
+      </App>
+    );
+    // set children to match context
+    // FIXME: https://github.com/apollographql/react-apollo/issues/425
+    await getDataFromTree(component);
+    // await BluebirdPromise.delay(0);
+    const children = ReactDOM.renderToString(component);
 
-  // const state = {
-  //   locales: {
-  //     availableLocales: locales,
-  //   },
-  //   runtimeVariable: {
-  //     initialNow: Date.now(),
-  //   },
-  // };
+    const data: Html.IProps = {
+      title: 'Promize',
+      // TODO: description
+      description: 'Promize.',
+      styles: [
+        { id: 'css', cssText: [...css].join('') },
+      ],
+      scripts: [assets.vendor.js, assets.client.js],
+      app: {
+        apiUrl: api.clientUrl,
+        apollo: cache.extract(),
+        lang: locale,
+      },
+      children,
+    };
 
-  // Fetch locale's messages
-  const locale = req.language;
-  const intl = await setLocale(client, {
-    locale,
-    initialNow: Date.now(),
-  }, { cache });
+    if (__DEV__) {
+      // tslint:disable-next-line:no-console
+      console.log('Serializing store...');
+    }
 
-  const css = new Set();
-
-  // Global (context) variables that can be easily accessed from any React component
-  // https://facebook.github.io/react/docs/context.html
-  const context = {
-    // Enables critical path CSS rendering
-    // https://github.com/kriasoft/isomorphic-style-loader
-    insertCss: (...styles) => {
-      // eslint-disable-next-line no-underscore-dangle
-      styles.forEach((style) => css.add(style._getCss()));
-    },
-    fetch,
-    // Apollo Client for use with react-apollo
-    client,
-    // intl instance as it can be get with injectIntl
-    intl,
-  };
-
-  const component = (
-    <App context={context}>
-      <StaticRouter location={location} context={context}>
-        <Routes />
-      </StaticRouter>
-    </App>
-  );
-  // set children to match context
-  // FIXME: https://github.com/apollographql/react-apollo/issues/425
-  await getDataFromTree(component);
-  // await BluebirdPromise.delay(0);
-  const children = ReactDOM.renderToString(component);
-
-  const data: Html.IProps = {
-    title: 'Promize',
-    // TODO: description
-    description: 'Promize.',
-    styles: [
-      { id: 'css', cssText: [...css].join('') },
-    ],
-    scripts: [assets.vendor.js, assets.client.js],
-    app: {
-      apiUrl: api.clientUrl,
-      apollo: cache.extract(),
-      lang: locale,
-    },
-    children,
-  };
-
-  if (__DEV__) {
-    // tslint:disable-next-line:no-console
-    console.log('Serializing store...');
+    // rendering html components
+    const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);
+    res.status(200).send(`<!doctype html>${html}`);
+  } catch (err) {
+    next(err);
   }
-
-  // rendering html components
-  const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);
-  res.status(200).send(`<!doctype html>${html}`);
 });
 
 //
