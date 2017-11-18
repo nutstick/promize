@@ -30,6 +30,7 @@ type PaymentMethod implements Node {
 
 # User interface
 interface UserType {
+  _id: ID!
   # First name
   firstName: String!
   # Middle name
@@ -104,6 +105,8 @@ type CoSeller implements UserType, Node {
   # Order receipts
   orderReceipts: [OrderReceipt]
   
+  # CoSeller flag
+  coseller: Boolean!
   # Products's Own
   products: ProductPage!
   # Buy order receipts
