@@ -14,7 +14,7 @@ namespace LoginModal {
 }
 
 @withStyles(s)
-@graphql(TOGGLELOGINMODALMUTATION)
+@graphql<{}, {}>(TOGGLELOGINMODALMUTATION)
 export class LoginModal extends React.Component<LoginModal.Props> {
   private onBackgroundClick(e: React.MouseEvent<any>) {
     this.props.mutate({});

@@ -1,3 +1,5 @@
 query Login {
-  login @client
+  login @client {
+    modal
+  }
 }

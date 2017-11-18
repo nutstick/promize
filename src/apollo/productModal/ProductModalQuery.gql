@@ -1,0 +1,6 @@
+query ProductModal {
+  productModal @client {
+    id
+    show
+  }
+}
