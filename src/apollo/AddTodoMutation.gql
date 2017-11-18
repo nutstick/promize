@@ -1,0 +1,3 @@
+mutation AddTodo($message: String, $title: String) {
+  addTodo(message: $message, title: $title) @client
+}

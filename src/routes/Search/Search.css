@@ -1,0 +1,45 @@
+@import '../../components/variables.css';
+
+.root {
+  margin: 0 auto;
+  margin-top: -120px;
+  padding: 0.6em 0 40px;
+}
+
+.left {
+  position: absolute;
+  width: 100%;
+  max-width: 24.6%;
+}
+
+.results {
+  margin-left: 24.6% !important;
+  min-height: calc(100vh - 240px);
+}
+
+.content {
+  padding: 0.65em 1em;
+}
+
+.notFound {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4em;
+
+  > img {
+    width: 60%;
+    display: block;
+    margin: auto;
+  }
+  > .text {
+    text-align: center;
+    font-size: x-large;
+    color: #bdc4cc;
+  }
+}
+
+.productList {
+  > :global(*) {
+    width: 100%;
+  }
+}

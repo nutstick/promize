@@ -13,7 +13,7 @@ export namespace Html {
     scripts?: string[];
     app: {
       apiUrl?: string,
-      // state?: any,
+      apollo?: any,
       lang: string,
     };
     children: string;
@@ -22,7 +22,7 @@ export namespace Html {
 }
 
 export class Html extends React.Component<Html.Props> {
-  render() {
+  public render() {
     const { title, description, styles, scripts, app, children } = this.props;
     return (
       <html className="no-js" lang={app.lang}>
