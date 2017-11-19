@@ -15,6 +15,15 @@ enum ProductEnum {
   Product
   BuyNowProduct
 }
+type Color implements Node {
+  _id: ID!
+  color: String!
+}
+
+type Size implements Node {
+  _id: ID!
+  size: String!
+}
 
 # Product
 type Product implements Node {
@@ -28,8 +37,8 @@ type Product implements Node {
 
   picture: [String]!
   hashtag: [String]!
-  colors: [String]
-  sizes: [String]
+  colors: [Color]
+  sizes: [Size]
 
   promotionStart: Date!
   promotionEnd: Date!

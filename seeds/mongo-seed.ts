@@ -1,4 +1,5 @@
 import generate from 'babel-generator';
+import { ObjectID as id } from 'mongodb';
 import { Database } from '../src/schema/models';
 // tslint:disable-next-line:no-var-requires
 const m = require('casual');
@@ -10,6 +11,20 @@ const array_of = (times, generator) => {
 
 const start_date = m.moment;
 const end_date = start_date.add(Math.floor(Math.floor(Math.random() * 60)), 'days');
+
+const color_id = {
+  red: new id(),
+  blue: new id(),
+  green: new id(),
+};
+
+const size_id = {
+  S: new id(),
+  M: new id(),
+  L: new id(),
+  XL: new id(),
+  XXL: new id(),
+};
 
 export async function seed(database: Database) {
   // Clear database
@@ -70,8 +85,14 @@ export async function seed(database: Database) {
         hashtags: array_of(Math.floor(Math.random() * 3), () => m.random_element([
           'uniqlo', 'HandM', 'AIIZ', 'GAP', 'Crocs', 'anello', 'kanken',
         ])),
-        colors: array_of(Math.floor(Math.random() * 3), () => m.color_name),
-        sizes: array_of(Math.floor(Math.random() * 3), () => m.random_element(['S', 'M', 'L', 'XL', 'XXL'])),
+        colors: array_of(Math.floor(Math.random() * 3), () => {
+          const random_color = m.random_element(['red', 'blue', 'green']);
+          return { color: random_color, _id: color_id[random_color] };
+        }),
+        sizes: array_of(Math.floor(Math.random() * 3), () => {
+          const random_size = m.random_element(['S', 'M', 'L', 'XL', 'XXL']);
+          return { size: random_size, _id: size_id[random_size] };
+        }),
 
         promotion_start: start_date.toDate(),
         promotion_end: end_date.toDate(),

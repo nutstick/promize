@@ -1,3 +1,4 @@
+import { IColor, ISize } from '../../models/Product/productdetail';
 import { INode } from '../Pagination';
 import { IUser } from '../User';
 import resolver from './resolver';
@@ -13,8 +14,8 @@ interface IProduct extends INode {
 
     picture: string[];
     hashtag: string[];
-    colors?: string[];
-    sizes?: string[];
+    colors?: IColor[];
+    sizes?: ISize[];
 
     promotionStart: Date;
     promotionEnd: Date;
