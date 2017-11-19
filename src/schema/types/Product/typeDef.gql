@@ -25,6 +25,11 @@ type Size implements Node {
   size: String!
 }
 
+type Category implements Node {
+  _id: ID!
+  category: String!
+}
+
 # Product
 type Product implements Node {
   _id: ID!
@@ -39,6 +44,7 @@ type Product implements Node {
   hashtag: [String]!
   colors: [Color]
   sizes: [Size]
+  categories: [Category]
 
   promotionStart: Date!
   promotionEnd: Date!

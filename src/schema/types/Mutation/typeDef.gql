@@ -7,6 +7,10 @@ input SizeInput {
   size: String
 }
 
+input CategoryInput {
+  category: String
+}
+
 input productInput {
   _id: String
 
@@ -21,6 +25,7 @@ input productInput {
   hashtags: [String]!
   colors: [ColorInput]
   sizes: [SizeInput]
+  categories: [CategoryInput]
 
   promotionStart: Date!
   promotionEnd: Date!	
@@ -39,6 +44,8 @@ type Mutation {
   editSize(product: ID!, sizes: [SizeInput]!): Product
   # Edit product color
   editColor(product: ID!, colors: [ColorInput]!): Product
+  # Edit product category
+  editCategory(product: ID!, categories: [CategoryInput]!): Product
 
   # Create Product
   createProduct(input: productInput): Product

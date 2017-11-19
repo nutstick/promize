@@ -16,4 +16,13 @@ const Size = {
     size: String,
 };
 
-export { IColor, Color, ISize, Size };
+interface ICategory {
+    _id?: string;
+    category: string;
+}
+
+const Category = {
+    category: String,
+};
+
+export { IColor, Color, ISize, Size, ICategory, Category };

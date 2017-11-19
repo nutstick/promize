@@ -26,6 +26,17 @@ const size_id = {
   XXL: new id(),
 };
 
+const category_id = {
+  Cloths: new id(),
+  Beauty: new id(),
+  Autophile: new id(),
+  Cellphone: new id(),
+  Tech: new id(),
+  Game: new id(),
+  Photography: new id(),
+  Electonics: new id(),
+};
+
 export async function seed(database: Database) {
   // Clear database
   await database.connection.dropDatabase();
@@ -92,6 +103,12 @@ export async function seed(database: Database) {
         sizes: array_of(Math.floor(Math.random() * 3), () => {
           const random_size = m.random_element(['S', 'M', 'L', 'XL', 'XXL']);
           return { size: random_size, _id: size_id[random_size] };
+        }),
+        categories: array_of(Math.floor(Math.random() * 2) + 1, () => {
+          const random_category = m.random_element(
+            ['Cloths', 'Beauty', 'Autophile', 'Cellphone', 'Tech', 'Game', 'Photography', 'Electonics']
+          );
+          return { category: random_category, _id: category_id[random_category] };
         }),
 
         promotion_start: start_date.toDate(),

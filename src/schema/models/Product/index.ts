@@ -1,7 +1,7 @@
 import * as Iridium from 'iridium';
 import { Collection, Index, Instance, ObjectID, Property, Transform } from 'iridium';
 import { ObjectID as id } from 'mongodb';
-import { Color, IColor, ISize, Size } from './productdetail';
+import { Category, Color, ICategory, IColor, ISize, Size } from './productdetail';
 
 interface IProductDocument {
   _id?: string;
@@ -16,6 +16,7 @@ interface IProductDocument {
   hashtags: string[];
   colors?: IColor[];
   sizes?: ISize[];
+  categories?: ICategory[];
 
   promotion_start: Date;
   promotion_end: Date;
@@ -66,6 +67,13 @@ class Product extends Instance<IProductDocument, Product> implements IProductDoc
   )
   @Property([Size], false)
   sizes: ISize[];
+  // Category
+  @Transform(
+    (value) => value,
+    (value) => value && value.map((category) => category._id ? category : { ...category, _id: new id() }),
+  )
+  @Property([Category], false)
+  categories: ICategory[];
 
   @Property(Date, true)
   promotion_start: Date;
