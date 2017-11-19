@@ -63,8 +63,12 @@ it('Mutation createProduct should insert new product into mongodb', async () => 
       pictures: ['https://th-live-02.slatic.net/p/7/hequ-1483111676-123106' +
         '5-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg'],
       hashtags: ['a', 'b', 'c'],
-      colors: ['red'],
-      size: ['S'],
+      colors: [{
+        color: 'red',
+      }],
+      sizes: [{
+        size: 'S',
+      }],
       promotionStart: new Date(),
       promotionEnd: new Date(),
       owner: user._id,
