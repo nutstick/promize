@@ -16,7 +16,7 @@ const userModel = new Model<IUserDocument, User>(core, User);
 
 // Pass generator as callback
 const array_of = (times, generator) => {
-    return Array.apply(null, Array(times)).map(() => generator());
+  return Array.apply(null, Array(times)).map(() => generator());
 };
 
 const start_date = m.moment;
@@ -27,8 +27,8 @@ beforeAll(async () => {
   await core.connection.dropDatabase();
 
   // Fixed new Date
-  const FIXED_DATE = new Date('2017-06-13T04:41:20');
-  (global as any).Date = jest.fn(() => FIXED_DATE);
+  const FIXED_DATE = new Date(Date.UTC(2017, 7, 9, 8));
+  (global as any).Date = jest.fn((...input) => FIXED_DATE);
 });
 
 afterAll(() => core.close());
@@ -41,8 +41,8 @@ describe('Product Model', () => {
       last_name: m.last_name,
       tel_number: m.phone,
       account: {
-          email: m.email,
-          password: m.password,
+        email: m.email,
+        password: m.password,
       },
       avatar: m.url,
     });
@@ -55,12 +55,22 @@ describe('Product Model', () => {
       type: 'BuyNowProduct',
       price: 800,
       pictures: [
-          'https://th-live-02.slatic.net/p/7/hequ-1483111676-123106' +
-          '5-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg',
+        'https://th-live-02.slatic.net/p/7/hequ-1483111676-123106' +
+        '5-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg',
       ],
       hashtags: ['uniqlo', 'HandM', 'AIIZ', 'GAP', 'Crocs', 'anello', 'kanken'],
-      colors: ['red', 'blue'],
-      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+      colors: [{
+        color: 'red',
+      }, {
+        color: 'blue',
+      }],
+      sizes: [
+        { size: 'S' },
+        { size: 'M' },
+        { size: 'L' },
+        { size: 'XL' },
+        { size: 'XXL' },
+      ],
       promotion_start: new Date(2017, 13, 1, 12),
       promotion_end: new Date(2017, 14, 1, 19),
       owner: user._id,

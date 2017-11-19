@@ -1,5 +1,7 @@
+import { GraphQLInputObjectType, GraphQLInterfaceType, GraphQLList, GraphQLString } from 'graphql';
 import * as GraphQLDate from 'graphql-date';
 import { makeExecutableSchema } from 'graphql-tools';
+import * as UnionInputType from 'graphql-union-input-type';
 import { print } from 'graphql/language';
 import * as SchemaType from './schema.gql';
 import * as IntlMessage from './types/IntlMessage';
@@ -21,9 +23,57 @@ const modules = [
   Mutation,
 ];
 
+const UserIDKeyword = new GraphQLInputObjectType({
+  name: 'user',
+  fields: () => {
+    return {
+      id: {
+        type: GraphQLString,
+      },
+    };
+  },
+});
+
+const HashtagKeyword = new GraphQLInputObjectType({
+  name: 'hashtags',
+  fields: () => {
+    return {
+      keyword: {
+        type: GraphQLString,
+      },
+    };
+  },
+});
+
+const SpecialKeyword = new GraphQLInputObjectType({
+  name: 'special',
+  fields: () => {
+    return {
+      special_keyword: {
+        type: GraphQLString,
+      },
+    };
+  },
+});
+
 const resolvers = Object.assign({
   Date: GraphQLDate,
   // Time: GraphQLString,
+  Keyword: UnionInputType({
+    name: 'keyword',
+    InputType: [UserIDKeyword, HashtagKeyword, SpecialKeyword],
+    resolveTypeFromAst: function resolveTypeFromAst(ast) {
+      print(ast.fields[0]);
+      if (ast.fields[0].name.value === 'id') {
+        return UserIDKeyword;
+      } else if (ast.fields[0].name.value === 'keyword') {
+        return HashtagKeyword;
+      } else {
+        return SpecialKeyword;
+      }
+    },
+  }),
+
 },
   ...(modules.map((m) => m.resolver).filter((res) => res)),
 );

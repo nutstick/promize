@@ -1,4 +1,16 @@
 # Input
+input ColorInput {
+  color: String
+}
+
+input SizeInput {
+  size: String
+}
+
+input CategoryInput {
+  category: String
+}
+
 input productInput {
   _id: String
 
@@ -11,11 +23,14 @@ input productInput {
 
   pictures: [String]!
   hashtags: [String]!
-  colors: [String]
-  sizes: [String]
+  colors: [ColorInput]
+  sizes: [SizeInput]
+  categories: [CategoryInput]
 
   promotionStart: Date!
   promotionEnd: Date!	
+
+  owner: String!
 }
 # Mutations
 type Mutation {
@@ -25,10 +40,12 @@ type Mutation {
   editPicture(product: ID!, pictures: [String]!): Product
   # Edit product hashtag
   editHashtag(product: ID!, hashtags: [String]!): Product
-  # Edit product color
-  editSize(product: ID!, size: [String]!): Product
   # Edit product size
-  editColor(product: ID!, color: [String]!): Product
+  editSize(product: ID!, sizes: [SizeInput]!): Product
+  # Edit product color
+  editColor(product: ID!, colors: [ColorInput]!): Product
+  # Edit product category
+  editCategory(product: ID!, categories: [CategoryInput]!): Product
 
   # Create Product
   createProduct(input: productInput): Product

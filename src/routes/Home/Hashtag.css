@@ -1,0 +1,16 @@
+.root {
+  background-color: #fff;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.29);
+
+  margin: 0.5em;
+  margin-bottom: 1em;
+
+  > .content{
+    font-weight: 200;
+    padding: 0.8em 0.6em;    
+  }
+
+  .hashtag {
+    margin-right: 6px;
+  }
+}

@@ -1,11 +1,15 @@
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import * as s from './NotFound.css';
 
-interface INotFound extends React.Props<any> {
-  title: string;
+namespace NotFound {
+  interface IProps {
+    title: string;
+  }
+  export type Props = IProps;
 }
-
-export class NotFound extends React.Component<INotFound> {
+@withStyles(s)
+export class NotFound extends React.Component<NotFound.Props> {
   constructor(props) {
     super(props);
   }

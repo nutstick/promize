@@ -18,7 +18,6 @@ if (process.env.BROWSER) {
 export const locales = [
   /* @intl-code-template '${lang}-${COUNTRY}', */
   'en-US',
-  'cs-CZ',
   'th-TH',
   /* @intl-code-template-end */
 ];

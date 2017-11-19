@@ -27,6 +27,7 @@ interface IUserType {
 interface IUser extends IUserType, INode {}
 
 interface ICoSeller extends IUserType, INode {
+  coseller?: boolean;
   products?: IPage<IProduct>;
   buyOrderReceipts?: IOrderReceipt[];
 }

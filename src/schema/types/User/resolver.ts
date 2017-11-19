@@ -36,6 +36,29 @@ const resolver: IResolver<any, any> = {
     paymentMethods({ payment_methods }) {
       return payment_methods;
     },
+    // TODO: orderReceipts
+  },
+  CoSeller: {
+    firstName({ first_name }) {
+      return first_name;
+    },
+    middleName({ middle_name }) {
+      return middle_name;
+    },
+    lastName({ last_name }) {
+      return last_name;
+    },
+    telNumber({ tel_number }) {
+      return tel_number;
+    },
+    paymentMethods({ payment_methods }) {
+      return payment_methods;
+    },
+    // TODO: orderReceipts
+    coseller() {
+      return true;
+    },
+    // TODO: products, buyOrderReceipts
   },
 };
 

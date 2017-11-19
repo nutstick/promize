@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Mutation createProduct should insert new product into mongodb 1`] = `[Function]`;
+exports[`Mutation createProduct should insert new product into mongodb 1`] = `1`;
 
 exports[`Mutation createProduct should insert new product into mongodb 2`] = `
 Array [
@@ -9,7 +9,11 @@ Array [
     "colors": Array [
       "red",
     ],
+<<<<<<< HEAD
     "createAt": 2017-06-13T04:41:20.000Z,
+=======
+    "createAt": 2017-08-09T08:00:00.000Z,
+>>>>>>> origin/backend
     "hashtags": Array [
       "a",
       "b",
@@ -20,13 +24,22 @@ Array [
     "pictures": Array [
       "https://th-live-02.slatic.net/p/7/hequ-1483111676-1231065-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg",
     ],
+<<<<<<< HEAD
     "promotion_end": 2017-06-13T04:41:20.000Z,
     "promotion_start": 2017-06-13T04:41:20.000Z,
+=======
+    "promotion_end": 2017-08-09T08:00:00.000Z,
+    "promotion_start": 2017-08-09T08:00:00.000Z,
+>>>>>>> origin/backend
     "size": Array [
       "S",
     ],
     "type": "Product",
+<<<<<<< HEAD
     "updateAt": 2017-06-13T04:41:20.000Z,
+=======
+    "updateAt": 2017-08-09T08:00:00.000Z,
+>>>>>>> origin/backend
   },
 ]
 `;
@@ -37,7 +50,11 @@ Object {
   "colors": Array [
     "red",
   ],
+<<<<<<< HEAD
   "createAt": 2017-06-13T04:41:20.000Z,
+=======
+  "createAt": 2017-08-09T08:00:00.000Z,
+>>>>>>> origin/backend
   "hashtags": Array [
     "a",
     "b",
@@ -48,12 +65,21 @@ Object {
   "pictures": Array [
     "https://th-live-02.slatic.net/p/7/hequ-1483111676-1231065-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg",
   ],
+<<<<<<< HEAD
   "promotion_end": 2017-06-13T04:41:20.000Z,
   "promotion_start": 2017-06-13T04:41:20.000Z,
+=======
+  "promotion_end": 2017-08-09T08:00:00.000Z,
+  "promotion_start": 2017-08-09T08:00:00.000Z,
+>>>>>>> origin/backend
   "size": Array [
     "S",
   ],
   "type": "Product",
+<<<<<<< HEAD
   "updateAt": 2017-06-13T04:41:20.000Z,
+=======
+  "updateAt": 2017-08-09T08:00:00.000Z,
+>>>>>>> origin/backend
 }
 `;

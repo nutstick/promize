@@ -1,0 +1,24 @@
+query Product($id: ID!) {
+  product(id: $id) {
+    _id
+    name
+    description
+    originalPrice
+    type
+    price
+    picture
+    hashtag
+    colors
+    sizes
+    promotionStart
+    promotionEnd
+    owner {
+      _id
+      firstName
+      middleName
+      lastName
+      avatar
+    }
+    createAt
+  }
+}

@@ -10,7 +10,11 @@ Array [
       "red",
       "blue",
     ],
+<<<<<<< HEAD
     "createAt": 2017-06-13T04:41:20.000Z,
+=======
+    "createAt": 2017-08-09T08:00:00.000Z,
+>>>>>>> origin/backend
     "description": "Zara clothes",
     "hashtags": Array [
       "uniqlo",
@@ -28,8 +32,13 @@ Array [
       "https://th-live-02.slatic.net/p/7/hequ-1483111676-1231065-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg",
     ],
     "price": 800,
+<<<<<<< HEAD
     "promotion_end": 2017-06-13T04:41:20.000Z,
     "promotion_start": 2017-06-13T04:41:20.000Z,
+=======
+    "promotion_end": 2017-08-09T08:00:00.000Z,
+    "promotion_start": 2017-08-09T08:00:00.000Z,
+>>>>>>> origin/backend
     "sizes": Array [
       "S",
       "M",
@@ -38,7 +47,11 @@ Array [
       "XXL",
     ],
     "type": "BuyNowProduct",
+<<<<<<< HEAD
     "updateAt": 2017-06-13T04:41:20.000Z,
+=======
+    "updateAt": 2017-08-09T08:00:00.000Z,
+>>>>>>> origin/backend
   },
 ]
 `;
@@ -50,7 +63,11 @@ Object {
     "red",
     "blue",
   ],
+<<<<<<< HEAD
   "createAt": 2017-06-13T04:41:20.000Z,
+=======
+  "createAt": 2017-08-09T08:00:00.000Z,
+>>>>>>> origin/backend
   "description": "Zara clothes",
   "hashtags": Array [
     "uniqlo",
@@ -68,8 +85,13 @@ Object {
     "https://th-live-02.slatic.net/p/7/hequ-1483111676-1231065-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg",
   ],
   "price": 800,
+<<<<<<< HEAD
   "promotion_end": 2017-06-13T04:41:20.000Z,
   "promotion_start": 2017-06-13T04:41:20.000Z,
+=======
+  "promotion_end": 2017-08-09T08:00:00.000Z,
+  "promotion_start": 2017-08-09T08:00:00.000Z,
+>>>>>>> origin/backend
   "sizes": Array [
     "S",
     "M",
@@ -78,6 +100,10 @@ Object {
     "XXL",
   ],
   "type": "BuyNowProduct",
+<<<<<<< HEAD
   "updateAt": 2017-06-13T04:41:20.000Z,
+=======
+  "updateAt": 2017-08-09T08:00:00.000Z,
+>>>>>>> origin/backend
 }
 `;

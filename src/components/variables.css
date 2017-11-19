@@ -9,7 +9,14 @@
    * Layout
    * ======================================================================== */
 
-  --max-content-width: 1000px;
+  --max-content-width: 800px;
+  --max-outter-content-width: 1000px;
+
+
+  /*
+   * Z-index
+   * ======================================================================== */
+  --login-depth: 100;
 
   /*
    * Media queries breakpoints
@@ -20,26 +27,32 @@
   --screen-md-min: 992px;  /* Medium screen / desktop */
   --screen-lg-min: 1200px; /* Large screen / wide desktop */
 
+  /*
+   * Color palette
+   * ======================================================================== */
+
   --dark-grey: #2d2d2d;
   --grey: #b2b2b2;
   --light-color: #ffffff;
   --dark-color: #f2f2f2;
 
-  --primary-color: #087378;
+  --primary-color: #ff9521;
   --secondary-color: #5a6669;
+
+  --dimed-dark-grey: rgba(0, 0, 0, 0.7);
 
   @custom-media --small-xs (width >= 480px);
   @custom-media --small-sm (width >= 768px);
   @custom-media --small-md (width >= 992px);
   @custom-media --small-lg (width >= 1200px);
 
+  /*
+   * Media queries breakpoints
+   * ======================================================================== */
+
   --flex {
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
   }
-
-  --sidebar-width: 180px;
-  --minus-sidebar-width: -180px;
-  --search-width: 300px;
 }
