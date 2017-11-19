@@ -9,11 +9,9 @@
 .left {
   position: absolute;
   width: 100%;
-  max-width: 24.6%;
 }
 
 .results {
-  margin-left: 24.6% !important;
   min-height: calc(100vh - 240px);
 }
 
@@ -41,5 +39,12 @@
 .productList {
   > :global(*) {
     width: 100%;
+  }
+}
+
+
+@media only screen and (max-width: 960px) {
+  .left {
+    position: relative;
   }
 }
