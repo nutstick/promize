@@ -54,9 +54,7 @@ class Product extends Instance<IProductDocument, Product> implements IProductDoc
   // Color
   @Transform(
     (value) => value,
-    (value) => value && value.map((color) => {
-      return color._id ? color : { ...color, _id: new id() };
-    }),
+    (value) => value && value.map((color) => color._id ? color : { ...color, _id: new id() }),
   )
   @Property([Color], false)
   colors: IColor[];

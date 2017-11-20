@@ -10,5 +10,5 @@ type Query {
 
   product(id: ID!): Product
 
-  categorys: [String]
+  hashtags: [String]
 }
