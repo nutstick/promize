@@ -99,7 +99,7 @@ export class ProductModal extends React.Component<ProductModal.Props> {
       <Icon color="grey" size="large" name="chevron right" />
     </div>);
 
-    const { data: { product }} = this.props;
+    const { data: { product } } = this.props;
     return (
       <div className={s.root} onClick={this.onBackgroundClick.bind(this)}>
         <div className={s.modal} onClick={(e) => e.stopPropagation()}>
@@ -169,31 +169,8 @@ export class ProductModal extends React.Component<ProductModal.Props> {
                         })}
                       />
                     </div>
-                  </div>
-                </div>
-                <div className={s.buttonWrapper}>
-                  <Button
-                    as={Link}
-                    to={`/products/${product._id}/buynow`}
-                    invert
-                    size="small"
-                    className={s.primaryButton}
-                    onClick={this.onBackgroundClick.bind(this)}
-                    animated="vertical">
-                    <Button.Content visible>Buy Now</Button.Content>
-                    <Button.Content hidden>
-                      <Icon name="shopping basket" />
-                    </Button.Content>
-                  </Button>
-                  <Button basic invert size="small" color="orange" animated="vertical">
-                    <Button.Content visible>Contact Seller</Button.Content>
-                    <Button.Content hidden>
-                      <Icon name="talk outline" />
-                    </Button.Content>
-                  </Button>
-                </div>
-              </div> :
-            <div>Empty</div>
+                  </div> :
+                  <div>Empty</div>
           }
         </div>
       </div>

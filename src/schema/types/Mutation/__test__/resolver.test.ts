@@ -1,8 +1,29 @@
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import ApolloClient from 'apollo-client';
 import { graphql } from 'graphql';
+import gql from 'graphql-tag';
 import { Schema } from '../../../';
 import { mongodb } from '../../../../config';
+import { ServerLink } from '../../../../core/ServerLink';
 import { Database } from '../../../models';
+import { IOrderReceipt } from '../../OrderReceipt/index';
 import resolver from '../resolver';
+
+interface Mutation {
+  createOrderReceipt: IOrderReceipt;
+}
+
+const query = gql`mutation CreateOrderReceipt {
+  createOrderReceipt (input: {
+    product: '585b11e7adb8b5f2d655da01',
+    size: 'S',
+    color: 'red',
+    numberOfItems: 1,
+    deliverAddress: '',
+    paymentMethod: '',
+    remake: 'note something',
+  })
+}`;
 
 const database = new Database({
   ...mongodb,
@@ -61,12 +82,16 @@ it('Mutation createProduct should insert new product into mongodb', async () => 
     input: {
       _id: '585b11e7adb8b5f2d655da01',
       name: 'a',
-      type: 'Product',
+      // type: 'Product',
       pictures: ['https://th-live-02.slatic.net/p/7/hequ-1483111676-123106' +
         '5-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg'],
       hashtags: ['a', 'b', 'c'],
-      colors: ['red'],
-      size: ['S'],
+      colors: [{
+        color: 'red',
+      }],
+      sizes: [{
+        size: 'S',
+      }],
       promotionStart: new Date(),
       promotionEnd: new Date(),
       owner: user._id,
@@ -76,6 +101,25 @@ it('Mutation createProduct should insert new product into mongodb', async () => 
   // Should be able to find a product that has been created.
   const product = await database.Product.findOne({ name: 'a' });
   expect(product).toMatchSnapshot();
+});
+
+describe('GraphQL Mutation', () => {
+  it('createOrderReceipt', () => {
+    const client = new ApolloClient({
+      link: new ServerLink({
+        schema: Schema,
+      }),
+      cache: new InMemoryCache(),
+      ssrMode: true,
+    });
+
+    return client.query<Mutation>({
+      query,
+    })
+      .then(({ data }) => {
+        expect(data).toMatchSnapshot();
+      });
+  });
 });
 
 // it('Mutation editPrice should change price of product', async () => {
