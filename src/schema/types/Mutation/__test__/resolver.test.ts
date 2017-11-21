@@ -59,7 +59,7 @@ it('Mutation createProduct should insert new product into mongodb', async () => 
     input: {
       _id: '585b11e7adb8b5f2d655da01',
       name: 'a',
-      type: 'Product',
+      // type: 'Product',
       pictures: ['https://th-live-02.slatic.net/p/7/hequ-1483111676-123106' +
         '5-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg'],
       hashtags: ['a', 'b', 'c'],
