@@ -1,8 +1,29 @@
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import ApolloClient from 'apollo-client';
 import { graphql } from 'graphql';
+import gql from 'graphql-tag';
 import { Schema } from '../../../';
 import { mongodb } from '../../../../config';
+import { ServerLink } from '../../../../core/ServerLink';
 import { Database } from '../../../models';
+import { IOrderReceipt } from '../../OrderReceipt/index';
 import resolver from '../resolver';
+
+interface Mutation {
+  createOrderReceipt: IOrderReceipt;
+}
+
+const query = gql`mutation CreateOrderReceipt {
+  createOrderReceipt (input: {
+    product: '585b11e7adb8b5f2d655da01',
+    size: 'S',
+    color: 'red',
+    numberOfItems: 1,
+    deliverAddress: '',
+    paymentMethod: '',
+    remake: 'note something',
+  })
+}`;
 
 const database = new Database({
   ...mongodb,
@@ -32,24 +53,6 @@ beforeAll(async () => {
     },
     avatar: 'someurl',
   });
-
-  // await database.Product.create({
-  //   name: 'Zara',
-  //   description: 'Zara clothes',
-  //   original_price: 1000,
-  //   type: 'BuyNowProduct',
-  //   price: 800,
-  //   picture: ['https://th-live-02.slatic.net/p/7/hequ-1483111676-123106' +
-  //     '5-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg'],
-  //   hashtag: ['uniqlo'],
-  //   colors: ['red'],
-  //   sizes: ['S'],
-  //   promotion_start: new Date(2017, 13, 1, 12),
-  //   promotion_end: new Date(2017, 14, 1, 19),
-  //   owner: user._id,
-  //   createAt: new Date(2017, 13, 1, 8),
-  //   updateAt: new Date(2017, 13, 1, 8),
-  // });
 });
 
 afterAll(() => database.close());
@@ -84,6 +87,25 @@ it('Mutation createProduct should insert new product into mongodb', async () => 
   // Should be able to find a product that has been created.
   const product = await database.Product.findOne({ name: 'a' });
   expect(product).toMatchSnapshot();
+});
+
+describe('GraphQL Mutation', () => {
+  it('createOrderReceipt', () => {
+    const client = new ApolloClient({
+      link: new ServerLink({
+        schema: Schema,
+      }),
+      cache: new InMemoryCache(),
+      ssrMode: true,
+    });
+
+    return client.query<Mutation>({
+      query,
+    })
+      .then(({ data }) => {
+        expect(data).toMatchSnapshot();
+      });
+  });
 });
 
 // it('Mutation editPrice should change price of product', async () => {
