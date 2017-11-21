@@ -3,72 +3,41 @@ import { IResolver } from '../index';
 
 const resolver: IResolver<any, any> = {
   Mutation: {
-    async editPrice(_, { product, price }, { database }) {
-      await database.Product.update({ _id: product }, {
-        $set: {
-          price,
-          updateAt: Date.now(),
-        },
-      });
-      return await database.Product.findOne({ _id: product });
-    },
-
-    async editPicture(_, { product, pictures }, { database }) {
-      await database.Product.update({ _id: product }, {
-        $set: {
-          picture: pictures,
-          updateAt: new Date(),
-        },
-      });
-      return await database.Product.findOne({ _id: product });
-    },
-
-    async editHashtag(_, { product, hashtags }, { database }) {
-      await database.Product.update({ _id: product }, {
-        $set: {
-          hashtag: hashtags,
-          updateAt: new Date(),
-        },
-      });
-      return await database.Product.findOne({ _id: product });
-    },
-
-    async editSize(_, { product, sizes }, { database }) {
-      await database.Product.update({ _id: product }, {
-        $set: {
-          sizes,
-          updateAt: new Date(),
-        },
-      });
-      return await database.Product.findOne({ _id: product });
-    },
-
-    async editColor(_, { product, colors }, { database }) {
-      await database.Product.update({ _id: product }, {
-        $set: {
-          colors,
-          updateAt: new Date(),
-        },
-      });
-      return await database.Product.findOne({ _id: product });
-    },
-
-    async editCategory(_, { product, categories }, { database }) {
-      await database.Product.update({ _id: product }, {
-        $set: {
-          categories,
-          updateAt: new Date(),
-        },
-      });
-      return await database.Product.findOne({ _id: product });
-    },
-
     async createProduct(_, { input: { promotionStart, promotionEnd, ...input } }, { database }) {
       return await database.Product.insert({
         ...input,
         promotion_start: promotionStart,
         promotion_end: promotionEnd,
       });
+    },
+
+    async editProduct(_, { input: { product, ...input } }, { database }) {
+      await database.Product.update({ _id: product }, {
+        $set: {
+          ...input,
+          // updateAt: new Date(),
+        },
+      });
+      return await database.Product.findOne({ _id: product });
+    },
+
+    async createOrderReceipt(_, { input: { numberOfItems, deliverAddress, paymentMethod, ...input } }, { database }) {
+      return await database.Receipt.insert({
+        ...input,
+        number_of_items: numberOfItems,
+        deliver_address: deliverAddress,
+        payment_method: paymentMethod,
+      });
+    },
+
+    async editOrderReceipt(_, { input: { receipt, ...input } }, { database }) {
+      await database.Receipt.update({ _id: receipt }, {
+        $set: {
+          ...input,
+          // updateAt: new Date(),
+        },
+      });
+      return await database.Receipt.findOne({ _id: receipt });
     },
   },
 };

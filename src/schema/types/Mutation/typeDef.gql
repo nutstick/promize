@@ -1,52 +1,56 @@
 # Input
-input ColorInput {
-  color: String
-}
-
-input SizeInput {
-  size: String
-}
-
 input CategoryInput {
   category: String
 }
 
-input productInput {
-  _id: String
-
+input CreateProductInput {
   name: String!
   description: String
-  
   originalPrice: Int
   type: ProductEnum!
   price: Int
-
   pictures: [String]!
   hashtags: [String]!
-  colors: [ColorInput]
-  sizes: [SizeInput]
+  colors: [ID]
+  sizes: [ID]
   categories: [CategoryInput]
-
   promotionStart: Date!
-  promotionEnd: Date!	
-
-  owner: String!
+  promotionEnd: Date!
 }
+
+input EditProductInput {
+  product: ID!
+  price: Int
+  pictures: [String]
+  hashtags: [String]
+  colors: [ID]
+  sizes: [ID]
+  categories: [CategoryInput]
+}
+
+input CreateOrderReceiptInput {
+  product: ID!
+  size: ID!
+  color: ID!
+  numberOfItems: Int!
+  deliverAddress: ID!
+  paymentMethod: ID!
+  remark: String
+}
+
+input EditOrderReceiptInput {
+  receipt: ID!
+}
+
 # Mutations
 type Mutation {
-  # Edit product price
-  editPrice(product: ID!, price: Int!): Product
-  # Edit product picture
-  editPicture(product: ID!, pictures: [String]!): Product
-  # Edit product hashtag
-  editHashtag(product: ID!, hashtags: [String]!): Product
-  # Edit product size
-  editSize(product: ID!, sizes: [SizeInput]!): Product
-  # Edit product color
-  editColor(product: ID!, colors: [ColorInput]!): Product
-  # Edit product category
-  editCategory(product: ID!, categories: [CategoryInput]!): Product
-
   # Create Product
-  createProduct(input: productInput): Product
+  createProduct(input: CreateProductInput): Product
+  # Edit Product
+  editProduct(input: EditProductInput): Product
+
+  # Create OrderReceipt
+  createOrderReceipt(input: CreateOrderReceiptInput): OrderReceipt
+  # Edit OrderReceipt
+  editOrderReceipt(input: EditOrderReceiptInput): OrderReceipt
 }
