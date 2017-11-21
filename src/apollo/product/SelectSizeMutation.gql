@@ -1,0 +1,3 @@
+mutation SelectSize($id: ID!, $size: String!) {
+  selectProductSize(id: $id, size: $size) @client
+}

@@ -12,7 +12,7 @@ const database = new Database({
 
 let user;
 
-beforeAll(async () => {
+beforeAll(async (done) => {
   await database.connect();
   await database.connection.dropDatabase();
 
@@ -50,6 +50,8 @@ beforeAll(async () => {
   //   createAt: new Date(2017, 13, 1, 8),
   //   updateAt: new Date(2017, 13, 1, 8),
   // });
+
+  done();
 });
 
 afterAll(() => database.close());
@@ -71,12 +73,6 @@ it('Mutation createProduct should insert new product into mongodb', async () => 
     },
   }, { database });
 
-  // Number of product in database should be 1.
-  const count = await database.Product.find().count();
-  expect(count).toMatchSnapshot();
-  // Product should create in database.
-  const products = await database.Product.find().toArray();
-  expect(products).toMatchSnapshot();
   // Should be able to find a product that has been created.
   const product = await database.Product.findOne({ name: 'a' });
   expect(product).toMatchSnapshot();

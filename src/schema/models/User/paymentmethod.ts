@@ -1,4 +1,5 @@
 interface IPaymentMethod {
+    _id?: string;
     credit_card_number: string;
     valid_from_month: number;
     valid_from_year: number;

@@ -1,0 +1,3 @@
+mutation SelectColor($id: ID!, $color: String!) {
+  selectProductColor(id: $id, color: $color) @client
+}

@@ -7,19 +7,8 @@ query Product($id: ID!) {
     type
     price
     pictures
-    hashtags
     colors
     sizes
-    promotionStart
-    promotionEnd
-    owner {
-      _id
-      firstName
-      middleName
-      lastName
-      avatar
-    }
-    createAt
 
     selectedSize @client
     selectedColor @client

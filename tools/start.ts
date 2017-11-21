@@ -86,8 +86,8 @@ async function start() {
   clientConfig.output.chunkFilename = clientConfig.output.chunkFilename.replace('chunkhash', 'hash');
   const loader = (clientConfig.module as webpack.NewModule).rules
   .find((x) => (x as any).loader === 'awesome-typescript-loader') as any;
-  loader.options.babelOptions.plugins = ['react-hot-loader/babel']
-    .concat(loader.options.babelOptions.plugins || []);
+  loader.options.babelOptions.plugins = (loader.options.babelOptions.plugins || [])
+    .concat(['react-hot-loader/babel']);
   loader.loaders = ['react-hot-loader/webpack', `${loader.loader}?${JSON.stringify(loader.options)}`];
   delete loader.loader;
   delete loader.options;

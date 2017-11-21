@@ -1,0 +1,11 @@
+query Addresses {
+  me {
+    addresses {
+      _id
+      address
+      city
+      country
+      zip
+    }
+  }
+}

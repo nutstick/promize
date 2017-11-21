@@ -42,8 +42,10 @@ interface UserType {
   # Account data
   account: Account
   # Addresses
+  address(id: ID): Address
   addresses: [Address]
   # Paymethods
+  paymentMethod(id: ID): PaymentMethod
   paymentMethods: [PaymentMethod]
   # User avatar
   avatar: String
@@ -69,8 +71,10 @@ type User implements UserType, Node {
   # Account data
   account: Account
   # Addresses
+  address(id: ID): Address
   addresses: [Address]
   # Paymethods
+  paymentMethod(id: ID): PaymentMethod
   paymentMethods: [PaymentMethod]
   # User avatar
   avatar: String
@@ -96,8 +100,10 @@ type CoSeller implements UserType, Node {
   # Account data
   account: Account
   # Addresses
+  address(id: ID): Address
   addresses: [Address]
   # Paymethods
+  paymentMethod(id: ID): PaymentMethod
   paymentMethods: [PaymentMethod]
   # User avatar
   avatar: String

@@ -6,6 +6,7 @@ import { withClientState } from 'apollo-link-state';
 import * as GETTASKQUERY from './GetTaskQuery.gql';
 import { state as intl } from './intl';
 import { state as login } from './login';
+import { state as product } from './product';
 import { state as productModal } from './productModal';
 
 interface IOptions {
@@ -21,7 +22,6 @@ export const createApolloClient = ({ link, ...options }: IOptions) => {
     cache.writeQuery({ query, variables, data });
     return null;
   };
-
   const local = withClientState({
     Query: {
       todos: () => [],
@@ -36,6 +36,10 @@ export const createApolloClient = ({ link, ...options }: IOptions) => {
       ...intl.Mutation,
       ...login.Mutation,
       ...productModal.Mutation,
+      ...product.Mutation,
+    },
+    Product: {
+      ...product.Product,
     },
   });
 
