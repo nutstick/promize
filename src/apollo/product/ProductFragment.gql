@@ -1,0 +1,5 @@
+fragment item on Product {
+  __typename
+  selectedSize
+  selectedColor
+}

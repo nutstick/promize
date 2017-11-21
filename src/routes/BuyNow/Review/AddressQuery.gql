@@ -1,0 +1,11 @@
+query Address($id: ID) {
+  me {
+    address(id: $id) {
+      _id
+      address
+      city
+      country
+      zip
+    }
+  }
+}

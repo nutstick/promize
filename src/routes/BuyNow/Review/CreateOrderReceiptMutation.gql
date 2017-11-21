@@ -1,0 +1,3 @@
+mutation CreateOrderReceiptMutation($input: CreateOrderReceiptInput!) {
+  createOrderReceipt(input: $input)
+}

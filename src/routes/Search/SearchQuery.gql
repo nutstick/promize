@@ -6,8 +6,8 @@ query SearchQuery($keyword: String!) {
         _id
         name
         description
-        hashtag
-        picture
+        hashtags
+        pictures
         owner {
           _id
           firstName

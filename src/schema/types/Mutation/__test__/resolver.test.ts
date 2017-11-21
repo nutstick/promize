@@ -33,7 +33,7 @@ const database = new Database({
 
 let user;
 
-beforeAll(async () => {
+beforeAll(async (done) => {
   await database.connect();
   await database.connection.dropDatabase();
 
@@ -53,6 +53,26 @@ beforeAll(async () => {
     },
     avatar: 'someurl',
   });
+
+  // await database.Product.create({
+  //   name: 'Zara',
+  //   description: 'Zara clothes',
+  //   original_price: 1000,
+  //   type: 'BuyNowProduct',
+  //   price: 800,
+  //   picture: ['https://th-live-02.slatic.net/p/7/hequ-1483111676-123106' +
+  //     '5-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg'],
+  //   hashtag: ['uniqlo'],
+  //   colors: ['red'],
+  //   sizes: ['S'],
+  //   promotion_start: new Date(2017, 13, 1, 12),
+  //   promotion_end: new Date(2017, 14, 1, 19),
+  //   owner: user._id,
+  //   createAt: new Date(2017, 13, 1, 8),
+  //   updateAt: new Date(2017, 13, 1, 8),
+  // });
+
+  done();
 });
 
 afterAll(() => database.close());
@@ -78,12 +98,6 @@ it('Mutation createProduct should insert new product into mongodb', async () => 
     },
   }, { database });
 
-  // Number of product in database should be 1.
-  const count = await database.Product.find().count();
-  expect(count).toMatchSnapshot();
-  // Product should create in database.
-  const products = await database.Product.find().toArray();
-  expect(products).toMatchSnapshot();
   // Should be able to find a product that has been created.
   const product = await database.Product.findOne({ name: 'a' });
   expect(product).toMatchSnapshot();

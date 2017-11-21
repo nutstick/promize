@@ -1,0 +1,6 @@
+query Product($id: ID!) {
+  product(id: $id) {
+    selectedSize @client
+    selectedColor @client
+  }
+}

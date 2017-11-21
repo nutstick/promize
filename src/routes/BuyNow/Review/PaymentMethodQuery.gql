@@ -1,0 +1,8 @@
+query PaymentMethod($id: ID) {
+  me {
+    paymentMethod(id: $id) {
+      _id
+      creditCardNumber
+    }
+  }
+}

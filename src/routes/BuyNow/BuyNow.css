@@ -7,6 +7,10 @@
   max-width: var(--max-content-width);
 }
 
-.container {
-  margin: 30px;
+.show {
+  display: block;
+}
+
+.hidden {
+  display: none;
 }

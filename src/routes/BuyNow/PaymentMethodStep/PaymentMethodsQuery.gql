@@ -1,0 +1,8 @@
+query PaymentMethods {
+  me {
+    paymentMethods {
+      _id
+      creditCardNumber
+    }
+  }
+}
