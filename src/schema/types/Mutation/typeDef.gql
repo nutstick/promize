@@ -52,6 +52,26 @@ input EditOrderReceiptInput {
   receipt: ID!
 }
 
+# Address type
+input AddressInput {
+  # Address detail
+  address: String!
+  # City
+  city: String!
+  # Country
+  country: String!
+  # Zip code
+  zip: String!
+}
+
+# Payment Method type
+input PaymentMethodInput {
+  # Credit card number
+  creditCardNumber: String!
+  valid_from_month: Int!
+  valid_from_year: Int!
+}
+
 # Mutations
 type Mutation {
   # Create Product
@@ -63,4 +83,8 @@ type Mutation {
   createOrderReceipt(input: CreateOrderReceiptInput): OrderReceipt
   # Edit OrderReceipt
   editOrderReceipt(input: EditOrderReceiptInput): OrderReceipt
+
+  addAddress(user: ID, address: AddressInput): UserType
+
+  addPaymentMethod(user: ID, paymentMethod: PaymentMethodInput): UserType
 }

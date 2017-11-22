@@ -36,6 +36,16 @@ const resolver: IResolver<any, any> = {
       });
       return await database.Receipt.findOne({ _id: receipt });
     },
+
+    async addAddress(_, { user, address }, { database }) {
+      await database.User.update({ _id: user }, { $push: { addresses: address } });
+      return await database.User.findOne({ _id: user });
+    },
+
+    async addPaymentMethod(_, { user, paymentMethod }, { database }) {
+      await database.User.update({ _id: user }, { $push: { payment_methods: paymentMethod } });
+      return await database.User.findOne({ _id: user });
+    },
   },
 };
 
