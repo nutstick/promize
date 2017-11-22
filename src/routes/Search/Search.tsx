@@ -6,7 +6,7 @@ import * as FaFilterIcon from 'react-icons/lib/fa/filter';
 import * as MdSortIcon from 'react-icons/lib/md/sort';
 import { RouteComponentProps, withRouter } from 'react-router';
 import StackGrid, { easings, transitions } from 'react-stack-grid';
-import { Checkbox, Loader, Radio, Sticky, Grid } from 'semantic-ui-react';
+import { Checkbox, Grid, Loader, Radio, Sticky } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
 import { Card, contentClass, headingClass } from '../../components/Card';
 import { ProductCard } from '../../components/ProductCard';

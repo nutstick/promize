@@ -64,8 +64,8 @@ export class ProductStep extends React.Component<ProductStep.Props> {
           <span className={s.label}>Size:</span>
           <ItemSelector
             options={product.sizes.map((size) => ({
-              value: size,
-              text: size,
+              value: size._id,
+              text: size.size,
             }))}
             selected={product.selectedSize}
             onChange={(_, size) => this.props.selectSizeMutation({
@@ -79,8 +79,8 @@ export class ProductStep extends React.Component<ProductStep.Props> {
           <span className={s.label}>Color:</span>
           <ItemSelector
             options={product.colors.map((color) => ({
-              value: color,
-              text: color,
+              value: color._id,
+              text: color.color,
             }))}
             selected={product.selectedColor}
             onChange={(_, color) => this.props.selectColorMutation({

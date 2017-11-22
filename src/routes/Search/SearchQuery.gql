@@ -1,5 +1,5 @@
-query SearchQuery($keyword: String!) {
-  search(keyword: $keyword) {
+query SearchQuery($keywords: [Keyword]) {
+  search(keywords: $keywords) {
     totalCount
     edges {
       node {

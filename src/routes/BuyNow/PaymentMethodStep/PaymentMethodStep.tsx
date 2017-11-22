@@ -46,7 +46,8 @@ export const PaymentMethodOption = ({ _id, creditCardNumber }: IPaymentMethod) =
     key={`${_id}`}
     number={creditCardNumber || ''}
     name={' '}
-    expiry={''} />
+    expiry={''}
+    cvc={''} />
 );
 
 @withStyles(reactCreditCardsCss, s)

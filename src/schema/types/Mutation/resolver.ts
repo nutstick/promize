@@ -1,4 +1,3 @@
-import { ICategory, IColor, ISize } from '../../models/Product/productdetail';
 import { IResolver } from '../index';
 
 const resolver: IResolver<any, any> = {

@@ -1,9 +1,9 @@
 import * as Iridium from 'iridium';
-import { Collection, Index, Instance, ObjectID, Property, Transform } from 'iridium';
-import { ObjectID as id } from 'mongodb';
+import { Collection, Index, Instance, ObjectID, Property } from 'iridium';
 import { Color, IColor, ISize, Size } from '../Product/productdetail';
 import { Address, IAddress } from '../User/address';
 import { IPaymentMethod, PaymentMethod } from '../User/paymentmethod';
+
 interface IReceiptDocument {
     _id?: string;
     product: string;
