@@ -162,6 +162,7 @@ export class Header extends React.Component<Header.Props, Header.State> {
             </Link>
             <div className={s.searchWrapper}>
               <SearchInput
+                url={this.props.location.pathname}
                 keywords={JSON.parse(parseSearch(this.props.location)) || []}
                 onSubmit={this.onSearchSubmit.bind(this)}/>
             </div>

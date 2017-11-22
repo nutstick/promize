@@ -1,0 +1,18 @@
+.returnCustomer {
+  text-align: center;
+  padding-top: 2em;
+  padding-bottom: 1em;
+
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.container {
+  padding: 0 4em;
+}
+
+.right {
+  float: right;
+}

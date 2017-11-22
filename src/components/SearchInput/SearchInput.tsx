@@ -11,6 +11,7 @@ namespace SearchInput {
   export type Keyword = UserKeyword.IProps | HashtagKeyword;
 
   export interface IProps {
+    url: string;
     keywords?: Keyword[];
     onSubmit?: (e, keywords: Keyword[]) => void;
   }
@@ -35,9 +36,11 @@ export class SearchInput extends React.Component<SearchInput.Props, SearchInput.
   }
 
   public componentWillReceiveProps(nextProps) {
-    this.setState({
-      keywords: nextProps.keywords,
-    });
+    if (nextProps.url === '/search') {
+      this.setState({
+        keywords: nextProps.keywords,
+      });
+    }
   }
 
   private onChange(event: React.SyntheticEvent<HTMLInputElement>): void {

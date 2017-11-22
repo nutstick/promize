@@ -1,0 +1,32 @@
+@import '../../../components/variables.css';
+
+.block {
+  padding: 1em;
+}
+
+.address {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.h {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.8em;
+}
+
+.header {
+  font-weight: 600;
+  font-size: 1.5em;
+
+  margin-right: 50px;
+}
+
+.meta {
+  color: var(--grey);
+}
+
+.right {
+  float: right;
+}

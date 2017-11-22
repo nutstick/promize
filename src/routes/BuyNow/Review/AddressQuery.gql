@@ -1,5 +1,6 @@
 query Address($id: ID) {
   me {
+    _id
     address(id: $id) {
       _id
       address

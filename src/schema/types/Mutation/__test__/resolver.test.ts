@@ -32,7 +32,6 @@ beforeAll(async (done) => {
   await database.connection.dropDatabase();
 
   // Fixed new Date
-  console.log('pppp');
   MockDate.set('7/9/2017');
 
   // Init test database

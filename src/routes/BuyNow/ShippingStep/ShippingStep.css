@@ -1,18 +1,27 @@
 .returnCustomer {
-    text-align: center;
-    padding-top: 2em;
-    padding-bottom: 1em;
+  text-align: center;
+  padding-top: 2em;
+  padding-bottom: 1em;
+
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
 }
 
 .newAddress {
-    padding: 0 4em;
+  padding: 0 4em;
 }
 
 .remark {
-    color: red;
-    padding-bottom: 2em;
+  color: red;
+  padding-bottom: 2em;
 }
 
 .buttons {
-    padding: 2em 0;
+  padding: 2em 0;
+}
+
+.right {
+  float: right;
 }
