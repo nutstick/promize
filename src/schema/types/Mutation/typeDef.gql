@@ -16,7 +16,7 @@ input CreateProductInput {
   description: String
   originalPrice: Int
   type: ProductEnum!
-  price: Int
+  price: Int!
   pictures: [String]!
   hashtags: [String]!
   colors: [ColorInput]
@@ -24,7 +24,6 @@ input CreateProductInput {
   categories: [CategoryInput]
   promotionStart: Date!
   promotionEnd: Date!
-  owner: ID!
 }
 
 input EditProductInput {
@@ -45,11 +44,13 @@ input CreateOrderReceiptInput {
   deliverAddress: ID!
   paymentMethod: ID!
   remark: String
-  buyer: ID!
 }
 
 input EditOrderReceiptInput {
   receipt: ID!
+  paymentCompleted: Boolean,
+  productDelivered: Boolean,
+  productReceived: Boolean,
 }
 
 # Mutations
