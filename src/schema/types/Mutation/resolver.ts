@@ -1,5 +1,4 @@
 import { IResolver } from '../index';
-import { log } from 'util';
 
 const resolver: IResolver<any, any> = {
   Mutation: {
@@ -26,16 +25,34 @@ const resolver: IResolver<any, any> = {
     },
 
     async createOrderReceipt(_, { input: { deliverAddress, paymentMethod, ...input } }, { database, user }) {
-      if (database.User.find({ _id: user._id, payment_method: { _id: paymentMethod } })) {
-        input.payment_method = paymentMethod;
+      const user_out = await database.User.findOne({ _id: user._id });
+      if (paymentMethod._id) {
+        if (database.User.find({ _id: user._id, payment_method: { _id: paymentMethod._id } })) {
+          input.payment_method = paymentMethod._id;
+        } else {
+          throw new Error(`Invalid paymentMethod ID`);
+        }
       } else {
-        throw new Error(`Invalid paymentMethod ID`);
+        const id = user_out.addPaymentMethod({
+          credit_card_number: paymentMethod.creditCardNumber,
+          valid_from_month: paymentMethod.validFromMonth,
+          valid_from_year: paymentMethod.validFromYear,
+        });
+        input.payment_method = id.toString();
       }
-      if (database.User.find({ _id: user._id, deliver_address: { _id: deliverAddress } })) {
-        input.deliver_address = deliverAddress;
+
+      if (deliverAddress._id) {
+        if (database.User.find({ _id: user._id, deliver_address: { _id: deliverAddress._id } })) {
+          input.deliver_address = deliverAddress._id;
+        } else {
+          throw new Error(`Invalid deliverAddress ID`);
+        }
       } else {
-        throw new Error(`Invalid deliverAddress ID`);
+        const id = user_out.addAddress(deliverAddress);
+        input.deliver_address = id.toString();
       }
+      user_out.save();
+
       return await database.Receipt.insert({
         ...input,
         buyer: user._id,
@@ -71,25 +88,24 @@ const resolver: IResolver<any, any> = {
 
     async addAddress(_, { address }, { database, user }) {
       if (user && user._id) {
-        await database.User.update({ _id: user._id }, { $push: { addresses: address } });
-        return await database.User.findOne({ _id: user._id });
+        const user_out = await database.User.findOne({ _id: user._id });
+        user_out.addAddress(address);
+        user_out.save();
+        return user_out;
       }
       return null;
     },
 
     async addPaymentMethod(_, { paymentMethod }, { database, user }) {
-      console.log(paymentMethod);
       if (user && user._id) {
-        await database.User.update({ _id: user._id }, {
-          $push: {
-            payment_methods: {
-              credit_card_number: paymentMethod.creditCardNumber,
-              valid_from_month: paymentMethod.validFromMonth,
-              valid_from_year: paymentMethod.validFromYear,
-            },
-          },
+        const user_out = await database.User.findOne({ _id: user._id });
+        user_out.addPaymentMethod({
+          credit_card_number: paymentMethod.creditCardNumber,
+          valid_from_month: paymentMethod.validFromMonth,
+          valid_from_year: paymentMethod.validFromYear,
         });
-        return await database.User.findOne({ _id: user._id });
+        user_out.save();
+        return user_out;
       }
       return null;
     },
