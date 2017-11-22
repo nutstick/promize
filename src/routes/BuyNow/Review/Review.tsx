@@ -101,7 +101,7 @@ export class Review extends React.Component<Review.Props> {
       <div className={s.root}>
         {/* Product */}
         <div className={s.product}>
-          <div>{product.name}</div>
+          <div className={s.productName}>{product.name}</div>
           {/* Size options */}
           <div className={s.block}>
             <span className={s.label}>Size:</span>
@@ -123,7 +123,7 @@ export class Review extends React.Component<Review.Props> {
 
         {/* Address */}
         <div className={s.address}>
-          <span className={s.label}>Address:</span>
+          <h4 className={s.label}>Address:</h4>
           <AddressOption address={address} country={country} city={city} zip={zip} />
         </div>
 
@@ -131,10 +131,10 @@ export class Review extends React.Component<Review.Props> {
 
         {/* Payment Method */}
         <div className={s.paymentMethod}>
-          <span className={s.label}>Payment Method:</span>
+          <h4 className={s.label}>Payment Method:</h4>
           <PaymentMethodOption creditCardNumber={this.props.creditCardNumber} />
         </div>
-        <div>
+        <div className={s.buttons}>
           <Button
             className={s.left}
             content="Previous"
