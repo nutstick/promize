@@ -15,8 +15,6 @@
 }
 
 .productImage {
-    display: block;
-    margin: 0 auto;
     padding: 1em 0;
 }
 
@@ -27,4 +25,8 @@
 .label {
     font-weight: bold;
     line-height: 200%;
+}
+
+.buttons {
+    padding-top: 1em;
 }

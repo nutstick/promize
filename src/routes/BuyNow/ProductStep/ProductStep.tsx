@@ -60,7 +60,7 @@ export class ProductStep extends React.Component<ProductStep.Props> {
         </div>
         <div className={s.productImage}>
           {product.pictures.map((picture, index) => (
-            <Image key={index} src={picture} />
+            <Image centered key={index} src={picture} />
           ))}
         </div>
         {/* Size options */}
@@ -94,7 +94,7 @@ export class ProductStep extends React.Component<ProductStep.Props> {
             })}
           />
         </div>
-        <div>
+        <div className={s.buttons}>
           <Button
             className={s.right}
             color="orange"
