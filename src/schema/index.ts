@@ -1,7 +1,7 @@
 import { GraphQLInputObjectType, GraphQLString } from 'graphql';
 import * as GraphQLDate from 'graphql-date';
 import { makeExecutableSchema } from 'graphql-tools';
-import UnionInputType from 'graphql-union-input-type';
+import * as UnionInputType from 'graphql-union-input-type';
 import { print } from 'graphql/language';
 import * as SchemaType from './schema.gql';
 import * as IntlMessage from './types/IntlMessage';
