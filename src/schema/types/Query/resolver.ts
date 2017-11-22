@@ -109,6 +109,11 @@ const resolver: IResolver<any, any> = {
       return hashtag[0].uniqueValues;
     },
 
+    async user(_, { id }, { database }) {
+      return await database.User.findOne({
+        _id: id,
+      });
+    },
   },
 };
 

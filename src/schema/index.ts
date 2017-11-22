@@ -1,8 +1,9 @@
 import { GraphQLInputObjectType, GraphQLString } from 'graphql';
 import * as GraphQLDate from 'graphql-date';
 import { makeExecutableSchema } from 'graphql-tools';
-import * as UnionInputType from 'graphql-union-input-type';
+// import * as UnionInputType from 'graphql-union-input-type';
 import { print } from 'graphql/language';
+import { UnionInputType } from '../core/UnionInputType';
 import * as SchemaType from './schema.gql';
 import * as IntlMessage from './types/IntlMessage';
 import * as Mutation from './types/Mutation';
@@ -61,9 +62,9 @@ const resolvers = Object.assign({
   // Time: GraphQLString,
   Keyword: new UnionInputType({
     name: 'Keyword',
-    InputType: [UserIDKeyword, HashtagKeyword, SpecialKeyword],
-    resolveTypeFromAst: function resolveTypeFromAst(ast) {
-      print(ast.fields[0]);
+    inputTypes: [UserIDKeyword, HashtagKeyword, SpecialKeyword],
+    resolveTypeFromAst(ast) {
+      // print(ast.fields[0]);
       if (ast.fields[0].name.value === 'id') {
         return UserIDKeyword;
       } else if (ast.fields[0].name.value === 'keyword') {

@@ -25,8 +25,11 @@ export function stringify(search: any) {
 export function parseSearch(search: Location) {
   const q: string = search.search.slice(1);
 
-  const parseResult: any = q.split('&').reduce((prev, param) => {
-    const parts = param.replace(/\%20/g, ' ').split('=');
+  const parseResult: { keywords?: string, [key: string]: string } = q.split('&').reduce((prev, param) => {
+    const parts = param
+      .replace(/\%20/g, ' ')
+      .replace(/\%22/g, '\"')
+      .split('=');
     const key = parts.shift();
     const val = parts.length > 0 ? parts.join('=') : undefined;
 
