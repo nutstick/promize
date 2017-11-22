@@ -1,7 +1,7 @@
-import { GraphQLInputObjectType, GraphQLInterfaceType, GraphQLList, GraphQLString } from 'graphql';
+import { GraphQLInputObjectType, GraphQLString } from 'graphql';
 import * as GraphQLDate from 'graphql-date';
 import { makeExecutableSchema } from 'graphql-tools';
-import * as UnionInputType from 'graphql-union-input-type';
+import UnionInputType from 'graphql-union-input-type';
 import { print } from 'graphql/language';
 import * as SchemaType from './schema.gql';
 import * as IntlMessage from './types/IntlMessage';
@@ -24,7 +24,7 @@ const modules = [
 ];
 
 const UserIDKeyword = new GraphQLInputObjectType({
-  name: 'user',
+  name: 'UserIDKeywordInput',
   fields: () => {
     return {
       id: {
@@ -35,7 +35,7 @@ const UserIDKeyword = new GraphQLInputObjectType({
 });
 
 const HashtagKeyword = new GraphQLInputObjectType({
-  name: 'hashtags',
+  name: 'HashtagKeywordInput',
   fields: () => {
     return {
       keyword: {
@@ -46,7 +46,7 @@ const HashtagKeyword = new GraphQLInputObjectType({
 });
 
 const SpecialKeyword = new GraphQLInputObjectType({
-  name: 'special',
+  name: 'SpecialKeywordInput',
   fields: () => {
     return {
       special_keyword: {
@@ -59,8 +59,8 @@ const SpecialKeyword = new GraphQLInputObjectType({
 const resolvers = Object.assign({
   Date: GraphQLDate,
   // Time: GraphQLString,
-  Keyword: UnionInputType({
-    name: 'keyword',
+  Keyword: new UnionInputType({
+    name: 'Keyword',
     InputType: [UserIDKeyword, HashtagKeyword, SpecialKeyword],
     resolveTypeFromAst: function resolveTypeFromAst(ast) {
       print(ast.fields[0]);
@@ -73,10 +73,10 @@ const resolvers = Object.assign({
       }
     },
   }),
-
 },
   ...(modules.map((m) => m.resolver).filter((res) => res)),
 );
+
 const typeDefs = schema.concat(modules.map((m) => print(m.type)).filter((res) => !!res));
 
 const Schema = makeExecutableSchema({

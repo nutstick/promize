@@ -44,40 +44,39 @@ const resolver: IResolver<any, any> = {
     },
 
     search(_, { keywords, first, after }, { database }) {
-      // FIXME: Sure error when search with owner
       let products;
-      const list_of_keyword = [];
       if (keywords) {
-        for (const i in keywords) {
-          if (keywords[i].id) {
-            list_of_keyword.push({
-              owner: keywords[i].id,
-            });
-          } else if (keywords[i].special_keyword) {
-            const special = keywords[i].special_keyword;
-            if (special === 'endsoon') {
-              const next_3 = new Date();
-              next_3.setDate(next_3.getDate() + 3);
-              list_of_keyword.push({
+        const searchContext = keywords.reduce((prev, keyword) => {
+          if (keyword.id) {
+            return [...prev, {
+              owner: keyword.id,
+            }];
+          } else if (keyword.special_keyword) {
+            const { special_keyword }: { special_keyword: string } = keyword;
+            if (special_keyword.toLowerCase() === 'endsoon') {
+              const next3Days = new Date();
+              next3Days.setDate(next3Days.getDate() + 3);
+              return [...prev, {
                 promotion_end: {
-                  $lte: next_3,
+                  $lte: next3Days,
                 },
-              });
+              }];
             }
-          } else {
-            const keyword = keywords[i].keyword;
-            list_of_keyword.push({
+            // TODO: New special keyword
+          } else if (keyword.keyword) {
+            return [...prev, {
               $or: [
-                { hashtag: keyword },
-                { colors: keyword },
-                { sizes: keyword },
-                { name: keyword },
+                { hashtags: keyword.keyword },
+                { 'colors.color': keyword.keyword },
+                { 'sizes.size': keyword.keyword },
+                { name: keyword.keyword },
               ],
-            });
+            }];
           }
-        }
+        }, []);
+
         products = database.Product.find({
-          $and: list_of_keyword,
+          $and: searchContext,
         });
       } else {
         products = database.Product.find();

@@ -147,8 +147,8 @@ export class ProductModal extends React.Component<ProductModal.Props> {
                       <span className={s.label}>Size:</span>
                       <ItemSelector
                         options={product.sizes.map((size) => ({
-                          value: size,
-                          text: size,
+                          value: size._id,
+                          text: size.size,
                         }))}
                         selected={product.selectedSize}
                         onChange={(_, size) => this.props.selectSizeMutation({
@@ -160,8 +160,8 @@ export class ProductModal extends React.Component<ProductModal.Props> {
                       <span className={s.label}>Color:</span>
                       <ItemSelector
                         options={product.colors.map((color) => ({
-                          value: color,
-                          text: color,
+                          value: color._id,
+                          text: color.color,
                         }))}
                         selected={product.selectedColor}
                         onChange={(_, color) => this.props.selectColorMutation({
@@ -169,8 +169,31 @@ export class ProductModal extends React.Component<ProductModal.Props> {
                         })}
                       />
                     </div>
-                  </div> :
-                  <div>Empty</div>
+                  </div>
+                </div>
+                <div className={s.buttonWrapper}>
+                  <Button
+                    as={Link}
+                    to={`/products/${product._id}/buynow`}
+                    invert
+                    size="small"
+                    className={s.primaryButton}
+                    onClick={this.onBackgroundClick.bind(this)}
+                    animated="vertical">
+                    <Button.Content visible>Buy Now</Button.Content>
+                    <Button.Content hidden>
+                      <Icon name="shopping basket" />
+                    </Button.Content>
+                  </Button>
+                  <Button basic invert size="small" color="orange" animated="vertical">
+                    <Button.Content visible>Contact Seller</Button.Content>
+                    <Button.Content hidden>
+                      <Icon name="talk outline" />
+                    </Button.Content>
+                  </Button>
+                </div>
+              </div> :
+            <div>Empty</div>
           }
         </div>
       </div>

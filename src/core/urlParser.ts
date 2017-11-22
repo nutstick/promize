@@ -35,8 +35,9 @@ export function parseSearch(search: Location) {
       [key]: val,
     };
   }, {});
+
   try {
-    return search.pathname === '/search' && parseResult.keyword;
+    return search.pathname === '/search' && parseResult.keywords;
   } catch {
     return '';
   }

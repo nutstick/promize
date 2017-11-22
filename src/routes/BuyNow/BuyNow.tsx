@@ -90,7 +90,7 @@ export class BuyNow extends React.Component<BuyNow.Props, BuyNow.State> {
       <div className={s.root}>
         <Card>
           <div>
-            <Step.Group attached="top" widths={4} size="mini" stackable="tablet">
+            <Step.Group attached="top" widths={4} size="mini">
               <Step
                 link
                 onClick={() => this.setState({ step: 1 })}

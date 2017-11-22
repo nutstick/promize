@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`GraphQL Query helloworld 1`] = `
-Object {
-  "helloworld": "Hello World",
-  Symbol(id): "ROOT_QUERY",
-}
-`;

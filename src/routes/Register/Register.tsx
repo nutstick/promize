@@ -1,6 +1,6 @@
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
-import { Button, Checkbox, Form, Grid, Image } from 'semantic-ui-react'
+import { Button, Form, Grid, Image } from 'semantic-ui-react';
 import { Card } from '../../components/Card';
 import * as s from './Register.css';
 
@@ -23,7 +23,7 @@ export class Register extends React.Component<Register.Props> {
     const genderOptions = [
       { key: 'm', text: 'Male', value: 'male' },
       { key: 'f', text: 'Female', value: 'female' },
-    ]
+    ];
 
     return (
       <div className={s.root}>
@@ -34,7 +34,7 @@ export class Register extends React.Component<Register.Props> {
               <hr/>
               <Grid>
                 <Grid.Column mobile={16} tablet={6} computer={6}>
-                  <Image src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png" 
+                  <Image src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
                         size="medium"
                         circular
                   />

@@ -8,8 +8,14 @@ query Product($id: ID!) {
     price
     pictures
     hashtags
-    colors
-    sizes
+    colors {
+      _id
+      color
+    }
+    sizes {
+      _id
+      size
+    }
     promotionStart
     promotionEnd
     owner {

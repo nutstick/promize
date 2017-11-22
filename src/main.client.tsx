@@ -36,7 +36,11 @@ const http = new HttpLink({
 });
 const cache = new InMemoryCache({
   dataIdFromObject(value: any) {
-    return `${value.__typename}:${value._id}`;
+    if (value._id) {
+      return `${value.__typename}:${value._id}`;
+    } else if (value.node) {
+      return `${value.__typename}:${value.node._id}`;
+    }
   },
 }).restore(window.App.apollo);
 const client = createApolloClient({
