@@ -5,6 +5,7 @@ node_modules
 dist
 output/babelcache
 .awcache
+coverage
 
 # Logs
 npm-debug.log*

@@ -2,7 +2,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import ApolloClient from 'apollo-client';
 import { graphql } from 'graphql';
 import gql from 'graphql-tag';
-import MockDate from 'mockdate';
+import * as MockDate from 'mockdate';
 import { Schema } from '../../../';
 import { mongodb } from '../../../../config';
 import { ServerLink } from '../../../../core/ServerLink';
@@ -38,6 +38,7 @@ beforeAll(async (done) => {
   await database.connection.dropDatabase();
 
   // Fixed new Date
+  console.log('pppp');
   MockDate.set('7/9/2017');
 
   // Init test database

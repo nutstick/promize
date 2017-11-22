@@ -11,6 +11,7 @@ import * as TOGGLELOGINMODALMUTATION from '../../apollo/login/ToggleLoginModalMu
 import { parseSearch } from '../../core/urlParser';
 import { ICoSeller, IUser } from '../../schema/types/User';
 import { LanguageSwitcher } from '../LanguageSwitcher';
+import { SearchInput } from '../SearchInput/SearchInput';
 import * as s from './Header.css';
 import * as MEQUERY from './MeQuery.gql';
 import * as logoUrl from './promizeLogoWhite.svg';
@@ -58,42 +59,26 @@ export class Header extends React.Component<Header.Props, Header.State> {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      search: parseSearch(this.props.location) || '',
-    };
   }
 
-  private onSearchChanged(event: React.SyntheticEvent<HTMLInputElement>): void {
-    this.setState({
-      search: (event.target as any).value,
-    });
+  private onSearchSubmit(e, keywords): void {
+    this.props.history.push(`/search?keywords=${JSON.stringify(keywords)}`);
   }
 
-  private onSearchKeyPress(event: React.KeyboardEventHandler<HTMLInputElement>): void {
-    if ((event as any).key === 'Enter') {
-      this.props.history.push(`/search?keyword=${this.state.search}`);
-    }
-  }
+  // private onRouteChanged() {
+  //   const search = parseSearch(this.props.location);
+  //   if (search) {
+  //     this.setState({
+  //       search,
+  //     });
+  //   }
+  // }
 
-  private onSearchButtonClicked(event: React.SyntheticEvent<HTMLInputElement>): void {
-    this.props.history.push(`/search?keyword=${this.state.search}`);
-  }
-
-  private onRouteChanged() {
-    const search = parseSearch(this.props.location);
-    if (search) {
-      this.setState({
-        search,
-      });
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.location !== prevProps.location) {
-      this.onRouteChanged();
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  //   if (this.props.location !== prevProps.location) {
+  //     this.onRouteChanged();
+  //   }
+  // }
 
   public render() {
     const trigger = this.props.data.me && (
@@ -176,21 +161,9 @@ export class Header extends React.Component<Header.Props, Header.State> {
                 alt="Promize" />
             </Link>
             <div className={s.searchWrapper}>
-              <Input
-                className={s.searchInput}
-                action
-                placeholder={this.context.intl.formatMessage(messages.search)}>
-                <input
-                  value={this.state.search}
-                  onChange={this.onSearchChanged.bind(this)}
-                  onKeyPress={this.onSearchKeyPress.bind(this)}/>
-                <Button
-                  className={s.searchButton}
-                  type="submit"
-                  icon="search"
-                  color="black"
-                  onClick={this.onSearchButtonClicked.bind(this)} />
-              </Input>
+              <SearchInput
+                keywords={JSON.parse(parseSearch(this.props.location)) || []}
+                onSubmit={this.onSearchSubmit.bind(this)}/>
             </div>
           </div>
         </Container>

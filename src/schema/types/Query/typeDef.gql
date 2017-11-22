@@ -10,5 +10,7 @@ type Query {
 
   product(id: ID!): Product
 
+  user(id: ID!): UserType
+
   hashtags: [String]
 }
