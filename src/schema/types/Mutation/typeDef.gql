@@ -40,7 +40,6 @@ input CreateOrderReceiptInput {
   product: ID!
   size: ID!
   color: ID!
-  numberOfItems: Int!
   deliverAddress: ID!
   paymentMethod: ID!
   remark: String

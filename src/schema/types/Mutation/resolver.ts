@@ -8,7 +8,7 @@ const resolver: IResolver<any, any> = {
         ...input,
         promotion_start: promotionStart,
         promotion_end: promotionEnd,
-        owner: user._id
+        owner: user._id,
 
       });
     },
@@ -25,7 +25,7 @@ const resolver: IResolver<any, any> = {
       return await database.Product.findOne({ _id: product });
     },
 
-    async createOrderReceipt(_, { input: { numberOfItems, deliverAddress, paymentMethod, ...input } }, { database, user }) {
+    async createOrderReceipt(_, { input: { deliverAddress, paymentMethod, ...input } }, { database, user }) {
       if (database.User.find({ _id: user._id, payment_method: { _id: paymentMethod } })) {
         input.payment_method = paymentMethod;
       } else {
@@ -38,11 +38,11 @@ const resolver: IResolver<any, any> = {
       }
       return await database.Receipt.insert({
         ...input,
-        number_of_items: numberOfItems,
         buyer: user._id,
       });
     },
 
+    // tslint:disable-next-line:max-line-length
     async editOrderReceipt(_, { input: { receipt, paymentCompleted, productDelivered, productReceived, ...input } }, { database }) {
       database.Receipt.findOne({ _id: receipt }).then(async (instance) => {
         if ((paymentCompleted === true) && (instance.payment_completed === false)) {

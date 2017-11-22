@@ -2,9 +2,6 @@ import { IResolver } from '../index';
 
 const resolver: IResolver<any, any> = {
   OrderReceipt: {
-    numberOfItems({ number_of_items }) {
-      return number_of_items;
-    },
     deliverAddress({ deliver_address }) {
       return deliver_address;
     },
