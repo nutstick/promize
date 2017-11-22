@@ -15,7 +15,6 @@ const resolver: IResolver<any, any> = {
       await database.Product.update({ _id: product }, {
         $set: {
           ...input,
-          // updateAt: new Date(),
         },
       });
       return await database.Product.findOne({ _id: product });
@@ -34,7 +33,6 @@ const resolver: IResolver<any, any> = {
       await database.Receipt.update({ _id: receipt }, {
         $set: {
           ...input,
-          // updateAt: new Date(),
         },
       });
       return await database.Receipt.findOne({ _id: receipt });

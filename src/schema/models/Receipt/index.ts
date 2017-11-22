@@ -8,20 +8,20 @@ interface IReceiptDocument {
     _id?: string;
     product: string;
 
-    size: ISize;
-    color: IColor;
+    size: string;
+    color: string;
     number_of_items: number;
 
     buyer: string;
 
-    deliver_address?: IAddress;
+    deliver_address?: string;
     tracking_id?: string;
     remark?: string;
 
     createAt?: Date;
     updateAt?: Date;
 
-    payment_method?: IPaymentMethod;
+    payment_method?: string;
     payment_completed_at?: Date;
     payment_completed?: boolean;
 
@@ -45,18 +45,18 @@ class Receipt extends Instance<IReceiptDocument, Receipt> implements IReceiptDoc
     @Property(String, true)
     product: string;
 
-    @Property(Size, true)
-    size: ISize;
-    @Property(Color, true)
-    color: IColor;
+    @Property(String, true)
+    size: string;
+    @Property(String, true)
+    color: string;
     @Property(Number, true)
     number_of_items: number;
 
     @Property(String, true)
     buyer: string;
 
-    @Property(Address, false)
-    deliver_address: IAddress;
+    @Property(String, false)
+    deliver_address: string;
     @Property(String, false)
     tracking_id: string;
     @Property(String, false)
@@ -67,8 +67,8 @@ class Receipt extends Instance<IReceiptDocument, Receipt> implements IReceiptDoc
     @Property(Date, false)
     updateAt: Date;
 
-    @Property(PaymentMethod, false)
-    payment_method: IPaymentMethod;
+    @Property(String, false)
+    payment_method: string;
 
     @Property(Date, false)
     payment_completed_at: Date;
