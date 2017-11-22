@@ -52,7 +52,11 @@ export class ProductStep extends React.Component<ProductStep.Props> {
     const { product } = this.props.data;
     return (
       <div className={s.root}>
-        <div>{product.name}</div>
+        <div>
+          <h4>
+            {product.name}
+          </h4>
+        </div>
         <div>{product.description}</div>
         <div>
           {product.pictures.map((picture, index) => (

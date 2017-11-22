@@ -115,8 +115,8 @@ export class ShippingStep extends React.Component<ShippingStep.Props, ShippingSt
 
   public render() {
     const countryOptions = [
-      { key: 'US',  text: 'United States', value: 'US' },
-      { key: 'TH',  text: 'Thailands', value: 'TH' },
+      { key: 'US', text: 'United States', value: 'US' },
+      { key: 'TH', text: 'Thailands', value: 'TH' },
     ];
 
     const { me, loading, error } = this.props.data;
@@ -133,7 +133,7 @@ export class ShippingStep extends React.Component<ShippingStep.Props, ShippingSt
         key: address._id,
         text: address._id,
         value: address._id,
-        content: <AddressOption {...address}/>,
+        content: <AddressOption {...address} />,
       }));
 
       userAddresses = (
@@ -147,9 +147,9 @@ export class ShippingStep extends React.Component<ShippingStep.Props, ShippingSt
       );
     } else {
       userAddresses = (
-        <div>
+        <div className={s.returnCustomer}>
           Returning customer?
-          <a href="#" onClick={(e) => { this.props.mutate({}); }}>
+          <a href="#" onClick={(e) => { this.props.mutate({}); }} style={{ paddingLeft: 5 }}>
             Login
           </a>
         </div>
@@ -160,43 +160,49 @@ export class ShippingStep extends React.Component<ShippingStep.Props, ShippingSt
       <div className={s.root}>
         {userAddresses}
         <Divider horizontal>Or</Divider>
-        <h4>New Shipping Address</h4>
-        <span className={s.remark}>*Indicates a required fields</span>
-        <Form>
-          <Form.Group widths="equal">
+        <div className={s.newAddress}>
+          <h4 className={s.header}>New Shipping Address</h4>
+          <span className={s.remark}>*Indicates a required fields</span>
+          <Form>
+            <Form.Group widths="equal">
+              <Form.Input
+                required
+                label="Address"
+                placeholder="Address"
+                error={this.state.addressError}
+                onChange={this.onInputChange.bind(this, 'address', true)} />
+            </Form.Group>
             <Form.Input
-              label="Address"
-              placeholder="Address"
-              error={this.state.addressError}
-              onChange={this.onInputChange.bind(this, 'address', true)}/>
-          </Form.Group>
-          <Form.Input
-            label="City"
-            placeholder="City"
-            error={this.state.cityError}
-            onChange={this.onInputChange.bind(this, 'city', true)}/>
-          <Form.Select
-            label="Country"
-            options={countryOptions}
-            placeholder="Country"
-            error={this.state.countryError}
-            onChange={this.onInputChange.bind(this, 'country', true)} />
-          <Form.Input
-            label="Zip code"
-            placeholder="Zip code"
-            error={this.state.zipError}
-            onChange={this.onInputChange.bind(this, 'zip', true)} />
-        </Form>
-        <div>
-          <Button
-            className={s.left}
-            content="Previous"
-            onClick={this.props.prev} />
-          <Button
-            className={s.right}
-            color="orange"
-            content="Next"
-            onClick={this.next.bind(this)} />
+              required
+              label="City"
+              placeholder="City"
+              error={this.state.cityError}
+              onChange={this.onInputChange.bind(this, 'city', true)} />
+            <Form.Select
+              required
+              label="Country"
+              options={countryOptions}
+              placeholder="Country"
+              error={this.state.countryError}
+              onChange={this.onInputChange.bind(this, 'country', true)} />
+            <Form.Input
+              required
+              label="Zip code"
+              placeholder="Zip code"
+              error={this.state.zipError}
+              onChange={this.onInputChange.bind(this, 'zip', true)} />
+          </Form>
+          <div className={s.buttons}>
+            <Button
+              className={s.left}
+              content="Previous"
+              onClick={this.props.prev} />
+            <Button
+              className={s.right}
+              color="orange"
+              content="Next"
+              onClick={this.next.bind(this)} />
+          </div>
         </div>
       </div>
     );
