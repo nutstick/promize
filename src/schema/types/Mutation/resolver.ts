@@ -1,4 +1,5 @@
 import { IResolver } from '../index';
+import { log } from 'util';
 
 const resolver: IResolver<any, any> = {
   Mutation: {
@@ -37,14 +38,29 @@ const resolver: IResolver<any, any> = {
       return await database.Receipt.findOne({ _id: receipt });
     },
 
-    async addAddress(_, { user, address }, { database }) {
-      await database.User.update({ _id: user }, { $push: { addresses: address } });
-      return await database.User.findOne({ _id: user });
+    async addAddress(_, { address }, { database, user }) {
+      if (user && user._id) {
+        await database.User.update({ _id: user._id }, { $push: { addresses: address } });
+        return await database.User.findOne({ _id: user._id });
+      }
+      return null;
     },
 
-    async addPaymentMethod(_, { user, paymentMethod }, { database }) {
-      await database.User.update({ _id: user }, { $push: { payment_methods: paymentMethod } });
-      return await database.User.findOne({ _id: user });
+    async addPaymentMethod(_, { paymentMethod }, { database, user }) {
+      console.log(paymentMethod);
+      if (user && user._id) {
+        await database.User.update({ _id: user._id }, {
+          $push: {
+            payment_methods: {
+              credit_card_number: paymentMethod.creditCardNumber,
+              valid_from_month: paymentMethod.validFromMonth,
+              valid_from_year: paymentMethod.validFromYear,
+            },
+          },
+        });
+        return await database.User.findOne({ _id: user._id });
+      }
+      return null;
     },
   },
 };

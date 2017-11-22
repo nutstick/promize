@@ -68,8 +68,8 @@ input AddressInput {
 input PaymentMethodInput {
   # Credit card number
   creditCardNumber: String!
-  valid_from_month: Int!
-  valid_from_year: Int!
+  validFromMonth: Int!
+  validFromYear: Int!
 }
 
 # Mutations
@@ -84,7 +84,7 @@ type Mutation {
   # Edit OrderReceipt
   editOrderReceipt(input: EditOrderReceiptInput): OrderReceipt
 
-  addAddress(user: ID, address: AddressInput): UserType
+  addAddress(address: AddressInput): UserType
 
-  addPaymentMethod(user: ID, paymentMethod: PaymentMethodInput): UserType
+  addPaymentMethod(paymentMethod: PaymentMethodInput): UserType
 }
