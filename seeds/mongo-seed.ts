@@ -108,8 +108,8 @@ export async function seed(database: Database) {
         await database.Receipt.create({
           buyer: user._id,
           product: product._id,
-          size: product.sizes[0],
-          color: product.colors[0],
+          size: product.sizes[0]._id,
+          color: product.colors[0]._id,
           number_of_items: Math.floor(Math.random() * 5) + 1,
         });
       }

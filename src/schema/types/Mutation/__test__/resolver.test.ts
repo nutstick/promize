@@ -10,21 +10,15 @@ import { Database } from '../../../models';
 import { IOrderReceipt } from '../../OrderReceipt/index';
 import resolver from '../resolver';
 
-// interface Mutation {
-//   createOrderReceipt: IOrderReceipt;
-// }
+interface Mutation {
+  createOrderReceipt: IOrderReceipt;
+}
 
-// const mutation = gql`mutation CreateOrderReceipt {
-//   createOrderReceipt (input: {
-//     product: "585b11e7adb8b5f2d655da01",
-//     size: "S",
-//     color: "red",
-//     numberOfItems: 1,
-//     deliverAddress: "",
-//     paymentMethod: "",
-//     remake: "note something",
-//   })
-// }`;
+const mutation = gql`mutation CreateOrderReceipt {
+  createOrderReceipt (input: CreateOrderReceiptInput){
+    createOrderReceipt(input: $input)
+  }
+}`;
 
 const database = new Database({
   ...mongodb,
@@ -88,7 +82,7 @@ it('Mutation createProduct should insert new product into mongodb', async () => 
     input: {
       _id: '585b11e7adb8b5f2d655da01',
       name: 'a',
-      // type: 'Product',
+      type: 'Product',
       pictures: ['https://th-live-02.slatic.net/p/7/hequ-1483111676-123106' +
         '5-c566b543a82cfe5a0e279dbf161bd13e-catalog_233.jpg'],
       hashtags: ['a', 'b', 'c'],
@@ -121,12 +115,25 @@ it('Mutation createProduct should insert new product into mongodb', async () => 
 //       ssrMode: true,
 //     });
 
+//     const variables = {
+//       input: {
+//         product: '585b11e7adb8b5f2d655da01',
+//         size: { size: 'S' },
+//         color: { color: 'red' },
+//         numberOfItems: 1,
+//         deliverAddress: '585b11e7adb8b5f2d655da01',
+//         paymentMethod: '585b11e7adb8b5f2d655da01',
+//         remark: 'note something',
+//       },
+//     };
+
 //     return client.mutate<Mutation>({
 //       mutation,
+//       variables,
 //     })
-//       .then(({ data }) => {
-//         // TODO: expect all fields
-//         // expect(data).toMatchSnapshot();
+//       .then(async () => {
+//         const receipt = await database.Receipt.findOne(variables.input);
+//         expect(receipt).toMatchSnapshot();
 //       });
 //   });
 // });
