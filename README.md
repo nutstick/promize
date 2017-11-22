@@ -21,3 +21,4 @@
  - docker-compose up
  - (Docker toolbox) url: http://192.168.99.100:3000/
  - (Other) url: http://localhost:3000/
+ - Command seed : sudo docker exec -it server npm run seeds 
