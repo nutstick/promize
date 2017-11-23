@@ -175,7 +175,15 @@ app.get('*', async (req, res, next) => {
   try {
     const location = req.url;
 
-    const cache = new InMemoryCache();
+    const cache = new InMemoryCache({
+      dataIdFromObject(value: any) {
+        if (value._id) {
+          return `${value.__typename}:${value._id}`;
+        } else if (value.node) {
+          return `${value.__typename}:${value.node._id}`;
+        }
+      },
+    });
 
     const client = createApolloClient({
       link: new ServerLink({

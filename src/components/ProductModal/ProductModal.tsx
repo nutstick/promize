@@ -8,8 +8,10 @@ import { Button, Icon } from 'semantic-ui-react';
 import * as slickThemeCss from 'slick-carousel/slick/slick-theme.css';
 import * as slickCss from 'slick-carousel/slick/slick.css';
 import { graphql } from '../../apollo/graphql';
+import { IProductClient } from '../../apollo/product';
+import * as SELECTCOLORMUTATION from '../../apollo/product/SelectColorMutation.gql';
+import * as SELECTSIZEMUTATION from '../../apollo/product/SelectSizeMutation.gql';
 import * as CLOSEPRODUCTMODALMUTATION from '../../apollo/productModal/CloseProductModalMutation.gql';
-import { IProduct } from '../../schema/types/Product';
 import { ItemSelector } from '../ItemSelector';
 import * as s from './ProductModal.css';
 import * as PRODUCTQUERY from './ProductQuery.gql';
@@ -25,16 +27,34 @@ namespace ProductModal {
 
   export type WrapWithCloseProductModalMutation = CloseProductModalMutation<IProps, {}>;
 
+  type SelectColorMutation<P, R> = P & {
+    selectColorMutation?: MutationFunc<R>;
+  };
+
+  export type WrapWithSelectColorMutation = SelectColorMutation<WrapWithCloseProductModalMutation, {}>;
+
+  type SelectSizeMutation<P, R> = P & {
+    selectSizeMutation?: MutationFunc<R>;
+  };
+
+  export type WrapWithSelectSizeMutation = SelectSizeMutation<WrapWithSelectColorMutation, {}>;
+
   export interface ProductQuery {
-    product: IProduct;
+    product: IProductClient;
   }
 
-  export type Props = ChildProps<WrapWithCloseProductModalMutation, ProductQuery>;
+  export type Props = ChildProps<WrapWithSelectSizeMutation, ProductQuery>;
 }
 
 @withStyles(slickCss, slickThemeCss, s)
 @graphql<{}, {}>(CLOSEPRODUCTMODALMUTATION, {
   name: 'closeProductModal',
+})
+@graphql<{}, {}>(SELECTCOLORMUTATION, {
+  name: 'selectColorMutation',
+})
+@graphql<{}, {}>(SELECTSIZEMUTATION, {
+  name: 'selectSizeMutation',
 })
 @graphql<ProductModal.WrapWithCloseProductModalMutation, ProductModal.ProductQuery>(PRODUCTQUERY, {
   options({ id }) {
@@ -79,7 +99,7 @@ export class ProductModal extends React.Component<ProductModal.Props> {
       <Icon color="grey" size="large" name="chevron right" />
     </div>);
 
-    const { data: { product }} = this.props;
+    const { data: { product } } = this.props;
     return (
       <div className={s.root} onClick={this.onBackgroundClick.bind(this)}>
         <div className={s.modal} onClick={(e) => e.stopPropagation()}>
@@ -100,7 +120,7 @@ export class ProductModal extends React.Component<ProductModal.Props> {
                     speed={500}
                     slidesToShow={1}
                     slidesToScroll={1}>
-                    {product.picture.map((pic, index) => (
+                    {product.pictures.map((pic, index) => (
                       <div className={s.pictureWrapper}>
                         <img key={`Product-${product._id}-picture-${index}`} className={s.image} src={pic} />
                       </div>
@@ -119,23 +139,35 @@ export class ProductModal extends React.Component<ProductModal.Props> {
                   <div className={s.textWrapper}>
                     <div className={s.description}>{product.description}</div>
                     <div className={s.hashtags}>
-                      {product.hashtag.map((h) =>
+                      {product.hashtags.map((h) =>
                         (<Link to={`/search?keyword=${h}`} className={s.hashtag}>#{h}</Link>),
                       )}
                     </div>
                     <div className={s.block}>
                       <span className={s.label}>Size:</span>
-                      <ItemSelector options={product.sizes.map((size) => ({
-                        value: size,
-                        text: size,
-                      }))}/>
+                      <ItemSelector
+                        options={product.sizes.map((size) => ({
+                          value: size._id,
+                          text: size.size,
+                        }))}
+                        selected={product.selectedSize}
+                        onChange={(_, size) => this.props.selectSizeMutation({
+                          variables: { id: product._id, size },
+                        })}
+                      />
                     </div>
                     <div className={s.block}>
                       <span className={s.label}>Color:</span>
-                      <ItemSelector options={product.colors.map((color) => ({
-                        value: color,
-                        text: color,
-                      }))}/>
+                      <ItemSelector
+                        options={product.colors.map((color) => ({
+                          value: color._id,
+                          text: color.color,
+                        }))}
+                        selected={product.selectedColor}
+                        onChange={(_, color) => this.props.selectColorMutation({
+                          variables: { id: product._id, color },
+                        })}
+                      />
                     </div>
                   </div>
                 </div>

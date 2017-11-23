@@ -1,10 +1,14 @@
 import { IAddress } from '../../models/User/address';
-import { IPaymentMethod } from '../../models/User/paymentmethod';
 import { IOrderReceipt } from '../OrderReceipt';
 import { INode, IPage } from '../Pagination';
 import { IProduct } from '../Product/index';
 import resolver from './resolver';
 import * as type from './typeDef.gql';
+
+export interface IPaymentMethod {
+  _id?: string;
+  creditCardNumber?: string;
+}
 
 interface IAccount {
   email: string;
@@ -16,8 +20,13 @@ interface IUserType {
   lastName?: string;
   telNumber: string;
   account?: IAccount;
+
+  address?: IAddress;
   addresses?: IAddress[];
+
+  paymentMethod?: IPaymentMethod;
   paymentMethods?: IPaymentMethod[];
+
   avatar?: string;
   orderReceipts?: IOrderReceipt[];
   createAt?: Date;

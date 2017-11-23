@@ -2,10 +2,24 @@ type OrderReceipt implements Node {
   _id: ID!
 
   product: Product!
-
   creator: UserType!
 
-  # TODO: Add require fields
+  size: Size!
+  color: Color!
+
+  deliverAddress: Address
+  trackingId: String
+  remark: String
+
+  paymentMethod: PaymentMethod
+  paymentCompletedAt: Date
+  paymentCompleted: Boolean
+
+  productDeliveredAt: Date
+  productDelivered: Boolean
+
+  productReceivedAt: Date
+  productReceived: Boolean
 
   createAt: Date!
   updateAt: Date!

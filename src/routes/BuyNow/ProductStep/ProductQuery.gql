@@ -1,0 +1,22 @@
+query Product($id: ID!) {
+  product(id: $id) {
+    _id
+    name
+    description
+    originalPrice
+    type
+    price
+    pictures
+    colors {
+      _id
+      color
+    }
+    sizes {
+      _id
+      size
+    }
+
+    selectedSize @client
+    selectedColor @client
+  }
+}

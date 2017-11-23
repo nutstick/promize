@@ -33,8 +33,14 @@ const resolver: IResolver<any, any> = {
     telNumber({ tel_number }) {
       return tel_number;
     },
+    paymentMethod({ payment_methods }, { id }) {
+      return payment_methods.find((payment_method) => payment_method._id === id);
+    },
     paymentMethods({ payment_methods }) {
       return payment_methods;
+    },
+    address({ addresses }, { id }) {
+      return addresses.find((address) => address._id === id);
     },
     // TODO: orderReceipts
   },
@@ -51,8 +57,14 @@ const resolver: IResolver<any, any> = {
     telNumber({ tel_number }) {
       return tel_number;
     },
+    paymentMethod({ payment_methods }, { id }) {
+      return payment_methods.find((payment_method) => payment_method._id === id);
+    },
     paymentMethods({ payment_methods }) {
       return payment_methods;
+    },
+    address({ addresses }, { id }) {
+      return addresses.find((address) => address._id === id);
     },
     // TODO: orderReceipts
     coseller() {

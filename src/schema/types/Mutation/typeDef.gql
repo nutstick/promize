@@ -1,35 +1,90 @@
 # Input
-input productInput {
-  _id: String
+input CategoryInput {
+  category: String
+}
 
+input ColorInput {
+  color: String
+}
+
+input SizeInput {
+  size: String
+}
+
+input CreateProductInput {
   name: String!
   description: String
-  
   originalPrice: Int
   type: ProductEnum!
-  price: Int
-
+  price: Int!
   pictures: [String]!
   hashtags: [String]!
-  colors: [String]
-  sizes: [String]
-
+  colors: [ColorInput]
+  sizes: [SizeInput]
+  categories: [CategoryInput]
   promotionStart: Date!
-  promotionEnd: Date!	
+  promotionEnd: Date!
 }
+
+input EditProductInput {
+  product: ID!
+  price: Int
+  pictures: [String]
+  hashtags: [String]
+  colors: [ColorInput]
+  sizes: [SizeInput]
+  categories: [CategoryInput]
+}
+
+input CreateOrderReceiptInput {
+  product: ID!
+  size: ID!
+  color: ID!
+  deliverAddress: AddressInputCreate!
+  paymentMethod: PaymentInputCreate!
+  remark: String
+}
+
+input EditOrderReceiptInput {
+  receipt: ID!
+  paymentCompleted: Boolean,
+  productDelivered: Boolean,
+  productReceived: Boolean,
+}
+
+# Address type
+input AddressInput {
+  # Address detail
+  address: String!
+  # City
+  city: String!
+  # Country
+  country: String!
+  # Zip code
+  zip: String!
+}
+
+# Payment Method type
+input PaymentMethodInput {
+  # Credit card number
+  creditCardNumber: String!
+  validFromMonth: Int!
+  validFromYear: Int!
+}
+
 # Mutations
 type Mutation {
-  # Edit product price
-  editPrice(product: ID!, price: Int!): Product
-  # Edit product picture
-  editPicture(product: ID!, pictures: [String]!): Product
-  # Edit product hashtag
-  editHashtag(product: ID!, hashtags: [String]!): Product
-  # Edit product color
-  editSize(product: ID!, size: [String]!): Product
-  # Edit product size
-  editColor(product: ID!, color: [String]!): Product
-
   # Create Product
-  createProduct(input: productInput): Product
+  createProduct(input: CreateProductInput): Product
+  # Edit Product
+  editProduct(input: EditProductInput): Product
+
+  # Create OrderReceipt
+  createOrderReceipt(input: CreateOrderReceiptInput): OrderReceipt
+  # Edit OrderReceipt
+  editOrderReceipt(input: EditOrderReceiptInput): OrderReceipt
+
+  addAddress(address: AddressInput): UserType
+
+  addPaymentMethod(paymentMethod: PaymentMethodInput): UserType
 }

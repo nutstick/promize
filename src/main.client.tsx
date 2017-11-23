@@ -34,7 +34,15 @@ const http = new HttpLink({
   uri: '/graphql',
   credentials: 'include',
 });
-const cache = new InMemoryCache().restore(window.App.apollo);
+const cache = new InMemoryCache({
+  dataIdFromObject(value: any) {
+    if (value._id) {
+      return `${value.__typename}:${value._id}`;
+    } else if (value.node) {
+      return `${value.__typename}:${value.node._id}`;
+    }
+  },
+}).restore(window.App.apollo);
 const client = createApolloClient({
   link: http,
   ssrForceFetchDelay: 100,

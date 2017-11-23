@@ -40,7 +40,7 @@ export class ProductCard extends React.Component<ProductCard.Props> {
         key={this.props.product._id}
         onClick={(e) => { this.props.mutate({}); }}
       >
-        <img src={this.props.product.picture[0]} alt={this.props.product.name} />
+        <img src={this.props.product.pictures[0]} alt={this.props.product.name} />
         <div className={s.content}>
           <div className={s.header}>{this.props.product.name}</div>
           <div className={s.owner}>

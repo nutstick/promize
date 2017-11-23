@@ -24,7 +24,7 @@ namespace Layout {
     login?: QueryProps & Partial<R>;
   };
 
-  type WrapWithLoginQuery = LoginProps<{}, LoginQuery>;
+  export type WrapWithLoginQuery = LoginProps<{}, LoginQuery>;
 
   type ProductModalProps<P, R> = P & {
     productModal?: QueryProps & Partial<R>;
@@ -35,7 +35,7 @@ namespace Layout {
 
 @withStyles(normalizeCss, semanticsCss, s)
 @graphql<{}, LoginQuery>(LOGINQUERY, { name: 'login' })
-@graphql<{}, ProductModalQuery>(PRODUCTMODALQUERY, { name: 'productModal' })
+@graphql<Layout.WrapWithLoginQuery, ProductModalQuery>(PRODUCTMODALQUERY, { name: 'productModal' })
 export class Layout extends React.Component<Layout.Props> {
   public render() {
     return (

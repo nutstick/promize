@@ -6,10 +6,16 @@ query Product($id: ID!) {
     originalPrice
     type
     price
-    picture
-    hashtag
-    colors
-    sizes
+    pictures
+    hashtags
+    colors {
+      _id
+      color
+    }
+    sizes {
+      _id
+      size
+    }
     promotionStart
     promotionEnd
     owner {
@@ -20,5 +26,8 @@ query Product($id: ID!) {
       avatar
     }
     createAt
+
+    selectedSize @client
+    selectedColor @client
   }
 }

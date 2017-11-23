@@ -10,7 +10,7 @@ const MESSAGES_DIR = process.env.MESSAGES_DIR || join(__dirname, './messages');
 
 const readFile = BluebirdPromise.promisify(fs.readFile);
 
-interface ICategory {
+interface IHashtag {
   _id: null;
   uniqueValues: { $addToSet: '$hashtag' };
 }
@@ -43,16 +43,40 @@ const resolver: IResolver<any, any> = {
       return JSON.parse(localeData);
     },
 
-    search(_, { keyword, first, after }, { database }) {
-      // FIXME: Sure error when search with owner
+    search(_, { keywords, first, after }, { database }) {
       let products;
-      if (keyword) {
-         products = database.Product.find({
-          $or: [
-            { hashtag: keyword },
-            { name: keyword },
-            { owner_name: keyword },
-          ],
+      if (keywords) {
+        const searchContext = keywords.reduce((prev, keyword) => {
+          if (keyword.id) {
+            return [...prev, {
+              owner: keyword.id,
+            }];
+          } else if (keyword.special_keyword) {
+            const { special_keyword }: { special_keyword: string } = keyword;
+            if (special_keyword.toLowerCase() === 'endsoon') {
+              const next3Days = new Date();
+              next3Days.setDate(next3Days.getDate() + 3);
+              return [...prev, {
+                promotion_end: {
+                  $lte: next3Days,
+                },
+              }];
+            }
+            // TODO: New special keyword
+          } else if (keyword.keyword) {
+            return [...prev, {
+              $or: [
+                { hashtags: keyword.keyword },
+                { 'colors.color': keyword.keyword },
+                { 'sizes.size': keyword.keyword },
+                { name: keyword.keyword },
+              ],
+            }];
+          }
+        }, []);
+
+        products = database.Product.find({
+          $and: searchContext,
         });
       } else {
         products = database.Product.find();
@@ -72,8 +96,8 @@ const resolver: IResolver<any, any> = {
       });
     },
 
-    async categorys(_, __, { database }) {
-      const category = await database.Product.aggregate<ICategory>([
+    async hashtags(_, __, { database }) {
+      const hashtag = await database.Product.aggregate<IHashtag>([
         { $unwind: '$hashtag' },
         {
           $group: {
@@ -82,7 +106,7 @@ const resolver: IResolver<any, any> = {
           },
         },
       ]);
-      return category[0].uniqueValues;
+      return hashtag[0].uniqueValues;
     },
 
   },
