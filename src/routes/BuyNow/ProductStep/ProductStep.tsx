@@ -79,15 +79,9 @@ export class ProductStep extends React.Component<ProductStep.Props> {
 
     return (
       <div className={s.root}>
-        <div className={s.productName}>
-          Product: {product.name}
-        </div>
-        <div className={s.productDescription}>
-          {product.description}
-        </div>
         <div className={s.productImage}>
           <Slider
-            ref={(c) => { this.slider = c; } }
+            ref={(c) => { this.slider = c; }}
             nextArrow={<NextArrow />}
             prevArrow={<PrevArrow />}
             dots={true}
@@ -100,42 +94,50 @@ export class ProductStep extends React.Component<ProductStep.Props> {
             ))}
           </Slider>
         </div>
-        {/* Size options */}
-        <div className={s.block}>
-          <span className={s.label}>Size:</span>
-          <ItemSelector
-            options={product.sizes.map((size) => ({
-              value: size._id,
-              text: size.size,
-            }))}
-            selected={product.selectedSize}
-            onChange={(_, size) => this.props.selectSizeMutation({
-              variables: { id: product._id, size },
-            })}
-          />
-        </div>
-        {/* Color options */}
-        <div className={s.block}>
-          {/* TODO: Fixed css */}
-          <span className={s.label}>Color:</span>
-          <ItemSelector
-            options={product.colors.map((color) => ({
-              value: color._id,
-              text: color.color,
-            }))}
-            selected={product.selectedColor}
-            onChange={(_, color) => this.props.selectColorMutation({
-              variables: { id: product._id, color },
-            })}
-          />
-        </div>
-        <div className={s.buttons}>
-          <Button
-            className={s.right}
-            color="orange"
-            content="Next"
-            disabled={!product.selectedSize || !product.selectedColor}
-            onClick={this.props.next} />
+        <div className={s.side}>
+          <div className={s.productName}>
+            Product: {product.name}
+          </div>
+          <div className={s.productDescription}>
+            {product.description}
+          </div>
+          {/* Size options */}
+          <div className={s.block}>
+            <span className={s.label}>Size:</span>
+            <ItemSelector
+              options={product.sizes.map((size) => ({
+                value: size._id,
+                text: size.size,
+              }))}
+              selected={product.selectedSize}
+              onChange={(_, size) => this.props.selectSizeMutation({
+                variables: { id: product._id, size },
+              })}
+            />
+          </div>
+          {/* Color options */}
+          <div className={s.block}>
+            {/* TODO: Fixed css */}
+            <span className={s.label}>Color:</span>
+            <ItemSelector
+              options={product.colors.map((color) => ({
+                value: color._id,
+                text: color.color,
+              }))}
+              selected={product.selectedColor}
+              onChange={(_, color) => this.props.selectColorMutation({
+                variables: { id: product._id, color },
+              })}
+            />
+          </div>
+          <div className={s.buttons}>
+            <Button
+              className={s.right}
+              color="orange"
+              content="Next"
+              disabled={!product.selectedSize || !product.selectedColor}
+              onClick={this.props.next} />
+          </div>
         </div>
       </div>
     );
