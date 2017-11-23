@@ -10,7 +10,6 @@ interface IReceiptDocument {
 
     size: string;
     color: string;
-    number_of_items: number;
 
     buyer: string;
 
@@ -49,8 +48,6 @@ class Receipt extends Instance<IReceiptDocument, Receipt> implements IReceiptDoc
     size: string;
     @Property(String, true)
     color: string;
-    @Property(Number, true)
-    number_of_items: number;
 
     @Property(String, true)
     buyer: string;

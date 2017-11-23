@@ -1,5 +1,7 @@
 scalar Date
 scalar Keyword
+scalar AddressInputCreate
+scalar PaymentInputCreate
 
 schema {
   query: Query
