@@ -1,9 +1,10 @@
-import { GraphQLInputObjectType, GraphQLString } from 'graphql';
+import { GraphQLInputObjectType, GraphQLString, ObjectValueNode } from 'graphql';
 import * as GraphQLDate from 'graphql-date';
 import { makeExecutableSchema } from 'graphql-tools';
-import * as UnionInputType from 'graphql-union-input-type';
+// import * as UnionInputType from 'graphql-union-input-type';
 import { print } from 'graphql/language';
 import { GraphQLInt } from 'graphql/type/scalars';
+import { UnionInputType } from '../core/UnionInputType';
 import * as SchemaType from './schema.gql';
 import * as IntlMessage from './types/IntlMessage';
 import * as Mutation from './types/Mutation';
@@ -78,7 +79,6 @@ const OldPaymentInput = new GraphQLInputObjectType({
     };
   },
 });
-
 const NewAddressInput = new GraphQLInputObjectType({
   name: 'new_object',
   fields: () => {
@@ -118,9 +118,9 @@ const NewPaymentInput = new GraphQLInputObjectType({
 
 const AddressInputCreate = new UnionInputType({
   name: 'address',
-  InputType: [OldAddressInput, NewAddressInput],
+  inputTypes: [OldAddressInput, NewAddressInput],
   resolveTypeFromAst: function resolveTypeFromAst(ast) {
-    if (ast.fields[0].name.value === '_id') {
+    if ((ast as ObjectValueNode).fields[0].name.value === '_id') {
       return OldAddressInput;
     } else {
       return NewAddressInput;
@@ -130,9 +130,9 @@ const AddressInputCreate = new UnionInputType({
 
 const PaymentInputCreate = new UnionInputType({
   name: 'paymentMethod',
-  InputType: [OldPaymentInput, NewPaymentInput],
+  inputTypes: [OldPaymentInput, NewPaymentInput],
   resolveTypeFromAst: function resolveTypeFromAst(ast) {
-    if (ast.fields[0].name.value === '_id') {
+    if ((ast as ObjectValueNode).fields[0].name.value === '_id') {
       return OldPaymentInput;
     } else {
       return NewPaymentInput;
@@ -142,11 +142,11 @@ const PaymentInputCreate = new UnionInputType({
 
 const Keyword = new UnionInputType({
   name: 'Keyword',
-  InputType: [UserIDKeyword, HashtagKeyword, SpecialKeyword],
+  inputTypes: [UserIDKeyword, HashtagKeyword, SpecialKeyword],
   resolveTypeFromAst: function resolveTypeFromAst(ast) {
-    if (ast.fields[0].name.value === 'id') {
+    if ((ast as ObjectValueNode).fields[0].name.value === 'id') {
       return UserIDKeyword;
-    } else if (ast.fields[0].name.value === 'keyword') {
+    } else if ((ast as ObjectValueNode).fields[0].name.value === 'keyword') {
       return HashtagKeyword;
     } else {
       return SpecialKeyword;

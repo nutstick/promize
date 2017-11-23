@@ -2,6 +2,7 @@ import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { ChildProps, MutationFunc } from 'react-apollo';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Button, Card, Icon } from 'semantic-ui-react';
 import { graphql } from '../../../apollo/graphql';
 import * as TOGGLELOGINMODALMUTATION from '../../../apollo/login/ToggleLoginModalMutation.gql';
@@ -36,6 +37,9 @@ export namespace Review {
 
     userPaymentMethod?: string;
     prev: (e) => void;
+
+    location: any;
+    history: any;
   }
 
   export interface UserQuery {
@@ -62,10 +66,13 @@ export namespace Review {
     orderReceipt?: MutationFunc<R>;
   };
 
-  export type Props = CreateOrderReceiptMutation<WrapWithToggleLoginMutation, {}>;
+  export type WrapWithCreateOrderReceiptMutation = CreateOrderReceiptMutation<WrapWithToggleLoginMutation, {}>;
+
+  export type Props = WrapWithCreateOrderReceiptMutation;
 }
 
 @withStyles(s)
+@(withRouter as any)
 @graphql<Review.IProps, Review.UserQuery>(ADDRESSQUERY, {
   options(props) {
     return {
@@ -127,25 +134,25 @@ export class Review extends React.Component<Review.Props> {
       <div className={s.root}>
         {/* Product */}
         <div className={cx(s.product, s.block)}>
-          <div className={s.productName}>{product.name}</div>
+          <div className={s.productName}>Product: {product.name}</div>
           {/* Size options */}
-          <div>
-            <span className={s.label}>Size:</span>
+          <div className={s.option}>
+            <span className={s.optionLabel}>Size: </span>
             {
               product.sizes.filter((size) => (size._id === product.selectedSize))
               .map((size) => (
-                <div>{size.size}</div>
+                <span>{size.size}</span>
               ))
             }
           </div>
           {/* Color options */}
-          <div>
+          <div className={s.option}>
             {/* TODO: Fixed css */}
-            <span className={s.label}>Color:</span>
+            <span className={s.optionLabel}>Color: </span>
             {
               product.colors.filter((color) => (color._id === product.selectedColor))
               .map((color) => (
-                <div>{color.color}</div>
+                <span>{color.color}</span>
               ))
             }
           </div>
@@ -194,13 +201,17 @@ export class Review extends React.Component<Review.Props> {
                     product: this.props.id,
                     size: product.selectedSize,
                     color: product.selectedColor,
-                    deliverAddress: this.props.userAddress || {
+                    deliverAddress: this.props.userAddress ? {
+                      _id: this.props.userAddress,
+                    } : {
                       address,
                       city,
                       country,
                       zip,
                     },
-                    paymentMethod: this.props.userPaymentMethod || {
+                    paymentMethod: this.props.userPaymentMethod ? {
+                      _id: this.props.userPaymentMethod,
+                    } : {
                       creditCardNumber,
                       validFromMonth,
                       validFromYear,
@@ -208,7 +219,9 @@ export class Review extends React.Component<Review.Props> {
                     // TODO: remark
                   },
                 },
-              })}>
+              })
+                .then(() => this.props.history.push(`${this.props.location.pathname}/success`))
+                .catch(() => this.props.history.push(`${this.props.location.pathname}/success`))}>
               <Icon name="shop" /> Confirm Order
             </Button> : <Button
               className={s.right}

@@ -1,7 +1,11 @@
+import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { ChildProps, MutationFunc } from 'react-apollo';
-import { Button, Image } from 'semantic-ui-react';
+import Slider from 'react-slick';
+import { Button, Icon, Image } from 'semantic-ui-react';
+import * as slickThemeCss from 'slick-carousel/slick/slick-theme.css';
+import * as slickCss from 'slick-carousel/slick/slick.css';
 import { graphql } from '../../../apollo/graphql';
 import { IProductClient } from '../../../apollo/product';
 import * as SELECTCOLORMUTATION from '../../../apollo/product/SelectColorMutation.gql';
@@ -35,7 +39,7 @@ export namespace ProductStep {
   export type Props = ChildProps<WrapWithSelectSizeMutation, ProductQuery>;
 }
 
-@withStyles(s)
+@withStyles(slickCss, slickThemeCss, s)
 @graphql<ProductStep.IProps, {}>(SELECTCOLORMUTATION, {
   name: 'selectColorMutation',
 })
@@ -48,25 +52,57 @@ export namespace ProductStep {
   },
 })
 export class ProductStep extends React.Component<ProductStep.Props> {
+  slider?: any;
+
+  private next() {
+    this.slider.slickNext();
+  }
+
+  private previous() {
+    this.slider.slickPrev();
+  }
+
   public render() {
+    const PrevArrow = () => (<div
+      className={cx(s.arrow, s['--left'])}
+      onClick={this.previous.bind(this)}>
+      <Icon color="grey" size="large" name="chevron left" />
+    </div>);
+
+    const NextArrow = () => (<div
+      className={cx(s.arrow, s['--right'])}
+      onClick={this.next.bind(this)}>
+      <Icon color="grey" size="large" name="chevron right" />
+    </div>);
+
     const { product } = this.props.data;
+
     return (
       <div className={s.root}>
         <div className={s.productName}>
-          {product.name}
+          Product: {product.name}
         </div>
         <div className={s.productDescription}>
           {product.description}
         </div>
         <div className={s.productImage}>
-          {product.pictures.map((picture, index) => (
-            <Image centered key={index} src={picture} />
-          ))}
+          <Slider
+            ref={(c) => { this.slider = c; } }
+            nextArrow={<NextArrow />}
+            prevArrow={<PrevArrow />}
+            dots={true}
+            dotsClass={s.dot}
+            infinite={true}>
+            {product.pictures.map((pic, index) => (
+              <div className={s.pictureWrapper}>
+                <img key={`Product-${product._id}-picture-${index}`} className={s.image} src={pic} />
+              </div>
+            ))}
+          </Slider>
         </div>
         {/* Size options */}
         <div className={s.block}>
           <span className={s.label}>Size:</span>
-          <br />
           <ItemSelector
             options={product.sizes.map((size) => ({
               value: size._id,
@@ -82,7 +118,6 @@ export class ProductStep extends React.Component<ProductStep.Props> {
         <div className={s.block}>
           {/* TODO: Fixed css */}
           <span className={s.label}>Color:</span>
-          <br />
           <ItemSelector
             options={product.colors.map((color) => ({
               value: color._id,

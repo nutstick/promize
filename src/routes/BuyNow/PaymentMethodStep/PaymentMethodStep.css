@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 .returnCustomer {
   text-align: center;
   padding-top: 2em;
@@ -14,20 +13,10 @@
   padding: 0 4em;
 }
 
+.buttons {
+  padding: 2em 0;
+}
+
 .right {
   float: right;
-=======
-.returnCustomer {
-    text-align: center;
-    padding-top: 2em;
-    padding-bottom: 1em;
-}
-
-.newMethod {
-    padding: 0 4em;
-}
-
-.buttons {
-    padding: 1em 0 2em;
->>>>>>> 414a90fc67db6da1cd441a1d8b137f649744b513
 }

@@ -7,6 +7,7 @@ import {
   isValidLiteralValue,
   ObjectValueNode,
   valueFromAST,
+  ValueNode,
 } from 'graphql';
 
 type InputType = GraphQLInputObjectType | GraphQLScalarType;
@@ -51,7 +52,7 @@ export interface UnionInputTypeOptions {
    *   Optional. If provided, is called with full AST for the input argument and must return
    * 	 corresponding GraphQLInputObjectType or null
    */
-  resolveTypeFromAst?: (ast) => GraphQLInputObjectType | null;
+  resolveTypeFromAst?: (ast: ValueNode) => GraphQLInputObjectType | null;
 
   /**
    * 	 @param  {function} options.resolveTypeFromValue
