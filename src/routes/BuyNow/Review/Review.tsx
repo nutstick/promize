@@ -213,8 +213,8 @@ export class Review extends React.Component<Review.Props> {
                       _id: this.props.userPaymentMethod,
                     } : {
                       creditCardNumber,
-                      validFromMonth,
-                      validFromYear,
+                      validFromMonth: parseInt(validFromMonth, 10),
+                      validFromYear: parseInt(validFromMonth, 10),
                     },
                     // TODO: remark
                   },
