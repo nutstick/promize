@@ -1,9 +1,10 @@
-import { GraphQLInputObjectType, GraphQLString } from 'graphql';
+import { GraphQLInputObjectType, GraphQLString, ObjectValueNode } from 'graphql';
 import * as GraphQLDate from 'graphql-date';
 import { makeExecutableSchema } from 'graphql-tools';
-import * as UnionInputType from 'graphql-union-input-type';
+// import * as UnionInputType from 'graphql-union-input-type';
 import { print } from 'graphql/language';
 import { GraphQLInt } from 'graphql/type/scalars';
+import { UnionInputType } from '../core/UnionInputType';
 import * as SchemaType from './schema.gql';
 import * as IntlMessage from './types/IntlMessage';
 import * as Mutation from './types/Mutation';
@@ -58,7 +59,7 @@ const SpecialKeyword = new GraphQLInputObjectType({
 });
 
 const OldAddressInput = new GraphQLInputObjectType({
-  name: 'old_index',
+  name: 'OldAddressInput',
   fields: () => {
     return {
       _id: {
@@ -68,8 +69,8 @@ const OldAddressInput = new GraphQLInputObjectType({
   },
 });
 
-const OldPaymentInput = new GraphQLInputObjectType({
-  name: 'old_index',
+const OldPaymentMethodInput = new GraphQLInputObjectType({
+  name: 'OldPaymentMethodInput',
   fields: () => {
     return {
       _id: {
@@ -78,9 +79,8 @@ const OldPaymentInput = new GraphQLInputObjectType({
     };
   },
 });
-
 const NewAddressInput = new GraphQLInputObjectType({
-  name: 'new_object',
+  name: 'NewAddressInput',
   fields: () => {
     return {
       address: {
@@ -99,8 +99,8 @@ const NewAddressInput = new GraphQLInputObjectType({
   },
 });
 
-const NewPaymentInput = new GraphQLInputObjectType({
-  name: 'new_object',
+const NewPaymentMethodInput = new GraphQLInputObjectType({
+  name: 'NewPaymenMethodtInput',
   fields: () => {
     return {
       creditCardNumber: {
@@ -117,10 +117,17 @@ const NewPaymentInput = new GraphQLInputObjectType({
 });
 
 const AddressInputCreate = new UnionInputType({
-  name: 'address',
-  InputType: [OldAddressInput, NewAddressInput],
+  name: 'AddressInputCreate',
+  inputTypes: [OldAddressInput, NewAddressInput],
+  resolveTypeFromValue(value) {
+    if (value._id) {
+      return OldAddressInput;
+    } else {
+      return NewAddressInput;
+    }
+  },
   resolveTypeFromAst: function resolveTypeFromAst(ast) {
-    if (ast.fields[0].name.value === '_id') {
+    if ((ast as ObjectValueNode).fields[0].name.value === '_id') {
       return OldAddressInput;
     } else {
       return NewAddressInput;
@@ -129,24 +136,31 @@ const AddressInputCreate = new UnionInputType({
 });
 
 const PaymentInputCreate = new UnionInputType({
-  name: 'paymentMethod',
-  InputType: [OldPaymentInput, NewPaymentInput],
-  resolveTypeFromAst: function resolveTypeFromAst(ast) {
-    if (ast.fields[0].name.value === '_id') {
-      return OldPaymentInput;
+  name: 'PaymentMethodInputCreate',
+  inputTypes: [OldPaymentMethodInput, NewPaymentMethodInput],
+  resolveTypeFromValue(value) {
+    if (value._id) {
+      return OldPaymentMethodInput;
     } else {
-      return NewPaymentInput;
+      return NewPaymentMethodInput;
+    }
+  },
+  resolveTypeFromAst: function resolveTypeFromAst(ast) {
+    if ((ast as ObjectValueNode).fields[0].name.value === '_id') {
+      return OldPaymentMethodInput;
+    } else {
+      return NewPaymentMethodInput;
     }
   },
 });
 
 const Keyword = new UnionInputType({
   name: 'Keyword',
-  InputType: [UserIDKeyword, HashtagKeyword, SpecialKeyword],
+  inputTypes: [UserIDKeyword, HashtagKeyword, SpecialKeyword],
   resolveTypeFromAst: function resolveTypeFromAst(ast) {
-    if (ast.fields[0].name.value === 'id') {
+    if ((ast as ObjectValueNode).fields[0].name.value === 'id') {
       return UserIDKeyword;
-    } else if (ast.fields[0].name.value === 'keyword') {
+    } else if ((ast as ObjectValueNode).fields[0].name.value === 'keyword') {
       return HashtagKeyword;
     } else {
       return SpecialKeyword;
