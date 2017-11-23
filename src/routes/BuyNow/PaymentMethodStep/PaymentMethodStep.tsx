@@ -152,7 +152,7 @@ export class PaymentMethodStep extends React.Component<PaymentMethodStep.Props, 
         key: paymentMethod._id,
         text: paymentMethod._id,
         value: paymentMethod._id,
-        content: <PaymentMethodOption {...paymentMethod}/>,
+        content: <PaymentMethodOption {...paymentMethod} />,
       }));
 
       userPaymentMethod = (
@@ -168,8 +168,12 @@ export class PaymentMethodStep extends React.Component<PaymentMethodStep.Props, 
       userPaymentMethod = (
         <div className={s.returnCustomer}>
           Returning customer?
+<<<<<<< HEAD
           <a href="#" onClick={(e) => { this.props.mutate({}); }}
              style={{ paddingLeft: 5 }}>
+=======
+          <a href="#" onClick={(e) => { this.props.mutate({}); }} style={{ paddingLeft: 5 }}>
+>>>>>>> 414a90fc67db6da1cd441a1d8b137f649744b513
             Login
           </a>
         </div>
@@ -180,17 +184,27 @@ export class PaymentMethodStep extends React.Component<PaymentMethodStep.Props, 
       <div className={s.root}>
         {userPaymentMethod}
         <Divider horizontal>Or</Divider>
+<<<<<<< HEAD
         <div className={s.container}>
+=======
+        <div className={s.newMethod}>
+>>>>>>> 414a90fc67db6da1cd441a1d8b137f649744b513
           <h4>New Payment Method</h4>
           <Form>
             <Cards
               number={this.state.creditCardNumber || ''}
               name={' '}
               expiry={`${this.state.validFromMonth || (this.state.validFromYear && '  ') || ''}` +
+<<<<<<< HEAD
               `${this.state.validFromYear || ''}`}
               cvc={this.state.cvc}
               focused={this.state.focus} />
             <div style={{ height: 10 }}/>
+=======
+                `${this.state.validFromYear || ''}`}
+              cvc={this.state.cvc}
+              focused={this.state.focus} />
+>>>>>>> 414a90fc67db6da1cd441a1d8b137f649744b513
             <Form.Input
               label="Credit Card Number"
               placeholder="Credit Card Number"
@@ -223,7 +237,12 @@ export class PaymentMethodStep extends React.Component<PaymentMethodStep.Props, 
                 onFocus={this.onFocus.bind(this, 'cvc')} />
             </Form.Group>
           </Form>
+<<<<<<< HEAD
           <div>
+=======
+
+          <div className={s.buttons}>
+>>>>>>> 414a90fc67db6da1cd441a1d8b137f649744b513
             <Button
               className={s.left}
               content="Previous"

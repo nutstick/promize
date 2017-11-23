@@ -30,3 +30,21 @@
 .right {
   float: right;
 }
+
+.root {
+    padding: 2em 4em;
+}
+
+.productName {
+    font-size: 1.5em;
+    font-weight: bold;
+    padding-bottom: 0.5em;
+}
+
+// .block {
+//     padding: 0.5em 0;
+// }
+
+.optionLabel {
+    font-weight: bold;
+}

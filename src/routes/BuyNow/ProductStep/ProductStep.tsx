@@ -52,20 +52,21 @@ export class ProductStep extends React.Component<ProductStep.Props> {
     const { product } = this.props.data;
     return (
       <div className={s.root}>
-        <div>
-          <h4>
-            {product.name}
-          </h4>
+        <div className={s.productName}>
+          {product.name}
         </div>
-        <div>{product.description}</div>
-        <div>
+        <div className={s.productDescription}>
+          {product.description}
+        </div>
+        <div className={s.productImage}>
           {product.pictures.map((picture, index) => (
-            <Image key={index} src={picture} />
+            <Image centered key={index} src={picture} />
           ))}
         </div>
         {/* Size options */}
         <div className={s.block}>
           <span className={s.label}>Size:</span>
+          <br />
           <ItemSelector
             options={product.sizes.map((size) => ({
               value: size._id,
@@ -81,6 +82,7 @@ export class ProductStep extends React.Component<ProductStep.Props> {
         <div className={s.block}>
           {/* TODO: Fixed css */}
           <span className={s.label}>Color:</span>
+          <br />
           <ItemSelector
             options={product.colors.map((color) => ({
               value: color._id,
@@ -92,7 +94,7 @@ export class ProductStep extends React.Component<ProductStep.Props> {
             })}
           />
         </div>
-        <div>
+        <div className={s.buttons}>
           <Button
             className={s.right}
             color="orange"

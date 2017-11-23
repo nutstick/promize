@@ -126,8 +126,8 @@ export class Review extends React.Component<Review.Props> {
     return (
       <div className={s.root}>
         {/* Product */}
-        <div className={s.block}>
-          <div>{product.name}</div>
+        <div className={cx(s.product, s.block)}>
+          <div className={s.productName}>{product.name}</div>
           {/* Size options */}
           <div>
             <span className={s.label}>Size:</span>
@@ -179,7 +179,7 @@ export class Review extends React.Component<Review.Props> {
           </div>
           <PaymentMethodOption creditCardNumber={this.props.creditCardNumber} />
         </div>
-        <div>
+        <div className={s.buttons}>
           <Button
             className={s.left}
             content="Previous"
