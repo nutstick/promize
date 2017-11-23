@@ -36,15 +36,25 @@
 }
 
 .productName {
-    font-size: 1.5em;
-    font-weight: bold;
-    padding-bottom: 0.5em;
+  font-size: 2em;
+  font-weight: bold;
+  padding: 1em 0;
 }
 
-// .block {
-//     padding: 0.5em 0;
-// }
+.buttons {
+  padding: 2em 0;
+}
+
+.option {
+  font-size: 1rem;
+  line-height: 200%;
+}
 
 .optionLabel {
-    font-weight: bold;
+  display: inline-block;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding-right: 1em;
+
+  width: 70px;
 }

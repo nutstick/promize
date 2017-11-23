@@ -127,25 +127,25 @@ export class Review extends React.Component<Review.Props> {
       <div className={s.root}>
         {/* Product */}
         <div className={cx(s.product, s.block)}>
-          <div className={s.productName}>{product.name}</div>
+          <div className={s.productName}>Product: {product.name}</div>
           {/* Size options */}
-          <div>
-            <span className={s.label}>Size:</span>
+          <div className={s.option}>
+            <span className={s.optionLabel}>Size: </span>
             {
               product.sizes.filter((size) => (size._id === product.selectedSize))
               .map((size) => (
-                <div>{size.size}</div>
+                <span>{size.size}</span>
               ))
             }
           </div>
           {/* Color options */}
-          <div>
+          <div className={s.option}>
             {/* TODO: Fixed css */}
-            <span className={s.label}>Color:</span>
+            <span className={s.optionLabel}>Color: </span>
             {
               product.colors.filter((color) => (color._id === product.selectedColor))
               .map((color) => (
-                <div>{color.color}</div>
+                <span>{color.color}</span>
               ))
             }
           </div>
