@@ -127,6 +127,7 @@ export class ProductModal extends React.Component<ProductModal.Props> {
                     ))}
                   </Slider>
                 </div>
+                <div className={s.contentWrap}>
                 <div className={s.header}>
                   <h4>{product.name}</h4>
                   <div className={s.owner}>
@@ -191,6 +192,7 @@ export class ProductModal extends React.Component<ProductModal.Props> {
                       <Icon name="talk outline" />
                     </Button.Content>
                   </Button>
+                </div>
                 </div>
               </div> :
             <div>Empty</div>

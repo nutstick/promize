@@ -152,7 +152,7 @@ export class PaymentMethodStep extends React.Component<PaymentMethodStep.Props, 
         key: paymentMethod._id,
         text: paymentMethod._id,
         value: paymentMethod._id,
-        content: <PaymentMethodOption {...paymentMethod}/>,
+        content: <PaymentMethodOption {...paymentMethod} />,
       }));
 
       userPaymentMethod = (
@@ -166,9 +166,14 @@ export class PaymentMethodStep extends React.Component<PaymentMethodStep.Props, 
       );
     } else {
       userPaymentMethod = (
-        <div>
+        <div className={s.returnCustomer}>
           Returning customer?
-          <a href="#" onClick={(e) => { this.props.mutate({}); }}>
+<<<<<<< HEAD
+          <a href="#" onClick={(e) => { this.props.mutate({}); }}
+             style={{ paddingLeft: 5 }}>
+=======
+          <a href="#" onClick={(e) => { this.props.mutate({}); }} style={{ paddingLeft: 5 }}>
+>>>>>>> 414a90fc67db6da1cd441a1d8b137f649744b513
             Login
           </a>
         </div>
@@ -179,58 +184,75 @@ export class PaymentMethodStep extends React.Component<PaymentMethodStep.Props, 
       <div className={s.root}>
         {userPaymentMethod}
         <Divider horizontal>Or</Divider>
-        <h4>New Payment Method</h4>
-        <Form>
-          <Cards
-            number={this.state.creditCardNumber || ''}
-            name={' '}
-            expiry={`${this.state.validFromMonth || (this.state.validFromYear && '  ') || ''}` +
-            `${this.state.validFromYear || ''}`}
-            cvc={this.state.cvc}
-            focused={this.state.focus} />
-          <Form.Input
-            label="Credit Card Number"
-            placeholder="Credit Card Number"
-            error={this.state.creditCardNumberError}
-            maxLength={19}
-            onChange={this.onInputChange.bind(this, 'creditCardNumber', true)}
-            onFocus={this.onFocus.bind(this, 'number')} />
+<<<<<<< HEAD
+        <div className={s.container}>
+=======
+        <div className={s.newMethod}>
+>>>>>>> 414a90fc67db6da1cd441a1d8b137f649744b513
+          <h4>New Payment Method</h4>
+          <Form>
+            <Cards
+              number={this.state.creditCardNumber || ''}
+              name={' '}
+              expiry={`${this.state.validFromMonth || (this.state.validFromYear && '  ') || ''}` +
+<<<<<<< HEAD
+              `${this.state.validFromYear || ''}`}
+              cvc={this.state.cvc}
+              focused={this.state.focus} />
+            <div style={{ height: 10 }}/>
+=======
+                `${this.state.validFromYear || ''}`}
+              cvc={this.state.cvc}
+              focused={this.state.focus} />
+>>>>>>> 414a90fc67db6da1cd441a1d8b137f649744b513
+            <Form.Input
+              label="Credit Card Number"
+              placeholder="Credit Card Number"
+              error={this.state.creditCardNumberError}
+              maxLength={19}
+              onChange={this.onInputChange.bind(this, 'creditCardNumber', true)}
+              onFocus={this.onFocus.bind(this, 'number')} />
 
-          <Form.Group widths="equal">
-            <Form.Input
-              label="Month"
-              placeholder="MM"
-              error={this.state.validFromMonthError}
-              maxLength={2}
-              onChange={this.onInputChange.bind(this, 'validFromMonth', true)}
-              onFocus={this.onFocus.bind(this, 'expiry')} />
-            <Form.Input
-              label="Year"
-              placeholder="YY"
-              error={this.state.validFromYearError}
-              maxLength={4}
-              onChange={this.onInputChange.bind(this, 'validFromYear', true)}
-              onFocus={this.onFocus.bind(this, 'expiry')} />
-            <Form.Input
-              label="CVC"
-              placeholder="CVC"
-              error={this.state.cvcError}
-              maxLength={4}
-              onChange={this.onInputChange.bind(this, 'cvc', true)}
-              onFocus={this.onFocus.bind(this, 'cvc')} />
-          </Form.Group>
-        </Form>
+            <Form.Group widths="equal">
+              <Form.Input
+                label="Month"
+                placeholder="MM"
+                error={this.state.validFromMonthError}
+                maxLength={2}
+                onChange={this.onInputChange.bind(this, 'validFromMonth', true)}
+                onFocus={this.onFocus.bind(this, 'expiry')} />
+              <Form.Input
+                label="Year"
+                placeholder="YY"
+                error={this.state.validFromYearError}
+                maxLength={4}
+                onChange={this.onInputChange.bind(this, 'validFromYear', true)}
+                onFocus={this.onFocus.bind(this, 'expiry')} />
+              <Form.Input
+                label="CVC"
+                placeholder="CVC"
+                error={this.state.cvcError}
+                maxLength={4}
+                onChange={this.onInputChange.bind(this, 'cvc', true)}
+                onFocus={this.onFocus.bind(this, 'cvc')} />
+            </Form.Group>
+          </Form>
+<<<<<<< HEAD
+          <div>
+=======
 
-        <div>
-          <Button
-            className={s.left}
-            content="Previous"
-            onClick={this.props.prev} />
-          <Button
-            className={s.right}
-            color="orange"
-            content="Next"
-            onClick={this.next.bind(this)} />
+          <div className={s.buttons}>
+>>>>>>> 414a90fc67db6da1cd441a1d8b137f649744b513
+            <Button
+              className={s.left}
+              content="Previous"
+              onClick={this.props.prev} />
+            <Button
+              className={s.right}
+              color="orange"
+              content="Next"
+              onClick={this.next.bind(this)} />
+          </div>
         </div>
       </div>
     );
