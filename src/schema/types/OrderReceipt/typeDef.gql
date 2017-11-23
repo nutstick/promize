@@ -6,7 +6,6 @@ type OrderReceipt implements Node {
 
   size: Size!
   color: Color!
-  numberOfItems: Int!
 
   deliverAddress: Address
   trackingId: String

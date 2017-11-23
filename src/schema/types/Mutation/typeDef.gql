@@ -16,7 +16,7 @@ input CreateProductInput {
   description: String
   originalPrice: Int
   type: ProductEnum!
-  price: Int
+  price: Int!
   pictures: [String]!
   hashtags: [String]!
   colors: [ColorInput]
@@ -24,7 +24,6 @@ input CreateProductInput {
   categories: [CategoryInput]
   promotionStart: Date!
   promotionEnd: Date!
-  owner: ID!
 }
 
 input EditProductInput {
@@ -41,15 +40,36 @@ input CreateOrderReceiptInput {
   product: ID!
   size: ID!
   color: ID!
-  numberOfItems: Int!
-  deliverAddress: ID!
-  paymentMethod: ID!
+  deliverAddress: AddressInputCreate!
+  paymentMethod: PaymentInputCreate!
   remark: String
-  buyer: ID!
 }
 
 input EditOrderReceiptInput {
   receipt: ID!
+  paymentCompleted: Boolean,
+  productDelivered: Boolean,
+  productReceived: Boolean,
+}
+
+# Address type
+input AddressInput {
+  # Address detail
+  address: String!
+  # City
+  city: String!
+  # Country
+  country: String!
+  # Zip code
+  zip: String!
+}
+
+# Payment Method type
+input PaymentMethodInput {
+  # Credit card number
+  creditCardNumber: String!
+  validFromMonth: Int!
+  validFromYear: Int!
 }
 
 # Mutations
@@ -63,4 +83,8 @@ type Mutation {
   createOrderReceipt(input: CreateOrderReceiptInput): OrderReceipt
   # Edit OrderReceipt
   editOrderReceipt(input: EditOrderReceiptInput): OrderReceipt
+
+  addAddress(address: AddressInput): UserType
+
+  addPaymentMethod(paymentMethod: PaymentMethodInput): UserType
 }

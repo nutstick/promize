@@ -2,17 +2,40 @@ import { IResolver } from '../index';
 
 const resolver: IResolver<any, any> = {
   OrderReceipt: {
-    numberOfItems({ number_of_items }) {
-      return number_of_items;
-    },
-    deliverAddress({ deliver_address }) {
-      return deliver_address;
+    async deliverAddress({ buyer, deliver_address }, _, { database }) {
+      const creator_data = await database.User.findOne({ _id: buyer });
+      for (const i of creator_data.addresses) {
+        if (i._id.toString() === deliver_address) {
+          return i;
+        }
+      }
     },
     trackingId({ tracking_id }) {
       return tracking_id;
     },
-    paymentMethod({ payment_method }) {
-      return payment_method;
+    async paymentMethod({ buyer, payment_method }, _, { database }) {
+      const creator_data = await database.User.findOne({ _id: buyer });
+      for (const i of creator_data.payment_methods) {
+        if (i._id.toString() === payment_method) {
+          return i;
+        }
+      }
+    },
+    async color({ product, color }, _, { database }) {
+      const product_data = await database.Product.findOne({ _id: product });
+      for (const i of product_data.colors) {
+        if (i._id.toString() === color) {
+          return i;
+        }
+      }
+    },
+    async size({ product, size }, _, { database }) {
+      const product_data = await database.Product.findOne({ _id: product });
+      for (const i of product_data.sizes) {
+        if (i._id.toString() === size) {
+          return i;
+        }
+      }
     },
     paymentCompletedAt({ payment_completed_at }) {
       return payment_completed_at;
@@ -35,8 +58,8 @@ const resolver: IResolver<any, any> = {
     async product({ product }, _, { database }) {
       return await database.Product.findOne({ _id: product });
     },
-    async creator({ creator }, _, { database }) {
-      return await database.User.findOne({ _id: creator });
+    async creator({ buyer }, _, { database }) {
+      return await database.User.findOne({ _id: buyer });
     },
   },
 };

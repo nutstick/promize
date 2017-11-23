@@ -98,6 +98,18 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
   static onSaving(user: User, changes: Iridium.Changes) {
     user.updateAt = new Date();
   }
+
+  addAddress(address: IAddress) {
+    this.addresses.push(address);
+    this.addresses = this.addresses;
+    return this.addresses[this.addresses.length - 1]._id;
+  }
+
+  addPaymentMethod(payment_method: IPaymentMethod) {
+    this.payment_methods.push(payment_method);
+    this.payment_methods = this.payment_methods;
+    return this.payment_methods[this.payment_methods.length - 1]._id;
+  }
 }
 
 export { IUserDocument, User };
