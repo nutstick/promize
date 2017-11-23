@@ -166,6 +166,8 @@ export class BuyNow extends React.Component<BuyNow.Props, BuyNow.State> {
           {
             <div className={this.state.step === 4 ? s.show : s.hidden}>
               <Review
+                history={this.props.history}
+                location={this.props.location}
                 prev={this.previosStep.bind(this)}
                 id={this.props.match.params.id}
                 address={this.state.address}

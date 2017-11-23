@@ -1,0 +1,1 @@
+export { BuyNowSuccess } from './BuyNowSuccess';
