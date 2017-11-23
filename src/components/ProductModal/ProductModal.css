@@ -18,9 +18,9 @@
   > .modal {
     background-color: #fff;
     width: 100%;
-    max-width: 935px;
     pointer-events: auto;
     margin: auto;
+    /* max-width: 935px; */    
     /* height: 450px; */
 
     > .wrapper {
@@ -28,48 +28,50 @@
       width: 100%;
       /* height: 100%; */
       overflow: hidden;
-      display:inline-flex;
+      display:flex;
       flex-wrap:wrap;
       flex-direction:row;
 
       > .imgContainer {
         /* height: 100%; */
-        justify-content: center;
+        /* justify-content: center; */
         /* margin-right: 335px; */
         /* max-width: 600px; */
-        width: 100%;
-        height: 600px;
+        /* width: 100%; */
+        /* height: 600px; */
         background: #000;
       }
 
       .contentWrap{
         /* display: block; */
-        min-width: 335px;
+        /* min-width: 335px; */
         /* max-width: 600px; */
       }
-
-     
-
-      @media screen and (max-width: 1095px) {
+      
+      @media screen and (max-width: 1023px) {
         .contentWrap { 
           width: 100%;
           /* height: 600px; */
-       }
-       .imgContainer{
-        width: 100%;
-        height: 400px;
-       }
-      }
-
-      @media screen and (min-width: 1095px) {
-        .contentWrap { 
-          width: 335px;
-          height: 600px;
         }
         .imgContainer{
-          width: 600px;
+          width: 100%;
+          height: 400px;
         }
+      }
 
+      @media screen and (min-width: 1024px) {
+        .contentWrap { 
+          height: 100%;
+          width: 30%;
+          
+        }
+        .imgContainer{
+          flex-grow: 2;
+          width: 70%;
+        }
+        .wrapper{
+          flex-wrap: nowrap;
+        }
         .buttonWrapper {
           box-sizing: border-box;
           padding: 0 2em 2em 2em;
