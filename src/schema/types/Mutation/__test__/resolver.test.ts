@@ -120,7 +120,6 @@ it('Mutation createProduct should insert new product into mongodb', async () => 
 //         product: '585b11e7adb8b5f2d655da01',
 //         size: { size: 'S' },
 //         color: { color: 'red' },
-//         numberOfItems: 1,
 //         deliverAddress: '585b11e7adb8b5f2d655da01',
 //         paymentMethod: '585b11e7adb8b5f2d655da01',
 //         remark: 'note something',
