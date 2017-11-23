@@ -59,7 +59,7 @@ const SpecialKeyword = new GraphQLInputObjectType({
 });
 
 const OldAddressInput = new GraphQLInputObjectType({
-  name: 'old_index',
+  name: 'OldAddressInput',
   fields: () => {
     return {
       _id: {
@@ -69,8 +69,8 @@ const OldAddressInput = new GraphQLInputObjectType({
   },
 });
 
-const OldPaymentInput = new GraphQLInputObjectType({
-  name: 'old_index',
+const OldPaymentMethodInput = new GraphQLInputObjectType({
+  name: 'OldPaymentMethodInput',
   fields: () => {
     return {
       _id: {
@@ -80,7 +80,7 @@ const OldPaymentInput = new GraphQLInputObjectType({
   },
 });
 const NewAddressInput = new GraphQLInputObjectType({
-  name: 'new_object',
+  name: 'NewAddressInput',
   fields: () => {
     return {
       address: {
@@ -99,8 +99,8 @@ const NewAddressInput = new GraphQLInputObjectType({
   },
 });
 
-const NewPaymentInput = new GraphQLInputObjectType({
-  name: 'new_object',
+const NewPaymentMethodInput = new GraphQLInputObjectType({
+  name: 'NewPaymenMethodtInput',
   fields: () => {
     return {
       creditCardNumber: {
@@ -117,8 +117,15 @@ const NewPaymentInput = new GraphQLInputObjectType({
 });
 
 const AddressInputCreate = new UnionInputType({
-  name: 'address',
+  name: 'AddressInputCreate',
   inputTypes: [OldAddressInput, NewAddressInput],
+  resolveTypeFromValue(value) {
+    if (value._id) {
+      return OldAddressInput;
+    } else {
+      return NewAddressInput;
+    }
+  },
   resolveTypeFromAst: function resolveTypeFromAst(ast) {
     if ((ast as ObjectValueNode).fields[0].name.value === '_id') {
       return OldAddressInput;
@@ -129,13 +136,20 @@ const AddressInputCreate = new UnionInputType({
 });
 
 const PaymentInputCreate = new UnionInputType({
-  name: 'paymentMethod',
-  inputTypes: [OldPaymentInput, NewPaymentInput],
+  name: 'PaymentMethodInputCreate',
+  inputTypes: [OldPaymentMethodInput, NewPaymentMethodInput],
+  resolveTypeFromValue(value) {
+    if (value._id) {
+      return OldPaymentMethodInput;
+    } else {
+      return NewPaymentMethodInput;
+    }
+  },
   resolveTypeFromAst: function resolveTypeFromAst(ast) {
     if ((ast as ObjectValueNode).fields[0].name.value === '_id') {
-      return OldPaymentInput;
+      return OldPaymentMethodInput;
     } else {
-      return NewPaymentInput;
+      return NewPaymentMethodInput;
     }
   },
 });
