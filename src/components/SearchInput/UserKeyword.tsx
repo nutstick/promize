@@ -13,9 +13,11 @@ export namespace UserKeyword {
   }
 
   export interface UserQuery {
-    _id: string;
-    avatar: string;
-    firstName: string;
+    user: {
+      _id: string;
+      avatar: string;
+      firstName: string;
+    };
   }
 
   export type Props = ChildProps<IProps, UserQuery>;
@@ -37,13 +39,13 @@ export class UserKeyword extends React.Component<UserKeyword.Props> {
       <span className={cx(s.root)}>
         <Image avatar src={null} />
       </span> : this.props.data.error ?
-      <span className={cx(s.root)}>
-        <Image avatar src={null} />
-        <span className={s.text}>{this.props.id}</span>
-      </span> :
-      <span className={s.root}>
-        <Image avatar src={this.props.data.avatar} />
-        <span className={s.text}>{this.props.data.firstName}</span>
-      </span>;
+        <span className={cx(s.root)}>
+          <Image avatar src={null} />
+          <span className={s.text}>{this.props.id}</span>
+        </span> :
+        <div className={s.root}>
+          <Image avatar circular src={this.props.data.user.avatar} />
+          <span className={s.text}>{this.props.data.user.firstName}</span>
+        </div>;
   }
 }
