@@ -38,7 +38,6 @@ export const Keyword = new UnionInputType({
   name: 'Keyword',
   inputTypes: [UserIDKeyword, HashtagKeyword, SpecialKeyword],
   resolveTypeFromValue(value) {
-    console.log(value);
     if (value.id) {
       return UserIDKeyword;
     } else if (value.keyword) {
@@ -53,7 +52,7 @@ export const Keyword = new UnionInputType({
       return UserIDKeyword;
     } else if ((ast as ObjectValueNode).fields[0].name.value === 'keyword') {
       return HashtagKeyword;
-    } else if ((ast as ObjectValueNode).fields[0].name.value === 'special_keyword'){
+    } else if ((ast as ObjectValueNode).fields[0].name.value === 'special_keyword') {
       return SpecialKeyword;
     }
     return null;

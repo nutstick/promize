@@ -79,10 +79,7 @@ app.use(bodyParser.json());
 app.use(expressJwt({
   secret: auth.jwt.secret,
   credentialsRequired: false,
-  getToken: (req) => {
-    // console.log(req.cookies);
-    return req.cookies.id_token;
-  },
+  getToken: (req) => req.cookies.id_token,
 }));
 // Error handler for express-jwt
 app.use((err, req, res, next) => {
@@ -194,7 +191,7 @@ app.get('*', async (req, res, next) => {
     const client = createApolloClient({
       link: new ServerLink({
         schema: Schema,
-        rootValue: {request: req },
+        rootValue: { request: req },
         context: {
           database,
           user: req.user,

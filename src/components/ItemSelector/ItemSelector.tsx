@@ -43,6 +43,11 @@ export class ItemSelector extends React.Component<ItemSelector.Props> {
     // TODO:
     <Select
       placeholder="Select your country"
-      options={this.props.options} />;
+      options={this.props.options}
+      onChange={(e, data) => {
+        if (this.props.onChange) {
+          this.props.onChange(e, data.value);
+        }
+      }}/>;
   }
 }

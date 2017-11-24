@@ -54,7 +54,7 @@ export async function seed(database: Database) {
       first_name: m.first_name,
       last_name: m.last_name,
       tel_number: m.phone,
-      gender: m.random_element(['Male', 'Female']),
+      gender: m.random_element(['male', 'female']),
       account: {
         email: m.email,
         password: m.password,
@@ -99,7 +99,7 @@ export async function seed(database: Database) {
           first_name: m.first_name,
           last_name: m.last_name,
           tel_number: m.phone,
-          gender: m.random_element(['Male', 'Female']),
+          gender: m.random_element(['male', 'female']),
           account: {
             email: m.email,
             password: m.password,

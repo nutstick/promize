@@ -1,12 +1,12 @@
 import * as BluebirdPromise from 'bluebird';
 import * as fs from 'fs';
-import { toObjectID } from 'iridium';
 import { GraphQLError } from 'graphql';
+import { toObjectID } from 'iridium';
 import { Cursor } from 'mongodb';
 import { join } from 'path';
 import { locales } from '../../../config';
-import { IProductDocument, Product } from '../../models/Product';
-import { unbase64, base64 } from '../base64';
+import { IProductDocument } from '../../models/Product';
+import { base64, unbase64 } from '../base64';
 import { IResolver } from '../index';
 import { IProductOrdering } from '../Product';
 
