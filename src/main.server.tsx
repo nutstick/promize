@@ -79,7 +79,10 @@ app.use(bodyParser.json());
 app.use(expressJwt({
   secret: auth.jwt.secret,
   credentialsRequired: false,
-  getToken: (req) => req.cookies.id_token,
+  getToken: (req) => {
+    // console.log(req.cookies);
+    return req.cookies.id_token;
+  },
 }));
 // Error handler for express-jwt
 app.use((err, req, res, next) => {
@@ -177,7 +180,10 @@ app.get('*', async (req, res, next) => {
 
     const cache = new InMemoryCache({
       dataIdFromObject(value: any) {
-        if (value._id) {
+        // Page or Edges
+        if (value.__typename.match(/(Page|Edges)/)) {
+          return null;
+        } else if (value._id) {
           return `${value.__typename}:${value._id}`;
         } else if (value.node) {
           return `${value.__typename}:${value.node._id}`;

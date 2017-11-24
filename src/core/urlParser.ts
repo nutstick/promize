@@ -40,8 +40,9 @@ export function parseSearch(search: Location) {
   }, {});
 
   try {
-    return search.pathname === '/search' && parseResult.keywords;
+    const keywords = parseResult.keywords.split(',').map((keyword) => JSON.parse(keyword));
+    return search.pathname === '/search' && keywords;
   } catch {
-    return '';
+    return [];
   }
 }

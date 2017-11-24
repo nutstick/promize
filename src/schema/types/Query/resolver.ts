@@ -1,8 +1,14 @@
 import * as BluebirdPromise from 'bluebird';
 import * as fs from 'fs';
+import { toObjectID } from 'iridium';
+import { GraphQLError } from 'graphql';
+import { Cursor } from 'mongodb';
 import { join } from 'path';
 import { locales } from '../../../config';
+import { IProductDocument, Product } from '../../models/Product';
+import { unbase64, base64 } from '../base64';
 import { IResolver } from '../index';
+import { IProductOrdering } from '../Product';
 
 // A folder with messages
 // In development, source dir will be used
@@ -13,6 +19,15 @@ const readFile = BluebirdPromise.promisify(fs.readFile);
 interface IHashtag {
   _id: null;
   uniqueValues: { $addToSet: '$hashtag' };
+}
+
+interface ISearchArgs {
+  keywords: any[];
+  first: number;
+  after: string;
+  last: number;
+  before: string;
+  orderBy: IProductOrdering[];
 }
 
 const resolver: IResolver<any, any> = {
@@ -43,9 +58,18 @@ const resolver: IResolver<any, any> = {
       return JSON.parse(localeData);
     },
 
-    search(_, { keywords, first, after }, { database }) {
-      let products;
-      if (keywords) {
+    async search(_, { keywords, first, after, last, before, orderBy }: ISearchArgs, { database }) {
+      // Add default sort by _id
+      orderBy = orderBy ? orderBy.concat([{ sort: '_id', direction: 'ASC' }]) : [{ sort: '_id', direction: 'ASC' }];
+
+      // Parse orderBy to mongodb sort format
+      const sort: any = orderBy ? orderBy.reduce((prev, order) => ({
+        ...prev,
+        [order.sort]: (order.direction === 'ASC' ? 1 : -1),
+      }), {}) : {};
+
+      let cursor: Cursor<IProductDocument>;
+      if (keywords.length > 0) {
         const searchContext = keywords.reduce((prev, keyword) => {
           if (keyword.id) {
             return [...prev, {
@@ -75,19 +99,83 @@ const resolver: IResolver<any, any> = {
           }
         }, []);
 
-        products = database.Product.find({
+        cursor = database.Product.find({
           $and: searchContext,
-        });
+        }).cursor;
       } else {
-        products = database.Product.find();
+        // No keyword specific
+        cursor = database.Product.find().cursor;
+      }
+
+      if (after) {
+        const { name, _id, ...cursorData } = JSON.parse(unbase64(after));
+        if (name !== 'ProductCursor') {
+          throw new GraphQLError('after type is not ProductCursor');
+        }
+        cursor = (cursor as any).min({
+          ...cursorData,
+          ..._id && {
+            _id: toObjectID(_id),
+          },
+        });
       }
       if (first) {
-        products = products.skip(after);
+        cursor = cursor.limit(first + 1);
       }
-      if (after) {
-        products = products.limit(first);
+      if (before) {
+        const { name, _id, ...cursorData } = JSON.parse(unbase64(before));
+        if (name !== 'ProductCursor') {
+          throw new GraphQLError('before type is not ProductCursor');
+        }
+        cursor = (cursor as any).max({
+          ...cursorData,
+          ..._id && {
+            _id: toObjectID(_id),
+          },
+        });
       }
-      return products;
+      if (last) {
+        cursor = cursor.limit(last + 1);
+      }
+
+      cursor = cursor.sort(sort);
+
+      const totalCount = await cursor.count();
+      const products = await cursor.toArray();
+
+      // Has next page
+      if (products.length > (first || last)) {
+        const endCursor = base64(JSON.stringify(
+          orderBy.reduce((prev, order) => ({
+            ...prev,
+            [order.sort]: products[products.length - 1][order.sort],
+          }), { name: 'ProductCursor' }),
+        ));
+
+        return {
+          totalCount,
+          edges: products.slice(0, -1).map((product) => ({
+            product,
+            orderBy,
+          })),
+          pageInfo: {
+            endCursor,
+            hasNextPage: true,
+          },
+        };
+      }
+
+      return {
+        totalCount,
+        edges: products.map((product) => ({
+          product,
+          orderBy,
+        })),
+        pageInfo: {
+          endCursor: null,
+          hasNextPage: false,
+        },
+      };
     },
 
     async product(_, { id }, { database }) {

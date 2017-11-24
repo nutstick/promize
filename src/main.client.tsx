@@ -36,7 +36,9 @@ const http = new HttpLink({
 });
 const cache = new InMemoryCache({
   dataIdFromObject(value: any) {
-    if (value._id) {
+    if (value.__typename.match(/(Page|Edges)/)) {
+      return null;
+    } else if (value._id) {
       return `${value.__typename}:${value._id}`;
     } else if (value.node) {
       return `${value.__typename}:${value.node._id}`;

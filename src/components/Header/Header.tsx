@@ -62,7 +62,8 @@ export class Header extends React.Component<Header.Props, Header.State> {
   }
 
   private onSearchSubmit(e, keywords): void {
-    this.props.history.push(`/search?keywords=${JSON.stringify(keywords)}`);
+    const params = keywords.map((keyword) => JSON.stringify(keyword)).join(',');
+    this.props.history.push(`/search?keywords=${params}`);
   }
 
   // private onRouteChanged() {
@@ -163,7 +164,7 @@ export class Header extends React.Component<Header.Props, Header.State> {
             <div className={s.searchWrapper}>
               <SearchInput
                 url={this.props.location.pathname}
-                keywords={JSON.parse(parseSearch(this.props.location)) || []}
+                keywords={parseSearch(this.props.location) || []}
                 onSubmit={this.onSearchSubmit.bind(this)}/>
             </div>
           </div>

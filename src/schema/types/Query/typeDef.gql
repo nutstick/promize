@@ -5,8 +5,16 @@ type Query {
   me: UserType
 
   intl(locale: String!): [IntlMessage]
-  
-  search(keywords: [Keyword], first: Int, after: Int): ProductPage
+
+  search(
+    keywords: [Keyword],
+    first: Int,
+    after: ID,
+    last: Int,
+    before: ID,
+    # TODO
+    orderBy: [ProductOrdering],
+  ): ProductPage
 
   product(id: ID!): Product
 
