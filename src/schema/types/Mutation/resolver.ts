@@ -109,6 +109,18 @@ const resolver: IResolver<any, any> = {
       }
       return null;
     },
+
+    // tslint:disable-next-line:max-line-length
+    async createUser(_, { input: { firstName, middleName, lastName, telNumber, paymentMethods, ...input } }, { database }) {
+      return await database.User.insert({
+        first_name: firstName,
+        middle_name: middleName,
+        last_name: lastName,
+        tel_number: telNumber,
+        payment_methods: paymentMethods,
+        ...input,
+      });
+    },
   },
 };
 

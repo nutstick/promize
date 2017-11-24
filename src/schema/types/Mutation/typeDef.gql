@@ -11,6 +11,11 @@ input SizeInput {
   size: String
 }
 
+input AccountInput{
+  email: String!
+  password: String!
+}
+
 input CreateProductInput {
   name: String!
   description: String
@@ -52,6 +57,17 @@ input EditOrderReceiptInput {
   productReceived: Boolean,
 }
 
+input CreateUserInput {
+  firstName: String!
+  middleName: String
+  lastName: String!
+  telNumber: String
+  adresses: [AddressInput]
+  paymentMethods: [PaymentMethodInput]
+  avatar: String!
+  account: AccountInput!
+}
+
 # Address type
 input AddressInput {
   # Address detail
@@ -84,7 +100,11 @@ type Mutation {
   # Edit OrderReceipt
   editOrderReceipt(input: EditOrderReceiptInput): OrderReceipt
 
+  # Add address for CreateOrderReceipt
   addAddress(address: AddressInput): UserType
-
+  # Add paymentMethod for CreateOrderReceipt
   addPaymentMethod(paymentMethod: PaymentMethodInput): UserType
+
+  # Create User
+  createUser(input: CreateUserInput): User
 }
