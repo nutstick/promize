@@ -1,26 +1,17 @@
+import { base64 } from '../base64';
 import { IResolver } from '../index';
 
 const resolver: IResolver<any, any> = {
   ProductEdges: {
-    node(root) {
-      return root;
+    node({ product }) {
+      return product;
     },
-    cursor({ _id }) {
-      return _id;
-    },
-  },
-  ProductPage: {
-    async totalCount(root) {
-      return await root.count();
-    },
-    async edges(root) {
-      return await root.toArray();
-    },
-    pageInfo(root) {
-      return {
-        endCursor: root.next(),
-        hasNextPage: root.cursor.hasNext(),
-      };
+    cursor({ product, orderBy }) {
+      const value = orderBy.reduce((prev, order) => ({
+        ...prev,
+        [order.sort]: product[order.sort],
+      }), { name: 'ProductCursor' });
+      return base64(JSON.stringify(value));
     },
   },
   Product: {

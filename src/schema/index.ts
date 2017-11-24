@@ -5,6 +5,7 @@ import { makeExecutableSchema } from 'graphql-tools';
 import { print } from 'graphql/language';
 import { GraphQLInt } from 'graphql/type/scalars';
 import { UnionInputType } from '../core/UnionInputType';
+import { Keyword } from './Keyword';
 import * as SchemaType from './schema.gql';
 import * as IntlMessage from './types/IntlMessage';
 import * as Mutation from './types/Mutation';
@@ -24,39 +25,6 @@ const modules = [
   OrderReceipt,
   Mutation,
 ];
-
-const UserIDKeyword = new GraphQLInputObjectType({
-  name: 'UserIDKeywordInput',
-  fields: () => {
-    return {
-      id: {
-        type: GraphQLString,
-      },
-    };
-  },
-});
-
-const HashtagKeyword = new GraphQLInputObjectType({
-  name: 'HashtagKeywordInput',
-  fields: () => {
-    return {
-      keyword: {
-        type: GraphQLString,
-      },
-    };
-  },
-});
-
-const SpecialKeyword = new GraphQLInputObjectType({
-  name: 'SpecialKeywordInput',
-  fields: () => {
-    return {
-      special_keyword: {
-        type: GraphQLString,
-      },
-    };
-  },
-});
 
 const OldAddressInput = new GraphQLInputObjectType({
   name: 'OldAddressInput',
@@ -79,6 +47,7 @@ const OldPaymentMethodInput = new GraphQLInputObjectType({
     };
   },
 });
+
 const NewAddressInput = new GraphQLInputObjectType({
   name: 'NewAddressInput',
   fields: () => {
@@ -150,20 +119,6 @@ const PaymentInputCreate = new UnionInputType({
       return OldPaymentMethodInput;
     } else {
       return NewPaymentMethodInput;
-    }
-  },
-});
-
-const Keyword = new UnionInputType({
-  name: 'Keyword',
-  inputTypes: [UserIDKeyword, HashtagKeyword, SpecialKeyword],
-  resolveTypeFromAst: function resolveTypeFromAst(ast) {
-    if ((ast as ObjectValueNode).fields[0].name.value === 'id') {
-      return UserIDKeyword;
-    } else if ((ast as ObjectValueNode).fields[0].name.value === 'keyword') {
-      return HashtagKeyword;
-    } else {
-      return SpecialKeyword;
     }
   },
 });

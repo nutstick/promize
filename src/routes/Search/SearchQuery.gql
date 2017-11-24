@@ -1,6 +1,5 @@
-query SearchQuery($keywords: [Keyword]) {
-  search(keywords: $keywords) {
-    totalCount
+query SearchQuery($keywords: [Keyword], $after: ID, $first: Int) {
+  search(keywords: $keywords, after: $after, first: $first) {
     edges {
       node {
         _id
@@ -15,6 +14,10 @@ query SearchQuery($keywords: [Keyword]) {
           lastName
         }
       }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
     }
   }
 }
