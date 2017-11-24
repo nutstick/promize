@@ -44,8 +44,10 @@ export class UserKeyword extends React.Component<UserKeyword.Props> {
           <span className={s.text}>{this.props.id}</span>
         </span> :
         <div className={s.root}>
-          <Image avatar circular src={this.props.data.user.avatar} />
-          <span className={s.text}>{this.props.data.user.firstName}</span>
+          <span className={s.userKeyword}>
+            <Image avatar inline src={this.props.data.user.avatar} />
+            {this.props.data.user.firstName}
+          </span>
         </div>;
   }
 }
