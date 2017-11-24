@@ -130,6 +130,11 @@ export class ProductStep extends React.Component<ProductStep.Props> {
               })}
             />
           </div>
+          <div className={s.block}>
+            <div className={s.label}>
+              Price: {product.price}
+            </div>
+          </div>
           <div className={s.buttons}>
             <Button
               className={s.right}
