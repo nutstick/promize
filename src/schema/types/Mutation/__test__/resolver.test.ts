@@ -40,6 +40,7 @@ beforeAll(async (done) => {
     first_name: 'Ammarin',
     last_name: 'Jetthakun',
     tel_number: '0123456789',
+    gender: 'Male',
     account: {
       email: 'ammarinjtk@gmail.com',
       password: 'donttell',

@@ -11,6 +11,7 @@ interface IUserDocument {
   first_name: string;
   middle_name?: string;
   last_name: string;
+  gender: string;
   tel_number?: string;
   account: IAccountDocument;
   addresses?: IAddress[];
@@ -41,6 +42,8 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
   @Property(/^.+$/, true)
   last_name: string;
 
+  @Property(/^Male|Female$/, false)
+  gender: string;
   @Property(/^[0-9-]+$/, false)
   tel_number: string;
 
@@ -79,7 +82,7 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
   updateAt: Date;
 
   static onCreating(user: IUserDocument) {
-    user.addresses = [];
+    // user.addresses = [];
     user.payment_methods = [];
     user.createAt = new Date();
     user.updateAt = new Date();

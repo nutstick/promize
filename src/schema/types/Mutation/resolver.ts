@@ -109,6 +109,48 @@ const resolver: IResolver<any, any> = {
       }
       return null;
     },
+
+    // tslint:disable-next-line:max-line-length
+    async createUser(_, { input: { firstName, middleName, lastName, telNumber, paymentMethods, ...input } }, { database }) {
+      return await database.User.insert({
+        ...input,
+        first_name: firstName,
+        middle_name: middleName,
+        last_name: lastName,
+        tel_number: telNumber,
+        payment_methods: paymentMethods,
+      });
+    },
+
+    // tslint:disable-next-line:max-line-length
+    async editUser(_, { input: { user_id, firstName, middleName, lastName, gender, telNumber, paymentMethod, address, password, avatar } }, { database, user }) {
+      database.User.findOne({ _id: user_id }).then(async (instance) => {
+        // update address if exists
+        // if (address) {
+        //   await database.User.update({ _id: instance._id, addresses: { _id: address._id } },
+        //     {
+        //       $set: {
+        //         address: address.address,
+        //         city: address,
+        //         country: address.country,
+        //         zip: address.zip,
+        //       },
+        //     });
+        // }
+        await database.User.update({ _id: instance._id },
+          {
+            $set: {
+              first_name: (firstName ? firstName : instance.first_name),
+              middle_name: (middleName ? middleName : instance.middle_name),
+              last_name: (lastName ? lastName : instance.last_name),
+              tel_number: (telNumber ? telNumber : instance.tel_number),
+              gender: (gender ? gender : instance.gender),
+              avatar: (avatar ? avatar : instance.avatar),
+            },
+          });
+      });
+      return await database.User.findOne({ _id: user_id });
+    },
   },
 };
 
