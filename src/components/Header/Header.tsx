@@ -5,7 +5,7 @@ import { ChildProps } from 'react-apollo';
 import { defineMessages, FormattedMessage, IntlProvider } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { Container, Dropdown, Icon, Image, Menu } from 'semantic-ui-react';
+import { Container, Dropdown, Icon, Image, Label, Menu } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
 import * as TOGGLELOGINMODALMUTATION from '../../apollo/login/ToggleLoginModalMutation.gql';
 import { parseSearch } from '../../core/urlParser';
@@ -119,22 +119,58 @@ export class Header extends React.Component<Header.Props, Header.State> {
                 this.props.data.me ?
                 <Dropdown trigger={trigger} pointing className="link item">
                   <Dropdown.Menu>
-                    <Dropdown.Header>
-                      <div>
-                        <Image avatar src={this.props.data.me.avatar} /> Hi! {this.props.data.me.firstName}
-                      </div>
+                    <Dropdown.Header as={Link} to={`/users/${this.props.data.me._id}`} style={{ display: 'block' }}>
+                      <Image avatar src={this.props.data.me.avatar} /> Hi! {this.props.data.me.firstName}
                     </Dropdown.Header>
                     <Dropdown.Divider />
-                    {/* TODO: Link on Menu */}
-                    {(this.props.data.me as ICoSeller).coseller && <Dropdown.Item>Create new product</Dropdown.Item>}
-                    {(this.props.data.me as ICoSeller).coseller && <Dropdown.Item>My Products</Dropdown.Item>}
-                    {(this.props.data.me as ICoSeller).coseller && <Dropdown.Item>Product Orders</Dropdown.Item>}
+                    {(this.props.data.me as ICoSeller).coseller &&
+                      <Dropdown.Item
+                        as={Link}
+                        to={`/users/${this.props.data.me._id}/products/create`}>
+                        Create new product
+                      </Dropdown.Item>
+                    }
+                    {(this.props.data.me as ICoSeller).coseller &&
+                      <Dropdown.Item
+                        as={Link}
+                        to={`/users/${this.props.data.me._id}/products`}>
+                        My Products
+                      </Dropdown.Item>
+                    }
+                    {(this.props.data.me as ICoSeller).coseller &&
+                      <Dropdown.Item
+                        as={Link}
+                        to={`/users/${this.props.data.me._id}/buyorders`}>
+                        Product Orders
+                        <Label circular as="a" color="orange">
+                          {(this.props.data.me as ICoSeller).totalBuyOrderReceipts}
+                        </Label>
+                      </Dropdown.Item>
+                    }
                     {(this.props.data.me as ICoSeller).coseller && <Dropdown.Divider />}
-                    <Dropdown.Item>Order receipts</Dropdown.Item>
+                    <Dropdown.Item
+                        as={Link}
+                        to={`/users/${this.props.data.me._id}/receipts`}>
+                        Order receipts
+                    </Dropdown.Item>
                     <Dropdown.Divider />
-                    <Dropdown.Item>Account setting</Dropdown.Item>
-                    <Dropdown.Item>Payment setting</Dropdown.Item>
-                    {!(this.props.data.me as ICoSeller).coseller && <Dropdown.Item>Become a CoSeller</Dropdown.Item>}
+                    <Dropdown.Item
+                        as={Link}
+                        to={`/users/${this.props.data.me._id}/account`}>
+                        Account setting
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                        as={Link}
+                        to={`/users/${this.props.data.me._id}/payment`}>
+                        Payment setting
+                    </Dropdown.Item>
+                    {!(this.props.data.me as ICoSeller).coseller &&
+                      <Dropdown.Item
+                          as={Link}
+                          to={`/users/${this.props.data.me._id}/coseller`}>
+                          Become CoSeller
+                      </Dropdown.Item>
+                    }
                     <Dropdown.Divider />
                     <Dropdown.Item
                       as={({ className, children }) => <a className={className} href="/logout">{children}</a>}>
