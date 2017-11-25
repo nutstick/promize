@@ -1,4 +1,4 @@
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 import { graphiqlExpress, graphqlExpress } from 'apollo-server-express';
 import * as bodyParser from 'body-parser';
@@ -175,20 +175,36 @@ app.get('*', async (req, res, next) => {
   try {
     const location = req.url;
 
+    const fragmentMatcher = new IntrospectionFragmentMatcher({
+      introspectionQueryResultData: {
+        __schema: {
+          types: [{
+            kind: 'INTERFACE',
+            name: 'UserType',
+            possibleTypes: [{ name: 'User' }, { name: 'CoSeller' }],
+          }],
+        },
+      },
+    });
+
     const cache = new InMemoryCache({
       dataIdFromObject(value: any) {
-        if (value._id) {
+        // Page or Edges
+        if (value.__typename.match(/(Page|Edges)/)) {
+          return null;
+        } else if (value._id) {
           return `${value.__typename}:${value._id}`;
         } else if (value.node) {
           return `${value.__typename}:${value.node._id}`;
         }
       },
+      fragmentMatcher,
     });
 
     const client = createApolloClient({
       link: new ServerLink({
         schema: Schema,
-        rootValue: {request: req },
+        rootValue: { request: req },
         context: {
           database,
           user: req.user,

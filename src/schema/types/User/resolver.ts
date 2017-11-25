@@ -70,7 +70,7 @@ const resolver: IResolver<any, any> = {
     coseller() {
       return true;
     },
-    // TODO: products, buyOrderReceipts
+    // TODO: products, buyOrderReceipts, totalBuyOrderReceipts
   },
 };
 

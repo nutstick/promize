@@ -147,7 +147,7 @@ export class PaymentMethodStep extends React.Component<PaymentMethodStep.Props, 
     }
 
     let userPaymentMethod;
-    if (me) {
+    if (me && me.paymentMethods) {
       const options = me.paymentMethods.map((paymentMethod) => ({
         key: paymentMethod._id,
         text: paymentMethod._id,

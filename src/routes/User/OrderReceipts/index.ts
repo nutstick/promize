@@ -1,0 +1,1 @@
+export { OrderReceipts } from './OrderReceipts';

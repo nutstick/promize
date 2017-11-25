@@ -41,6 +41,7 @@ passport.use(new FacebookStrategy({
             first_name: profile.name.givenName,
             middle_name: profile.name.middleName,
             last_name: profile.name.familyName,
+            gender: profile.gender,
             account: {
               email: profile._json.email,
               facebook: {

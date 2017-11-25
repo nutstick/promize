@@ -39,6 +39,7 @@ interface ICoSeller extends IUserType, INode {
   coseller?: boolean;
   products?: IPage<IProduct>;
   buyOrderReceipts?: IOrderReceipt[];
+  totalBuyOrderReceipts?: number;
 }
 
 export {

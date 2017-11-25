@@ -1,12 +1,82 @@
 @import '../variables.css';
 
+
+
+
+@media screen and (max-width: 949px) {
+
+  .root{
+    padding: 60px;
+  }
+  
+  .contentWrap { 
+    width: 100%;
+    /* height: 600px; */
+  }
+  .imgContainer{
+    width: 100%;
+    height: 400px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  
+    .root{
+      padding: 20px;
+    }
+    
+    .contentWrap { 
+      width: 100%;
+      /* height: 600px; */
+    }
+    .imgContainer{
+      width: 100%;
+      height: 400px;
+    }
+  }
+
+@media screen and (min-width: 950px) {
+  .root{
+    padding: 80px;
+  }
+
+  .modal{
+    height: 100%;
+  }
+  .contentWrap { 
+    height: 100%;
+    width: 35%;
+    
+  }
+  .imgContainer{
+    flex-grow: 2;
+    width: 65%;
+  }
+  .wrapper{
+    flex-wrap: nowrap;
+    height: 100%;
+  }
+  .buttonWrapper {
+    box-sizing: border-box;
+    padding: 0 2em 2em 2em;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+  
+    display: flex;
+    flex-direction: row-reverse;
+    /* justify-content: space-between; */
+  }
+}
+
 .root {
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 80px;
+  /* padding: 80px; */
 
   overflow-y: auto;
   z-index: var(--login-depth);
@@ -46,46 +116,7 @@
         /* display: block; */
         /* min-width: 335px; */
         /* max-width: 600px; */
-      }
-      
-      @media screen and (max-width: 1023px) {
-        .contentWrap { 
-          width: 100%;
-          /* height: 600px; */
-        }
-        .imgContainer{
-          width: 100%;
-          height: 400px;
-        }
-      }
-
-      @media screen and (min-width: 1024px) {
-        .contentWrap { 
-          height: 100%;
-          width: 30%;
-          
-        }
-        .imgContainer{
-          flex-grow: 2;
-          width: 70%;
-        }
-        .wrapper{
-          flex-wrap: nowrap;
-        }
-        .buttonWrapper {
-          box-sizing: border-box;
-          padding: 0 2em 2em 2em;
-          position: absolute;
-          bottom: 0;
-          right: 0;
-          width: 100%;
-        
-          display: flex;
-          flex-direction: row-reverse;
-          /* justify-content: space-between; */
-        }
-      }
-      
+      }     
 
       .header {
         border-bottom: 1px solid #efefef;

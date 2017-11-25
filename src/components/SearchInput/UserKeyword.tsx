@@ -2,7 +2,7 @@ import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { ChildProps } from 'react-apollo';
-import { Button, Image } from 'semantic-ui-react';
+import { Image } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
 import * as s from './UserKeyword.css';
 import * as USERQUERY from './UserQuery.gql';
@@ -43,11 +43,9 @@ export class UserKeyword extends React.Component<UserKeyword.Props> {
           <Image avatar src={null} />
           <span className={s.text}>{this.props.id}</span>
         </span> :
-        <div className={s.root}>
-          <span className={s.userKeyword}>
-            <Image avatar inline src={this.props.data.user.avatar} />
-            {this.props.data.user.firstName}
-          </span>
-        </div>;
+        <span className={s.root}>
+          <Image avatar inline src={this.props.data.user.avatar} />
+          <span>{this.props.data.user.firstName}</span>
+        </span>;
   }
 }

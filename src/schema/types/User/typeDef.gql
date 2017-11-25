@@ -28,6 +28,11 @@ type PaymentMethod implements Node {
   creditCardNumber: String!
 }
 
+enum GenderEnum {
+  Male
+  Female
+}
+
 # User interface
 interface UserType {
   _id: ID!
@@ -37,6 +42,8 @@ interface UserType {
   middleName: String
   # Last name
   lastName: String!
+  # Gender
+  gender: GenderEnum!
   # Telephone number
   telNumber: String
   # Account data
@@ -66,6 +73,8 @@ type User implements UserType, Node {
   middleName: String
   # Last name
   lastName: String!
+  # Gender
+  gender: GenderEnum!
   # Telephone number
   telNumber: String
   # Account data
@@ -86,6 +95,12 @@ type User implements UserType, Node {
   updateAt: Date!
 }
 
+enum OrderReceiptStatus {
+  OPEN,
+  DELIVERED,
+  CLOSE,
+}
+
 # Co-Seller type
 type CoSeller implements UserType, Node {
   _id: ID!
@@ -95,6 +110,8 @@ type CoSeller implements UserType, Node {
   middleName: String
   # Last name
   lastName: String!
+  # Gender
+  gender: GenderEnum!
   # Telephone number
   telNumber: String
   # Account data
@@ -115,8 +132,11 @@ type CoSeller implements UserType, Node {
   coseller: Boolean!
   # Products's Own
   products: ProductPage!
-  # Buy order receipts
-  buyOrderReceipts: [OrderReceipt]
+
+  # Buy order receipts with status
+  buyOrderReceipts(status: OrderReceiptStatus): [OrderReceipt]
+  # Count order receipts with status
+  totalBuyOrderReceipts(status: OrderReceiptStatus): Int
 
   createAt: Date!
   updateAt: Date!

@@ -133,7 +133,8 @@ export class ProductModal extends React.Component<ProductModal.Props> {
                         <div className={s.owner}>
                           <Link
                             className={s.hashtag}
-                            to={`/search?keywords=${JSON.stringify([{ id: product.owner._id }])}`}>
+                            onClick={() => this.props.closeProductModal({}) }
+                            to={`/search?keywords=${JSON.stringify({ id: product.owner._id })}`}>
                             {this.ownerName(product.owner)}
                           </Link>
                         </div>

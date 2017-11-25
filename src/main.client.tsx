@@ -6,7 +6,7 @@
 // Import all the third party stuff
 import 'whatwg-fetch';
 
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import * as FontFaceObserver from 'fontfaceobserver';
 import { createPath } from 'history/PathUtils';
@@ -34,14 +34,30 @@ const http = new HttpLink({
   uri: '/graphql',
   credentials: 'include',
 });
+
+const fragmentMatcher = new IntrospectionFragmentMatcher({
+  introspectionQueryResultData: {
+    __schema: {
+      types: [{
+        kind: 'INTERFACE',
+        name: 'UserType',
+        possibleTypes: [{ name: 'User' }, { name: 'CoSeller' }],
+      }],
+    },
+  },
+});
+
 const cache = new InMemoryCache({
   dataIdFromObject(value: any) {
-    if (value._id) {
+    if (value.__typename.match(/(Page|Edges)/)) {
+      return null;
+    } else if (value._id) {
       return `${value.__typename}:${value._id}`;
     } else if (value.node) {
       return `${value.__typename}:${value.node._id}`;
     }
   },
+  fragmentMatcher,
 }).restore(window.App.apollo);
 const client = createApolloClient({
   link: http,
