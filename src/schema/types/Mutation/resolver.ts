@@ -12,20 +12,19 @@ const resolver: IResolver<any, any> = {
       });
     },
 
-    async editProduct(_, { input: { product, ...input } }, { database }) {
-      database.Product.findOne({ _id: product }).then(async (instance) => {
-        await database.Product.update({ _id: instance._id },
-          {
-            $set: {
-              ...input,
-            },
-          });
+    async editProduct(_, { input: { id, ...input } }, { database }) {
+      // FIXME: Cant merge fields like originalPrice, promotionStart convert to camel case first
+      await database.Product.update({ _id: id }, {
+        $set: {
+          ...input,
+        },
       });
-      return await database.Product.findOne({ _id: product });
+      return await database.Product.findOne({ _id: id });
     },
 
     async createOrderReceipt(_, { input: { deliverAddress, paymentMethod, ...input } }, { database, user }) {
-      const user_out = await database.User.findOne({ _id: user._id });
+      // FIXME: Cant merge fields like convert to camel case first
+      const userInstance = await database.User.findOne({ id: user._id });
       if (paymentMethod._id) {
         if (database.User.find({ _id: user._id, payment_method: { _id: paymentMethod._id } })) {
           input.payment_method = paymentMethod._id;
@@ -33,7 +32,7 @@ const resolver: IResolver<any, any> = {
           throw new Error(`Invalid paymentMethod ID`);
         }
       } else {
-        const id = user_out.addPaymentMethod({
+        const id = userInstance.addPaymentMethod({
           credit_card_number: paymentMethod.creditCardNumber,
           valid_from_month: paymentMethod.validFromMonth,
           valid_from_year: paymentMethod.validFromYear,
@@ -48,10 +47,11 @@ const resolver: IResolver<any, any> = {
           throw new Error(`Invalid deliverAddress ID`);
         }
       } else {
-        const id = user_out.addAddress(deliverAddress);
+        const id = userInstance.addAddress(deliverAddress);
         input.deliver_address = id.toString();
       }
-      user_out.save();
+
+      await userInstance.save();
 
       return await database.Receipt.insert({
         ...input,
@@ -59,59 +59,70 @@ const resolver: IResolver<any, any> = {
       });
     },
 
-    // tslint:disable-next-line:max-line-length
-    async editOrderReceipt(_, { input: { receipt, paymentCompleted, productDelivered, productReceived, ...input } }, { database }) {
-      database.Receipt.findOne({ _id: receipt }).then(async (instance) => {
-        if ((paymentCompleted === true) && (instance.payment_completed === false)) {
-          input.paymentCompletedAt = new Date();
-        } else {
-          throw new Error(`Invalid change in paymentMethodCompleted`);
-        }
-        if ((productDelivered === true) && (instance.product_delivered === false)) {
-          input.productDeliveredAt = new Date();
-        } else {
-          throw new Error(`Invalid change in productDelivered`);
-        }
-        if ((productReceived === true) && (instance.product_received === false)) {
-          input.productReceivedAt = new Date();
-        } else {
-          throw new Error(`Invalid change in productReceived`);
-        }
-        await database.Receipt.update({ _id: instance._id }, {
-          $set: {
-            ...input,
-          },
-        });
-        return await database.Receipt.findOne({ _id: receipt });
+    async editOrderReceipt(
+      _,
+      { input: { id, status } },
+      { database },
+    ) {
+      const orederReceipt = await database.Receipt.findOne({ _id: id });
+      const update: any = {};
+      if (status === 'PAID' && orederReceipt.payment_completed === false) {
+        update.payment_completed = true;
+        update.payment_completed_at = new Date();
+      } else {
+        throw new Error(`Invalid change in paymentMethodCompleted`);
+      }
+      if (status === 'DELIVERED' === true && orederReceipt.product_delivered === false) {
+        update.product_delivered = true;
+        update.product_delivered_at = new Date();
+      } else {
+        throw new Error(`Invalid change in productDelivered`);
+      }
+      if (status === 'RECEIVED' && orederReceipt.product_received === false) {
+        update.product_received = true;
+        update.product_received_at = new Date();
+      } else {
+        throw new Error(`Invalid change in productReceived`);
+      }
+
+      await database.Receipt.update({ _id: id }, {
+        $set: {
+          ...update,
+        },
       });
+
+      return await database.Receipt.findOne({ _id: id });
     },
 
     async addAddress(_, { address }, { database, user }) {
       if (user && user._id) {
-        const user_out = await database.User.findOne({ _id: user._id });
-        user_out.addAddress(address);
-        user_out.save();
-        return user_out;
+        const userInstance = await database.User.findOne({ _id: user._id });
+        userInstance.addAddress(address);
+        userInstance.save();
+        return userInstance;
       }
       return null;
     },
 
     async addPaymentMethod(_, { paymentMethod }, { database, user }) {
       if (user && user._id) {
-        const user_out = await database.User.findOne({ _id: user._id });
-        user_out.addPaymentMethod({
+        const userInstance = await database.User.findOne({ _id: user._id });
+        userInstance.addPaymentMethod({
           credit_card_number: paymentMethod.creditCardNumber,
           valid_from_month: paymentMethod.validFromMonth,
           valid_from_year: paymentMethod.validFromYear,
         });
-        user_out.save();
-        return user_out;
+        userInstance.save();
+        return userInstance;
       }
       return null;
     },
 
-    // tslint:disable-next-line:max-line-length
-    async createUser(_, { input: { firstName, middleName, lastName, telNumber, paymentMethods, ...input } }, { database }) {
+    async createUser(
+      _,
+      { input: { firstName, middleName, lastName, telNumber, paymentMethods, ...input } },
+      { database },
+    ) {
       return await database.User.insert({
         ...input,
         first_name: firstName,
@@ -122,34 +133,34 @@ const resolver: IResolver<any, any> = {
       });
     },
 
-    // tslint:disable-next-line:max-line-length
-    async editUser(_, { input: { user_id, firstName, middleName, lastName, gender, telNumber, paymentMethod, address, password, avatar } }, { database, user }) {
-      database.User.findOne({ _id: user_id }).then(async (instance) => {
-        // update address if exists
-        // if (address) {
-        //   await database.User.update({ _id: instance._id, addresses: { _id: address._id } },
-        //     {
-        //       $set: {
-        //         address: address.address,
-        //         city: address,
-        //         country: address.country,
-        //         zip: address.zip,
-        //       },
-        //     });
-        // }
-        await database.User.update({ _id: instance._id },
-          {
-            $set: {
-              first_name: (firstName ? firstName : instance.first_name),
-              middle_name: (middleName ? middleName : instance.middle_name),
-              last_name: (lastName ? lastName : instance.last_name),
-              tel_number: (telNumber ? telNumber : instance.tel_number),
-              gender: (gender ? gender : instance.gender),
-              avatar: (avatar ? avatar : instance.avatar),
-            },
-          });
+    async editUser(
+      _,
+      { input: {
+        id,
+        firstName,
+        middleName,
+        lastName,
+        gender,
+        telNumber,
+        paymentMethod,
+        address,
+        password,
+        avatar,
+      } },
+      { database },
+    ) {
+      const userInstance = await database.User.findOne({ _id: id });
+      await database.User.update({ _id: id }, {
+        $set: {
+          first_name: firstName ? firstName : userInstance.first_name,
+          middle_name: middleName ? middleName : userInstance.middle_name,
+          last_name: lastName ? lastName : userInstance.last_name,
+          tel_number: telNumber ? telNumber : userInstance.tel_number,
+          gender: gender ? gender : userInstance.gender,
+          avatar: avatar ? avatar : userInstance.avatar,
+        },
       });
-      return await database.User.findOne({ _id: user_id });
+      return await database.User.findOne({ _id: id });
     },
   },
 };

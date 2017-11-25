@@ -1,0 +1,17 @@
+query Account {
+  me {
+    _id
+    account {
+      email
+      facebook
+      google
+    }
+    addresses {
+      _id
+      address
+      city
+      country
+      zip
+    }
+  }
+}

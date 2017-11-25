@@ -24,29 +24,29 @@ export namespace ProductStep {
     selectColorMutation?: MutationFunc<R>;
   };
 
-  export type WrapWithSelectColorMutation = SelectColorMutation<IProps, {}>;
+  export type WithSelectColorMutation = SelectColorMutation<IProps, {}>;
 
   type SelectSizeMutation<P, R> = P & {
     selectSizeMutation?: MutationFunc<R>;
   };
 
-  export type WrapWithSelectSizeMutation = SelectSizeMutation<WrapWithSelectColorMutation, {}>;
+  export type WithSelectSizeMutation = SelectSizeMutation<WithSelectColorMutation, {}>;
 
   export interface ProductQuery {
     product: IProductClient;
   }
 
-  export type Props = ChildProps<WrapWithSelectSizeMutation, ProductQuery>;
+  export type Props = ChildProps<WithSelectSizeMutation, ProductQuery>;
 }
 
 @withStyles(slickCss, slickThemeCss, s)
 @graphql<ProductStep.IProps, {}>(SELECTCOLORMUTATION, {
   name: 'selectColorMutation',
 })
-@graphql<ProductStep.WrapWithSelectColorMutation, {}>(SELECTSIZEMUTATION, {
+@graphql<ProductStep.WithSelectColorMutation, {}>(SELECTSIZEMUTATION, {
   name: 'selectSizeMutation',
 })
-@graphql<ProductStep.WrapWithSelectSizeMutation, ProductStep.ProductQuery>(PRODUCTQUERY, {
+@graphql<ProductStep.WithSelectSizeMutation, ProductStep.ProductQuery>(PRODUCTQUERY, {
   options({ id }) {
     return { variables: { id } };
   },

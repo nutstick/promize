@@ -1,3 +1,36 @@
+input OrderReceiptOrdering {
+  sort: OrderReceiptSort!
+  direction: Direction! = ASC
+}
+
+enum OrderReceiptSort {
+  paymentCompletedAt
+  productDelivered
+  productReceived
+  createAt
+  updateAt
+  productOwner
+  creator
+}
+
+type OrderReceiptEdges implements Edges {
+  node: OrderReceipt!
+  cursor: ID!
+}
+
+type OrderReceiptPage implements Page {
+  totalCount: Int!
+  edges: [OrderReceiptEdges]
+  pageInfo: PageInfo
+}
+
+enum OrderReceiptStatus {
+  CREATED
+  PAID
+  DELIVERED
+  RECEIVED
+}
+
 type OrderReceipt implements Node {
   _id: ID!
 
@@ -7,19 +40,19 @@ type OrderReceipt implements Node {
   size: Size!
   color: Color!
 
-  deliverAddress: Address
   trackingId: String
   remark: String
 
+  deliverAddress: Address
   paymentMethod: PaymentMethod
+
+  status: OrderReceiptStatus!
   paymentCompletedAt: Date
-  paymentCompleted: Boolean
-
+  # paymentCompleted: Boolean
   productDeliveredAt: Date
-  productDelivered: Boolean
-
+  # productDelivered: Boolean
   productReceivedAt: Date
-  productReceived: Boolean
+  # productReceived: Boolean
 
   createAt: Date!
   updateAt: Date!

@@ -4,12 +4,12 @@ input ProductOrdering {
 }
 
 enum ProductSort {
-  price,
-  originalPrice,
-  promotionStart,
-  promotionEnd,
-  createAt,
-  updateAt,
+  price
+  originalPrice
+  promotionStart
+  promotionEnd
+  createAt
+  updateAt
 }
 
 # Edges for ProductQuery
@@ -29,6 +29,7 @@ enum ProductEnum {
   Product
   BuyNowProduct
 }
+
 type Color implements Node {
   _id: ID!
   color: String!

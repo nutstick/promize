@@ -29,9 +29,9 @@ namespace User {
     };
   }
 
-  type WrapWithMeQuery = ChildProps<IProps, MeQuery>;
+  type WithMeQuery = ChildProps<IProps, MeQuery>;
 
-  export type Props = WrapWithMeQuery;
+  export type Props = WithMeQuery;
 }
 
 @withStyles(s)

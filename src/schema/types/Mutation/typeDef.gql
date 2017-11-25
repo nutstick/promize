@@ -32,7 +32,7 @@ input CreateProductInput {
 }
 
 input EditProductInput {
-  product: ID!
+  id: ID!
   price: Int
   pictures: [String]
   hashtags: [String]
@@ -51,10 +51,11 @@ input CreateOrderReceiptInput {
 }
 
 input EditOrderReceiptInput {
-  receipt: ID!
-  paymentCompleted: Boolean,
-  productDelivered: Boolean,
-  productReceived: Boolean,
+  id: ID!
+  status: OrderReceiptStatus
+  # paymentCompleted: Boolean,
+  # productDelivered: Boolean,
+  # productReceived: Boolean,
 }
 
 input CreateUserInput {
@@ -69,7 +70,7 @@ input CreateUserInput {
 }
 
 input EditUserInput {
-  user_id: ID!
+  id: ID!
   firstName: String
   middleName: String
   lastName: String
@@ -82,7 +83,6 @@ input EditUserInput {
 
 # Address type
 input AddressInput {
-  address_id: ID
   # Address detail
   address: String!
   # City
@@ -101,25 +101,33 @@ input PaymentMethodInput {
   validFromYear: Int!
 }
 
+# CoSeller Register input
+input CoSellerRegisterInput {
+  telNumber: String!
+  citizenCardImageUrl: String!
+}
+
 # Mutations
 type Mutation {
   # Create Product
-  createProduct(input: CreateProductInput): Product
+  createProduct(input: CreateProductInput!): Product
   # Edit Product
-  editProduct(input: EditProductInput): Product
+  editProduct(input: EditProductInput!): Product
 
   # Create OrderReceipt
-  createOrderReceipt(input: CreateOrderReceiptInput): OrderReceipt
+  createOrderReceipt(input: CreateOrderReceiptInput!): OrderReceipt
   # Edit OrderReceipt
-  editOrderReceipt(input: EditOrderReceiptInput): OrderReceipt
+  editOrderReceipt(input: EditOrderReceiptInput!): OrderReceipt
 
   # Add address for CreateOrderReceipt
-  addAddress(address: AddressInput): UserType
+  addAddress(address: AddressInput!): UserType
   # Add paymentMethod for CreateOrderReceipt
-  addPaymentMethod(paymentMethod: PaymentMethodInput): UserType
+  addPaymentMethod(paymentMethod: PaymentMethodInput!): UserType
+  # Register to be a CoSeller
+  registerToBeCoSeller(input: CoSellerRegisterInput!): User
 
   # Create User
-  createUser(input: CreateUserInput): UserType
+  createUser(input: CreateUserInput!): UserType
   # Edit User
-  editUser(input: EditUserInput): UserType
+  editUser(input: EditUserInput!): UserType
 }

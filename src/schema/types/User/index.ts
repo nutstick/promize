@@ -10,8 +10,10 @@ export interface IPaymentMethod {
   creditCardNumber?: string;
 }
 
-interface IAccount {
-  email: string;
+export interface IAccount {
+  email?: string;
+  facebook?: boolean;
+  google?: boolean;
 }
 
 interface IUserType {
@@ -28,17 +30,26 @@ interface IUserType {
   paymentMethods?: IPaymentMethod[];
 
   avatar?: string;
-  orderReceipts?: IOrderReceipt[];
+  orderReceipts?: IPage<IOrderReceipt>;
   createAt?: Date;
   updateAt?: Date;
 }
 
-interface IUser extends IUserType, INode {}
+export enum CoSellerRegisterStatus {
+  CLOSE,
+  SEND,
+  APPROVING,
+  APPROVED,
+}
+
+interface IUser extends IUserType, INode {
+  coSellerRegisterStatus: CoSellerRegisterStatus;
+}
 
 interface ICoSeller extends IUserType, INode {
   coseller?: boolean;
   products?: IPage<IProduct>;
-  buyOrderReceipts?: IOrderReceipt[];
+  buyOrderReceipts?: IPage<IOrderReceipt>;
   totalBuyOrderReceipts?: number;
 }
 

@@ -7,6 +7,8 @@ import { IUser } from '../User';
 import resolver from './resolver';
 import * as type from './typeDef.gql';
 
+type OrderReceiptStatus = 'CLOSE' | 'PAID' | 'DELIVERED' | 'DELIVERED';
+
 interface IOrderReceipt extends INode {
   product: IProduct;
   creator: IUser;
@@ -36,4 +38,5 @@ export {
   resolver,
   type,
   IOrderReceipt,
+  OrderReceiptStatus,
 };

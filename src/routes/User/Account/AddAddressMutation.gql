@@ -1,0 +1,8 @@
+mutation AddAddress($input: AddressInput!) {
+  addAddress(address: $input) {
+    _id
+    addresses {
+      _id
+    }
+  }
+}

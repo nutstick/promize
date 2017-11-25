@@ -44,29 +44,29 @@ export namespace Review {
     me: IUser;
   }
 
-  export type WrapWithAddressQuery = IProps;
+  export type WithAddressQuery = IProps;
 
-  export type WrapWithPaymentMethodQuery = IProps;
+  export type WithPaymentMethodQuery = IProps;
 
   export interface ProductQuery {
     product: IProductClient;
   }
 
-  export type WrapWithProductQuery = ChildProps<WrapWithPaymentMethodQuery, ProductQuery>;
+  export type WithProductQuery = ChildProps<WithPaymentMethodQuery, ProductQuery>;
 
   type ToggleLoginModalMutation<P, R> = P & {
     loginModal?: MutationFunc<R>;
   };
 
-  export type WrapWithToggleLoginMutation = ToggleLoginModalMutation<WrapWithProductQuery, {}>;
+  export type WithToggleLoginMutation = ToggleLoginModalMutation<WithProductQuery, {}>;
 
   type CreateOrderReceiptMutation<P, R> = P & {
     orderReceipt?: MutationFunc<R>;
   };
 
-  export type WrapWithCreateOrderReceiptMutation = CreateOrderReceiptMutation<WrapWithToggleLoginMutation, {}>;
+  export type WithCreateOrderReceiptMutation = CreateOrderReceiptMutation<WithToggleLoginMutation, {}>;
 
-  export type Props = WrapWithCreateOrderReceiptMutation;
+  export type Props = WithCreateOrderReceiptMutation;
 }
 
 @withStyles(s)
@@ -91,7 +91,7 @@ export namespace Review {
     };
   },
 })
-@graphql<Review.WrapWithAddressQuery, Review.UserQuery>(PAYMENTMETHODQUERY, {
+@graphql<Review.WithAddressQuery, Review.UserQuery>(PAYMENTMETHODQUERY, {
   options(props) {
     return {
       variables: {
@@ -110,15 +110,15 @@ export namespace Review {
     };
   },
 })
-@graphql<Review.WrapWithPaymentMethodQuery, Review.ProductQuery>(PRODUCTQUERY, {
+@graphql<Review.WithPaymentMethodQuery, Review.ProductQuery>(PRODUCTQUERY, {
   options({ id }) {
     return { variables: { id } };
   },
 })
-@graphql<Review.WrapWithProductQuery, {}>(TOGGLELOGINMODALMUTATION, {
+@graphql<Review.WithProductQuery, {}>(TOGGLELOGINMODALMUTATION, {
   name: 'loginModal',
 })
-@graphql<Review.WrapWithToggleLoginMutation, {}>(CREATEORDERRECIEPTMUTATION, {
+@graphql<Review.WithToggleLoginMutation, {}>(CREATEORDERRECIEPTMUTATION, {
   name: 'orderReceipt',
 })
 export class Review extends React.Component<Review.Props> {

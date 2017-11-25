@@ -25,25 +25,25 @@ namespace ProductModal {
     closeProductModal?: MutationFunc<R>;
   };
 
-  export type WrapWithCloseProductModalMutation = CloseProductModalMutation<IProps, {}>;
+  export type WithCloseProductModalMutation = CloseProductModalMutation<IProps, {}>;
 
   type SelectColorMutation<P, R> = P & {
     selectColorMutation?: MutationFunc<R>;
   };
 
-  export type WrapWithSelectColorMutation = SelectColorMutation<WrapWithCloseProductModalMutation, {}>;
+  export type WithSelectColorMutation = SelectColorMutation<WithCloseProductModalMutation, {}>;
 
   type SelectSizeMutation<P, R> = P & {
     selectSizeMutation?: MutationFunc<R>;
   };
 
-  export type WrapWithSelectSizeMutation = SelectSizeMutation<WrapWithSelectColorMutation, {}>;
+  export type WithSelectSizeMutation = SelectSizeMutation<WithSelectColorMutation, {}>;
 
   export interface ProductQuery {
     product: IProductClient;
   }
 
-  export type Props = ChildProps<WrapWithSelectSizeMutation, ProductQuery>;
+  export type Props = ChildProps<WithSelectSizeMutation, ProductQuery>;
 }
 
 @withStyles(slickCss, slickThemeCss, s)
@@ -56,7 +56,7 @@ namespace ProductModal {
 @graphql<{}, {}>(SELECTSIZEMUTATION, {
   name: 'selectSizeMutation',
 })
-@graphql<ProductModal.WrapWithCloseProductModalMutation, ProductModal.ProductQuery>(PRODUCTQUERY, {
+@graphql<ProductModal.WithCloseProductModalMutation, ProductModal.ProductQuery>(PRODUCTQUERY, {
   options({ id }) {
     return { variables: { id } };
   },
