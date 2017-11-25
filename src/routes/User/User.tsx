@@ -67,24 +67,27 @@ export class User extends React.Component<User.Props> {
     const { user, loading, error } = this.props.data;
     return (
       <div className={s.root}>
-        <Card>
+        <Card className={s.sidebar}>
+          <p>sidebar here</p>
+        </Card>
+        <Card className={s.mainContent}>
           <div className={s.container}>
             {
               loading || error ? <div className={s.profile}>
                 <div className={s.avatarLoading} />
                 <div className={s.nameLoading} />
               </div> :
-              <div className={s.profile}>
-                <Image src={user.avatar} />
-                <div className={s.name}>
-                  {this.name(user)}
+                <div className={s.profile}>
+                  <Image src={user.avatar} />
+                  <div className={s.name}>
+                    {this.name(user)}
+                  </div>
+                  <div className={s.detail}>
+                    {(user as ICoSeller).telNumber}
+                    {user.createAt}
+                    {(user as ICoSeller).coseller && 'CoSeller'}
+                  </div>
                 </div>
-                <div className={s.detail}>
-                  {(user as ICoSeller).telNumber}
-                  {user.createAt}
-                  {(user as ICoSeller).coseller && 'CoSeller'}
-                </div>
-              </div>
             }
             {
               loading || error ? <div></div> :
@@ -109,10 +112,10 @@ export class User extends React.Component<User.Props> {
                       <div>Products</div>
                     </div>
                   ) : (
-                    <div>
-                      <div>Activities</div>
-                    </div>
-                  )}
+                        <div>
+                          <div>Activities</div>
+                        </div>
+                      )}
                 </div>
             }
           </div>
@@ -125,18 +128,18 @@ export class User extends React.Component<User.Props> {
                 <Route path="/users/:id/account" component={Account} />
                 <Route path="/users/:id/payment" component={PaymentMethod} />
                 {!(user as ICoSeller).coseller && <Route path="/users/:id/coseller" component={BecomeCoSeller} />}
-                <Route component={Activities}/>
+                <Route component={Activities} />
               </Switch>
             ) : (user as ICoSeller).coseller ? (
               <Switch>
                 <Route path="/users/:id/products" component={Products} />
-                <Route component={Activities}/>
+                <Route component={Activities} />
               </Switch>
             ) : (
-              <Switch>
-                <Route component={Activities}/>
-              </Switch>
-            )}
+                  <Switch>
+                    <Route component={Activities} />
+                  </Switch>
+                )}
           </div>
         </Card>
       </div>
