@@ -1,0 +1,46 @@
+query MyOrderReceipts($first: Int, $after: ID) {
+  me {
+    orderReceipts(first: $first, after: $after) {
+      edges {
+        node {
+          _id
+          product {
+            _id
+            name
+            owner {
+              _id
+              firstName
+              middleName
+              avatar
+              lastName
+            }
+          }
+          size
+          color
+          deliverAddress {
+            _id
+            address
+            city
+            country
+            zip
+          }
+          trackingId
+          remark
+          paymentCompletedAt
+          paymentCompleted
+          productDeliveredAt
+          productDelivered
+          productReceivedAt
+          productReceived
+
+          createAt
+          updateAt
+        }
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+    }
+  }
+}

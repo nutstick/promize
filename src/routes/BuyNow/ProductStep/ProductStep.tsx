@@ -3,7 +3,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { ChildProps, MutationFunc } from 'react-apollo';
 import Slider from 'react-slick';
-import { Button, Icon, Image } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import * as slickThemeCss from 'slick-carousel/slick/slick-theme.css';
 import * as slickCss from 'slick-carousel/slick/slick.css';
 import { graphql } from '../../../apollo/graphql';
@@ -24,29 +24,29 @@ export namespace ProductStep {
     selectColorMutation?: MutationFunc<R>;
   };
 
-  export type WrapWithSelectColorMutation = SelectColorMutation<IProps, {}>;
+  export type WithSelectColorMutation = SelectColorMutation<IProps, {}>;
 
   type SelectSizeMutation<P, R> = P & {
     selectSizeMutation?: MutationFunc<R>;
   };
 
-  export type WrapWithSelectSizeMutation = SelectSizeMutation<WrapWithSelectColorMutation, {}>;
+  export type WithSelectSizeMutation = SelectSizeMutation<WithSelectColorMutation, {}>;
 
   export interface ProductQuery {
     product: IProductClient;
   }
 
-  export type Props = ChildProps<WrapWithSelectSizeMutation, ProductQuery>;
+  export type Props = ChildProps<WithSelectSizeMutation, ProductQuery>;
 }
 
 @withStyles(slickCss, slickThemeCss, s)
 @graphql<ProductStep.IProps, {}>(SELECTCOLORMUTATION, {
   name: 'selectColorMutation',
 })
-@graphql<ProductStep.WrapWithSelectColorMutation, {}>(SELECTSIZEMUTATION, {
+@graphql<ProductStep.WithSelectColorMutation, {}>(SELECTSIZEMUTATION, {
   name: 'selectSizeMutation',
 })
-@graphql<ProductStep.WrapWithSelectSizeMutation, ProductStep.ProductQuery>(PRODUCTQUERY, {
+@graphql<ProductStep.WithSelectSizeMutation, ProductStep.ProductQuery>(PRODUCTQUERY, {
   options({ id }) {
     return { variables: { id } };
   },
@@ -79,15 +79,9 @@ export class ProductStep extends React.Component<ProductStep.Props> {
 
     return (
       <div className={s.root}>
-        <div className={s.productName}>
-          Product: {product.name}
-        </div>
-        <div className={s.productDescription}>
-          {product.description}
-        </div>
         <div className={s.productImage}>
           <Slider
-            ref={(c) => { this.slider = c; } }
+            ref={(c) => { this.slider = c; }}
             nextArrow={<NextArrow />}
             prevArrow={<PrevArrow />}
             dots={true}
@@ -100,42 +94,55 @@ export class ProductStep extends React.Component<ProductStep.Props> {
             ))}
           </Slider>
         </div>
-        {/* Size options */}
-        <div className={s.block}>
-          <span className={s.label}>Size:</span>
-          <ItemSelector
-            options={product.sizes.map((size) => ({
-              value: size._id,
-              text: size.size,
-            }))}
-            selected={product.selectedSize}
-            onChange={(_, size) => this.props.selectSizeMutation({
-              variables: { id: product._id, size },
-            })}
-          />
-        </div>
-        {/* Color options */}
-        <div className={s.block}>
-          {/* TODO: Fixed css */}
-          <span className={s.label}>Color:</span>
-          <ItemSelector
-            options={product.colors.map((color) => ({
-              value: color._id,
-              text: color.color,
-            }))}
-            selected={product.selectedColor}
-            onChange={(_, color) => this.props.selectColorMutation({
-              variables: { id: product._id, color },
-            })}
-          />
-        </div>
-        <div className={s.buttons}>
-          <Button
-            className={s.right}
-            color="orange"
-            content="Next"
-            disabled={!product.selectedSize || !product.selectedColor}
-            onClick={this.props.next} />
+        <div className={s.side}>
+          <div className={s.productName}>
+            Product: {product.name}
+          </div>
+          <div className={s.productDescription}>
+            {product.description}
+          </div>
+          {/* Size options */}
+          <div className={s.block}>
+            <span className={s.label}>Size:</span>
+            <ItemSelector
+              options={product.sizes.map((size) => ({
+                value: size._id,
+                text: size.size,
+              }))}
+              selected={product.selectedSize}
+              onChange={(_, size) => this.props.selectSizeMutation({
+                variables: { id: product._id, size },
+              })}
+            />
+          </div>
+          {/* Color options */}
+          <div className={s.block}>
+            {/* TODO: Fixed css */}
+            <span className={s.label}>Color:</span>
+            <ItemSelector
+              options={product.colors.map((color) => ({
+                value: color._id,
+                text: color.color,
+              }))}
+              selected={product.selectedColor}
+              onChange={(_, color) => this.props.selectColorMutation({
+                variables: { id: product._id, color },
+              })}
+            />
+          </div>
+          <div className={s.block}>
+            <div className={s.label}>
+              Price: {product.price}
+            </div>
+          </div>
+          <div className={s.buttons}>
+            <Button
+              className={s.right}
+              color="orange"
+              content="Next"
+              disabled={!product.selectedSize || !product.selectedColor}
+              onClick={this.props.next} />
+          </div>
         </div>
       </div>
     );

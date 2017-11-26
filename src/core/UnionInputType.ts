@@ -81,7 +81,7 @@ function helper(name, type) {
 export class UnionInputType extends GraphQLScalarType {
   constructor(options: UnionInputTypeOptions) {
     const { name, description } = options;
-    const { resolveType, resolveTypeFromAst, inputTypes, typeKey, resolveTypeFromValue } = options;
+    const { resolveType, resolveTypeFromAst, typeKey, resolveTypeFromValue } = options;
     let referenceTypes = options.inputTypes;
 
     if (!resolveType && !resolveTypeFromAst) {

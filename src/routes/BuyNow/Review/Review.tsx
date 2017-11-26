@@ -2,7 +2,6 @@ import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { ChildProps, MutationFunc } from 'react-apollo';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Button, Card, Icon } from 'semantic-ui-react';
 import { graphql } from '../../../apollo/graphql';
 import * as TOGGLELOGINMODALMUTATION from '../../../apollo/login/ToggleLoginModalMutation.gql';
@@ -10,7 +9,6 @@ import { IProductClient } from '../../../apollo/product';
 import { IUser } from '../../../schema/types/User';
 import { PaymentMethodOption } from '../PaymentMethodStep';
 import * as PRODUCTQUERY from '../ProductStep/ProductQuery.gql';
-import { AddressOption } from '../ShippingStep';
 import * as ADDRESSQUERY from './AddressQuery.gql';
 import * as CREATEORDERRECIEPTMUTATION from './CreateOrderReceiptMutation.gql';
 import * as PAYMENTMETHODQUERY from './PaymentMethodQuery.gql';
@@ -46,33 +44,32 @@ export namespace Review {
     me: IUser;
   }
 
-  export type WrapWithAddressQuery = IProps;
+  export type WithAddressQuery = IProps;
 
-  export type WrapWithPaymentMethodQuery = IProps;
+  export type WithPaymentMethodQuery = IProps;
 
   export interface ProductQuery {
     product: IProductClient;
   }
 
-  export type WrapWithProductQuery = ChildProps<WrapWithPaymentMethodQuery, ProductQuery>;
+  export type WithProductQuery = ChildProps<WithPaymentMethodQuery, ProductQuery>;
 
   type ToggleLoginModalMutation<P, R> = P & {
     loginModal?: MutationFunc<R>;
   };
 
-  export type WrapWithToggleLoginMutation = ToggleLoginModalMutation<WrapWithProductQuery, {}>;
+  export type WithToggleLoginMutation = ToggleLoginModalMutation<WithProductQuery, {}>;
 
   type CreateOrderReceiptMutation<P, R> = P & {
     orderReceipt?: MutationFunc<R>;
   };
 
-  export type WrapWithCreateOrderReceiptMutation = CreateOrderReceiptMutation<WrapWithToggleLoginMutation, {}>;
+  export type WithCreateOrderReceiptMutation = CreateOrderReceiptMutation<WithToggleLoginMutation, {}>;
 
-  export type Props = WrapWithCreateOrderReceiptMutation;
+  export type Props = WithCreateOrderReceiptMutation;
 }
 
 @withStyles(s)
-@(withRouter as any)
 @graphql<Review.IProps, Review.UserQuery>(ADDRESSQUERY, {
   options(props) {
     return {
@@ -94,7 +91,7 @@ export namespace Review {
     };
   },
 })
-@graphql<Review.WrapWithAddressQuery, Review.UserQuery>(PAYMENTMETHODQUERY, {
+@graphql<Review.WithAddressQuery, Review.UserQuery>(PAYMENTMETHODQUERY, {
   options(props) {
     return {
       variables: {
@@ -113,15 +110,15 @@ export namespace Review {
     };
   },
 })
-@graphql<Review.WrapWithPaymentMethodQuery, Review.ProductQuery>(PRODUCTQUERY, {
+@graphql<Review.WithPaymentMethodQuery, Review.ProductQuery>(PRODUCTQUERY, {
   options({ id }) {
     return { variables: { id } };
   },
 })
-@graphql<Review.WrapWithProductQuery, {}>(TOGGLELOGINMODALMUTATION, {
+@graphql<Review.WithProductQuery, {}>(TOGGLELOGINMODALMUTATION, {
   name: 'loginModal',
 })
-@graphql<Review.WrapWithToggleLoginMutation, {}>(CREATEORDERRECIEPTMUTATION, {
+@graphql<Review.WithToggleLoginMutation, {}>(CREATEORDERRECIEPTMUTATION, {
   name: 'orderReceipt',
 })
 export class Review extends React.Component<Review.Props> {
@@ -214,7 +211,7 @@ export class Review extends React.Component<Review.Props> {
                     } : {
                       creditCardNumber,
                       validFromMonth: parseInt(validFromMonth, 10),
-                      validFromYear: parseInt(validFromMonth, 10),
+                      validFromYear: parseInt(validFromYear, 10),
                     },
                     // TODO: remark
                   },

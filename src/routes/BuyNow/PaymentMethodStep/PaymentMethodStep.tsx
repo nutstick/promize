@@ -7,7 +7,7 @@ import { Button, Divider, Dropdown, Form } from 'semantic-ui-react';
 import { graphql } from '../../../apollo/graphql';
 import * as TOGGLELOGINMODALMUTATION from '../../../apollo/login/ToggleLoginModalMutation.gql';
 import { IPaymentMethod, IUser } from '../../../schema/types/User';
-import * as PAYMENTSMETHODQUERY from './PaymentMethodsQuery.gql';
+import * as PAYMENTSMETHODQUERY from './../../../apollo/PaymentMethodsQuery.gql';
 import * as s from './PaymentMethodStep.css';
 
 export namespace PaymentMethodStep {
@@ -147,7 +147,7 @@ export class PaymentMethodStep extends React.Component<PaymentMethodStep.Props, 
     }
 
     let userPaymentMethod;
-    if (me) {
+    if (me && me.paymentMethods) {
       const options = me.paymentMethods.map((paymentMethod) => ({
         key: paymentMethod._id,
         text: paymentMethod._id,

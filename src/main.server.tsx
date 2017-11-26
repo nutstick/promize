@@ -1,4 +1,4 @@
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 import { graphiqlExpress, graphqlExpress } from 'apollo-server-express';
 import * as bodyParser from 'body-parser';
@@ -79,10 +79,7 @@ app.use(bodyParser.json());
 app.use(expressJwt({
   secret: auth.jwt.secret,
   credentialsRequired: false,
-  getToken: (req) => {
-    // console.log(req.cookies);
-    return req.cookies.id_token;
-  },
+  getToken: (req) => req.cookies.id_token,
 }));
 // Error handler for express-jwt
 app.use((err, req, res, next) => {
@@ -178,6 +175,18 @@ app.get('*', async (req, res, next) => {
   try {
     const location = req.url;
 
+    const fragmentMatcher = new IntrospectionFragmentMatcher({
+      introspectionQueryResultData: {
+        __schema: {
+          types: [{
+            kind: 'INTERFACE',
+            name: 'UserType',
+            possibleTypes: [{ name: 'User' }, { name: 'CoSeller' }],
+          }],
+        },
+      },
+    });
+
     const cache = new InMemoryCache({
       dataIdFromObject(value: any) {
         // Page or Edges
@@ -189,12 +198,13 @@ app.get('*', async (req, res, next) => {
           return `${value.__typename}:${value.node._id}`;
         }
       },
+      fragmentMatcher,
     });
 
     const client = createApolloClient({
       link: new ServerLink({
         schema: Schema,
-        rootValue: {request: req },
+        rootValue: { request: req },
         context: {
           database,
           user: req.user,

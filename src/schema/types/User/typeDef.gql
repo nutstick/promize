@@ -29,8 +29,15 @@ type PaymentMethod implements Node {
 }
 
 enum GenderEnum {
-  Male
-  Female
+  male
+  female
+}
+
+enum CoSellerRegisterStatus {
+  CLOSE
+  SEND
+  APPROVING
+  APPROVED
 }
 
 # User interface
@@ -58,7 +65,13 @@ interface UserType {
   avatar: String
 
   # Order receipts
-  orderReceipts: [OrderReceipt]
+  orderReceipts(
+    first: Int,
+    after: ID,
+    last: Int,
+    before: ID,
+    orderBy: [OrderReceiptOrdering],
+  ): OrderReceiptPage
 
   createAt: Date!
   updateAt: Date!
@@ -89,7 +102,15 @@ type User implements UserType, Node {
   avatar: String
 
   # Order receipts
-  orderReceipts: [OrderReceipt]
+  orderReceipts(
+    first: Int,
+    after: ID,
+    last: Int,
+    before: ID,
+    orderBy: [OrderReceiptOrdering],
+  ): OrderReceiptPage
+
+  coSellerRegisterStatus: CoSellerRegisterStatus!
 
   createAt: Date!
   updateAt: Date!
@@ -120,14 +141,36 @@ type CoSeller implements UserType, Node {
   avatar: String
 
   # Order receipts
-  orderReceipts: [OrderReceipt]
+  orderReceipts(
+    first: Int,
+    after: ID,
+    last: Int,
+    before: ID,
+    orderBy: [OrderReceiptOrdering],
+  ): OrderReceiptPage
   
   # CoSeller flag
   coseller: Boolean!
   # Products's Own
-  products: ProductPage!
-  # Buy order receipts
-  buyOrderReceipts: [OrderReceipt]
+  products(
+    first: Int,
+    after: ID,
+    last: Int,
+    before: ID,
+    orderBy: [OrderReceiptOrdering],
+  ): ProductPage!
+
+  # Buy order receipts with status
+  buyOrderReceipts(
+    first: Int,
+    after: ID,
+    last: Int,
+    before: ID,
+    orderBy: [OrderReceiptOrdering],
+    status: OrderReceiptStatus,
+  ): OrderReceiptPage
+  # Count order receipts with status
+  totalBuyOrderReceipts(status: OrderReceiptStatus): Int
 
   createAt: Date!
   updateAt: Date!

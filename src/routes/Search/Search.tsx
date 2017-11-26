@@ -19,8 +19,6 @@ import * as NoResultImage from './no-results.png';
 import * as s from './Search.css';
 import * as SEARCHQUERY from './SearchQuery.gql';
 
-console.log(sizeMe);
-
 const transition = transitions.scaleDown;
 
 namespace Search {
@@ -127,7 +125,6 @@ export class Search extends React.Component<Search.Props> {
                   <StackGrid
                     gridRef={(grid) => this.grid = grid}
                     duration={400}
-                    horizontal={true}
                     columnWidth={this.props.size.width <= 425 ? '100%' : 180}
                     gutterWidth={5}
                     gutterHeight={5}

@@ -1,0 +1,47 @@
+query BuyOrderReceipts($first: Int, $after: ID) {
+  me {
+    ... on CoSeller {
+      buyOrderReceipts(first: $first, after: $after) {
+        edges {
+          node {
+            _id
+            product {
+              _id
+              name
+            }
+            creator {
+              _id
+              firstName
+              middleName
+              lastName
+            }
+            size
+            color
+            deliverAddress {
+              _id
+              address
+              city
+              country
+              zip
+            }
+            trackingId
+            remark
+            paymentCompletedAt
+            paymentCompleted
+            productDeliveredAt
+            productDelivered
+            productReceivedAt
+            productReceived
+
+            createAt
+            updateAt
+          }
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+      }
+    }
+  }
+}

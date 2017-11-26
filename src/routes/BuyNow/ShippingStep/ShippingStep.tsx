@@ -114,6 +114,7 @@ export class ShippingStep extends React.Component<ShippingStep.Props, ShippingSt
   }
 
   public render() {
+    // TODO: Dynamic options
     const countryOptions = [
       { key: 'US', text: 'United States', value: 'US' },
       { key: 'TH', text: 'Thailands', value: 'TH' },
@@ -128,7 +129,7 @@ export class ShippingStep extends React.Component<ShippingStep.Props, ShippingSt
     }
 
     let userAddresses;
-    if (me) {
+    if (me && me.addresses) {
       const options = me.addresses.map((address) => ({
         key: address._id,
         text: address._id,

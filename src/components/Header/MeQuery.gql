@@ -3,5 +3,10 @@ query Me {
     _id
     firstName
     avatar
+
+    ... on CoSeller {
+      coseller
+      totalBuyOrderReceipts(status: OPEN)
+    }
   }
 }

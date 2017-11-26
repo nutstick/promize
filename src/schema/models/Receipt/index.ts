@@ -1,8 +1,5 @@
 import * as Iridium from 'iridium';
 import { Collection, Index, Instance, ObjectID, Property } from 'iridium';
-import { Color, IColor, ISize, Size } from '../Product/productdetail';
-import { Address, IAddress } from '../User/address';
-import { IPaymentMethod, PaymentMethod } from '../User/paymentmethod';
 
 interface IReceiptDocument {
     _id?: string;

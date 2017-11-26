@@ -1,0 +1,20 @@
+query UserAndMeQuery($id: ID!) {
+  user(id: $id) {
+    _id
+    firstName
+    middleName
+    lastName
+    avatar
+    createAt
+    
+    ... on CoSeller {
+      telNumber
+      coseller
+      totalBuyOrderReceipts(status: OPEN)
+    }
+  }
+
+  me {
+    _id
+  }
+}

@@ -17,7 +17,7 @@ export namespace Category {
 export class Category extends React.Component<Category.Props> {
   public render() {
     return (
-      <Link className={cx(s.root, this.props.className)} to={`/search?keywords=[{keyword:${this.props.text}}]`}>
+      <Link className={cx(s.root, this.props.className)} to={`/search?keywords={keyword:${this.props.text}}`}>
         <img
           className={s.icon}
           src={this.props.icon}

@@ -2,7 +2,7 @@ import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { ChildProps } from 'react-apollo';
-import { Button, Image } from 'semantic-ui-react';
+import { Image } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
 import * as s from './UserKeyword.css';
 import * as USERQUERY from './UserQuery.gql';
@@ -13,9 +13,11 @@ export namespace UserKeyword {
   }
 
   export interface UserQuery {
-    _id: string;
-    avatar: string;
-    firstName: string;
+    user: {
+      _id: string;
+      avatar: string;
+      firstName: string;
+    };
   }
 
   export type Props = ChildProps<IProps, UserQuery>;
@@ -37,13 +39,13 @@ export class UserKeyword extends React.Component<UserKeyword.Props> {
       <span className={cx(s.root)}>
         <Image avatar src={null} />
       </span> : this.props.data.error ?
-      <span className={cx(s.root)}>
-        <Image avatar src={null} />
-        <span className={s.text}>{this.props.id}</span>
-      </span> :
-      <span className={s.root}>
-        <Image avatar src={this.props.data.avatar} />
-        <span className={s.text}>{this.props.data.firstName}</span>
-      </span>;
+        <span className={cx(s.root)}>
+          <Image avatar src={null} />
+          <span className={s.text}>{this.props.id}</span>
+        </span> :
+        <span className={s.root}>
+          <Image avatar inline src={this.props.data.user.avatar} />
+          <span>{this.props.data.user.firstName}</span>
+        </span>;
   }
 }

@@ -1,6 +1,6 @@
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
-import { Icon, Image } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 import * as s from './SearchInput.css';
 import { UserKeyword } from './UserKeyword';
 
