@@ -1,4 +1,5 @@
 import { IResolver } from '../index';
+import { MESSAGE_ADDED, pubsub } from '../subscriptions';
 
 const resolver: IResolver<any, any> = {
   Mutation: {
@@ -161,6 +162,20 @@ const resolver: IResolver<any, any> = {
         },
       });
       return await database.User.findOne({ _id: id });
+    },
+
+    async addMessage(_, { text, traderoom }, { database, user }) {
+      const message = await database.Message.create({
+        traderoom,
+        content: {
+          text,
+        },
+        owner: user._id,
+      });
+
+      pubsub.publish(MESSAGE_ADDED, message);
+
+      return message;
     },
   },
 };

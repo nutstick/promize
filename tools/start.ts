@@ -175,6 +175,9 @@ async function start() {
           if (fromUpdate) {
             console.info(`${hmrPrefix}Update applied.`);
           }
+          // delete require.cache[require.resolve('../dist/server')];
+          // eslint-disable-next-line global-require, import/no-unresolved
+          // app = require('../dist/server').default;
           return;
         }
         if (updatedModules.length === 0) {
@@ -184,9 +187,6 @@ async function start() {
           updatedModules.forEach((moduleId) =>
             console.info(`${hmrPrefix} - ${moduleId}`),
           );
-          delete require.cache[require.resolve('../dist/server')];
-          // eslint-disable-next-line global-require, import/no-unresolved
-          app = require('../dist/server').default;
           checkForUpdate(true);
         }
       })

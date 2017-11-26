@@ -130,4 +130,7 @@ type Mutation {
   createUser(input: CreateUserInput!): UserType
   # Edit User
   editUser(input: EditUserInput!): UserType
+
+  # Add message
+  addMessage(text: String!, traderoom: ID!): Message
 }

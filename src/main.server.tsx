@@ -6,6 +6,8 @@ import * as cookieParser from 'cookie-parser';
 import * as express from 'express';
 import * as expressJwt from 'express-jwt';
 import { UnauthorizedError as Jwt401Error } from 'express-jwt';
+import { execute, subscribe } from 'graphql';
+import { createServer } from 'http';
 import * as jwt from 'jsonwebtoken';
 import * as nodeFetch from 'node-fetch';
 import * as path from 'path';
@@ -22,10 +24,11 @@ import * as LOCALEQUERY from './apollo/intl/LocaleQuery.gql';
 import * as assets from './assets.json';
 import App from './components/App';
 import { Html } from './components/Html';
-import { api, auth, locales, port } from './config';
+import { api, auth, locales, port, wsport } from './config';
 import passport from './core/passport';
 import { requestLanguage } from './core/requestLanguage';
 import { ServerLink } from './core/ServerLink';
+import { addGraphQLSubscriptions } from './core/subscriptions';
 import createFetch from './createFetch';
 import Routes from './routes';
 import ErrorPage from './routes/Error/ErrorPage';
@@ -130,12 +133,30 @@ app.use('/graphql', bodyParser.json(), graphqlExpress((req) => ({
   },
   rootValue: { request: req },
 })));
-app.get('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
+
+app.get('/graphiql', graphiqlExpress({
+  endpointURL: '/graphql',
+  subscriptionsEndpoint: `ws://localhost:${wsport}/subscriptions`,
+}));
+
+//
+// Register Websocket middleware
+// -----------------------------------------------------------------------------
+const websocketServer = createServer((_request, response) => {
+  response.writeHead(404);
+  response.end();
+});
+
+websocketServer.listen(wsport, () => {
+  // tslint:disable-next-line:no-console
+  console.log(`Websocket server listening on port ${wsport}`);
+
+  addGraphQLSubscriptions(websocketServer);
+});
 
 //
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
-// TODO: Wait for apollo-link-state to support promise
 const setLocale = async (client: ApolloClient<any>, { locale, initialNow }, { cache }) => {
   const { data } = await client.query<IntlQuery>({
     query: INTLQUERY,
@@ -220,15 +241,6 @@ app.get('*', async (req, res, next) => {
       cookie: req.headers.cookie,
       // apolloClient,
     });
-
-    // const state = {
-    //   locales: {
-    //     availableLocales: locales,
-    //   },
-    //   runtimeVariable: {
-    //     initialNow: Date.now(),
-    //   },
-    // };
 
     // Fetch locale's messages
     const locale = req.language;
@@ -324,7 +336,7 @@ app.use((err, req, res, next) => {
 
 //
 // Launch the server
-// -----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // tslint:disable-next-line:no-console
 const promise = database.connect().catch((err) => console.error(err.stack));
 if (!module.hot) {
@@ -343,6 +355,30 @@ if (module.hot) {
   app.hot = module.hot;
 
   module.hot.accept();
+
+  module.hot.dispose(() => {
+    try {
+      if (websocketServer) {
+        websocketServer.close();
+      }
+    } catch (error) {
+      // tslint:disable-next-line:no-console
+      console.error(error.stack);
+    }
+  });
+
+  // module.hot.accept(['./routes', './schema']);
+
+  module.hot.accept(['./core/subscriptions'], () => {
+    try {
+      addGraphQLSubscriptions(websocketServer);
+      // tslint:disable-next-line:no-console
+      console.log('Attached addGraphQLSubscriptions to module.hot');
+    } catch (error) {
+      // tslint:disable-next-line:no-console
+      console.error(error.stack);
+    }
+  });
 }
 
 export default app;
