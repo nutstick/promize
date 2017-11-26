@@ -42,7 +42,15 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
   @Property(/^.+$/, true)
   last_name: string;
 
+<<<<<<< Updated upstream
   @Property(/^male|female$/, false)
+=======
+  @Transform(
+    (value) => `${value.charAt(0).toUpperCase()}${value.slice(1)}`,
+    (value) => value.toLowerCase(),
+  )
+  @Property(/^male|female|Male|Female$/, false)
+>>>>>>> Stashed changes
   gender: string;
   @Property(/^[0-9-]+$/, false)
   tel_number: string;
