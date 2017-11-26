@@ -37,23 +37,18 @@ const resolver: IResolver<any, any> = {
         }
       }
     },
+    status({ payment_completed, product_delivered, product_received }) {
+      return payment_completed ? 'PAID' : product_delivered ? 'DELIVERED' : product_received ?
+        'RECEIVED' : 'CREATED';
+    },
     paymentCompletedAt({ payment_completed_at }) {
       return payment_completed_at;
-    },
-    paymentCompleted({ payment_completed }) {
-      return payment_completed;
     },
     productDeliveredAt({ product_delivered_at }) {
       return product_delivered_at;
     },
-    productDelivered({ product_delivered }) {
-      return product_delivered;
-    },
     productReceivedAt({ product_received_at }) {
       return product_received_at;
-    },
-    productReceived({ product_received }) {
-      return product_received;
     },
     async product({ product }, _, { database }) {
       return await database.Product.findOne({ _id: product });
