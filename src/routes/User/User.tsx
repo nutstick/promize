@@ -4,7 +4,7 @@ import { ChildProps } from 'react-apollo';
 import { Redirect } from 'react-router';
 import { Route, Switch } from 'react-router-dom';
 import { NavLink, RouteComponentProps } from 'react-router-dom';
-import { Divider, Icon, Image, List, Grid } from 'semantic-ui-react';
+import { Divider, Grid, Icon, Image, List } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
 import { Card } from '../../components/Card';
 /* Sub routes */
@@ -136,7 +136,7 @@ export class User extends React.Component<User.Props> {
                                   to={`/users/${this.props.match.params.id}/receipts`}
                                   activeClassName={s.active}>
                                   <Icon name="barcode" />
-                                  Order reciepts
+                                  Order receipts
                                 </NavLink>
                               </li>
                               <li>
@@ -155,7 +155,7 @@ export class User extends React.Component<User.Props> {
                                   Payment setting
                                 </NavLink>
                               </li>
-                              {!(user as ICoSeller).coseller && 
+                              {!(user as ICoSeller).coseller &&
                                 <li>
                                   <NavLink
                                     to={`/users/${this.props.match.params.id}/coseller`}
@@ -195,14 +195,14 @@ export class User extends React.Component<User.Props> {
                                 <NavLink to={`/users/${this.props.match.params.id}`}>Activities</NavLink>
                               </div>
                             )}
-                      </List>;
+                      </List>
                     </div>
                 }
               </div>
             </Grid.Column>
 
-            <Grid.Column mobile={16} tablet={10} computer={12} stretched>
-              <div className={s.content}>
+            <Grid.Column mobile={16} tablet={10} computer={12} className={s.content}>
+              <div >
                 {!loading && !error && this.props.data.me && this.props.data.me._id === user._id ? (
                   <Switch>
                     <Route exact path="/users/:id" component={Activities} />
@@ -229,13 +229,13 @@ export class User extends React.Component<User.Props> {
                     )} />
                   </Switch>
                 ) : (
-                  <Switch>
-                    <Route exact path="/users/:id" component={Activities} />
-                    <Route render={() => (
-                      <Redirect to={`/user/${this.props.match.params.id}`} />
-                    )} />
-                  </Switch>
-                )}
+                      <Switch>
+                        <Route exact path="/users/:id" component={Activities} />
+                        <Route render={() => (
+                          <Redirect to={`/user/${this.props.match.params.id}`} />
+                        )} />
+                      </Switch>
+                    )}
               </div>
             </Grid.Column>
           </Grid>
