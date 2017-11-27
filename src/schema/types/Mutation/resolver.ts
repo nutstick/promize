@@ -278,7 +278,7 @@ const resolver: IResolver<any, any> = {
       });
     },
 
-    async editTradeRoom(_, { input: {id, ...input } }, { database, user }) {
+    async editTradeRoom(_, { input: { id, ...input } }, { database, user }) {
       return await database.Traderoom.update({ _id: id }, {
         ...input,
       });
@@ -300,8 +300,27 @@ const resolver: IResolver<any, any> = {
         owner: user._id,
       });
 
-      pubsub.publish(MESSAGE_ADDED, message);
-
+      if (content.text) {
+        pubsub.publish(MESSAGE_ADDED, message);
+      } else if (content.command) {
+        switch (content.command) {
+          case 'color': {
+            database.Traderoom.update({ _id: traderoom }, {
+              $set: { color: content.arguments[0] },
+            });
+          }
+          case 'size': {
+            database.Traderoom.update({ _id: traderoom }, {
+              $set: { size: content.arguments[0] },
+            });
+          }
+          case 'price': {
+            database.Traderoom.update({ _id: traderoom }, {
+              $set: { price: content.arguments[0] },
+            });
+          }
+        }
+      }
       return message;
     },
   },

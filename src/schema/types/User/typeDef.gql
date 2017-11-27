@@ -219,6 +219,9 @@ type Admin implements UserType, Node {
   # User avatar
   avatar: String
 
+  traderooms: [TradeRoom]
+  traderoom(id: ID!): TradeRoom
+
   # Order receipts
   orderReceipts(
     first: Int,
