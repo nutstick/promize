@@ -78,3 +78,5 @@ export const auth = {
       'KTZ6cxoKnEakQCeSpZlaUCJWGAlTEBJj0y2EMkUBujA7zWSvaQ',
   },
 };
+
+export const uploadDir = './public/images';

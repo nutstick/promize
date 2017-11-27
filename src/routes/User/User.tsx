@@ -4,7 +4,7 @@ import { ChildProps } from 'react-apollo';
 import { Redirect } from 'react-router';
 import { Route, Switch } from 'react-router-dom';
 import { NavLink, RouteComponentProps } from 'react-router-dom';
-import { Divider, Icon, Image, List } from 'semantic-ui-react';
+import { Divider, Grid, Icon, Image, List } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
 import { Card } from '../../components/Card';
 /* Sub routes */
@@ -65,117 +65,144 @@ export class User extends React.Component<User.Props> {
       `${user.lastName}`;
   }
 
+  private registerTime(createAt) {
+    const d = new Date(createAt);
+    return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+  }
+
   public render() {
     const { user, loading, error } = this.props.data;
     return (
       <div className={s.root}>
-        <div className={s.sidebar}>
-          {
-            loading || error ? <div className={s.profile}>
-              <div className={s.avatarLoading} />
-              <div className={s.nameLoading} />
-            </div> :
-              <div className={s.profile}>
-                <Image centered rounded size="small" src={user.avatar} className={s.profileImage} />
-                <div className={s.name}>
-                  {this.name(user)}
-                </div>
-                <div className={s.detail}>
-                  {(user as ICoSeller).coseller && 'CoSeller'}
-                  <br />
-                  {(user as ICoSeller).telNumber}
-                  <br />
-                  {user.createAt}
-                  <Divider section />
-                </div>
-              </div>
-          }
-          {
-            loading || error ? <div className={s.menu}></div> :
-              <div className={s.menu}>
-                <List selection verticalAlign="middle">
-                  {/* Menu Select*/}
-                  {this.props.data.me._id === user._id ? (
-                    <div>
-                      <NavLink
-                        to={`/users/${this.props.match.params.id}`}
-                        exact
-                        activeClassName={s.active}>
-                        <Icon name="feed" />
-                        My Activities
-                      </NavLink>
-                      {(user as ICoSeller).coseller &&
-                        <NavLink
-                          to={`/users/${this.props.match.params.id}/products`}
-                          activeClassName={s.active}>
-                          My Products
-                        </NavLink>
-                      }
-                      {(user as ICoSeller).coseller &&
-                        <NavLink
-                          to={`/users/${this.props.match.params.id}/buyorders`}
-                          activeClassName={s.active}>
-                          Product Orders
-                        </NavLink>
-                      }
-                      <NavLink
-                        to={`/users/${this.props.match.params.id}/receipts`}
-                        activeClassName={s.active}>
-                        <Icon name="ordered list" />
-                        Orders Receipts
-                      </NavLink>
-                      <NavLink
-                        to={`/users/${this.props.match.params.id}/account`}
-                        activeClassName={s.active}>
-                        <Icon name="settings" />
-                        Account setting
-                      </NavLink>
-                      <NavLink
-                        to={`/users/${this.props.match.params.id}/payment`}
-                        activeClassName={s.active}>
-                        <Icon name="payment" />
-                        Payment setting
-                      </NavLink>
-                      {!(user as ICoSeller).coseller && <NavLink
-                        to={`/users/${this.props.match.params.id}/coseller`}
-                        activeClassName={s.active}>
-                        <Icon name="lock" />
-                        Co-Seller
-                      </NavLink>}
-                    </div>
-                  ) : (user as ICoSeller).coseller ? (
-                    <div>
-                      <List.Item>
-                        <List.Content>
-                          <NavLink
-                            to={`/users/${this.props.match.params.id}`}
-                            activeClassName={s.active}>
-                            <Icon name="feed" />
-                            Activities
-                      </NavLink>
-                        </List.Content>
-                      </List.Item>
-                      <List.Item>
-                        <List.Content>
-                          <NavLink
-                            to={`/users/${this.props.match.params.id}/products`}
-                            activeClassName={s.active}>
-                            <Icon name="shopping bag" />
-                            Products
-                      </NavLink>
-                        </List.Content>
-                      </List.Item>
-                    </div>
-                  ) : (
-                        <div>
-                          <NavLink to={`/users/${this.props.match.params.id}`}>Activities</NavLink>
-                        </div>
-                      )}
-                </List>;
-              </div>
-          }
-        </div>
         <Card className={s.mainContent}>
+          <div className={s.sidebar}>
+            {
+              loading || error ? <div className={s.profile}>
+                <div className={s.avatarLoading} />
+                <div className={s.nameLoading} />
+              </div> :
+                <div className={s.profile}>
+                  <Image centered rounded size="small" src={user.avatar} className={s.profileImage} />
+                  <div className={s.name}>
+                    {this.name(user)}
+                  </div>
+                  <div className={s.detail}>
+                    {user.account && user.account.email ? ('Email: ' + user.account.email) : ''}
+                    {(user as ICoSeller).coseller && 'CoSeller'}
+                    <br />
+                    {(user as ICoSeller).telNumber}
+                    <br />
+                    Registration date: {this.registerTime(user.createAt)}
+                    <Divider section />
+                  </div>
+                </div>
+            }
+            {
+              loading || error ? <div className={s.menu}></div> :
+                <div className={s.menu}>
+                  <List selection verticalAlign="middle">
+                    {/* Menu Select*/}
+                    {this.props.data.me._id === user._id ? (
+                      <div>
+                        <ul>
+                          <li>
+                            <NavLink
+                              to={`/users/${this.props.match.params.id}`}
+                              exact
+                              activeClassName={s.active}>
+                              <Icon name="feed" />
+                              My Activities
+                                </NavLink>
+                          </li>
+                          {(user as ICoSeller).coseller &&
+                            <li>
+                              <NavLink
+                                to={`/users/${this.props.match.params.id}/products`}
+                                activeClassName={s.active}>
+                                <Icon name="shopping basket" />
+                                My Products
+                                  </NavLink>
+                            </li>
+                          }
+
+                          {(user as ICoSeller).coseller &&
+                            <li>
+                              <NavLink
+                                to={`/users/${this.props.match.params.id}/buyorders`}
+                                activeClassName={s.active}>
+                                <Icon name="ordered list" />
+                                Product Orders
+                                  </NavLink>
+                            </li>
+                          }
+                          <li>
+                            <NavLink
+                              to={`/users/${this.props.match.params.id}/receipts`}
+                              activeClassName={s.active}>
+                              <Icon name="barcode" />
+                              Order receipts
+                                </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              to={`/users/${this.props.match.params.id}/account`}
+                              activeClassName={s.active}>
+                              <Icon name="settings" />
+                              Account setting
+                                </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              to={`/users/${this.props.match.params.id}/payment`}
+                              activeClassName={s.active}>
+                              <Icon name="payment" />
+                              Payment setting
+                                </NavLink>
+                          </li>
+                          {!(user as ICoSeller).coseller &&
+                            <li>
+                              <NavLink
+                                to={`/users/${this.props.match.params.id}/coseller`}
+                                activeClassName={s.active}>
+                                <Icon name="lock" />
+                                Co-Seller
+                                  </NavLink>
+                            </li>
+                          }
+                        </ul>
+                      </div>
+                    ) : (user as ICoSeller).coseller ? (
+                      <div>
+                        <List.Item>
+                          <List.Content>
+                            <NavLink
+                              to={`/users/${this.props.match.params.id}`}
+                              activeClassName={s.active}>
+                              <Icon name="feed" />
+                              Activities
+                            </NavLink>
+                          </List.Content>
+                        </List.Item>
+                        <List.Item>
+                          <List.Content>
+                            <NavLink
+                              to={`/users/${this.props.match.params.id}/products`}
+                              activeClassName={s.active}>
+                              <Icon name="shopping bag" />
+                              Products
+                            </NavLink>
+                          </List.Content>
+                        </List.Item>
+                      </div>
+                    ) : (
+                          <div>
+                            <NavLink to={`/users/${this.props.match.params.id}`}>Activities</NavLink>
+                          </div>
+                        )}
+                  </List>
+                </div>
+            }
+          </div>
           <div className={s.content}>
             {!loading && !error && this.props.data.me && this.props.data.me._id === user._id ? (
               <Switch>
@@ -203,14 +230,15 @@ export class User extends React.Component<User.Props> {
                 )} />
               </Switch>
             ) : (
-              <Switch>
-                <Route exact path="/users/:id" component={Activities} />
-                <Route render={() => (
-                  <Redirect to={`/user/${this.props.match.params.id}`} />
-                )} />
-              </Switch>
-            )}
+                  <Switch>
+                    <Route exact path="/users/:id" component={Activities} />
+                    <Route render={() => (
+                      <Redirect to={`/user/${this.props.match.params.id}`} />
+                    )} />
+                  </Switch>
+                )}
           </div>
+
         </Card>
       </div>
     );

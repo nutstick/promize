@@ -63,6 +63,9 @@ interface UserType {
   # User avatar
   avatar: String
 
+  # Citizen card image
+  citizenCardImage: String
+
   # Order receipts
   orderReceipts(
     first: Int,
@@ -102,6 +105,9 @@ type User implements UserType, Node {
   paymentMethods: [PaymentMethod]
   # User avatar
   avatar: String
+
+  # # Citizen card image
+  citizenCardImage: String
 
   # Order receipts
   orderReceipts(
@@ -145,6 +151,9 @@ type CoSeller implements UserType, Node {
   # User avatar
   avatar: String
 
+  # Citizen card image
+  citizenCardImage: String
+
   # Order receipts
   orderReceipts(
     first: Int,
@@ -181,6 +190,47 @@ type CoSeller implements UserType, Node {
   traderooms: [TradeRoom]
   traderoom(id: ID!): TradeRoom
 
+  createAt: Date!
+  updateAt: Date!
+}
+
+
+# Admin type
+type Admin implements UserType, Node {
+  _id: ID!
+  # First name
+  firstName: String!
+  # Middle name
+  middleName: String
+  # Last name
+  lastName: String!
+  # Gender
+  gender: GenderEnum!
+  # Telephone number
+  telNumber: String
+  # Account data
+  account: Account
+  # Addresses
+  address(id: ID): Address
+  addresses: [Address]
+  # Paymethods
+  paymentMethod(id: ID): PaymentMethod
+  paymentMethods: [PaymentMethod]
+  # User avatar
+  avatar: String
+
+  # Order receipts
+  orderReceipts(
+    first: Int,
+    after: ID,
+    last: Int,
+    before: ID,
+    orderBy: [OrderReceiptOrdering],
+  ): OrderReceiptPage
+
+  # # Citizen card image
+  citizenCardImage: String
+  
   createAt: Date!
   updateAt: Date!
 }

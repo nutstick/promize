@@ -162,7 +162,9 @@ export class ProductModal extends React.Component<ProductModal.Props> {
                     </div>
                     <div className={s.contentWrap}>
                       <div className={s.header}>
-                        <h4>{product.name}</h4>
+                        <div>
+                          <h2>{product.name}</h2>
+                        </div>
                         <div className={s.owner}>
                           <Link
                             className={s.hashtag}

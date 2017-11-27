@@ -11,7 +11,7 @@ input SizeInput {
   size: String
 }
 
-input AccountInput{
+input AccountInput {
   email: String!
   password: String!
 }
@@ -24,8 +24,8 @@ input CreateProductInput {
   price: Int!
   pictures: [String]!
   hashtags: [String]!
-  colors: [ColorInput]
-  sizes: [SizeInput]
+  colors: [String]
+  sizes: [String]
   categories: [CategoryInput]
   promotionStart: Date!
   promotionEnd: Date!
@@ -70,19 +70,18 @@ input CreateUserInput {
 }
 
 input EditUserInput {
-  id: ID!
   firstName: String
   middleName: String
   lastName: String
   gender: GenderEnum
   telNumber: String
-  address: AddressInput
   avatar: String
   password: String
 }
 
 # Address type
 input AddressInput {
+  _id: ID
   # Address detail
   address: String!
   # City
@@ -95,6 +94,7 @@ input AddressInput {
 
 # Payment Method type
 input PaymentMethodInput {
+  _id: ID
   # Credit card number
   creditCardNumber: String!
   validFromMonth: Int!
@@ -104,7 +104,11 @@ input PaymentMethodInput {
 # CoSeller Register input
 input CoSellerRegisterInput {
   telNumber: String!
-  citizenCardImageUrl: String!
+  citizenCardImage: Upload!
+}
+
+input ApproveUserToCosellerINput {
+  _id: ID!
 }
 
 input CreateTradeRoomInput {
@@ -122,6 +126,9 @@ input EditTradeRoomInput {
 
 # Mutations
 type Mutation {
+  # Upload file
+  uploadFile(file: Upload!): Boolean!
+
   # Create Product
   createProduct(input: CreateProductInput!): Product
   # Edit Product
@@ -134,10 +141,17 @@ type Mutation {
 
   # Add address for CreateOrderReceipt
   addAddress(address: AddressInput!): UserType
+  # Edit address
+  editAddress(address: AddressInput!): UserType
   # Add paymentMethod for CreateOrderReceipt
   addPaymentMethod(paymentMethod: PaymentMethodInput!): UserType
+  # Edit payment method
+  editPaymentMethod(paymentMethod: PaymentMethodInput!): UserType
+  
   # Register to be a CoSeller
   registerToBeCoSeller(input: CoSellerRegisterInput!): User
+  # Approve User to CoSeller
+  approveUserToCoseller(user_id: ID!): CoSeller
 
   # Create User
   createUser(input: CreateUserInput!): UserType

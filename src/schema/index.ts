@@ -1,3 +1,4 @@
+import { GraphQLUpload } from 'apollo-upload-server'
 import { GraphQLInputObjectType, GraphQLString, ObjectValueNode } from 'graphql';
 import * as GraphQLDate from 'graphql-date';
 import { makeExecutableSchema } from 'graphql-tools';
@@ -134,6 +135,7 @@ const resolvers = Object.assign({
   Keyword,
   AddressInputCreate,
   PaymentInputCreate,
+  Upload: GraphQLUpload,
   MessageContentInput,
 },
   ...(modules.map((m) => m.resolver).filter((res) => res)),

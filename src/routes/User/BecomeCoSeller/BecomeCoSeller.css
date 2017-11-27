@@ -1,5 +1,6 @@
 .root {
   padding: 2rem;
+  background: rgba(0, 0, 0, 0.4);
 
   > .header {
   

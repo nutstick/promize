@@ -9,6 +9,7 @@ import 'whatwg-fetch';
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { ApolloLink } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
+import { createUploadLink } from 'apollo-upload-client';
 import { WebSocketLink } from 'apollo-link-ws';
 import * as FontFaceObserver from 'fontfaceobserver';
 import { getOperationAST } from 'graphql';
@@ -33,7 +34,15 @@ import createFetch from './createFetch';
 /*
   Apollo Client v2
 */
-const link = ApolloLink.split(
+
+const http = new HttpLink({
+  uri: '/graphql',
+  credentials: 'include',
+});
+const link = createUploadLink({
+  uri: '/graphql',
+  credentials: 'include',
+}).concat(ApolloLink.split(
   (operation) => {
     const operationAST = getOperationAST(operation.query, operation.operationName);
     return !!operationAST && operationAST.operation === 'subscription';
@@ -48,7 +57,7 @@ const link = ApolloLink.split(
     uri: '/graphql',
     credentials: 'include',
   }),
-);
+));
 
 const fragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData: {

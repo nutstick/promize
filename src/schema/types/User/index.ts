@@ -31,6 +31,8 @@ export interface IUserType {
   paymentMethod?: IPaymentMethod;
   paymentMethods?: IPaymentMethod[];
 
+  citizenCardImage: string;
+
   avatar?: string;
   orderReceipts?: IPage<IOrderReceipt>;
   createAt?: Date;
