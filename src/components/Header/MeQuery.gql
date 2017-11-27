@@ -6,7 +6,7 @@ query Me {
 
     ... on CoSeller {
       coseller
-      totalBuyOrderReceipts(status: OPEN)
+      totalBuyOrderReceipts(status: CREATED)
     }
   }
 }
