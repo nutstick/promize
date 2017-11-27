@@ -2,7 +2,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { ChildProps } from 'react-apollo';
 import { RouteComponentProps } from 'react-router-dom';
-import { Card } from 'semantic-ui-react';
+import { Card, Loader } from 'semantic-ui-react';
 import { graphql } from '../../../apollo/graphql';
 import { IAddress } from '../../../schema/models/User/address';
 import { IAccount } from '../../../schema/types/User';
@@ -39,19 +39,30 @@ export class Account extends React.Component<Account.Props> {
     return (
       <div className={s.root} style={{ padding: '3rem' }}>
         <h1 className={s.header}>My Account</h1>
-
-        <Card.Group>
-          {this.props.data.me.addresses.map((address) => (
-            <Card>
-              <Card.Content>
-                <p>Address: {address.address}</p>
-                <p>City: {address.city}</p>
-                <p>Country: {address.country}</p>
-                <p>Zip: {address.zip}</p>
-              </Card.Content>
-            </Card>
-          ))}
-        </Card.Group>
+        {
+          this.props.data.loading || this.props.data.error ? (
+            <div>
+              <Loader />
+            </div>
+          ) : (
+            <div>
+              {this.props.data.me.addresses.map((address) => (
+                <Card.Group>
+                  {this.props.data.me.addresses.map((address) => (
+                    <Card>
+                      <Card.Content>
+                        <p>Address: {address.address}</p>
+                        <p>City: {address.city}</p>
+                        <p>Country: {address.country}</p>
+                        <p>Zip: {address.zip}</p>
+                      </Card.Content>
+                    </Card>
+                  ))}
+                </Card.Group>
+              ))}
+            </div>
+          )
+        }
       </div>
     );
   }
