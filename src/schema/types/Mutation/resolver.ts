@@ -3,11 +3,13 @@ import { IResolver } from '../index';
 const resolver: IResolver<any, any> = {
   Mutation: {
 
-    async uploadFile(_, { file }, { database }) {
+    async uploadFile(root, { file }, { database }) {
+      // console.log(root);
       return true;
     },
 
     async createProduct(_, { input: { promotionStart, promotionEnd, price, ...input } }, { database, user }) {
+      // Only CoSeller can create product
       return await database.Product.insert({
         ...input,
         promotion_start: promotionStart,
@@ -17,6 +19,7 @@ const resolver: IResolver<any, any> = {
     },
 
     async editProduct(_, { input: { id, ...input } }, { database }) {
+      // Only owner can edit
       // FIXME: Cant merge fields like originalPrice, promotionStart convert to camel case first
       await database.Product.update({ _id: id }, {
         $set: {
