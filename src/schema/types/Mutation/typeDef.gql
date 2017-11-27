@@ -24,8 +24,8 @@ input CreateProductInput {
   price: Int!
   pictures: [String]!
   hashtags: [String]!
-  colors: [ColorInput]
-  sizes: [SizeInput]
+  colors: [String]
+  sizes: [String]
   categories: [CategoryInput]
   promotionStart: Date!
   promotionEnd: Date!

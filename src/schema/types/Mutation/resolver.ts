@@ -27,29 +27,56 @@ const processUpload = async (upload) => {
 const resolver: IResolver<any, any> = {
   Mutation: {
 
-    async uploadFile(root, { file }, { database }) {
-      // console.log(root);
-      return true;
-    },
+    // async uploadFile(root, { file }, { database }) {
+    //   console.log(root);
+    //   return true;
+    // },
 
-    async createProduct(_, { input: { promotionStart, promotionEnd, price, ...input } }, { database, user }) {
+    // tslint:disable-next-line:max-line-length
+    async createProduct(_, { input: { promotionStart, promotionEnd, pictures, price, colors, sizes, ...input } }, { database, user }) {
+      const userInstance = await database.User.findOne({ _id: user._id });
       // Only CoSeller can create product
-      return await database.Product.insert({
-        ...input,
-        promotion_start: promotionStart,
-        promotion_end: promotionEnd,
-        owner: user._id,
-      });
+      if (userInstance.type === 'CoSeller') {
+        const color: any = [];
+        for (const i of colors) {
+          color.push({ color: i });
+        }
+
+        const size: any = [];
+        for (const i of sizes) {
+          size.push({ size: i });
+        }
+        // console.log(pictures);
+        // console.log(pictures[0]);
+        // console.log(pictures[0][0]);
+        return await database.Product.insert({
+          ...input,
+          colors: color,
+          sizes: size,
+          pictures,
+          promotion_start: promotionStart,
+          promotion_end: promotionEnd,
+          owner: user._id,
+        });
+      } else {
+        throw new Error(`You must be CoSeller to create product`);
+      }
     },
 
-    async editProduct(_, { input: { id, ...input } }, { database }) {
+    async editProduct(_, { input: { id, ...input } }, { database, user }) {
+      const userInstance = await database.User.findOne({ _id: user._id });
+      const productInstance = await database.Product.findOne({ _id: id });
       // Only owner can edit
-      // FIXME: Cant merge fields like originalPrice, promotionStart convert to camel case first
-      await database.Product.update({ _id: id }, {
-        $set: {
-          ...input,
-        },
-      });
+      if (userInstance.type === 'CoSeller' && productInstance.owner === user._id) {
+        // FIXME: Cant merge fields like originalPrice, promotionStart convert to camel case first
+        await database.Product.update({ _id: id }, {
+          $set: {
+            ...input,
+          },
+        });
+      } else {
+        throw new Error(`You must be Product Owner to edit product`);
+      }
       return await database.Product.findOne({ _id: id });
     },
 
