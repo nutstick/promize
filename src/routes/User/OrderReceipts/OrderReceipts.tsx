@@ -6,6 +6,7 @@ import { Loader } from 'semantic-ui-react';
 import { graphql } from '../../../apollo/graphql';
 import { IOrderReceipt } from '../../../schema/types/OrderReceipt';
 import { IPage } from '../../../schema/types/Pagination';
+import { Button, Icon } from 'semantic-ui-react';
 import * as UPDATEORDERRECEIPTSTATUSMUTATION from '../UpdateOrderReceiptStatusMutation.gql';
 import * as MYORDERRECEIPTSQUERY from './MyOrderReceiptsQuery.gql';
 import * as s from './OrderReceipts.css';
@@ -66,40 +67,83 @@ export class OrderReceipts extends React.Component<OrderReceipts.Props> {
             </div>
           ) : (
             <div>
-            {this.props.data.me.orderReceipts.edges.map(({ node }) => (
-              <div key={node._id}>
-                {node._id}
-                <div>
-                  {node.product.pictures[0]}
+              {this.props.data.me.orderReceipts.edges.map(({ node }) => (
+              <div key={node._id} className={s.modal}>
+                <div className={s.pictureWrapper}>
+                  <img className={s.picture} src={node.product.pictures[0]}/>
                 </div>
-                <div>
-                  {node.product.name}
-                  {this.name(node.product.owner)}
+                <div className={s.contentWrapper}>
+                  <div className={s.contentHeader}>
+                    <h5 className={s.receiptId}>ORDER ID {node._id}</h5>
+                    <h3 className={s.productName}>{node.product.name}</h3>
+                    <h5 className={s.productOwner}>{this.name(node.product.owner)}</h5>
+                  </div>
+                    <div className={s.titleValueGroup}>
+                      <div className={s.title}>SIZE</div>
+                      <div className={s.value}>{node.size.size}</div>
+                      <div className={s.title}>COLOR</div>
+                      <div className={s.value}>{node.color.color}</div>
+                    </div>
+                  <div>
+                    <div className={s.shipTo}>SHIPPING INFORMATION</div>
+                    <div className={s.shippingInfo}>
+                      
+                      <span>{node.deliverAddress.address}</span>
+                      
+                      <span>{node.deliverAddress.city}</span>
+                      
+                      <span>{node.deliverAddress.country}</span>
+                      
+                      <span>{node.deliverAddress.zip}</span>
+                    </div>
+                  </div>
+                  <div className={s.titleValueGroup}>
+                    <div className={s.title}>TRACKING NUMBER</div>                  
+                    <div className={s.value}>{node.trackingId}</div> 
+                  </div>   
+                  <div className={s.titleValueGroup}>
+                    <div className={s.title}>REMARK</div>                  
+                    <div className={s.value}>{node.remark}</div> 
+                  </div>   
+                  <div className={s.contentFooter}>              
+                    <div className={s.titleValueGroup}>
+                      <div className={s.title}>PRODUCT DELIVERED</div>                  
+                      <div className={s.value}>{node.productDelivered}</div> 
+                      <div className={s.title}>AT</div>                  
+                      <div className={s.value}>{node.productDeliveredAt}</div> 
+                    </div>   
+                    
+                    
+                    <div className={s.titleValueGroup}>
+                      <div className={s.title}>PAYMEMT COMPLETED</div>                  
+                      <div className={s.value}>{node.paymentCompleted}</div> 
+                      <div className={s.title}>AT</div>                  
+                      <div className={s.value}>{node.paymentCompletedAt}</div> 
+                    </div> 
+                    
+                    
+                    <div className={s.titleValueGroup}>
+                      <div className={s.title}>PRODUCT RECEIVED</div>                  
+                      <div className={s.value}>{node.productReceived}</div> 
+                      <div className={s.title}>AT</div>                  
+                      <div className={s.value}>{node.productReceivedAt}</div> 
+                    </div> 
+                  </div>
+                  <div className={s.buttonWrap}>
+                    <a onClick={(e) => this.props.mutate({
+                      variables: {
+                        id: node._id,
+                        input: {
+                          status: 'RECEIVED',
+                        },
+                      },
+                    })}>
+                      <Button color="orange">
+                        <Button.Content>Confirm Received</Button.Content>
+                      </Button>
+                    </a>
+                  </div>
                 </div>
-                {node.size.size}
-                {node.color.color}
-                <div>
-                  {node.deliverAddress.address}
-                  {node.deliverAddress.city}
-                  {node.deliverAddress.country}
-                  {node.deliverAddress.zip}
-                </div>
-                {node.trackingId}
-                {node.remark}
-                {node.productDelivered}
-                {node.productDeliveredAt}
-                {node.paymentCompleted}
-                {node.paymentCompletedAt}
-                {node.productReceived}
-                {node.productReceivedAt}
-                <a onClick={(e) => this.props.mutate({
-                  variables: {
-                    id: node._id,
-                    input: {
-                      status: 'RECEIVED',
-                    },
-                  },
-                })}>Confirm Received</a>
               </div>
             ))}
           </div>

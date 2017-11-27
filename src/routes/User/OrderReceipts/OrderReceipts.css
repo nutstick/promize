@@ -1,3 +1,126 @@
+
+
+
 .root {
   padding: 1em;
+}
+
+.modal{
+  border-radius: 5px;
+  width: 100%;
+  margin: 20px 10px;
+  padding: 5px;
+  display: flex;
+  flex-wrap: nowrap;
+  -webkit-box-shadow: 0px 5px 32px -12px rgba(0,0,0,0.5);
+  -moz-box-shadow: 0px 5px 32px -12px rgba(0,0,0,0.5);
+  box-shadow: 0px 5px 32px -12px rgba(0,0,0,0.5);
+}
+
+.modal:hover{
+  -webkit-box-shadow: 0px 5px 32px -12px rgba(0,0,0,1);
+  -moz-box-shadow: 0px 5px 32px -12px rgba(0,0,0,1);
+  box-shadow: 0px 5px 32px -12px rgba(0,0,0,1);
+}
+
+.pictureWrapper{
+  margin: 10px;
+  max-width: 300px;
+  /* height: 100%; */
+  flex-grow: 1;
+  overflow:hidden;
+}
+
+.picture{
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  background: black;
+}
+
+.contentWrapper{
+  padding: 10px;
+  flex-grow: 3;
+}
+
+.contentHeader{
+  padding-bottom: 1em;
+}
+
+.receiptId{
+  text-align: right;
+  margin-top: 0.5em;  
+  margin-bottom: 0px;
+  color: #ff9521;
+}
+
+.productName{
+  margin-top: 0.6em;
+  margin-bottom: 0em;
+  color: black;
+}
+
+.productOwner{
+  margin-top: 0.4em;
+  color: #606060;
+}
+
+.contentFooter{
+  font-size: 0.8em;
+}
+
+.contentFooter>div{
+  margin-bottom: 0.1em;
+}
+
+.titleValueGroup{
+  margin-bottom: 0.5em; 
+}
+
+.titleValueGroup>div{
+  display: inline;
+  margin-right: 15px;
+}
+
+.title{
+  font-weight: bold;
+}
+
+.value{
+  color: #606060;
+}
+
+.shipTo{
+  margin-top: 1em;  
+  font-weight: bold;
+}
+
+.shippingInfo>span{
+  margin-right: 0.5em;
+}
+
+.shippingInfo{
+  margin: 0.5em 0em;
+  margin-bottom: 0.7em;
+  color: #606060;
+}
+
+.buttonWrap{
+  float: right;
+  margin-top: 10px;
+}
+
+
+@media screen and (max-width: 700px) {
+  
+   .modal{
+      flex-wrap: wrap;
+   }
+
+   .pictureWrapper{
+     max-width: 700px;
+     margin-bottom: 0px;
+     height: 200px;
+   }
+   
 }
