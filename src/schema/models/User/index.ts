@@ -19,6 +19,9 @@ interface IUserDocument {
   avatar: string;
   type?: string;
 
+  coseller_register_status?: string;
+  citizen_card_image?: string;
+
   products?: IProductDocument[];
 
   createAt?: Date;
@@ -73,12 +76,17 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
   @Property(String, true)
   avatar: string;
 
-  // TODO: Order receipt
   @Property(/^User|CoSeller|Admin$/, false)
   type: string;
 
-  @Property([Product], false)
-  products: IProductDocument[];
+  // @Property([Product], false)
+  // products: IProductDocument[];
+
+  // Register to be a CoSeller
+  @Property(/^Idle|Pending|Approved$/, false)
+  coseller_register_status: string;
+  @Property(String, false)
+  citizen_card_image: string;
 
   @Property(Date, false)
   createAt: Date;
@@ -97,9 +105,11 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
       return Promise.reject(new Error('expected one login method'));
     }
 
-    if (user.type !== 'CoSeller' && user.products) {
-      return Promise.reject(new Error('only co-seller can have products'));
-    }
+    user.coseller_register_status = user.coseller_register_status || 'Idle';
+
+    // if (user.type !== 'CoSeller' && user.products) {
+    //   return Promise.reject(new Error('only co-seller can have products'));
+    // }
   }
 
   static onSaving(user: User, changes: Iridium.Changes) {

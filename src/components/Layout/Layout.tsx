@@ -41,7 +41,7 @@ namespace Layout {
 export class Layout extends React.Component<Layout.Props> {
   public render() {
     return (
-      <div>
+      <div className={s.layout}>
         {this.props.productModal.productModal && this.props.productModal.productModal.show &&
           <ProductModal id={this.props.productModal.productModal.id}/>}
         {this.props.login.login && this.props.login.login.modal && <LoginModal />}

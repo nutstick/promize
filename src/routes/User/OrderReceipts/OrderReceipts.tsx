@@ -57,7 +57,7 @@ export class OrderReceipts extends React.Component<OrderReceipts.Props> {
   public render() {
     // TODO: Pagination
     return (
-      <div className={s.root} style={{ padding: '3rem' }}>
+      <div className={s.root}>
         <h1 className={s.header}>Order Receipts</h1>
         {
           this.props.data.loading || this.props.data.error ? (
@@ -70,11 +70,14 @@ export class OrderReceipts extends React.Component<OrderReceipts.Props> {
               <div key={node._id}>
                 {node._id}
                 <div>
+                  {node.product.pictures[0]}
+                </div>
+                <div>
                   {node.product.name}
                   {this.name(node.product.owner)}
                 </div>
-                {node.size}
-                {node.color}
+                {node.size.size}
+                {node.color.color}
                 <div>
                   {node.deliverAddress.address}
                   {node.deliverAddress.city}
