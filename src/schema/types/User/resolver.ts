@@ -1,9 +1,9 @@
-import { IResolver } from '../index';
-import { IReceiptDocument } from '../../models/Receipt/index';
-import { Cursor } from 'mongodb';
-import { unbase64, base64 } from '../base64';
 import { GraphQLError } from 'graphql';
 import { toObjectID } from 'iridium';
+import { Cursor } from 'mongodb';
+import { IReceiptDocument } from '../../models/Receipt/index';
+import { base64, unbase64 } from '../base64';
+import { IResolver } from '../index';
 
 const UserTypeResolver = {
   firstName({ first_name }) {

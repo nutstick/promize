@@ -105,10 +105,34 @@ const resolver: IResolver<any, any> = {
       return null;
     },
 
+    async editAddress(_, { address }, { database, user }) {
+      if (user && user._id) {
+        const userInstance = await database.User.findOne({ _id: user._id });
+        userInstance.save();
+        return userInstance;
+      }
+      return null;
+    },
+
     async addPaymentMethod(_, { paymentMethod }, { database, user }) {
       if (user && user._id) {
         const userInstance = await database.User.findOne({ _id: user._id });
         userInstance.addPaymentMethod({
+          credit_card_number: paymentMethod.creditCardNumber,
+          valid_from_month: paymentMethod.validFromMonth,
+          valid_from_year: paymentMethod.validFromYear,
+        });
+        userInstance.save();
+        return userInstance;
+      }
+      return null;
+    },
+
+    async editPaymentMethod(_, { paymentMethod }, { database, user }) {
+      if (user && user._id) {
+        const userInstance = await database.User.findOne({ _id: user._id });
+        userInstance.editPaymentMethod({
+          _id: paymentMethod._id,
           credit_card_number: paymentMethod.creditCardNumber,
           valid_from_month: paymentMethod.validFromMonth,
           valid_from_year: paymentMethod.validFromYear,
@@ -136,18 +160,11 @@ const resolver: IResolver<any, any> = {
 
     async editUser(
       _,
-      { input: {
-        id,
-        firstName,
-        middleName,
-        lastName,
-        gender,
-        telNumber,
-        paymentMethod,
-        address,
-        password,
-        avatar,
-      } },
+      {
+        input: {
+          id, firstName, middleName, lastName, gender, telNumber, password, avatar,
+        },
+      },
       { database },
     ) {
       const userInstance = await database.User.findOne({ _id: id });

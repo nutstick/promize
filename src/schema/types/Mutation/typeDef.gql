@@ -76,13 +76,13 @@ input EditUserInput {
   lastName: String
   gender: GenderEnum
   telNumber: String
-  address: AddressInput
   avatar: String
   password: String
 }
 
 # Address type
 input AddressInput {
+  _id: ID
   # Address detail
   address: String!
   # City
@@ -95,6 +95,7 @@ input AddressInput {
 
 # Payment Method type
 input PaymentMethodInput {
+  _id: ID
   # Credit card number
   creditCardNumber: String!
   validFromMonth: Int!
@@ -121,8 +122,12 @@ type Mutation {
 
   # Add address for CreateOrderReceipt
   addAddress(address: AddressInput!): UserType
+  # Edit address
+  editAddress(address: AddressInput!): UserType
   # Add paymentMethod for CreateOrderReceipt
   addPaymentMethod(paymentMethod: PaymentMethodInput!): UserType
+  # Edit payment method
+  editPaymentMethod(paymentMethod: PaymentMethodInput!): UserType
   # Register to be a CoSeller
   registerToBeCoSeller(input: CoSellerRegisterInput!): User
 
