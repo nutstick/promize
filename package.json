@@ -23,6 +23,8 @@
     "apollo-link-http": "^1.2.0",
     "apollo-link-state": "^0.0.4",
     "apollo-server-express": "^1.2.0",
+    "apollo-upload-client": "^7.0.0-alpha.1",
+    "apollo-upload-server": "^4.0.0-alpha.1",
     "autoprefixer": "^7.1.6",
     "babel-jest": "^21.2.0",
     "babel-polyfill": "^6.26.0",

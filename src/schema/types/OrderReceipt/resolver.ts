@@ -51,8 +51,8 @@ const resolver: IResolver<any, any> = {
       }
     },
     status({ payment_completed, product_delivered, product_received }) {
-      return payment_completed ? 'PAID' : product_delivered ? 'DELIVERED' :
-        product_received ? 'RECEIVED' : 'CREATED';
+      return payment_completed ? 'PAID' : product_delivered ? 'DELIVERED' : product_received ?
+        'RECEIVED' : 'CREATED';
     },
     paymentCompletedAt({ payment_completed_at }) {
       return payment_completed_at;

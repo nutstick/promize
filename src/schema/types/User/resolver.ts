@@ -1,9 +1,7 @@
-import { IResolver } from '../index';
-import { IReceiptDocument } from '../../models/Receipt/index';
-import { Cursor } from 'mongodb';
-import { unbase64, base64 } from '../base64';
 import { GraphQLError } from 'graphql';
 import { toObjectID } from 'iridium';
+import { base64, unbase64 } from '../base64';
+import { IResolver } from '../index';
 
 const UserTypeResolver = {
   firstName({ first_name }) {
@@ -26,6 +24,13 @@ const UserTypeResolver = {
   },
   address({ addresses }, { id }) {
     return addresses.find((address) => address._id === id);
+  },
+  async citizenCardImage({ _id, citizen_card_image }, _, { database, user }) {
+    const userInstance = await database.User.findOne({ _id: user._id });
+    if (userInstance._id === _id || userInstance.type === 'Admin') {
+      return citizen_card_image;
+    }
+    return null;
   },
   async orderReceipts({ _id: buyer }, { first, after, last, before, orderBy }, { database }) {
     // Add default sort by _id
@@ -136,6 +141,9 @@ const resolver: IResolver<any, any> = {
     coSellerRegisterStatus({ coseller_register_status }, _, { database }) {
       return coseller_register_status.toUpperCase();
     },
+  },
+  Admin: {
+    ...UserTypeResolver,
   },
   CoSeller: {
     ...UserTypeResolver,
