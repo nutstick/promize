@@ -14,7 +14,7 @@ export interface ICommandContent {
   arguments: string[];
 }
 
-export interface IMassage {
+export interface IMessage {
   _id?: string;
   traderoom?: string;
   content?: ITextContent | IPictureContent | ICommandContent;
@@ -25,7 +25,7 @@ export interface IMassage {
 export interface ITradeRoom {
   _id?: string;
   participants?: IUserType[];
-  messages?: IMassage[];
+  messages?: IMessage[];
 }
 
 export {
