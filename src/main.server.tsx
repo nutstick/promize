@@ -354,26 +354,27 @@ if (!module.hot) {
 if (module.hot) {
   app.hot = module.hot;
 
-  module.hot.accept();
-
-  module.hot.dispose(() => {
-    try {
-      if (websocketServer) {
-        websocketServer.close();
-      }
-    } catch (error) {
-      // tslint:disable-next-line:no-console
-      console.error(error.stack);
-    }
-  });
-
   // module.hot.accept(['./routes', './schema']);
+  module.hot.accept();
 
   module.hot.accept(['./core/subscriptions'], () => {
     try {
       addGraphQLSubscriptions(websocketServer);
       // tslint:disable-next-line:no-console
       console.log('Attached addGraphQLSubscriptions to module.hot');
+    } catch (error) {
+      // tslint:disable-next-line:no-console
+      console.error(error.stack);
+    }
+  });
+  
+
+  module.hot.dispose(() => {
+    console.log('close');
+    try {
+      if (websocketServer) {
+        websocketServer.close();
+      }
     } catch (error) {
       // tslint:disable-next-line:no-console
       console.error(error.stack);

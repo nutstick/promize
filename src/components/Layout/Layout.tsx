@@ -4,6 +4,7 @@ import * as normalizeCss from 'normalize.css';
 import * as React from 'react';
 import { QueryProps } from 'react-apollo';
 import * as semanticsCss from 'semantic-ui-css/semantic.min.css';
+import { Icon } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
 
 import { LoginQuery } from '../../apollo/login';
@@ -12,6 +13,7 @@ import * as LOGINQUERY from '../../apollo/login/LoginQuery.gql';
 import { ProductModalQuery } from '../../apollo/productModal';
 import * as PRODUCTMODALQUERY from '../../apollo/productModal/ProductModalQuery.gql';
 
+import { BottomFloatingButton } from '../BottomFloatingButton';
 import { Footer } from '../Footer';
 import { Header } from '../Header';
 import { LoginModal } from '../LoginModal';
@@ -48,6 +50,9 @@ export class Layout extends React.Component<Layout.Props> {
           {this.props.children}
         </Main>
         <Footer />
+        <BottomFloatingButton>
+          <Icon name="comment outline" size="large" />
+        </BottomFloatingButton>
       </div>
     );
   }
