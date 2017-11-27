@@ -186,10 +186,6 @@ const resolver: IResolver<any, any> = {
 
     async registerToBeCoSeller(_, { input }, { database, user }) {
       const userInstance = await database.User.findOne({ _id: user._id });
-<<<<<<< HEAD
-      // console.log(userInstance);
-=======
->>>>>>> origin/backend
       await database.User.update({ _id: user._id }, {
         $set: {
           tel_number: input.telNumber ? input.telNumber : userInstance.telNumber,
