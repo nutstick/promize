@@ -19,7 +19,7 @@
 }
 
 .profile {
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 0;
 }
 
 .profileImage{
@@ -42,7 +42,7 @@
 }
 
 .menu {
-  padding: 1.5rem;
+  padding: 0 1.5rem 1.5rem 1.5rem;
 }
 
 .mainContent{
