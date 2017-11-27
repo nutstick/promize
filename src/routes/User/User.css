@@ -15,6 +15,34 @@
   flex: 0 0 12em;
   display: flex;
   order: -1;
+  flex-direction: column;
+}
+
+.profile {
+  padding: 1.5rem;
+}
+
+.profileImage{
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  min-height: 120px;
+}
+
+.name {
+  padding-top: 1rem;
+  text-align:center;
+  font-size: larger;
+  font-weight: bold;
+  line-height: 2rem;
+}
+
+.detail {
+  color: #5a5a5a;
+  text-align:center;
+  line-height: 1.5rem;
+}
+
+.menu {
+  padding: 1.5rem;
 }
 
 .mainContent{
