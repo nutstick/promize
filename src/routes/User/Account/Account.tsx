@@ -2,6 +2,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { ChildProps } from 'react-apollo';
 import { RouteComponentProps } from 'react-router-dom';
+import { Card } from 'semantic-ui-react';
 import { graphql } from '../../../apollo/graphql';
 import { IAddress } from '../../../schema/models/User/address';
 import { IAccount } from '../../../schema/types/User';
@@ -17,7 +18,7 @@ namespace Account {
   export interface AccountQuery {
     me: {
       account: IAccount;
-      paymentMethods: IAddress[],
+      addresses: IAddress[],
     };
   }
 
@@ -38,6 +39,16 @@ export class Account extends React.Component<Account.Props> {
     return (
       <div className={s.root} style={{ padding: '3rem' }}>
         <h1 className={s.header}>My Account</h1>
+
+        {this.props.data.me.addresses.map((address) => (
+          <Card>
+              <b>Address: </b>{address.address}
+              <b>City: </b>{address.city}
+              <b>Country: </b>{address.country}
+              <b>Zip: </b>{address.zip}
+              <br/>
+          </Card>
+        ))}
       </div>
     );
   }

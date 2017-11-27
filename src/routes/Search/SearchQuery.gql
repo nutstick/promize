@@ -15,6 +15,7 @@ query SearchQuery($keywords: [Keyword], $after: ID, $first: Int) {
         }
       }
     }
+    totalCount
     pageInfo {
       endCursor
       hasNextPage

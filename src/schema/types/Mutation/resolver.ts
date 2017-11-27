@@ -1,3 +1,4 @@
+import { toObjectID } from 'iridium';
 import { IResolver } from '../index';
 
 const resolver: IResolver<any, any> = {
@@ -24,7 +25,7 @@ const resolver: IResolver<any, any> = {
 
     async createOrderReceipt(_, { input: { deliverAddress, paymentMethod, ...input } }, { database, user }) {
       // FIXME: Cant merge fields like convert to camel case first
-      const userInstance = await database.User.findOne({ id: user._id });
+      const userInstance = await database.User.findOne({ _id: user._id });
       if (paymentMethod._id) {
         if (database.User.find({ _id: user._id, payment_method: { _id: paymentMethod._id } })) {
           input.payment_method = paymentMethod._id;

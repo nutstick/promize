@@ -1,11 +1,11 @@
 @import '../../components/variables.css';
 
 .root {
-  margin: 0 auto;
-  margin-top: -120px;
   padding: 0.6em 0 40px;
-  max-width: var(--max-content-width);
-  display: -webkit-flex;
+  margin-top: -120px;
+}
+
+.container {
   display: flex;
   min-height: 100%;
 }
@@ -15,6 +15,34 @@
   flex: 0 0 12em;
   display: flex;
   order: -1;
+  flex-direction: column;
+}
+
+.profile {
+  padding: 1.5rem 1.5rem 0;
+}
+
+.profileImage{
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  min-height: 120px;
+}
+
+.name {
+  padding-top: 1rem;
+  text-align:center;
+  font-size: larger;
+  font-weight: bold;
+  line-height: 2rem;
+}
+
+.detail {
+  color: #5a5a5a;
+  text-align:center;
+  line-height: 1.5rem;
+}
+
+.menu {
+  padding: 0 1.5rem 1.5rem 1.5rem;
 }
 
 .mainContent{
@@ -33,4 +61,17 @@
 
 .active {
   font-weight: bold;
+  color: rgb(231, 53, 53);
+}
+
+li{
+  width: 200px;
+  padding: 5px;
+  margin: 0; 
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
