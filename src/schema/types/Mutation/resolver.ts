@@ -141,6 +141,37 @@ const resolver: IResolver<any, any> = {
       return null;
     },
 
+    async registerToBeCoSeller(_, { input }, { database, user }) {
+      const userInstance = await database.User.findOne({ _id: user._id });
+      if (userInstance.type === 'User') {
+        await database.User.update({ _id: user._id }, {
+          $set: {
+            tel_number: input.telNumber ? input.telNumber : userInstance.telNumber,
+            citizen_card_image: input.citizenCardImageUrl,
+            coseller_register_status: 'Pending',
+          },
+        });
+        return await database.User.findOne({ _id: user._id });
+      } else {
+        throw new Error(`This account have been Co-seller already`);
+      }
+    },
+
+    async approveUserToCoseller(_, { user_id }, { database, user }) {
+      const userInstance = await database.User.findOne({ _id: user._id });
+      if (userInstance.type === 'Admin') {
+        await database.User.update({ _id: user_id }, {
+          $set: {
+            type: 'CoSeller',
+            coseller_register_status: 'Approved',
+          },
+        });
+        return await database.User.findOne({ _id: user_id });
+      } else {
+        throw new Error(`You must be Admin for approve other people`);
+      }
+    },
+
     async createUser(
       _,
       { input: { firstName, middleName, lastName, telNumber, paymentMethods, ...input } },
@@ -179,17 +210,6 @@ const resolver: IResolver<any, any> = {
       return await database.User.findOne({ _id: user._id });
     },
 
-    async registerToBeCoSeller(_, { input }, { database, user }) {
-      const userInstance = await database.User.findOne({ _id: user._id });
-      await database.User.update({ _id: user._id }, {
-        $set: {
-          tel_number: input.telNumber ? input.telNumber : userInstance.telNumber,
-          citizen_card_image: input.citizenCardImageUrl,
-          type: 'CoSeller',
-        },
-      });
-      return await database.User.findOne({ _id: user._id });
-    },
   },
 };
 

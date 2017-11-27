@@ -107,6 +107,10 @@ input CoSellerRegisterInput {
   citizenCardImageUrl: String!
 }
 
+input ApproveUserToCosellerINput {
+  _id: ID!
+}
+
 # Mutations
 type Mutation {
   # Create Product
@@ -127,8 +131,11 @@ type Mutation {
   addPaymentMethod(paymentMethod: PaymentMethodInput!): UserType
   # Edit payment method
   editPaymentMethod(paymentMethod: PaymentMethodInput!): UserType
+  
   # Register to be a CoSeller
   registerToBeCoSeller(input: CoSellerRegisterInput!): UserType
+  # Approve User to CoSeller
+  approveUserToCoseller(user_id: ID!): UserType
 
   # Create User
   createUser(input: CreateUserInput!): UserType
