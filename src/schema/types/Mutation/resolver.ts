@@ -1,4 +1,3 @@
-import { toObjectID } from 'iridium';
 import { IResolver } from '../index';
 
 const resolver: IResolver<any, any> = {
@@ -161,7 +160,7 @@ const resolver: IResolver<any, any> = {
       _,
       {
         input: {
-          id, firstName, middleName, lastName, gender, telNumber, password, avatar,
+          firstName, middleName, lastName, gender, telNumber, password, avatar,
         },
       },
       { database, user },
@@ -182,7 +181,6 @@ const resolver: IResolver<any, any> = {
 
     async registerToBeCoSeller(_, { input }, { database, user }) {
       const userInstance = await database.User.findOne({ _id: user._id });
-      console.log(userInstance);
       await database.User.update({ _id: user._id }, {
         $set: {
           tel_number: input.telNumber ? input.telNumber : userInstance.telNumber,

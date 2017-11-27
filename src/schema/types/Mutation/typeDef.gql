@@ -70,7 +70,6 @@ input CreateUserInput {
 }
 
 input EditUserInput {
-  id: ID!
   firstName: String
   middleName: String
   lastName: String
