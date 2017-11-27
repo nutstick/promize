@@ -67,6 +67,7 @@ export class User extends React.Component<User.Props> {
     const { user, loading, error } = this.props.data;
     return (
       <div className={s.root}>
+        <Card className={s.mainContent}>
         <div className={s.sidebar}>
           {
             loading || error ? <div className={s.profile}>
@@ -95,53 +96,72 @@ export class User extends React.Component<User.Props> {
                   {/* Menu Select*/}
                   {this.props.data.me._id === user._id ? (
                     <div>
-                      <NavLink
-                        to={`/users/${this.props.match.params.id}`}
-                        exact
-                        activeClassName={s.active}>
-                        <Icon name="feed" />
-                        My Activities
-                      </NavLink>
-                      {(user as ICoSeller).coseller &&
-                        <NavLink
-                          to={`/users/${this.props.match.params.id}/products`}
-                          activeClassName={s.active}>
-                          <Icon name="shopping basket" />
-                          My Products
-                        </NavLink>
-                      }
-                      {(user as ICoSeller).coseller &&
-                        <NavLink
-                          to={`/users/${this.props.match.params.id}/buyorders`}
-                          activeClassName={s.active}>
-                          <Icon name="ordered list" />
-                          Product Orders
-                        </NavLink>
-                      }
-                      <NavLink
-                        to={`/users/${this.props.match.params.id}/receipts`}
-                        activeClassName={s.active}>
-                        <Icon name="barcode" />
-                        Order reciepts
-                      </NavLink>
-                      <NavLink
-                        to={`/users/${this.props.match.params.id}/account`}
-                        activeClassName={s.active}>
-                        <Icon name="settings" />
-                        Account setting
-                      </NavLink>
-                      <NavLink
-                        to={`/users/${this.props.match.params.id}/payment`}
-                        activeClassName={s.active}>
-                        <Icon name="payment" />
-                        Payment setting
-                      </NavLink>
-                      {!(user as ICoSeller).coseller && <NavLink
-                        to={`/users/${this.props.match.params.id}/coseller`}
-                        activeClassName={s.active}>
-                        <Icon name="lock" />
-                        Co-Seller
-                      </NavLink>}
+                      <ul>
+                        <li>
+                          <NavLink
+                            to={`/users/${this.props.match.params.id}`}
+                            exact
+                            activeClassName={s.active}>
+                            <Icon name="feed" />
+                            My Activities
+                          </NavLink>
+                        </li>
+                        {(user as ICoSeller).coseller &&
+                          <li>
+                            <NavLink
+                              to={`/users/${this.props.match.params.id}/products`}
+                              activeClassName={s.active}>
+                              <Icon name="shopping basket" />
+                              My Products
+                            </NavLink>
+                          </li>
+                        }
+                      
+                        {(user as ICoSeller).coseller &&
+                          <li>
+                            <NavLink
+                              to={`/users/${this.props.match.params.id}/buyorders`}
+                              activeClassName={s.active}>
+                              <Icon name="ordered list" />
+                              Product Orders
+                            </NavLink>
+                          </li>
+                        }
+                        <li>
+                          <NavLink
+                            to={`/users/${this.props.match.params.id}/receipts`}
+                            activeClassName={s.active}>
+                            <Icon name="barcode" />
+                            Order reciepts
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            to={`/users/${this.props.match.params.id}/account`}
+                            activeClassName={s.active}>
+                            <Icon name="settings" />
+                            Account setting
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            to={`/users/${this.props.match.params.id}/payment`}
+                            activeClassName={s.active}>
+                            <Icon name="payment" />
+                            Payment setting
+                          </NavLink>
+                        </li>
+                        {!(user as ICoSeller).coseller && 
+                          <li>
+                            <NavLink
+                              to={`/users/${this.props.match.params.id}/coseller`}
+                              activeClassName={s.active}>
+                              <Icon name="lock" />
+                              Co-Seller
+                            </NavLink>
+                          </li>
+                        }
+                      </ul>
                     </div>
                   ) : (user as ICoSeller).coseller ? (
                     <div>
@@ -175,7 +195,8 @@ export class User extends React.Component<User.Props> {
               </div>
           }
         </div>
-        <Card className={s.mainContent}>
+        
+        
           <div className={s.content}>
             {this.props.data.me._id === user._id ? (
               <Switch>
