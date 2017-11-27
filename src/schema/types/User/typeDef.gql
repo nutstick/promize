@@ -233,7 +233,10 @@ type Admin implements UserType, Node {
 
   # # Citizen card image
   citizenCardImage: String
-  
+    
+  traderooms: [TradeRoom]
+  traderoom(id: ID!): TradeRoom
+
   createAt: Date!
   updateAt: Date!
 }
