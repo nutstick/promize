@@ -13,8 +13,8 @@ query MyOrderReceipts($first: Int, $after: ID) {
               _id
               firstName
               middleName
-              avatar
               lastName
+              avatar
             }
           }
           size {

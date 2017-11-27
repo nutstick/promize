@@ -11,6 +11,7 @@ import { Account } from '../../routes/User/Account';
 import { Activities } from '../../routes/User/Activities';
 import { BecomeCoSeller } from '../../routes/User/BecomeCoSeller';
 import { BuyOrderReceipts } from '../../routes/User/BuyOrderReceipts';
+import { CreateProduct } from '../../routes/User/CreateProduct';
 import { OrderReceipts } from '../../routes/User/OrderReceipts';
 import { PaymentMethod } from '../../routes/User/PaymentMethod';
 /* Sub routes */
@@ -18,6 +19,7 @@ import { Products } from '../../routes/User/Products';
 import { ICoSeller, IUser } from '../../schema/types/User';
 import * as s from './User.css';
 import * as USERQUERY from './UserQuery.gql';
+import { Redirect } from 'react-router';
 
 namespace User {
   export type IProps = RouteComponentProps<{ id: string }>;
@@ -161,24 +163,37 @@ export class User extends React.Component<User.Props> {
                 <Switch>
                   <Route exact path="/users/:id" component={Activities} />
                   {(user as ICoSeller).coseller && <Route
+                    exact
                     path="/users/:id/products"
                     render={(props) => (<Products self {...props} />)} />}
+                  {(user as ICoSeller).coseller && <Route
+                    path="/users/:id/products/create"
+                    render={(props) => (<CreateProduct user={user} {...props} />)} />}
                   {(user as ICoSeller).coseller && <Route path="/users/:id/buyorders" component={BuyOrderReceipts} />}
                   <Route path="/users/:id/receipts" component={OrderReceipts} />
                   <Route path="/users/:id/account" component={Account} />
                   <Route path="/users/:id/payment" component={PaymentMethod} />
                   {!(user as ICoSeller).coseller && <Route path="/users/:id/coseller" component={BecomeCoSeller} />}
+                  <Route render={() => (
+                    <Redirect to={`/users/${this.props.match.params.id}`}/>
+                  )}/>
                 </Switch>
               ) : (!loading && !error && user as ICoSeller).coseller ? (
                 <Switch>
                   <Route exact path="/users/:id" component={Activities} />
                   <Route path="/users/:id/products" component={Products} />
+                  <Route render={() => (
+                    <Redirect to={`/users/${this.props.match.params.id}`}/>
+                  )}/>
                 </Switch>
               ) : (
-                    <Switch>
-                      <Route exact path="/users/:id" component={Activities} />
-                    </Switch>
-                  )}
+                <Switch>
+                  <Route exact path="/users/:id" component={Activities} />
+                  <Route render={() => (
+                    <Redirect to={`/users/${this.props.match.params.id}`}/>
+                  )}/>
+                </Switch>
+              )}
             </div>
           </div>
         </Card>
