@@ -8,6 +8,8 @@ import * as type from './typeDef.gql';
 export interface IPaymentMethod {
   _id?: string;
   creditCardNumber?: string;
+  validFromMonth?: number;
+  validFromYear?: number;
 }
 
 export interface IAccount {
