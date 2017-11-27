@@ -122,27 +122,31 @@ export class CreateProduct extends React.Component<CreateProduct.Props, CreatePr
   }
 
   private getAsDate(date, time) {
-    let hours = Number(time.match(/^(\d+)/)[1]);
-    const minutes = Number(time.match(/:(\d+)/)[1]);
-    const AMPM = time.match(/\s(.*)$/)[1];
-    if (AMPM === 'pm' && hours < 12) {
-      hours = hours + 12;
+    try {
+      let hours = Number(time.match(/^(\d+)/)[1]);
+      const minutes = Number(time.match(/:(\d+)/)[1]);
+      const AMPM = time.match(/\s(.*)$/)[1];
+      if (AMPM === 'pm' && hours < 12) {
+        hours = hours + 12;
+      }
+      if (AMPM === 'am' && hours === 12) {
+        hours = hours - 12;
+      }
+      let sHours = hours.toString();
+      let sMinutes = minutes.toString();
+      if (hours < 10) {
+        sHours = '0' + sHours;
+      }
+      if (minutes < 10) {
+        sMinutes = '0' + sMinutes;
+      }
+      time = sHours + ':' + sMinutes + ':00';
+      const d = new Date(date);
+      const n = d.toISOString().substring(0, 10);
+      return new Date(n + 'T' + time);
+    } catch (err) {
+      return new Date(`${date} ${time}`);
     }
-    if (AMPM === 'am' && hours === 12) {
-      hours = hours - 12;
-    }
-    let sHours = hours.toString();
-    let sMinutes = minutes.toString();
-    if (hours < 10) {
-      sHours = '0' + sHours;
-    }
-    if (minutes < 10) {
-      sMinutes = '0' + sMinutes;
-    }
-    time = sHours + ':' + sMinutes + ':00';
-    const d = new Date(date);
-    const n = d.toISOString().substring(0, 10);
-    return new Date(n + 'T' + time);
   }
 
   private onSubmit() {

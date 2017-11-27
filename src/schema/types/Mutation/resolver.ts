@@ -1,25 +1,82 @@
-import { toObjectID } from 'iridium';
+import { createWriteStream } from 'fs';
+import * as mkdirp from 'mkdirp';
+import * as shortid from 'shortid';
+import { uploadDir } from '../../../config';
 import { IResolver } from '../index';
+
+// Ensure upload directory exists
+mkdirp.sync(uploadDir);
+
+const storeUpload = async ({ stream, filename }) => {
+  const id = shortid.generate();
+  const path = `${uploadDir}/${id}-${filename}`;
+
+  return new Promise<{ id: string, path: string }>((resolve, reject) =>
+    stream
+      .pipe(createWriteStream(path))
+      .on('finish', () => resolve({ id, path }))
+      .on('error', reject),
+  );
+};
+
+const processUpload = async (upload) => {
+  const { stream, filename, mimetype, encoding } = await upload;
+  return await storeUpload({ stream, filename });
+};
 
 const resolver: IResolver<any, any> = {
   Mutation: {
-    async createProduct(_, { input: { promotionStart, promotionEnd, price, ...input } }, { database, user }) {
-      return await database.Product.insert({
-        ...input,
-        promotion_start: promotionStart,
-        promotion_end: promotionEnd,
-        owner: user._id,
 
-      });
+    // async uploadFile(root, { file }, { database }) {
+    //   console.log(root);
+    //   return true;
+    // },
+
+    // tslint:disable-next-line:max-line-length
+    async createProduct(_, { input: { promotionStart, promotionEnd, pictures, price, colors, sizes, ...input } }, { database, user }) {
+      const userInstance = await database.User.findOne({ _id: user._id });
+      // Only CoSeller can create product
+      if (userInstance.type === 'CoSeller') {
+        const color: any = [];
+        for (const i of colors) {
+          color.push({ color: i });
+        }
+
+        const size: any = [];
+        for (const i of sizes) {
+          size.push({ size: i });
+        }
+        // console.log(pictures);
+        // console.log(pictures[0]);
+        // console.log(pictures[0][0]);
+        return await database.Product.insert({
+          ...input,
+          colors: color,
+          sizes: size,
+          pictures,
+          promotion_start: promotionStart,
+          promotion_end: promotionEnd,
+          owner: user._id,
+        });
+      } else {
+        throw new Error(`You must be CoSeller to create product`);
+      }
     },
 
-    async editProduct(_, { input: { id, ...input } }, { database }) {
-      // FIXME: Cant merge fields like originalPrice, promotionStart convert to camel case first
-      await database.Product.update({ _id: id }, {
-        $set: {
-          ...input,
-        },
-      });
+    async editProduct(_, { input: { id, ...input } }, { database, user }) {
+      const userInstance = await database.User.findOne({ _id: user._id });
+      const productInstance = await database.Product.findOne({ _id: id });
+      // Only owner can edit
+      if (userInstance.type === 'CoSeller' && productInstance.owner === user._id) {
+        // FIXME: Cant merge fields like originalPrice, promotionStart convert to camel case first
+        await database.Product.update({ _id: id }, {
+          $set: {
+            ...input,
+          },
+        });
+      } else {
+        throw new Error(`You must be Product Owner to edit product`);
+      }
       return await database.Product.findOne({ _id: id });
     },
 
@@ -105,6 +162,15 @@ const resolver: IResolver<any, any> = {
       return null;
     },
 
+    async editAddress(_, { address }, { database, user }) {
+      if (user && user._id) {
+        const userInstance = await database.User.findOne({ _id: user._id });
+        userInstance.save();
+        return userInstance;
+      }
+      return null;
+    },
+
     async addPaymentMethod(_, { paymentMethod }, { database, user }) {
       if (user && user._id) {
         const userInstance = await database.User.findOne({ _id: user._id });
@@ -117,6 +183,54 @@ const resolver: IResolver<any, any> = {
         return userInstance;
       }
       return null;
+    },
+
+    async editPaymentMethod(_, { paymentMethod }, { database, user }) {
+      if (user && user._id) {
+        const userInstance = await database.User.findOne({ _id: user._id });
+        userInstance.editPaymentMethod({
+          _id: paymentMethod._id,
+          credit_card_number: paymentMethod.creditCardNumber,
+          valid_from_month: paymentMethod.validFromMonth,
+          valid_from_year: paymentMethod.validFromYear,
+        });
+        userInstance.save();
+        return userInstance;
+      }
+      return null;
+    },
+
+    async registerToBeCoSeller(_, { input }, { database, user }) {
+      const citizenCardImageUrl = await processUpload(input.citizenCardImage);
+
+      const userInstance = await database.User.findOne({ _id: user._id });
+      if (userInstance.type === 'User') {
+        await database.User.update({ _id: user._id }, {
+          $set: {
+            tel_number: input.telNumber ? input.telNumber : userInstance.telNumber,
+            citizen_card_image: citizenCardImageUrl,
+            coseller_register_status: 'Pending',
+          },
+        });
+        return await database.User.findOne({ _id: user._id });
+      } else {
+        throw new Error(`This account have been Co-seller already`);
+      }
+    },
+
+    async approveUserToCoseller(_, { user_id }, { database, user }) {
+      const userInstance = await database.User.findOne({ _id: user._id });
+      if (userInstance.type === 'Admin') {
+        await database.User.update({ _id: user_id }, {
+          $set: {
+            type: 'CoSeller',
+            coseller_register_status: 'Approved',
+          },
+        });
+        return await database.User.findOne({ _id: user_id });
+      } else {
+        throw new Error(`You must be Admin for approve other people`);
+      }
     },
 
     async createUser(
@@ -136,22 +250,15 @@ const resolver: IResolver<any, any> = {
 
     async editUser(
       _,
-      { input: {
-        id,
-        firstName,
-        middleName,
-        lastName,
-        gender,
-        telNumber,
-        paymentMethod,
-        address,
-        password,
-        avatar,
-      } },
-      { database },
+      {
+        input: {
+          firstName, middleName, lastName, gender, telNumber, password, avatar,
+        },
+      },
+      { database, user },
     ) {
-      const userInstance = await database.User.findOne({ _id: id });
-      await database.User.update({ _id: id }, {
+      const userInstance = await database.User.findOne({ _id: user._id });
+      await database.User.update({ _id: user._id }, {
         $set: {
           first_name: firstName ? firstName : userInstance.first_name,
           middle_name: middleName ? middleName : userInstance.middle_name,
@@ -161,8 +268,9 @@ const resolver: IResolver<any, any> = {
           avatar: avatar ? avatar : userInstance.avatar,
         },
       });
-      return await database.User.findOne({ _id: id });
+      return await database.User.findOne({ _id: user._id });
     },
+
   },
 };
 

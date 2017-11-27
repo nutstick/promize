@@ -47,18 +47,14 @@ export class Account extends React.Component<Account.Props> {
           ) : (
             <div>
               {this.props.data.me.addresses.map((address) => (
-                <Card.Group>
-                  {this.props.data.me.addresses.map((address) => (
-                    <Card>
-                      <Card.Content>
-                        <p>Address: {address.address}</p>
-                        <p>City: {address.city}</p>
-                        <p>Country: {address.country}</p>
-                        <p>Zip: {address.zip}</p>
-                      </Card.Content>
-                    </Card>
-                  ))}
-                </Card.Group>
+                <Card>
+                  <Card.Content>
+                    <p>Address: {address.address}</p>
+                    <p>City: {address.city}</p>
+                    <p>Country: {address.country}</p>
+                    <p>Zip: {address.zip}</p>
+                  </Card.Content>
+                </Card>
               ))}
             </div>
           )

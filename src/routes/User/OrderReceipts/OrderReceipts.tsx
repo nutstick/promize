@@ -58,7 +58,7 @@ export class OrderReceipts extends React.Component<OrderReceipts.Props> {
   public render() {
     // TODO: Pagination
     return (
-      <div className={s.root}>
+      <div className={s.root} style={{ padding: '3rem' }}>
         <h1 className={s.header}>Order Receipts</h1>
         {
           this.props.data.loading || this.props.data.error ? (
@@ -68,85 +68,89 @@ export class OrderReceipts extends React.Component<OrderReceipts.Props> {
           ) : (
             <div>
               {this.props.data.me.orderReceipts.edges.map(({ node }) => (
-              <div key={node._id} className={s.modal}>
-                <div className={s.pictureWrapper}>
-                  <img className={s.picture} src={node.product.pictures[0]}/>
-                </div>
-                <div className={s.contentWrapper}>
-                  <div className={s.contentHeader}>
-                    <h5 className={s.receiptId}>ORDER ID {node._id}</h5>
-                    <h3 className={s.productName}>{node.product.name}</h3>
-                    <h5 className={s.productOwner}>{this.name(node.product.owner)}</h5>
+                <div key={node._id} className={s.modal}>
+                  <div className={s.pictureWrapper}>
+                    <img className={s.picture} src={node.product.pictures[0]} />
                   </div>
-                    <div className={s.titleValueGroup}>
-                      <div className={s.title}>SIZE</div>
-                      <div className={s.value}>{node.size.size}</div>
-                      <div className={s.title}>COLOR</div>
-                      <div className={s.value}>{node.color.color}</div>
+                  <div className={s.contentWrapper}>
+                    <div className={s.contentHeader}>
+                      <h6 className={s.receiptId}>ORDER ID : {node._id}</h6>
+                      <h3 className={s.productName}>{node.product.name}</h3>
+                      <h6 className={s.productOwner}>{this.name(node.product.owner)}</h6>
                     </div>
-                  <div>
-                    <div className={s.shipTo}>SHIPPING INFORMATION</div>
-                    <div className={s.shippingInfo}>
-                      
-                      <span>{node.deliverAddress.address}</span>
-                      
-                      <span>{node.deliverAddress.city}</span>
-                      
-                      <span>{node.deliverAddress.country}</span>
-                      
-                      <span>{node.deliverAddress.zip}</span>
+                    <div className={s.contentDetail}>
+                      <div className={s.leftContent}>
+                        <div className={s.titleValueGroup}>
+                          <div className={s.title}>SIZE</div>
+                          <div className={s.value}>{node.size.size}</div>
+                          <div className={s.title}>COLOR</div>
+                          <div className={s.value}>{node.color.color}</div>
+                        </div>
+                        <div>
+                          <div className={s.shipTo}>
+                            SHIPPING INFORMATION
+                      </div>
+                          <div className={s.shippingInfo}>
+                            <span>{node.deliverAddress.address}</span>
+                            <span>{node.deliverAddress.city}</span>
+                            <span>{node.deliverAddress.country}</span>
+                            <span>{node.deliverAddress.zip}</span>
+                          </div>
+                        </div>
+                        <div className={s.titleValueGroup}>
+                          <div className={s.title}>TRACKING NUMBER</div>
+                          <div className={s.value}>{node.trackingId}</div>
+                        </div>
+                        <div className={s.titleValueGroup}>
+                          <div className={s.title}>REMARK</div>
+                          <div className={s.value}>{node.remark}</div>
+                        </div>
+                      </div>
+
+                      <div className={s.rightContent}>
+                        <div className={s.contentFooter}>
+                          <div className={s.titleValueGroup}>
+                            <div className={s.title}>PRODUCT DELIVERED</div>
+                            <div className={s.value}>{node.productDelivered}</div>
+                            <div className={s.title}>AT</div>
+                            <div className={s.value}>{node.productDeliveredAt}</div>
+                          </div>
+
+                          <div className={s.titleValueGroup}>
+                            <div className={s.title}>PAYMEMT COMPLETED</div>
+                            <div className={s.value}>{node.paymentCompleted}</div>
+                            <div className={s.title}>AT</div>
+                            <div className={s.value}>{node.paymentCompletedAt}</div>
+                          </div>
+
+                          <div className={s.titleValueGroup}>
+                            <div className={s.title}>PRODUCT RECEIVED</div>
+                            <div className={s.value}>{node.productReceived}</div>
+                            <div className={s.title}>AT</div>
+                            <div className={s.value}>{node.productReceivedAt}</div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className={s.titleValueGroup}>
-                    <div className={s.title}>TRACKING NUMBER</div>                  
-                    <div className={s.value}>{node.trackingId}</div> 
-                  </div>   
-                  <div className={s.titleValueGroup}>
-                    <div className={s.title}>REMARK</div>                  
-                    <div className={s.value}>{node.remark}</div> 
-                  </div>   
-                  <div className={s.contentFooter}>              
-                    <div className={s.titleValueGroup}>
-                      <div className={s.title}>PRODUCT DELIVERED</div>                  
-                      <div className={s.value}>{node.productDelivered}</div> 
-                      <div className={s.title}>AT</div>                  
-                      <div className={s.value}>{node.productDeliveredAt}</div> 
-                    </div>   
-                    
-                    
-                    <div className={s.titleValueGroup}>
-                      <div className={s.title}>PAYMEMT COMPLETED</div>                  
-                      <div className={s.value}>{node.paymentCompleted}</div> 
-                      <div className={s.title}>AT</div>                  
-                      <div className={s.value}>{node.paymentCompletedAt}</div> 
-                    </div> 
-                    
-                    
-                    <div className={s.titleValueGroup}>
-                      <div className={s.title}>PRODUCT RECEIVED</div>                  
-                      <div className={s.value}>{node.productReceived}</div> 
-                      <div className={s.title}>AT</div>                  
-                      <div className={s.value}>{node.productReceivedAt}</div> 
-                    </div> 
-                  </div>
-                  <div className={s.buttonWrap}>
-                    <a onClick={(e) => this.props.mutate({
-                      variables: {
-                        id: node._id,
-                        input: {
-                          status: 'RECEIVED',
+
+                    <div className={s.buttonWrap}>
+                      <a onClick={(e) => this.props.mutate({
+                        variables: {
+                          id: node._id,
+                          input: {
+                            status: 'RECEIVED',
+                          },
                         },
-                      },
-                    })}>
-                      <Button color="orange">
-                        <Button.Content>Confirm Received</Button.Content>
-                      </Button>
-                    </a>
+                      })}>
+                        <Button className="s.button" color="orange">
+                          <Button.Content>Confirm Received</Button.Content>
+                        </Button>
+                      </a>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
           )
         }
       </div>
