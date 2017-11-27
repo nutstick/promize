@@ -110,7 +110,8 @@ export class User extends React.Component<User.Props> {
                               to={`/users/${this.props.match.params.id}`}
                               exact
                               activeClassName={s.active}>
-                              <Icon name="feed" />
+                              <Icon className={s.customIcon} name="feed" />
+                              <br className={s.iconNewLine} />
                               My Activities
                                 </NavLink>
                           </li>
@@ -119,7 +120,8 @@ export class User extends React.Component<User.Props> {
                               <NavLink
                                 to={`/users/${this.props.match.params.id}/products`}
                                 activeClassName={s.active}>
-                                <Icon name="shopping basket" />
+                                <Icon className={s.customIcon} name="shopping basket" />
+                                <br className={s.iconNewLine} />
                                 My Products
                                   </NavLink>
                             </li>
@@ -130,7 +132,8 @@ export class User extends React.Component<User.Props> {
                               <NavLink
                                 to={`/users/${this.props.match.params.id}/buyorders`}
                                 activeClassName={s.active}>
-                                <Icon name="ordered list" />
+                                <Icon className={s.customIcon} name="ordered list" />
+                                <br className={s.iconNewLine} />
                                 Product Orders
                                   </NavLink>
                             </li>
@@ -139,7 +142,8 @@ export class User extends React.Component<User.Props> {
                             <NavLink
                               to={`/users/${this.props.match.params.id}/receipts`}
                               activeClassName={s.active}>
-                              <Icon name="barcode" />
+                              <Icon className={s.customIcon} name="barcode" />
+                              <br className={s.iconNewLine} />
                               Order receipts
                                 </NavLink>
                           </li>
@@ -147,7 +151,8 @@ export class User extends React.Component<User.Props> {
                             <NavLink
                               to={`/users/${this.props.match.params.id}/account`}
                               activeClassName={s.active}>
-                              <Icon name="settings" />
+                              <Icon className={s.customIcon} name="settings" />
+                              <br className={s.iconNewLine} />
                               Account setting
                                 </NavLink>
                           </li>
@@ -155,7 +160,8 @@ export class User extends React.Component<User.Props> {
                             <NavLink
                               to={`/users/${this.props.match.params.id}/payment`}
                               activeClassName={s.active}>
-                              <Icon name="payment" />
+                              <Icon className={s.customIcon} name="payment" />
+                              <br className={s.iconNewLine} />
                               Payment setting
                                 </NavLink>
                           </li>
@@ -164,7 +170,8 @@ export class User extends React.Component<User.Props> {
                               <NavLink
                                 to={`/users/${this.props.match.params.id}/coseller`}
                                 activeClassName={s.active}>
-                                <Icon name="lock" />
+                                <Icon className={s.customIcon} name="lock" />
+                                <br className={s.iconNewLine} />
                                 Co-Seller
                                   </NavLink>
                             </li>
@@ -178,7 +185,7 @@ export class User extends React.Component<User.Props> {
                             <NavLink
                               to={`/users/${this.props.match.params.id}`}
                               activeClassName={s.active}>
-                              <Icon name="feed" />
+                              <Icon className={s.customIcon} name="feed" />
                               Activities
                             </NavLink>
                           </List.Content>
@@ -188,7 +195,7 @@ export class User extends React.Component<User.Props> {
                             <NavLink
                               to={`/users/${this.props.match.params.id}/products`}
                               activeClassName={s.active}>
-                              <Icon name="shopping bag" />
+                              <Icon className={s.customIcon} name="shopping bag" />
                               Products
                             </NavLink>
                           </List.Content>
