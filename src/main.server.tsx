@@ -1,6 +1,7 @@
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 import { graphiqlExpress, graphqlExpress } from 'apollo-server-express';
+import { apolloUploadExpress } from 'apollo-upload-server';
 import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
 import * as express from 'express';
@@ -122,14 +123,15 @@ app.get('/logout', (req, res) => {
 //
 // Register API middleware
 // -----------------------------------------------------------------------------
-app.use('/graphql', bodyParser.json(), graphqlExpress((req) => ({
-  schema: Schema,
-  context: {
-    database,
-    user: req.user,
-  },
-  rootValue: { request: req },
-})));
+app.use('/graphql', bodyParser.json(), apolloUploadExpress({ uploadDir: './' }),
+  graphqlExpress((req) => ({
+    schema: Schema,
+    context: {
+      database,
+      user: req.user,
+    },
+    rootValue: { request: req },
+  })));
 app.get('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
 
 //

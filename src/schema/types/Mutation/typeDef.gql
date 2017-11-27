@@ -11,9 +11,16 @@ input SizeInput {
   size: String
 }
 
-input AccountInput{
+input AccountInput {
   email: String!
   password: String!
+}
+
+input Upload {
+  name: String!
+  type: String!
+  size: Int!
+  path: String!
 }
 
 input CreateProductInput {
@@ -110,6 +117,9 @@ input CoSellerRegisterInput {
 
 # Mutations
 type Mutation {
+  # Upload file
+  uploadFile(file: Upload!): Boolean!
+
   # Create Product
   createProduct(input: CreateProductInput!): Product
   # Edit Product
@@ -135,4 +145,6 @@ type Mutation {
   createUser(input: CreateUserInput!): UserType
   # Edit User
   editUser(input: EditUserInput!): UserType
+
+  #
 }

@@ -3,6 +3,11 @@ import { IResolver } from '../index';
 
 const resolver: IResolver<any, any> = {
   Mutation: {
+
+    async uploadFile(_, { file }, { database }) {
+      return true;
+    },
+
     async createProduct(_, { input: { promotionStart, promotionEnd, price, ...input } }, { database, user }) {
       return await database.Product.insert({
         ...input,
@@ -182,7 +187,7 @@ const resolver: IResolver<any, any> = {
 
     async registerToBeCoSeller(_, { input }, { database, user }) {
       const userInstance = await database.User.findOne({ _id: user._id });
-      console.log(userInstance);
+      // console.log(userInstance);
       await database.User.update({ _id: user._id }, {
         $set: {
           tel_number: input.telNumber ? input.telNumber : userInstance.telNumber,
