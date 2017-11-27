@@ -122,7 +122,7 @@ export class User extends React.Component<User.Props> {
                         to={`/users/${this.props.match.params.id}/receipts`}
                         activeClassName={s.active}>
                         <Icon name="ordered list" />
-                        Product Orders
+                        Orders Receipts
                       </NavLink>
                       <NavLink
                         to={`/users/${this.props.match.params.id}/account`}
@@ -180,7 +180,11 @@ export class User extends React.Component<User.Props> {
             {!loading && !error && this.props.data.me && this.props.data.me._id === user._id ? (
               <Switch>
                 <Route exact path="/users/:id" component={Activities} />
-                {(user as ICoSeller).coseller && <Route path="/users/:id/products" component={Products} />}
+                {(user as ICoSeller).coseller && <Route
+                  exact
+                  path="/users/:id/products"
+                  render={(props) => (<Products self {...props} />)} />}
+                <Route path="/users/:id/products/create" component={CreateProduct} />
                 {(user as ICoSeller).coseller && <Route path="/users/:id/buyorders" component={BuyOrderReceipts} />}
                 <Route path="/users/:id/receipts" component={OrderReceipts} />
                 <Route path="/users/:id/account" component={Account} />
