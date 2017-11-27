@@ -9,15 +9,17 @@
   padding: 5px;
   display: flex;
   flex-wrap: nowrap;
-  -webkit-box-shadow: 0px 5px 32px -12px rgba(0,0,0,0.5);
+  background: white;
+  border-color: solid darkgray;
+  /* -webkit-box-shadow: 0px 5px 32px -12px rgba(0,0,0,0.5);
   -moz-box-shadow: 0px 5px 32px -12px rgba(0,0,0,0.5);
-  box-shadow: 0px 5px 32px -12px rgba(0,0,0,0.5);
+  box-shadow: 0px 5px 32px -12px rgba(0,0,0,0.5); */
 }
 
 .modal:hover{
-  -webkit-box-shadow: 0px 5px 32px -12px rgba(0,0,0,1);
-  -moz-box-shadow: 0px 5px 32px -12px rgba(0,0,0,1);
-  box-shadow: 0px 5px 32px -12px rgba(0,0,0,1);
+  /* -webkit-box-shadow: 0px 5px 32px -12px rgba(0,0,0,1);
+  -moz-box-shadow: 0px 5px 32px -12px rgba(0,0,0,1); */
+  /* box-shadow: 0px 5px 32px -12px rgba(0,0,0,1); */
 }
 
 .pictureWrapper{
@@ -28,6 +30,7 @@
   width: 35%;
   overflow:hidden;
   max-height: 200px;
+  max-width: 350px;
 }
 
 .picture{
@@ -44,6 +47,20 @@
   
 }
 
+.wrapContainer{
+  display: flex;
+  flex-wrap: nowrap;
+  flex-flow: row-reverse;
+}
+
+.topContent{
+  flex-grow: 1;
+}
+
+.downContent{
+  flex-grow: 1;
+}
+
 .contentHeader{
   padding-bottom: 0.2em;
   margin-bottom: 0.2em;
@@ -53,8 +70,8 @@
 
 .receiptId{
   text-align: right;
-  margin-top: -10px;
-  margin-bottom: -5px;
+  margin-top: 0px;
+  margin-bottom: 0px;
   color: #ff9521;
   font-size: 0.9em;
 }
@@ -142,6 +159,20 @@
 }
 
 @media screen and (max-width: 950px) {
+
+  .wrapContainer{
+    display: flex;
+    flex-wrap: wrap;
+    /* flex-flow: row-reverse; */
+  }
+  
+  .topContent{
+    flex-grow: 1;
+  }
+  
+  .downContent{
+    flex-grow: 1;
+  }
 
   .receiptId{
     margin-bottom: 0px;
