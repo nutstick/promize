@@ -65,6 +65,11 @@ export class User extends React.Component<User.Props> {
       `${user.lastName}`;
   }
 
+  private registerTime(createAt) {
+    const d = new Date(createAt);
+    return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+  }
+
   public render() {
     const { user, loading, error } = this.props.data;
     return (
@@ -84,11 +89,12 @@ export class User extends React.Component<User.Props> {
                         {this.name(user)}
                       </div>
                       <div className={s.detail}>
+                        {user.account && user.account.email ? ('Email: ' + user.account.email) : ''}
                         {(user as ICoSeller).coseller && 'CoSeller'}
                         <br />
                         {(user as ICoSeller).telNumber}
                         <br />
-                        {user.createAt}
+                        Registration date: {this.registerTime(user.createAt)}
                         <Divider section />
                       </div>
                     </div>
