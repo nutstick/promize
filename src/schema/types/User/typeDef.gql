@@ -34,9 +34,8 @@ enum GenderEnum {
 }
 
 enum CoSellerRegisterStatus {
-  CLOSE
-  SEND
-  APPROVING
+  IDLE
+  PENDING
   APPROVED
 }
 
