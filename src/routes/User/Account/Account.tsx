@@ -46,6 +46,12 @@ export class Account extends React.Component<Account.Props> {
             </div>
           ) : (
             <div>
+              <h4>
+              {this.props.data.me.account && this.props.data.me.account.email ?
+                ('Email : ' + this.props.data.me.account.email) :
+                ''}
+              </h4>
+              <h3>Address</h3>
               {this.props.data.me.addresses.map((address) => (
                 <Card>
                   <Card.Content>
