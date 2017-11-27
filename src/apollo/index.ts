@@ -8,6 +8,7 @@ import { state as intl } from './intl';
 import { state as login } from './login';
 import { state as product } from './product';
 import { state as productModal } from './productModal';
+import { state as tradeRoomModal } from './tradeRoomModal';
 
 interface IOptions {
   link: ApolloLink;
@@ -28,6 +29,7 @@ export const createApolloClient = ({ link, ...options }: IOptions) => {
       ...intl.Query,
       ...login.Query,
       ...productModal.Query,
+      ...tradeRoomModal.Query,
     },
     Mutation: {
       addTodo: update(GETTASKQUERY, ({ todos }, { message, title }) => ({
@@ -37,6 +39,7 @@ export const createApolloClient = ({ link, ...options }: IOptions) => {
       ...login.Mutation,
       ...productModal.Mutation,
       ...product.Mutation,
+      ...tradeRoomModal.Mutation,
     },
     Product: {
       ...product.Product,

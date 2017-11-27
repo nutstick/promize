@@ -4,6 +4,7 @@
   overflow: hidden;
   position: fixed;
   height: 750px;
+  max-height: calc(100vh - 160px);
   width: 100%;
   max-width: 425px;
   bottom: 6rem;
@@ -29,7 +30,8 @@
 }
 
 .tradeRoomsWrapper {
-  display: block;
+  display: flex;
+  flex-direction: row;
   padding: 0.8em;
   width: 100%;
   overflow-y: auto;
@@ -41,6 +43,7 @@
     height: 60px;
     border: 1px solid #ccc;
     border-radius: 50%;
+    margin-right: 1em;
   }
 }
 

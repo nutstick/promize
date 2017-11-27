@@ -3,11 +3,13 @@ import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
-import { QueryProps } from 'react-apollo';
-import { ChildProps } from 'react-apollo/types';
+import { ChildProps, MutationFunc, QueryProps } from 'react-apollo';
 import { Link } from 'react-router-dom';
-import { Form, Icon, Image, Input, Loader, Button } from 'semantic-ui-react';
+import { Button, Form, Icon, Image, Input, Loader } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
+import { TradeRoomModalQuery } from '../../apollo/tradeRoomModal/index';
+import * as SETTRADEROOMMODALMUTATION from '../../apollo/tradeRoomModal/SetTradeRoomModal.gql';
+import * as TRADEROOMMODALQUERY from '../../apollo/tradeRoomModal/TradeRoomModalQuery.gql';
 import { ICommandContent, IMessage, IPictureContent, ITextContent } from '../../schema/types/Traderoom/index';
 import { IUser } from '../../schema/types/User/index';
 import * as ADDMESSAGEMUTATION from './AddMessageMutation.gql';
@@ -17,6 +19,12 @@ import * as MESSAGESSUBSCRIPTION from './MessagesSubscription.gql';
 import * as TRADEROOMSQUERY from './TradeRoomsQuery.gql';
 
 namespace MessagesLayout {
+  type TradeRoomModalProps<P, R> = P & {
+    tradeRoomModal?: QueryProps & Partial<R>;
+  };
+
+  export type WithTradeRoomModal = TradeRoomModalProps<{}, TradeRoomModalQuery>;
+
   type TradeRoomsQueryProps<P, R> = P & {
     traderooms?: QueryProps & Partial<R>;
   };
@@ -25,25 +33,30 @@ namespace MessagesLayout {
     me: IUser;
   }
 
-  export type WithTradeRoomsQuery = TradeRoomsQueryProps<{}, TradeRoomsQuery>;
+  export type WithTradeRoomsQuery = TradeRoomsQueryProps<WithTradeRoomModal, TradeRoomsQuery>;
 
-  type MessagesQueryProps<P, R> = P & {
-    messages?: QueryProps & Partial<R>;
+  type SetTradeRoomModal<P, R> = P & {
+    setTradeRoomModal?: MutationFunc<R>;
   };
 
-  export type WithMessagesQuery = MessagesQueryProps<WithTradeRoomsQuery, TradeRoomsQuery>;
+  export type WithSetTradeRoomModalMutation = SetTradeRoomModal<WithTradeRoomsQuery, {}>;
 
-  export type Props = ChildProps<WithMessagesQuery, {}>;
+  export type Props = ChildProps<WithSetTradeRoomModalMutation, {}>;
 
   export interface State {
-    activeTradeRoom: string;
     messages?: IMessage[];
     inputValue: string;
   }
 }
 
 @withStyles(s)
-@graphql<{}, MessagesLayout.TradeRoomsQuery>(TRADEROOMSQUERY, {
+@graphql<{}, TradeRoomModalQuery>(TRADEROOMMODALQUERY, {
+  name: 'tradeRoomModal',
+})
+@graphql<MessagesLayout.WithTradeRoomModal, {}>(SETTRADEROOMMODALMUTATION, {
+  name: 'setTradeRoomModal',
+})
+@graphql<MessagesLayout.WithSetTradeRoomModalMutation, MessagesLayout.TradeRoomsQuery>(TRADEROOMSQUERY, {
   name: 'traderooms',
 })
 @graphql<MessagesLayout.WithTradeRoomsQuery, {}>(ADDMESSAGEMUTATION)
@@ -58,10 +71,15 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
     super(props);
 
     this.state = {
-      activeTradeRoom: null,
       messages: [],
       inputValue: '',
     };
+  }
+
+  componentWillMount() {
+    if (this.props.tradeRoomModal.tradeRoomModal && this.props.tradeRoomModal.tradeRoomModal.id) {
+      this.onTradeRoomClick(this.props.tradeRoomModal.tradeRoomModal.id);
+    }
   }
 
   private onTradeRoomClick(traderoom) {
@@ -70,8 +88,11 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
       this.unsubscribe();
     }
 
-    this.setState({
-      activeTradeRoom: traderoom,
+    this.props.setTradeRoomModal({
+      variables: {
+        id: traderoom,
+        show: true,
+      },
     });
 
     this.context.client.query({
@@ -87,7 +108,7 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
       this.unsubscribe = this.context.client.subscribe({
         query: MESSAGESSUBSCRIPTION,
         variables: {
-          id: this.state.activeTradeRoom,
+          id: this.props.tradeRoomModal.tradeRoomModal.id,
         },
       }).subscribe({
         next: function({ data: { messageAdded } }) {
@@ -112,7 +133,8 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
           {
             !traderoomsLoading && !traderoomsError && me ? me.traderooms.length ?
             me.traderooms.map((traderoom) => (
-              <a href="#" className={s.tradeRoomIcon} onClick={this.onTradeRoomClick.bind(this, traderoom._id)}>
+              <a key={traderoom._id}
+                href="#" className={s.tradeRoomIcon} onClick={this.onTradeRoomClick.bind(this, traderoom._id)}>
                 <Image avatar src={traderoom.participants.find((user) => user._id !== me._id).avatar} />
               </a>
             )) : <div></div> : <div><Loader active /></div>
@@ -120,12 +142,12 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
         </div>
         <div className={s.messagesWrapper}>
         {
-          this.state.activeTradeRoom ? (
+          this.props.tradeRoomModal.tradeRoomModal.id ? (
             <div style={{ height: '100%', paddingBottom: 65 }}>
               <div className={s.messages}>
                 <div>
                   {this.state.messages && me ? this.state.messages.map((message) => (
-                    <div className={cx(s.message, { [s.own]: message.owner._id === me._id })}>
+                    <div key={message._id} className={cx(s.message, { [s.own]: message.owner._id === me._id })}>
                       {(message.content as ITextContent).text || ((message.content as IPictureContent).pictureUrl && (
                         <Image src={(message.content as IPictureContent).pictureUrl}></Image>
                       )) || ((message.content as ICommandContent).command && (
@@ -141,7 +163,7 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
               <Form className={s.inputWrapper} onSubmit={() => {
                 this.props.mutate({
                   variables: {
-                    traderoom: this.state.activeTradeRoom,
+                    traderoom: this.props.tradeRoomModal.tradeRoomModal.id,
                     content: {
                       text: this.state.inputValue,
                     },

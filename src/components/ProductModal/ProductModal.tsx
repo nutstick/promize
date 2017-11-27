@@ -8,11 +8,14 @@ import { Button, Icon } from 'semantic-ui-react';
 import * as slickThemeCss from 'slick-carousel/slick/slick-theme.css';
 import * as slickCss from 'slick-carousel/slick/slick.css';
 import { graphql } from '../../apollo/graphql';
+import * as TOGGLELOGINMODALMUTATION from '../../apollo/login/ToggleLoginModalMutation.gql';
 import { IProductClient } from '../../apollo/product';
 import * as SELECTCOLORMUTATION from '../../apollo/product/SelectColorMutation.gql';
 import * as SELECTSIZEMUTATION from '../../apollo/product/SelectSizeMutation.gql';
 import * as CLOSEPRODUCTMODALMUTATION from '../../apollo/productModal/CloseProductModalMutation.gql';
+import * as SETTRADEROOMMODALMUTATION from '../../apollo/tradeRoomModal/SetTradeRoomModal.gql';
 import { ItemSelector } from '../ItemSelector';
+import * as CREATETRADEROOMMUTATAION from './CreateTradeRoomMutation.gql';
 import * as s from './ProductModal.css';
 import * as PRODUCTQUERY from './ProductQuery.gql';
 
@@ -39,11 +42,32 @@ namespace ProductModal {
 
   export type WithSelectSizeMutation = SelectSizeMutation<WithSelectColorMutation, {}>;
 
+  type ToggleLoginModalMutation<P, R> = P & {
+    toggleLoginModal?: MutationFunc<R>;
+  };
+
+  export type WithToggleLoginModalMutation = ToggleLoginModalMutation<WithSelectSizeMutation, {}>;
+
+  type CreateTradeRoomMutation<P, R> = P & {
+    createTradeRoom?: MutationFunc<R>;
+  };
+
+  export type WithCreateTradeRoomMutation = CreateTradeRoomMutation<WithToggleLoginModalMutation, {}>;
+
+  type SetTradeRoomModal<P, R> = P & {
+    setTradeRoomModal?: MutationFunc<R>;
+  };
+
+  export type WithSetTradeRoomModalMutation = SetTradeRoomModal<WithCreateTradeRoomMutation, {}>;
+
   export interface ProductQuery {
     product: IProductClient;
+    me: {
+      _id: string;
+    };
   }
 
-  export type Props = ChildProps<WithSelectSizeMutation, ProductQuery>;
+  export type Props = ChildProps<WithSetTradeRoomModalMutation, ProductQuery>;
 }
 
 @withStyles(slickCss, slickThemeCss, s)
@@ -55,6 +79,15 @@ namespace ProductModal {
 })
 @graphql<{}, {}>(SELECTSIZEMUTATION, {
   name: 'selectSizeMutation',
+})
+@graphql<{}, {}>(TOGGLELOGINMODALMUTATION, {
+  name: 'toggleLoginModal',
+})
+@graphql<{}, {}>(CREATETRADEROOMMUTATAION, {
+  name: 'createTradeRoom',
+})
+@graphql<{}, {}>(SETTRADEROOMMODALMUTATION, {
+  name: 'setTradeRoomModal',
 })
 @graphql<ProductModal.WithCloseProductModalMutation, ProductModal.ProductQuery>(PRODUCTQUERY, {
   options({ id }) {
@@ -189,7 +222,28 @@ export class ProductModal extends React.Component<ProductModal.Props> {
                             <Icon name="shopping basket" />
                           </Button.Content>
                         </Button>
-                        <Button basic invert size="small" color="orange" animated="vertical">
+                        <Button basic invert size="small" color="orange" animated="vertical"
+                          onClick={() => {
+                            if (this.props.data.me) {
+                              this.props.createTradeRoom({
+                                variables: {
+                                  input: {
+                                    product: this.props.data.product._id,
+                                    participants: [this.props.data.product.owner._id, this.props.data.me._id],
+                                  },
+                                },
+                              }).then(({ data }: any) => {
+                                this.props.setTradeRoomModal({
+                                  variables: {
+                                    id: data.createTradeRoom._id,
+                                    show: true,
+                                  },
+                                });
+                              });
+                            } else {
+                              this.props.toggleLoginModal({});
+                            }
+                          }}>
                           <Button.Content visible>Contact Seller</Button.Content>
                           <Button.Content hidden>
                             <Icon name="talk outline" />

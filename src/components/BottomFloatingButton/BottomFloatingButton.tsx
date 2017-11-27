@@ -1,31 +1,31 @@
 import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
+import { ChildProps } from 'react-apollo';
 import { Link } from 'react-router-dom';
+import { graphql } from '../../apollo/graphql';
+import * as SETTRADEROOMMODALMUTATION from '../../apollo/tradeRoomModal/SetTradeRoomModal.gql';
 import { MessagesLayout } from '../MessagesLayout';
 import * as s from './BottomFloatingButton.css';
 
 namespace BottomFloatingButton {
-  export type Props = any;
-
-  export interface State {
+  export interface IProps {
     show: boolean;
   }
+
+  export type Props = ChildProps<IProps, {}>;
 }
 
 @withStyles(s)
-export class BottomFloatingButton extends React.Component<BottomFloatingButton.Props, BottomFloatingButton.State> {
+@graphql<{}, {}>(SETTRADEROOMMODALMUTATION)
+export class BottomFloatingButton extends React.Component<BottomFloatingButton.Props> {
   constructor(props) {
     super(props);
-
-    this.state = {
-      show: false,
-    };
   }
   public render() {
     return (
       <div>
-        {this.state.show &&
+        {this.props.show &&
           <MessagesLayout />
         }
         <div className={cx(s.float, s.show)}>
@@ -33,7 +33,7 @@ export class BottomFloatingButton extends React.Component<BottomFloatingButton.P
             className={s.actionButton}
             href="#"
             onClick={() => {
-              this.setState({ show: !this.state.show });
+              this.props.mutate({ variables: { show: !this.props.show } });
             }}>
             {this.props.children}
           </a>}
