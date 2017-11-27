@@ -1,7 +1,5 @@
 import { GraphQLError } from 'graphql';
 import { toObjectID } from 'iridium';
-import { base64, unbase64 } from '../base64';
-import { IResolver } from '../index';
 import { Cursor } from 'mongodb';
 import { IReceiptDocument } from '../../models/Receipt/index';
 import { IUserDocument } from '../../models/User/index';
