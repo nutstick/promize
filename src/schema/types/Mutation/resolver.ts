@@ -2,6 +2,11 @@ import { IResolver } from '../index';
 
 const resolver: IResolver<any, any> = {
   Mutation: {
+
+    async uploadFile(_, { file }, { database }) {
+      return true;
+    },
+
     async createProduct(_, { input: { promotionStart, promotionEnd, price, ...input } }, { database, user }) {
       return await database.Product.insert({
         ...input,
