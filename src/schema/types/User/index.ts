@@ -12,8 +12,8 @@ export interface IPaymentMethod {
 
 export interface IAccount {
   email?: string;
-  facebook?: boolean;
-  google?: boolean;
+  facebookAccessCode?: string;
+  googleAccessCode?: string;
 }
 
 interface IUserType {

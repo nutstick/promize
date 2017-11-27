@@ -1,12 +1,123 @@
 import { IResolver } from '../index';
+import { IReceiptDocument } from '../../models/Receipt/index';
+import { Cursor } from 'mongodb';
+import { unbase64, base64 } from '../base64';
+import { GraphQLError } from 'graphql';
+import { toObjectID } from 'iridium';
+
+const UserTypeResolver = {
+  firstName({ first_name }) {
+    return first_name;
+  },
+  middleName({ middle_name }) {
+    return middle_name;
+  },
+  lastName({ last_name }) {
+    return last_name;
+  },
+  telNumber({ tel_number }) {
+    return tel_number;
+  },
+  paymentMethod({ payment_methods }, { id }) {
+    return payment_methods.find((payment_method) => payment_method._id === id);
+  },
+  paymentMethods({ payment_methods }) {
+    return payment_methods;
+  },
+  address({ addresses }, { id }) {
+    return addresses.find((address) => address._id === id);
+  },
+  async orderReceipts({ _id: buyer }, { first, after, last, before, orderBy }, { database }) {
+    // Add default sort by _id
+    orderBy = orderBy ? orderBy.concat([{ sort: '_id', direction: 'ASC' }]) : [{ sort: '_id', direction: 'ASC' }];
+
+    // Parse orderBy to mongodb sort format
+    const sort: any = orderBy ? orderBy.reduce((prev, order) => ({
+      ...prev,
+      [order.sort]: (order.direction === 'ASC' ? 1 : -1),
+    }), {}) : {};
+
+    let cursor = database.Receipt.find({ buyer }).cursor;
+
+    if (after) {
+      const { name, _id, ...cursorData } = JSON.parse(unbase64(after));
+      if (name !== 'OrderReceiptCursor') {
+        throw new GraphQLError('after type is not OrderReceiptCursor');
+      }
+      cursor = (cursor as any).min({
+        ...cursorData,
+        ..._id && {
+          _id: toObjectID(_id),
+        },
+      });
+    }
+    if (first) {
+      cursor = cursor.limit(first + 1);
+    }
+    if (before) {
+      const { name, _id, ...cursorData } = JSON.parse(unbase64(before));
+      if (name !== 'OrderReceiptCursor') {
+        throw new GraphQLError('before type is not OrderReceiptCursor');
+      }
+      cursor = (cursor as any).max({
+        ...cursorData,
+        ..._id && {
+          _id: toObjectID(_id),
+        },
+      });
+    }
+    if (last) {
+      cursor = cursor.limit(last + 1);
+    }
+
+    cursor = cursor.sort(sort);
+
+    const totalCount = await cursor.count();
+    const orderReceipts = await cursor.toArray();
+
+    // Has next page
+    if (orderReceipts.length > (first || last)) {
+      const endCursor = base64(JSON.stringify(
+        orderBy.reduce((prev, order) => ({
+          ...prev,
+          [order.sort]: orderReceipts[orderReceipts.length - 1][order.sort],
+        }), { name: 'OrderReceiptCursor' }),
+      ));
+
+      return {
+        totalCount,
+        edges: orderReceipts.slice(0, -1).map((orderReceipt) => ({
+          orderReceipts,
+          orderBy,
+        })),
+        pageInfo: {
+          endCursor,
+          hasNextPage: true,
+        },
+      };
+    }
+
+    return {
+      totalCount,
+      edges: orderReceipts.map((orderReceipt) => ({
+        orderReceipt,
+        orderBy,
+      })),
+      pageInfo: {
+        endCursor: null,
+        hasNextPage: false,
+      },
+    };
+  },
+};
 
 const resolver: IResolver<any, any> = {
   Account: {
     facebookAccessCode({ facebook }) {
-      return facebook.accessCode;
+      return facebook && facebook.accessCode;
     },
     googleAccessCode({ google }) {
-      return google.accessCode;
+      return google && google.accessCode;
     },
   },
   PaymentMethod: {
@@ -21,56 +132,203 @@ const resolver: IResolver<any, any> = {
     },
   },
   User: {
-    firstName({ first_name }) {
-      return first_name;
+    ...UserTypeResolver,
+    coSellerRegisterStatus({ coseller_register_status }, _, { database }) {
+      return coseller_register_status.toUpperCase();
     },
-    middleName({ middle_name }) {
-      return middle_name;
-    },
-    lastName({ last_name }) {
-      return last_name;
-    },
-    telNumber({ tel_number }) {
-      return tel_number;
-    },
-    paymentMethod({ payment_methods }, { id }) {
-      return payment_methods.find((payment_method) => payment_method._id === id);
-    },
-    paymentMethods({ payment_methods }) {
-      return payment_methods;
-    },
-    address({ addresses }, { id }) {
-      return addresses.find((address) => address._id === id);
-    },
-    // TODO: orderReceipts
   },
   CoSeller: {
-    firstName({ first_name }) {
-      return first_name;
-    },
-    middleName({ middle_name }) {
-      return middle_name;
-    },
-    lastName({ last_name }) {
-      return last_name;
-    },
-    telNumber({ tel_number }) {
-      return tel_number;
-    },
-    paymentMethod({ payment_methods }, { id }) {
-      return payment_methods.find((payment_method) => payment_method._id === id);
-    },
-    paymentMethods({ payment_methods }) {
-      return payment_methods;
-    },
-    address({ addresses }, { id }) {
-      return addresses.find((address) => address._id === id);
-    },
-    // TODO: orderReceipts
+    ...UserTypeResolver,
     coseller() {
       return true;
     },
-    // TODO: products, buyOrderReceipts, totalBuyOrderReceipts
+    async products({ _id: owner }, { first, after, last, before, orderBy }, { database }) {
+      // Add default sort by _id
+      orderBy = orderBy ? orderBy.concat([{ sort: '_id', direction: 'ASC' }]) : [{ sort: '_id', direction: 'ASC' }];
+
+      // Parse orderBy to mongodb sort format
+      const sort: any = orderBy ? orderBy.reduce((prev, order) => ({
+        ...prev,
+        [order.sort]: (order.direction === 'ASC' ? 1 : -1),
+      }), {}) : {};
+
+      let cursor = database.Product.find({ owner }).cursor;
+
+      if (after) {
+        const { name, _id, ...cursorData } = JSON.parse(unbase64(after));
+        if (name !== 'ProductCursor') {
+          throw new GraphQLError('after type is not ProductCursor');
+        }
+        cursor = (cursor as any).min({
+          ...cursorData,
+          ..._id && {
+            _id: toObjectID(_id),
+          },
+        });
+      }
+      if (first) {
+        cursor = cursor.limit(first + 1);
+      }
+      if (before) {
+        const { name, _id, ...cursorData } = JSON.parse(unbase64(before));
+        if (name !== 'ProductCursor') {
+          throw new GraphQLError('before type is not ProductCursor');
+        }
+        cursor = (cursor as any).max({
+          ...cursorData,
+          ..._id && {
+            _id: toObjectID(_id),
+          },
+        });
+      }
+      if (last) {
+        cursor = cursor.limit(last + 1);
+      }
+
+      cursor = cursor.sort(sort);
+
+      const totalCount = await cursor.count();
+      const products = await cursor.toArray();
+
+      // Has next page
+      if (products.length > (first || last)) {
+        const endCursor = base64(JSON.stringify(
+          orderBy.reduce((prev, order) => ({
+            ...prev,
+            [order.sort]: products[products.length - 1][order.sort],
+          }), { name: 'ProductCursor' }),
+        ));
+
+        return {
+          totalCount,
+          edges: products.slice(0, -1).map((product) => ({
+            product,
+            orderBy,
+          })),
+          pageInfo: {
+            endCursor,
+            hasNextPage: true,
+          },
+        };
+      }
+
+      return {
+        totalCount,
+        edges: products.map((product) => ({
+          product,
+          orderBy,
+        })),
+        pageInfo: {
+          endCursor: null,
+          hasNextPage: false,
+        },
+      };
+    },
+    async buyOrderReceipts({ _id: owner }, { first, after, last, before, orderBy, status }, { database }) {
+      // Add default sort by _id
+      orderBy = orderBy ? orderBy.concat([{ sort: '_id', direction: 'ASC' }]) : [{ sort: '_id', direction: 'ASC' }];
+
+      // Parse orderBy to mongodb sort format
+      const sort: any = orderBy ? orderBy.reduce((prev, order) => ({
+        ...prev,
+        [order.sort]: (order.direction === 'ASC' ? 1 : -1),
+      }), {}) : {};
+
+      // Find all products
+      const products = await database.Product.find({ owner }, { _id: 1 }).toArray();
+      // Find all receipts of products with status filter
+      let cursor = database.Receipt.find({
+        product: {
+          $in: products.map((product) => product._id),
+        },
+        ...status && {
+          status,
+        },
+      }).cursor;
+
+      if (after) {
+        const { name, _id, ...cursorData } = JSON.parse(unbase64(after));
+        if (name !== 'OrderReceiptCursor') {
+          throw new GraphQLError('after type is not OrderReceiptCursor');
+        }
+        cursor = (cursor as any).min({
+          ...cursorData,
+          ..._id && {
+            _id: toObjectID(_id),
+          },
+        });
+      }
+      if (first) {
+        cursor = cursor.limit(first + 1);
+      }
+      if (before) {
+        const { name, _id, ...cursorData } = JSON.parse(unbase64(before));
+        if (name !== 'OrderReceiptCursor') {
+          throw new GraphQLError('before type is not OrderReceiptCursor');
+        }
+        cursor = (cursor as any).max({
+          ...cursorData,
+          ..._id && {
+            _id: toObjectID(_id),
+          },
+        });
+      }
+      if (last) {
+        cursor = cursor.limit(last + 1);
+      }
+
+      cursor = cursor.sort(sort);
+
+      const totalCount = await cursor.count();
+      const orderReceipts = await cursor.toArray();
+
+      // Has next page
+      if (orderReceipts.length > (first || last)) {
+        const endCursor = base64(JSON.stringify(
+          orderBy.reduce((prev, order) => ({
+            ...prev,
+            [order.sort]: orderReceipts[orderReceipts.length - 1][order.sort],
+          }), { name: 'OrderReceiptCursor' }),
+        ));
+
+        return {
+          totalCount,
+          edges: orderReceipts.slice(0, -1).map((orderReceipt) => ({
+            orderReceipts,
+            orderBy,
+          })),
+          pageInfo: {
+            endCursor,
+            hasNextPage: true,
+          },
+        };
+      }
+
+      return {
+        totalCount,
+        edges: orderReceipts.map((orderReceipt) => ({
+          orderReceipt,
+          orderBy,
+        })),
+        pageInfo: {
+          endCursor: null,
+          hasNextPage: false,
+        },
+      };
+    },
+    async totalBuyOrderReceipts({ owner }, { status }, { database }) {
+      // Find all products
+      const products = await database.Product.find({ owner }, { _id: 1 }).toArray();
+      // Find all receipts of products with status filter
+      return await database.Receipt.find({
+        product: {
+          $in: products.map((product) => product._id),
+        },
+        ...status && {
+          status,
+        },
+      }).count();
+    },
   },
 };
 

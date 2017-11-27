@@ -93,6 +93,7 @@ export class User extends React.Component<User.Props> {
                     <div>
                       <NavLink
                         to={`/users/${this.props.match.params.id}`}
+                        exact
                         activeClassName={s.active}>
                         My Activities
                       </NavLink>

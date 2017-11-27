@@ -3,8 +3,8 @@ query Account {
     _id
     account {
       email
-      facebook
-      google
+      facebookAccessCode
+      googleAccessCode
     }
     addresses {
       _id

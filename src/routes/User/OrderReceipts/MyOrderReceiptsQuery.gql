@@ -8,6 +8,7 @@ query MyOrderReceipts($first: Int, $after: ID) {
           product {
             _id
             name
+            pictures
             owner {
               _id
               firstName
@@ -16,8 +17,12 @@ query MyOrderReceipts($first: Int, $after: ID) {
               lastName
             }
           }
-          size
-          color
+          size {
+            size
+          }
+          color {
+            color
+          }
           deliverAddress {
             _id
             address
@@ -27,12 +32,10 @@ query MyOrderReceipts($first: Int, $after: ID) {
           }
           trackingId
           remark
+          status
           paymentCompletedAt
-          paymentCompleted
           productDeliveredAt
-          productDelivered
           productReceivedAt
-          productReceived
 
           createAt
           updateAt
