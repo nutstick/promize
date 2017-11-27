@@ -111,6 +111,19 @@ input ApproveUserToCosellerINput {
   _id: ID!
 }
 
+input CreateTradeRoomInput {
+  product: ID!
+  participants: [String]!
+}
+
+input EditTradeRoomInput {
+  id: ID!
+  detail: String
+  price: Float
+  size: String
+  color: String
+}
+
 # Mutations
 type Mutation {
   # Upload file
@@ -144,6 +157,14 @@ type Mutation {
   createUser(input: CreateUserInput!): UserType
   # Edit User
   editUser(input: EditUserInput!): UserType
+  
+  # Create TradeRoom
+  createTradeRoom(input: CreateTradeRoomInput!): TradeRoom
+  # Update TradeRoom
+  editTradeRoom(input: EditTradeRoomInput!): TradeRoom
+  # Confirm Buy
+  confirmBuyInTradeRoom(id: ID!): TradeRoom
 
-  #
+  # Add message
+  addMessage(content: MessageContentInput!, traderoom: ID!): Message
 }

@@ -1,9 +1,10 @@
 import * as Iridium from 'iridium';
 import { Collection, Instance, ObjectID, Property } from 'iridium';
-import { IMessage, Message } from './message';
 
-interface ITraderoom {
+interface ITraderoomDocument {
     _id?: string;
+
+    participants: string[];
     order_product?: string;
     detail?: string;
     price: number;
@@ -12,25 +13,25 @@ interface ITraderoom {
     size?: string;
     color?: string;
 
-    buy_confirm: boolean;
+    buy_confirm?: boolean;
     buy_confirm_at?: Date;
-
-    messages?: IMessage[];
 
     createAt?: Date;
     updateAt?: Date;
 }
 
 @Collection('traderooms')
-class Traderoom extends Instance<ITraderoom, Traderoom> implements ITraderoom {
+class Traderoom extends Instance<ITraderoomDocument, Traderoom> implements ITraderoomDocument {
     @ObjectID
     _id: string;
+    @Property([String], true)
+    participants: string[];
 
     @Property(String, false)
     order_product: string;
     @Property(String, false)
     detail: string;
-    @Property(Number, true)
+    @Property(Number, false)
     price: number;
 
     @Property(Number, false)
@@ -45,10 +46,7 @@ class Traderoom extends Instance<ITraderoom, Traderoom> implements ITraderoom {
     @Property(Date, false)
     buy_confirm_at: Date;
 
-    @Property([Message], false)
-    messages: IMessage[];
-
-    static onCreating(traderooms: ITraderoom) {
+    static onCreating(traderooms: ITraderoomDocument) {
         traderooms.createAt = new Date();
         traderooms.updateAt = new Date();
         traderooms.buy_confirm = false;
@@ -59,4 +57,4 @@ class Traderoom extends Instance<ITraderoom, Traderoom> implements ITraderoom {
     }
 }
 
-export { ITraderoom, Traderoom };
+export { ITraderoomDocument, Traderoom };

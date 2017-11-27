@@ -1,0 +1,3 @@
+mutation SetTradeRoomModal($show: Boolean!, $id: ID) {
+  setTradeRoomModal(show: $show, id: $id) @client
+}
