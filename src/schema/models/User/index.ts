@@ -1,7 +1,7 @@
 import * as Iridium from 'iridium';
 import { Collection, Index, Instance, ObjectID, Property, Transform } from 'iridium';
 import { ObjectID as id } from 'mongodb';
-import { IProductDocument, Product } from '../Product/index';
+import { IProductDocument } from '../Product/index';
 import { Account, IAccountDocument } from './account';
 import { Address, IAddress } from './address';
 import { IPaymentMethod, PaymentMethod } from './paymentmethod';
@@ -45,7 +45,11 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
   @Property(/^.+$/, true)
   last_name: string;
 
-  @Property(/^male|female$/, false)
+  @Transform(
+    (value) => `${value.charAt(0).toUpperCase()}${value.slice(1)}`,
+    (value) => value.toLowerCase(),
+  )
+  @Property(/^male|female|Male|Female$/, false)
   gender: string;
   @Property(/^[0-9-]+$/, false)
   tel_number: string;
@@ -118,10 +122,48 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
     return this.addresses[this.addresses.length - 1]._id;
   }
 
+  editAddress(address: IAddress) {
+    if (address._id) {
+      for (const old_address of this.addresses) {
+        if (old_address._id.toString() === address._id) {
+          old_address.address = address.address;
+          old_address.city = address.city;
+          old_address.country = address.country;
+          old_address.zip = address.zip;
+          return address._id;
+        }
+      }
+    }
+    return this.addAddress({
+      address: address.address,
+      city: address.city,
+      country: address.country,
+      zip: address.zip,
+    });
+  }
+
   addPaymentMethod(payment_method: IPaymentMethod) {
     this.payment_methods.push(payment_method);
     this.payment_methods = this.payment_methods;
     return this.payment_methods[this.payment_methods.length - 1]._id;
+  }
+
+  editPaymentMethod(payment_method: IPaymentMethod) {
+    if (payment_method._id) {
+      for (const old_payment of this.payment_methods) {
+        if (old_payment._id.toString() === payment_method._id) {
+          old_payment.credit_card_number = payment_method.credit_card_number;
+          old_payment.valid_from_month = payment_method.valid_from_month;
+          old_payment.valid_from_year = payment_method.valid_from_year;
+          return payment_method._id;
+        }
+      }
+    }
+    return this.addPaymentMethod({
+      credit_card_number: payment_method.credit_card_number,
+      valid_from_month: payment_method.valid_from_month,
+      valid_from_year: payment_method.valid_from_year,
+    });
   }
 }
 
