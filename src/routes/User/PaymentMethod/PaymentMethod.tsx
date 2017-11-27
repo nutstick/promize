@@ -48,9 +48,9 @@ export class PaymentMethod extends React.Component<PaymentMethod.Props> {
             <div>
               {this.props.data.me.paymentMethods.map((paymentMethod) => (
                 <Cards
-                  number={paymentMethod.creditCardNumber.replace(/#/g, '0')}
+                  number={paymentMethod.creditCardNumber.replace(/#/g, '')}
                   name={' '}
-                  expiry={paymentMethod.validFromMonth + '/' + paymentMethod.validFromYear}
+                  expiry={' '}
                   cvc={' '}
                 />
               ))}
