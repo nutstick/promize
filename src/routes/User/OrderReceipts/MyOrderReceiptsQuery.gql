@@ -1,5 +1,6 @@
 query MyOrderReceipts($first: Int, $after: ID) {
   me {
+    _id
     orderReceipts(first: $first, after: $after) {
       edges {
         node {

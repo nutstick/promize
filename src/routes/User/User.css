@@ -30,3 +30,7 @@
      flex-direction: column;
   }
 }
+
+.active {
+  font-weight: bold;
+}
