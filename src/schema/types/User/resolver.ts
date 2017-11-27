@@ -5,7 +5,7 @@ import { IReceiptDocument } from '../../models/Receipt/index';
 import { IUserDocument } from '../../models/User/index';
 import { base64, unbase64 } from '../base64';
 import { IResolver, ResolverFn, TypeResolver } from '../index';
-import { ITradeRoom } from '../Traderoom/index';
+import { ITradeRoom } from '../TradeRoom/index';
 
 const UserTypeResolver: TypeResolver<IUserDocument> = {
   firstName({ first_name }) {

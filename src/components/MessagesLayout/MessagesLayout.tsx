@@ -10,7 +10,7 @@ import { graphql } from '../../apollo/graphql';
 import { TradeRoomModalQuery } from '../../apollo/tradeRoomModal/index';
 import * as SETTRADEROOMMODALMUTATION from '../../apollo/tradeRoomModal/SetTradeRoomModal.gql';
 import * as TRADEROOMMODALQUERY from '../../apollo/tradeRoomModal/TradeRoomModalQuery.gql';
-import { ICommandContent, IMessage, IPictureContent, ITextContent } from '../../schema/types/Traderoom/index';
+import { ICommandContent, IMessage, IPictureContent, ITextContent } from '../../schema/types/TradeRoom/index';
 import { IUser } from '../../schema/types/User/index';
 import * as ADDMESSAGEMUTATION from './AddMessageMutation.gql';
 import * as s from './MessagesLayout.css';
