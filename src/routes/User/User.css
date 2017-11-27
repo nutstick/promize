@@ -11,7 +11,8 @@
 }
 
 .sidebar {
-  flex: 0 0 12em;
+  // flex: 0 0 12em;
+  flex: 1 1 auto;
   display: flex;
   order: -1;
   flex-direction: column;
@@ -37,7 +38,7 @@
 
 .detail {
   color: #5a5a5a;
-  text-align:center;
+  text-align: center;
   line-height: 1.5rem;
 }
 
@@ -46,7 +47,8 @@
 }
 
 .mainContent{
-  flex: 1;
+  display: flex;
+  padding: 0;
 }
 
 .container {
@@ -55,6 +57,7 @@
 
 .content {
   background-color: #dadada;
+  flex: 7 0 auto;
 }
 
 
@@ -65,11 +68,10 @@
 
 li {
   width: 100%;
-  margin: 0; 
+  margin: 0;
   display: block;
   padding: 1rem;
   border: 1px solid #ece8e8;
-  border-radius: 5px;
 }
 
 li:hover {
@@ -84,12 +86,12 @@ ul {
   list-style-type: none;
   display:inline-block;
   margin: 0;
-  padding: 0;
+  padding: 0 8.4px 0 0;
   width: 100%;
 }
 
 @media (max-width: 620px) {
-  .root {
+  .mainContent {
      flex-direction: column;
   }
 
