@@ -22,10 +22,12 @@
 
 .pictureWrapper{
   margin: 10px;
-  max-width: 300px;
+  /* max-width: 300px; */
   /* height: 100%; */
-  flex-grow: 1;
+  /* flex-grow: 1; */
+  width: 35%;
   overflow:hidden;
+  max-height: 200px;
 }
 
 .picture{
@@ -37,34 +39,41 @@
 
 .contentWrapper{
   padding: 10px;
-  flex-grow: 3;
+  /* flex-grow: 3; */
+  width: 65%;
+  
 }
 
 .contentHeader{
-  padding-bottom: 1em;
+  padding-bottom: 0.2em;
+  margin-bottom: 0.2em;
+  border-bottom: 1px solid #efefef;
+  
 }
 
 .receiptId{
   text-align: right;
-  margin-top: 0.5em;  
-  margin-bottom: 0px;
+  margin-top: -10px;
+  margin-bottom: -5px;
   color: #ff9521;
   font-size: 0.9em;
 }
 
 .productName{
-  margin-top: 0.6em;
+  margin-top: 0em;
   margin-bottom: 0em;
   color: black;
 }
 
 .productOwner{
-  margin-top: 0.4em;
+  margin-top: 0.1em;
+  margin-bottom: 0px;
   color: #606060;
 }
 
 .contentFooter{
   font-size: 0.8em;
+  margin-bottom: 20px;
 }
 
 .contentFooter>div{
@@ -72,7 +81,7 @@
 }
 
 .titleValueGroup{
-  margin-bottom: 0.5em; 
+  margin-bottom: 0.2em; 
 }
 
 .titleValueGroup>div{
@@ -82,42 +91,102 @@
 
 .title{
   font-weight: bold;
+  font-size: 10px;
 }
 
 .value{
   color: #606060;
+  font-size: 11px;
 }
 
 .shipTo{
-  margin-top: 1em;  
+  font-size: 10px;
+  /* margin-top: 0.5em;*/
+  margin-bottom: 0.2em;
   font-weight: bold;
 }
 
 .shippingInfo>span{
+  font-size: 11px;
   margin-right: 0.5em;
 }
 
 .shippingInfo{
-  margin: 0.5em 0em;
-  margin-bottom: 0.7em;
+  /* margin: 0.5em 0em; */
+  margin-bottom: 0.2em;
   color: #606060;
 }
 
 .buttonWrap{
   float: right;
-  margin-top: 20px;
+  margin-top: -15px;
+  font-size: 13px;
 }
 
+.contentDetail{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.leftContent{
+  width: 50%;
+}
+
+.rightContent{
+  width: 50%;
+  padding-left: 1em;  
+}
+
+.button{
+  font-size: 1em !important;
+}
+
+@media screen and (max-width: 950px) {
+
+  .receiptId{
+    margin-bottom: 0px;
+  }
+
+  .contentDetail{
+    flex-wrap: wrap;
+  }
+  
+  .leftContent{
+    width: 100%;
+  }
+
+  .rightContent{
+    width: 100%;
+    padding-left: 0;
+  }
+}
 
 @media screen and (max-width: 766px) {
+
+  .contentDetail{
+    flex-wrap: nowrap;
+  }
+  
+  .leftContent{
+    width: 50%;
+  }
+
+  .rightContent{
+    width: 50%;
+    padding-left: 10px;
+  }
   
    .modal{
       flex-wrap: wrap;
    }
 
+   .contentWrapper{
+     width: 100%;
+   }
    .pictureWrapper{
-     max-width: 700px;
-     margin-bottom: 0px;
+     max-width: 1000px;
+     width: 100%;
+     /* margin-bottom: 0px; */
      height: 200px;
    }
    
