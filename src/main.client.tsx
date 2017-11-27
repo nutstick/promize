@@ -8,6 +8,7 @@ import 'whatwg-fetch';
 
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
+import { createUploadLink } from 'apollo-upload-client';
 import * as FontFaceObserver from 'fontfaceobserver';
 import { createPath } from 'history/PathUtils';
 import * as React from 'react';
@@ -34,6 +35,10 @@ const http = new HttpLink({
   uri: '/graphql',
   credentials: 'include',
 });
+const link = createUploadLink({
+  uri: '/graphql',
+  credentials: 'include',
+}).concat(http);
 
 const fragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData: {
@@ -60,7 +65,7 @@ const cache = new InMemoryCache({
   fragmentMatcher,
 }).restore(window.App.apollo);
 const client = createApolloClient({
-  link: http,
+  link,
   ssrForceFetchDelay: 100,
   cache,
 });
