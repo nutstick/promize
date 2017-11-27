@@ -2,7 +2,9 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { ChildProps } from 'react-apollo';
 import { RouteComponentProps } from 'react-router-dom';
-import { Card, Loader } from 'semantic-ui-react';
+import { Loader } from 'semantic-ui-react';
+import Cards from 'react-credit-cards';
+import * as reactCreditCardsCss from 'react-credit-cards/lib/styles-compiled.css';
 import { graphql } from '../../../apollo/graphql';
 import { IPaymentMethod } from '../../../schema/types/User';
 import * as PAYMENTMETHODSQUERY from './../../../apollo/PaymentMethodsQuery.gql';
@@ -25,7 +27,7 @@ namespace PaymentMethod {
   export type Props = WithPaymentMethodsQuery;
 }
 
-@withStyles(s)
+@withStyles(reactCreditCardsCss, s)
 @graphql<PaymentMethod.IProps, {}>(ADDPAYMENTMETHODMUTATION)
 @graphql<PaymentMethod.WithAddPaymentMethodMutation, PaymentMethod.PaymentMethodsQuery>(PAYMENTMETHODSQUERY)
 export class PaymentMethod extends React.Component<PaymentMethod.Props> {
@@ -45,11 +47,13 @@ export class PaymentMethod extends React.Component<PaymentMethod.Props> {
           ) : (
             <div>
               {this.props.data.me.paymentMethods.map((paymentMethod) => (
-                <Card>
-                    <h4>Visa card</h4>
-                    {paymentMethod.creditCardNumber}
-                    <br/>
-                </Card>
+                <Cards
+                  number={paymentMethod.creditCardNumber}
+                  name={' '}
+                  expiry={' '}
+                  cvc={' '}
+                />
+                //paymentMethod.creditCardNumber
               ))}
             </div>
           )
