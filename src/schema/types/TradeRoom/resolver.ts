@@ -14,7 +14,6 @@ const resolver: IResolver<any, any> = {
   },
   Message: {
     async owner({ owner }, _, { database }) {
-      console.log(database);
       return await database.User.findOne({ _id: owner });
     },
   },

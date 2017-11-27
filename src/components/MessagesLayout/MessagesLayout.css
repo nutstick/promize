@@ -55,8 +55,9 @@
     overflow-y: scroll;
   }
   .inputWrapper {
-    height: 100%;
     width: 100%;
+    position: absolute;
+    bottom: 0;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;

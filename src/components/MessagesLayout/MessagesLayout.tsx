@@ -121,20 +121,22 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
         <div className={s.messagesWrapper}>
         {
           this.state.activeTradeRoom ? (
-            <div>
+            <div style={{ height: '100%', paddingBottom: 65 }}>
               <div className={s.messages}>
-                {this.state.messages && me ? this.state.messages.map((message) => (
-                  <div className={cx(s.message, { [s.own]: message.owner._id === me._id })}>
-                    {(message.content as ITextContent).text || ((message.content as IPictureContent).pictureUrl && (
-                      <Image src={(message.content as IPictureContent).pictureUrl}></Image>
-                    )) || ((message.content as ICommandContent).command && (
-                      <div>
-                        {(message.content as ICommandContent).command}
-                        {(message.content as ICommandContent).arguments.join(' ')}
-                      </div>
-                    ))}
-                  </div>
-                )) : <div><Loader active /></div>}
+                <div>
+                  {this.state.messages && me ? this.state.messages.map((message) => (
+                    <div className={cx(s.message, { [s.own]: message.owner._id === me._id })}>
+                      {(message.content as ITextContent).text || ((message.content as IPictureContent).pictureUrl && (
+                        <Image src={(message.content as IPictureContent).pictureUrl}></Image>
+                      )) || ((message.content as ICommandContent).command && (
+                        <div>
+                          {(message.content as ICommandContent).command}
+                          {(message.content as ICommandContent).arguments.join(' ')}
+                        </div>
+                      ))}
+                    </div>
+                  )) : <div><Loader active /></div>}
+                </div>
               </div>
               <Form className={s.inputWrapper} onSubmit={() => {
                 this.props.mutate({
@@ -149,10 +151,10 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
                   inputValue: '',
                 });
               }}>
-                <div>
+                {/* <div>
                   <Icon name="picture"/>
                   <Icon name="computer"/>
-                </div>
+                </div> */}
                 <Form.Input
                   className={s.textInput}
                   action={{ icon: 'send' }}
