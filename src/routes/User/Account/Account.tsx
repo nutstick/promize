@@ -53,14 +53,38 @@ export class Account extends React.Component<Account.Props> {
               </h4>
               <h3>Address</h3>
               {this.props.data.me.addresses.map((address) => (
-                <Card>
-                  <Card.Content>
-                    <p>Address: {address.address}</p>
-                    <p>City: {address.city}</p>
-                    <p>Country: {address.country}</p>
-                    <p>Zip: {address.zip}</p>
-                  </Card.Content>
-                </Card>
+                <div className={s.modal}>
+                  <div className={s.contentWrapper}>
+                    <div className={s.contentHeader}>
+                      <div className={s.wrapContainer}>
+                        <div className={s.downContent}>
+                          <h3 className={s.addressid}>{address._id}</h3>
+                        </div>
+                      </div>
+                    </div>
+                    <div className={s.contentDetail}>
+                      <div className={s.leftContent}>
+                        <div className={s.address}>
+                          <div className={s.label}>Address </div>
+                          <div className={s.value}>{address.address}</div>
+                        </div>
+                        <div className={s.address}>
+                          <div className={s.label}>City </div>
+                          <div className={s.value}>{address.city}</div>
+                        </div>
+                        <div className={s.address}>
+                          <div className={s.label}>Country </div>
+                          <div className={s.value}>{address.country}</div>
+                        </div>
+                        <div className={s.address}>
+                          <div className={s.label}>Zipcode </div>
+                          <div className={s.value}>{address.zip}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
               ))}
             </div>
           )

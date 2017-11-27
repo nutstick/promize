@@ -46,18 +46,21 @@ export class PaymentMethod extends React.Component<PaymentMethod.Props> {
             </div>
           ) : (
             <div>
-              <Grid>
                 {this.props.data.me.paymentMethods.map((paymentMethod) => (
-                  <Grid.Column mobile={14} tablet={7} computer={5}>
-                    <Cards
-                      number={paymentMethod.creditCardNumber.replace(/#/g, '')}
-                      name={' '}
-                      expiry={' '}
-                      cvc={' '}
-                    />
-                  </Grid.Column>
+                  <div className={s.modal}>
+                    <div className={s.pictureWrapper}>
+                      <Cards
+                        number={paymentMethod.creditCardNumber.replace(/#/g, '')}
+                        name={' '}
+                        expiry={' '}
+                        cvc={' '}
+                      />
+                    </div>
+                    <div className={s.label}>
+                      <h3 className={s.productName}>Card number : {paymentMethod.creditCardNumber}</h3>
+                    </div>
+                  </div>
                 ))}
-              </Grid>
             </div>
           )
         }
