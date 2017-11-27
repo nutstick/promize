@@ -1,0 +1,24 @@
+subscription messageAdded($id: ID!) {
+  messageAdded(traderoom: $id) {
+    _id
+    owner {
+      _id
+      firstName
+      avatar
+    }
+    content {
+      ... on TextContent {
+        text
+      }
+      ... on PictureContent {
+        pictureUrl
+        size
+      }
+      ... on CommandContent {
+        command
+        arguments
+      }
+      createAt
+    }
+  }
+}

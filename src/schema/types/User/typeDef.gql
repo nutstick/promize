@@ -72,6 +72,9 @@ interface UserType {
     orderBy: [OrderReceiptOrdering],
   ): OrderReceiptPage
 
+  traderooms: [TradeRoom]
+  traderoom(id: ID!): TradeRoom
+
   createAt: Date!
   updateAt: Date!
 }
@@ -110,6 +113,9 @@ type User implements UserType, Node {
   ): OrderReceiptPage
 
   coSellerRegisterStatus: CoSellerRegisterStatus!
+
+  traderooms: [TradeRoom]
+  traderoom(id: ID!): TradeRoom
 
   createAt: Date!
   updateAt: Date!
@@ -168,8 +174,12 @@ type CoSeller implements UserType, Node {
     orderBy: [OrderReceiptOrdering],
     status: OrderReceiptStatus,
   ): OrderReceiptPage
+
   # Count order receipts with status
   totalBuyOrderReceipts(status: OrderReceiptStatus): Int
+
+  traderooms: [TradeRoom]
+  traderoom(id: ID!): TradeRoom
 
   createAt: Date!
   updateAt: Date!

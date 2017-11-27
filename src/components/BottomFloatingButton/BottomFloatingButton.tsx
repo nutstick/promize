@@ -2,37 +2,41 @@ import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { MessagesLayout } from '../MessagesLayout';
 import * as s from './BottomFloatingButton.css';
-import { ChildProps } from 'react-apollo/types';
 
 namespace BottomFloatingButton {
-  export type WithMessageModalQuery = ChildProps<{}, MessageModalQuery>;
-  export type Props = ChildProps<WithMessageModalQuery, {}>;
+  export type Props = any;
+
+  export interface State {
+    show: boolean;
+  }
 }
 
 @withStyles(s)
-@graphql<{}, MessageModalQuery>(MESSAGEMODALQUERY)
-@graphql<WithMessageModalQuery, {}>(TOGGLEMESSAGEMODALMUTATION)
-export class BottomFloatingButton extends React.Component<BottomFloatingButton.Props> {
+export class BottomFloatingButton extends React.Component<BottomFloatingButton.Props, BottomFloatingButton.State> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      show: false,
+    };
+  }
   public render() {
     return (
       <div>
-        {
-          <div>
-            <div>
-            </div>
-          </div>
+        {this.state.show &&
+          <MessagesLayout />
         }
         <div className={cx(s.float, s.show)}>
-          {
-            <a
-              className={s.actionButton}
-              href="#"
-              onClick={() => this.props.mutate({})}
-            >
-              {this.props.children}
-            </a>
-          }
+          {<a
+            className={s.actionButton}
+            href="#"
+            onClick={() => {
+              this.setState({ show: !this.state.show });
+            }}>
+            {this.props.children}
+          </a>}
         </div>
       </div>
     );

@@ -2,6 +2,7 @@ import { IAddress } from '../../models/User/address';
 import { IOrderReceipt } from '../OrderReceipt';
 import { INode, IPage } from '../Pagination';
 import { IProduct } from '../Product/index';
+import { ITradeRoom } from '../Traderoom';
 import resolver from './resolver';
 import * as type from './typeDef.gql';
 
@@ -16,7 +17,8 @@ export interface IAccount {
   googleAccessCode?: string;
 }
 
-interface IUserType {
+export interface IUserType {
+  _id?: string;
   firstName?: string;
   middleName?: string;
   lastName?: string;
@@ -33,6 +35,9 @@ interface IUserType {
   orderReceipts?: IPage<IOrderReceipt>;
   createAt?: Date;
   updateAt?: Date;
+
+  traderooms: ITradeRoom[];
+  traderoom: ITradeRoom;
 }
 
 export enum CoSellerRegisterStatus {

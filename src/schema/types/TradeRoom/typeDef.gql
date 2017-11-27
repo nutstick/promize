@@ -16,7 +16,7 @@ union MessageContent = TextContent | PictureContent | CommandContent
 
 type Message implements Node {
   _id: ID!
-  tradeRoomId: ID!
+  traderoom: ID!
   content: MessageContent!
   owner: UserType!
   createAt: Date!
@@ -24,7 +24,7 @@ type Message implements Node {
 
 type TradeRoom implements Node {
   _id: ID!
-  pariticipants: [UserType]
+  participants: [UserType]
   # TODO: Message Page
   messages: [Message]
 }

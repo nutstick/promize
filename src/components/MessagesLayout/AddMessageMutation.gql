@@ -1,0 +1,5 @@
+mutation AddMessage($traderoom: ID!, $text: String) {
+  addMessage(traderoom: $traderoom, text: $text) {
+    _id
+  }
+}

@@ -1,0 +1,13 @@
+query TradeRooms {
+  me {
+    _id
+    traderooms {
+      _id
+      participants {
+        _id
+        firstName
+        avatar
+      }
+    }
+  }
+}

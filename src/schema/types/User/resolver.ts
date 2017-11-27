@@ -1,11 +1,13 @@
-import { IResolver } from '../index';
-import { IReceiptDocument } from '../../models/Receipt/index';
-import { Cursor } from 'mongodb';
-import { unbase64, base64 } from '../base64';
 import { GraphQLError } from 'graphql';
 import { toObjectID } from 'iridium';
+import { Cursor } from 'mongodb';
+import { IReceiptDocument } from '../../models/Receipt/index';
+import { IUserDocument } from '../../models/User/index';
+import { base64, unbase64 } from '../base64';
+import { IResolver, ResolverFn, TypeResolver } from '../index';
+import { ITradeRoom } from '../Traderoom/index';
 
-const UserTypeResolver = {
+const UserTypeResolver: TypeResolver<IUserDocument> = {
   firstName({ first_name }) {
     return first_name;
   },
@@ -108,6 +110,12 @@ const UserTypeResolver = {
         hasNextPage: false,
       },
     };
+  },
+  async traderooms({ _id }, _, { database }) {
+    return await database.Traderoom.find({ participants: _id }).toArray();
+  },
+  async traderoom({ _id }, { id }, { database }) {
+    return await database.Traderoom.findOne({ _id: id });
   },
 };
 
