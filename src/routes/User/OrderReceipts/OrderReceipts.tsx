@@ -74,8 +74,14 @@ export class OrderReceipts extends React.Component<OrderReceipts.Props> {
                   </div>
                   <div className={s.contentWrapper}>
                     <div className={s.contentHeader}>
-                      <h6 className={s.receiptId}>ORDER ID : {node._id}</h6>
-                      <h3 className={s.productName}>{node.product.name}</h3>
+                      <div className={s.wrapContainer}>
+                        <div className={s.topContent}>
+                          <h6 className={s.receiptId}>ORDER ID : {node._id}</h6>
+                        </div>
+                        <div className={s.downContent}>
+                          <h3 className={s.productName}>{node.product.name}</h3>
+                        </div>
+                      </div>
                       <h6 className={s.productOwner}>{this.name(node.product.owner)}</h6>
                     </div>
                     <div className={s.contentDetail}>
