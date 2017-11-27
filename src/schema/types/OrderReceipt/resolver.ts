@@ -51,13 +51,8 @@ const resolver: IResolver<any, any> = {
       }
     },
     status({ payment_completed, product_delivered, product_received }) {
-<<<<<<< HEAD
       return payment_completed ? 'PAID' : product_delivered ? 'DELIVERED' : product_received ?
         'RECEIVED' : 'CREATED';
-=======
-      return payment_completed ? 'PAID' : product_delivered ? 'DELIVERED' :
-        product_received ? 'RECEIVED' : 'CREATED';
->>>>>>> frontend
     },
     paymentCompletedAt({ payment_completed_at }) {
       return payment_completed_at;
@@ -68,13 +63,9 @@ const resolver: IResolver<any, any> = {
     productReceivedAt({ product_received_at }) {
       return product_received_at;
     },
-<<<<<<< HEAD
-
-=======
     async product({ product }, _, { database }) {
       return await database.Product.findOne({ _id: product });
     },
->>>>>>> frontend
     async creator({ buyer }, _, { database }) {
       return await database.User.findOne({ _id: buyer });
     },
