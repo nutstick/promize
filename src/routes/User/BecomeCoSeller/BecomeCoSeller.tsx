@@ -26,7 +26,7 @@ namespace BecomeCoSeller {
 
   export interface State {
     upload: boolean;
-    citizenCardPicture?: File;
+    citizenCardImage?: File;
     telNumber?: string;
   }
 }
@@ -50,7 +50,16 @@ export class BecomeCoSeller extends React.Component<BecomeCoSeller.Props, Become
       <div className={s.root}>
         {
           this.state.upload ?
-          <Form>
+          <Form onSubmit={() => {
+            this.props.mutate({
+              variables: {
+                input: {
+                  telNumber: this.state.telNumber,
+                  citizenCardImage: this.state.citizenCardImage,
+                },
+              },
+            });
+          }}>
             <Card>
               <Card.Content>
                 <Card.Header>
@@ -68,7 +77,7 @@ export class BecomeCoSeller extends React.Component<BecomeCoSeller.Props, Become
                       accept="image/*"
                       onChange={({ target }) =>
                       target.validity.valid && this.setState({
-                        citizenCardPicture: target.files[0],
+                        citizenCardImage: target.files[0],
                       })}
                     />
                   </Form.Field>

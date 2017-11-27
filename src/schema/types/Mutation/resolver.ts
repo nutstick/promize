@@ -1,4 +1,28 @@
+import { createWriteStream } from 'fs';
+import * as mkdirp from 'mkdirp';
+import * as shortid from 'shortid';
+import { uploadDir } from '../../../config';
 import { IResolver } from '../index';
+
+// Ensure upload directory exists
+mkdirp.sync(uploadDir);
+
+const storeUpload = async ({ stream, filename }) => {
+  const id = shortid.generate();
+  const path = `${uploadDir}/${id}-${filename}`;
+
+  return new Promise<{ id: string, path: string }>((resolve, reject) =>
+    stream
+      .pipe(createWriteStream(path))
+      .on('finish', () => resolve({ id, path }))
+      .on('error', reject),
+  );
+};
+
+const processUpload = async (upload) => {
+  const { stream, filename, mimetype, encoding } = await upload;
+  return await storeUpload({ stream, filename });
+};
 
 const resolver: IResolver<any, any> = {
   Mutation: {
@@ -150,12 +174,14 @@ const resolver: IResolver<any, any> = {
     },
 
     async registerToBeCoSeller(_, { input }, { database, user }) {
+      const citizenCardImageUrl = await processUpload(input.citizenCardImage);
+
       const userInstance = await database.User.findOne({ _id: user._id });
       if (userInstance.type === 'User') {
         await database.User.update({ _id: user._id }, {
           $set: {
             tel_number: input.telNumber ? input.telNumber : userInstance.telNumber,
-            citizen_card_image: input.citizenCardImageUrl,
+            citizen_card_image: citizenCardImageUrl,
             coseller_register_status: 'Pending',
           },
         });

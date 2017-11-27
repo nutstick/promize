@@ -16,13 +16,6 @@ input AccountInput {
   password: String!
 }
 
-input Upload {
-  name: String!
-  type: String!
-  size: Int!
-  path: String!
-}
-
 input CreateProductInput {
   name: String!
   description: String
@@ -111,7 +104,7 @@ input PaymentMethodInput {
 # CoSeller Register input
 input CoSellerRegisterInput {
   telNumber: String!
-  citizenCardImageUrl: String!
+  citizenCardImage: Upload!
 }
 
 input ApproveUserToCosellerINput {
@@ -143,9 +136,9 @@ type Mutation {
   editPaymentMethod(paymentMethod: PaymentMethodInput!): UserType
   
   # Register to be a CoSeller
-  registerToBeCoSeller(input: CoSellerRegisterInput!): UserType
+  registerToBeCoSeller(input: CoSellerRegisterInput!): User
   # Approve User to CoSeller
-  approveUserToCoseller(user_id: ID!): UserType
+  approveUserToCoseller(user_id: ID!): CoSeller
 
   # Create User
   createUser(input: CreateUserInput!): UserType
