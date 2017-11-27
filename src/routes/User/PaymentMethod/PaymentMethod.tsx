@@ -53,7 +53,6 @@ export class PaymentMethod extends React.Component<PaymentMethod.Props> {
                   expiry={' '}
                   cvc={' '}
                 />
-                //paymentMethod.creditCardNumber
               ))}
             </div>
           )
