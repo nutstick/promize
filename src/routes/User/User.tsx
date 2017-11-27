@@ -201,7 +201,7 @@ export class User extends React.Component<User.Props> {
               </div>
             </Grid.Column>
 
-            <Grid.Column mobile={16} tablet={10} computer={12}>
+            <Grid.Column mobile={16} tablet={10} computer={12} stretched>
               <div className={s.content}>
                 {!loading && !error && this.props.data.me && this.props.data.me._id === user._id ? (
                   <Switch>
