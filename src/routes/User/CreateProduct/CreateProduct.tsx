@@ -230,6 +230,7 @@ export class CreateProduct extends React.Component<CreateProduct.Props, CreatePr
                 }
               </Form.Field>
             </div>
+            <br/>
             <div key="colors">
               <Form.Field>
                 <label>Color</label>
@@ -254,6 +255,7 @@ export class CreateProduct extends React.Component<CreateProduct.Props, CreatePr
                 }
               </Form.Field>
             </div>
+            <br/>
 
             <Form.Group inline>
               <Form.Input
