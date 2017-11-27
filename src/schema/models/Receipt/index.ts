@@ -40,8 +40,6 @@ class Receipt extends Instance<IReceiptDocument, Receipt> implements IReceiptDoc
 
     @Property(String, true)
     product: string;
-    @Property(String, true)
-    productOwner: string;
 
     @Property(String, true)
     size: string;
