@@ -2,6 +2,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { ChildProps } from 'react-apollo';
 import { RouteComponentProps } from 'react-router-dom';
+import { Card } from 'semantic-ui-react';
 import { graphql } from '../../../apollo/graphql';
 import { IPaymentMethod } from '../../../schema/types/User';
 import * as PAYMENTMETHODSQUERY from './../../../apollo/PaymentMethodsQuery.gql';
@@ -36,6 +37,14 @@ export class PaymentMethod extends React.Component<PaymentMethod.Props> {
     return (
       <div className={s.root} style={{ padding: '3rem' }}>
         <h1 className={s.header}>Manange Payment Method</h1>
+
+        {this.props.data.me.paymentMethods.map((paymentMethod) => (
+          <Card>
+              <h4>Visa card</h4>
+              {paymentMethod.creditCardNumber}
+              <br/>
+          </Card>
+        ))}
       </div>
     );
   }
