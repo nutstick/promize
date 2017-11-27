@@ -3,6 +3,7 @@ import * as mkdirp from 'mkdirp';
 import * as shortid from 'shortid';
 import { uploadDir } from '../../../config';
 import { IResolver } from '../index';
+import { MESSAGE_ADDED, pubsub } from '../subscriptions';
 
 // Ensure upload directory exists
 mkdirp.sync(uploadDir);
@@ -271,6 +272,38 @@ const resolver: IResolver<any, any> = {
       return await database.User.findOne({ _id: user._id });
     },
 
+    async createTradeRoom(_, { input }, { database, user }) {
+      return await database.Traderoom.insert({
+        ...input,
+      });
+    },
+
+    async editTradeRoom(_, { input: {id, ...input } }, { database, user }) {
+      return await database.Traderoom.update({ _id: id }, {
+        ...input,
+      });
+    },
+
+    async confirmBuyInTradeRoom(_, { id }, { database, user }) {
+      return await database.Traderoom.update({ _id: id }, {
+        $set: {
+          buy_confirm: true,
+          buy_confirm_at: new Date(),
+        },
+      });
+    },
+
+    async addMessage(_, { content, traderoom }, { database, user }) {
+      const message = await database.Message.create({
+        traderoom,
+        content,
+        owner: user._id,
+      });
+
+      pubsub.publish(MESSAGE_ADDED, message);
+
+      return message;
+    },
   },
 };
 

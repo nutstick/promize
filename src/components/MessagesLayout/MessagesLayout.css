@@ -1,0 +1,86 @@
+@import '../variables.css';
+
+.root {
+  overflow: hidden;
+  position: fixed;
+  height: 750px;
+  max-height: calc(100vh - 160px);
+  width: 100%;
+  max-width: 425px;
+  bottom: 6rem;
+  right: 2rem;
+  background: #fff;
+  box-shadow: 0 1px 3px 3px rgba(0,0,0,.05);
+  border-radius: 4px;
+
+  z-index: var(--messager-depth);
+}
+
+.header {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  background: var(--dark-grey);
+
+  > .close {
+    line-height: 1em;
+    padding: 1em;
+    color: #fff;
+  }
+}
+
+.tradeRoomsWrapper {
+  display: flex;
+  flex-direction: row;
+  padding: 0.8em;
+  width: 100%;
+  overflow-y: auto;
+  border-bottom: 1px solid #ccc;
+
+  > .tradeRoomIcon {
+    width: 60px;
+    display: block;
+    height: 60px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    margin-right: 1em;
+  }
+}
+
+.messagesWrapper {
+  display: block;
+  height: calc(100% - 60px - 4.6em);
+  width: 100%;
+
+  .messages {
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+  }
+  .inputWrapper {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .textInput {
+    display: block;
+  }
+  .textInput input {
+    border-radius: 0 !important;
+    border: 0 !important;
+    border-top: 1px solid #ccc !important;
+    padding: 1.3em 1em !important;
+  }
+}
+
+.message {
+  background-color: #0084ff;
+  color: #fff;
+  max-width: 70%;
+  margin: 1px 0;
+  padding: 6px 12px;
+}

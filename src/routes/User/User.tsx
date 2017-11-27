@@ -75,176 +75,170 @@ export class User extends React.Component<User.Props> {
     return (
       <div className={s.root}>
         <Card className={s.mainContent}>
-          <Grid>
-            <Grid.Column mobile={16} tablet={6} computer={4}>
-              <div className={s.sidebar}>
-                {
-                  loading || error ? <div className={s.profile}>
-                    <div className={s.avatarLoading} />
-                    <div className={s.nameLoading} />
-                  </div> :
-                    <div className={s.profile}>
-                      <Image centered rounded size="small" src={user.avatar} className={s.profileImage} />
-                      <div className={s.name}>
-                        {this.name(user)}
-                      </div>
-                      <div className={s.detail}>
-                        {user.account && user.account.email ? ('Email: ' + user.account.email) : ''}
-                        {(user as ICoSeller).coseller && 'CoSeller'}
-                        <br />
-                        {(user as ICoSeller).telNumber}
-                        <br />
-                        Registration date: {this.registerTime(user.createAt)}
-                        <Divider section />
-                      </div>
-                    </div>
-                }
-                {
-                  loading || error ? <div className={s.menu}></div> :
-                    <div className={s.menu}>
-                      <List selection verticalAlign="middle">
-                        {/* Menu Select*/}
-                        {this.props.data.me._id === user._id ? (
-                          <div>
-                            <ul>
-                              <li>
-                                <NavLink
-                                  to={`/users/${this.props.match.params.id}`}
-                                  exact
-                                  activeClassName={s.active}>
-                                  <Icon name="feed" />
-                                  My Activities
+          <div className={s.sidebar}>
+            {
+              loading || error ? <div className={s.profile}>
+                <div className={s.avatarLoading} />
+                <div className={s.nameLoading} />
+              </div> :
+                <div className={s.profile}>
+                  <Image centered rounded size="small" src={user.avatar} className={s.profileImage} />
+                  <div className={s.name}>
+                    {this.name(user)}
+                  </div>
+                  <div className={s.detail}>
+                    {user.account && user.account.email ? ('Email: ' + user.account.email) : ''}
+                    {(user as ICoSeller).coseller && 'CoSeller'}
+                    <br />
+                    {(user as ICoSeller).telNumber}
+                    <br />
+                    Registration date: {this.registerTime(user.createAt)}
+                    <Divider section />
+                  </div>
+                </div>
+            }
+            {
+              loading || error ? <div className={s.menu}></div> :
+                <div className={s.menu}>
+                  <List selection verticalAlign="middle">
+                    {/* Menu Select*/}
+                    {this.props.data.me._id === user._id ? (
+                      <div>
+                        <ul>
+                          <li>
+                            <NavLink
+                              to={`/users/${this.props.match.params.id}`}
+                              exact
+                              activeClassName={s.active}>
+                              <Icon name="feed" />
+                              My Activities
                                 </NavLink>
-                              </li>
-                              {(user as ICoSeller).coseller &&
-                                <li>
-                                  <NavLink
-                                    to={`/users/${this.props.match.params.id}/products`}
-                                    activeClassName={s.active}>
-                                    <Icon name="shopping basket" />
-                                    My Products
+                          </li>
+                          {(user as ICoSeller).coseller &&
+                            <li>
+                              <NavLink
+                                to={`/users/${this.props.match.params.id}/products`}
+                                activeClassName={s.active}>
+                                <Icon name="shopping basket" />
+                                My Products
                                   </NavLink>
-                                </li>
-                              }
+                            </li>
+                          }
 
-                              {(user as ICoSeller).coseller &&
-                                <li>
-                                  <NavLink
-                                    to={`/users/${this.props.match.params.id}/buyorders`}
-                                    activeClassName={s.active}>
-                                    <Icon name="ordered list" />
-                                    Product Orders
+                          {(user as ICoSeller).coseller &&
+                            <li>
+                              <NavLink
+                                to={`/users/${this.props.match.params.id}/buyorders`}
+                                activeClassName={s.active}>
+                                <Icon name="ordered list" />
+                                Product Orders
                                   </NavLink>
-                                </li>
-                              }
-                              <li>
-                                <NavLink
-                                  to={`/users/${this.props.match.params.id}/receipts`}
-                                  activeClassName={s.active}>
-                                  <Icon name="barcode" />
-                                  Order receipts
+                            </li>
+                          }
+                          <li>
+                            <NavLink
+                              to={`/users/${this.props.match.params.id}/receipts`}
+                              activeClassName={s.active}>
+                              <Icon name="barcode" />
+                              Order receipts
                                 </NavLink>
-                              </li>
-                              <li>
-                                <NavLink
-                                  to={`/users/${this.props.match.params.id}/account`}
-                                  activeClassName={s.active}>
-                                  <Icon name="settings" />
-                                  Account setting
+                          </li>
+                          <li>
+                            <NavLink
+                              to={`/users/${this.props.match.params.id}/account`}
+                              activeClassName={s.active}>
+                              <Icon name="settings" />
+                              Account setting
                                 </NavLink>
-                              </li>
-                              <li>
-                                <NavLink
-                                  to={`/users/${this.props.match.params.id}/payment`}
-                                  activeClassName={s.active}>
-                                  <Icon name="payment" />
-                                  Payment setting
+                          </li>
+                          <li>
+                            <NavLink
+                              to={`/users/${this.props.match.params.id}/payment`}
+                              activeClassName={s.active}>
+                              <Icon name="payment" />
+                              Payment setting
                                 </NavLink>
-                              </li>
-                              {!(user as ICoSeller).coseller &&
-                                <li>
-                                  <NavLink
-                                    to={`/users/${this.props.match.params.id}/coseller`}
-                                    activeClassName={s.active}>
-                                    <Icon name="lock" />
-                                    Co-Seller
+                          </li>
+                          {!(user as ICoSeller).coseller &&
+                            <li>
+                              <NavLink
+                                to={`/users/${this.props.match.params.id}/coseller`}
+                                activeClassName={s.active}>
+                                <Icon name="lock" />
+                                Co-Seller
                                   </NavLink>
-                                </li>
-                              }
-                            </ul>
-                          </div>
-                        ) : (user as ICoSeller).coseller ? (
+                            </li>
+                          }
+                        </ul>
+                      </div>
+                    ) : (user as ICoSeller).coseller ? (
+                      <div>
+                        <List.Item>
+                          <List.Content>
+                            <NavLink
+                              to={`/users/${this.props.match.params.id}`}
+                              activeClassName={s.active}>
+                              <Icon name="feed" />
+                              Activities
+                            </NavLink>
+                          </List.Content>
+                        </List.Item>
+                        <List.Item>
+                          <List.Content>
+                            <NavLink
+                              to={`/users/${this.props.match.params.id}/products`}
+                              activeClassName={s.active}>
+                              <Icon name="shopping bag" />
+                              Products
+                            </NavLink>
+                          </List.Content>
+                        </List.Item>
+                      </div>
+                    ) : (
                           <div>
-                            <List.Item>
-                              <List.Content>
-                                <NavLink
-                                  to={`/users/${this.props.match.params.id}`}
-                                  activeClassName={s.active}>
-                                  <Icon name="feed" />
-                                  Activities
-                            </NavLink>
-                              </List.Content>
-                            </List.Item>
-                            <List.Item>
-                              <List.Content>
-                                <NavLink
-                                  to={`/users/${this.props.match.params.id}/products`}
-                                  activeClassName={s.active}>
-                                  <Icon name="shopping bag" />
-                                  Products
-                            </NavLink>
-                              </List.Content>
-                            </List.Item>
+                            <NavLink to={`/users/${this.props.match.params.id}`}>Activities</NavLink>
                           </div>
-                        ) : (
-                              <div>
-                                <NavLink to={`/users/${this.props.match.params.id}`}>Activities</NavLink>
-                              </div>
-                            )}
-                      </List>
-                    </div>
-                }
-              </div>
-            </Grid.Column>
-
-            <Grid.Column mobile={16} tablet={10} computer={12} className={s.content}>
-              <div >
-                {!loading && !error && this.props.data.me && this.props.data.me._id === user._id ? (
+                        )}
+                  </List>
+                </div>
+            }
+          </div>
+          <div className={s.content}>
+            {!loading && !error && this.props.data.me && this.props.data.me._id === user._id ? (
+              <Switch>
+                <Route exact path="/users/:id" component={Activities} />
+                {(user as ICoSeller).coseller && <Route
+                  exact
+                  path="/users/:id/products"
+                  render={(props) => (<Products self {...props} />)} />}
+                <Route path="/users/:id/products/create" component={CreateProduct} />
+                {(user as ICoSeller).coseller && <Route path="/users/:id/buyorders" component={BuyOrderReceipts} />}
+                <Route path="/users/:id/receipts" component={OrderReceipts} />
+                <Route path="/users/:id/account" component={Account} />
+                <Route path="/users/:id/payment" component={PaymentMethod} />
+                {!(user as ICoSeller).coseller && <Route path="/users/:id/coseller" component={BecomeCoSeller} />}
+                <Route render={() => (
+                  <Redirect to={`/user/${this.props.match.params.id}`} />
+                )} />
+              </Switch>
+            ) : !loading && !error && (user as ICoSeller).coseller ? (
+              <Switch>
+                <Route exact path="/users/:id" component={Activities} />
+                <Route path="/users/:id/products" component={Products} />
+                <Route render={() => (
+                  <Redirect to={`/user/${this.props.match.params.id}`} />
+                )} />
+              </Switch>
+            ) : (
                   <Switch>
                     <Route exact path="/users/:id" component={Activities} />
-                    {(user as ICoSeller).coseller && <Route
-                      exact
-                      path="/users/:id/products"
-                      render={(props) => (<Products self {...props} />)} />}
-                    <Route path="/users/:id/products/create" component={CreateProduct} />
-                    {(user as ICoSeller).coseller && <Route path="/users/:id/buyorders" component={BuyOrderReceipts} />}
-                    <Route path="/users/:id/receipts" component={OrderReceipts} />
-                    <Route path="/users/:id/account" component={Account} />
-                    <Route path="/users/:id/payment" component={PaymentMethod} />
-                    {!(user as ICoSeller).coseller && <Route path="/users/:id/coseller" component={BecomeCoSeller} />}
                     <Route render={() => (
                       <Redirect to={`/user/${this.props.match.params.id}`} />
                     )} />
                   </Switch>
-                ) : !loading && !error && (user as ICoSeller).coseller ? (
-                  <Switch>
-                    <Route exact path="/users/:id" component={Activities} />
-                    <Route path="/users/:id/products" component={Products} />
-                    <Route render={() => (
-                      <Redirect to={`/user/${this.props.match.params.id}`} />
-                    )} />
-                  </Switch>
-                ) : (
-                      <Switch>
-                        <Route exact path="/users/:id" component={Activities} />
-                        <Route render={() => (
-                          <Redirect to={`/user/${this.props.match.params.id}`} />
-                        )} />
-                      </Switch>
-                    )}
-              </div>
-            </Grid.Column>
-          </Grid>
+                )}
+          </div>
+
         </Card>
       </div>
     );

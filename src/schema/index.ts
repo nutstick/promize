@@ -14,17 +14,22 @@ import * as OrderReceipt from './types/OrderReceipt';
 import * as Pagination from './types/Pagination';
 import * as Product from './types/Product';
 import * as Query from './types/Query';
+import * as Subscription from './types/Subscription';
+import * as Traderoom from './types/Traderoom';
 import * as User from './types/User';
+import { MessageContentInput } from './Message';
 
 const schema = [print(SchemaType)];
 const modules = [
-  Pagination,
-  User,
   IntlMessage,
-  Query,
-  Product,
-  OrderReceipt,
   Mutation,
+  OrderReceipt,
+  Pagination,
+  Product,
+  Query,
+  Subscription,
+  Traderoom,
+  User,
 ];
 
 const OldAddressInput = new GraphQLInputObjectType({
@@ -131,6 +136,7 @@ const resolvers = Object.assign({
   AddressInputCreate,
   PaymentInputCreate,
   Upload: GraphQLUpload,
+  MessageContentInput,
 },
   ...(modules.map((m) => m.resolver).filter((res) => res)),
 );
