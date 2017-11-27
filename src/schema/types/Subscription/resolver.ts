@@ -7,7 +7,10 @@ const resolver: ISubsciption = {
   Subscription: {
     messageAdded: {
       resolve(message) {
-        return message;
+        if (message._id) {
+          return message;
+        }
+        return null;
       },
       subscribe: withFilter(
         () => pubsub.asyncIterator(MESSAGE_ADDED),

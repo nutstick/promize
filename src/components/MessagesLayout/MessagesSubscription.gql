@@ -18,7 +18,7 @@ subscription messageAdded($id: ID!) {
         command
         arguments
       }
-      createAt
     }
+    createAt
   }
 }

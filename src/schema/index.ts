@@ -16,6 +16,7 @@ import * as Query from './types/Query';
 import * as Subscription from './types/Subscription';
 import * as Traderoom from './types/Traderoom';
 import * as User from './types/User';
+import { MessageContentInput } from './Message';
 
 const schema = [print(SchemaType)];
 const modules = [
@@ -133,6 +134,7 @@ const resolvers = Object.assign({
   Keyword,
   AddressInputCreate,
   PaymentInputCreate,
+  MessageContentInput,
 },
   ...(modules.map((m) => m.resolver).filter((res) => res)),
 );

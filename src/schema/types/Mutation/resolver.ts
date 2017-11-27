@@ -164,12 +164,31 @@ const resolver: IResolver<any, any> = {
       return await database.User.findOne({ _id: id });
     },
 
-    async addMessage(_, { text, traderoom }, { database, user }) {
+    async createTradeRoom(_, { input }, { database, user }) {
+      return await database.Traderoom.insert({
+        ...input,
+      });
+    },
+
+    async editTradeRoom(_, { input: {id, ...input } }, { database, user }) {
+      return await database.Traderoom.update({ _id: id }, {
+        ...input,
+      });
+    },
+
+    async confirmBuyInTradeRoom(_, { id }, { database, user }) {
+      return await database.Traderoom.update({ _id: id }, {
+        $set: {
+          buy_confirm: true,
+          buy_confirm_at: new Date(),
+        },
+      });
+    },
+
+    async addMessage(_, { content, traderoom }, { database, user }) {
       const message = await database.Message.create({
         traderoom,
-        content: {
-          text,
-        },
+        content,
         owner: user._id,
       });
 

@@ -3,6 +3,8 @@ import { Collection, Instance, ObjectID, Property } from 'iridium';
 
 interface ITraderoomDocument {
     _id?: string;
+
+    participants: string[];
     order_product?: string;
     detail?: string;
     price: number;
@@ -11,7 +13,7 @@ interface ITraderoomDocument {
     size?: string;
     color?: string;
 
-    buy_confirm: boolean;
+    buy_confirm?: boolean;
     buy_confirm_at?: Date;
 
     createAt?: Date;
@@ -22,12 +24,14 @@ interface ITraderoomDocument {
 class Traderoom extends Instance<ITraderoomDocument, Traderoom> implements ITraderoomDocument {
     @ObjectID
     _id: string;
+    @Property([String], true)
+    participants: string[];
 
     @Property(String, false)
     order_product: string;
     @Property(String, false)
     detail: string;
-    @Property(Number, true)
+    @Property(Number, false)
     price: number;
 
     @Property(Number, false)

@@ -22,6 +22,7 @@
     "apollo-link": "^1.0.3",
     "apollo-link-http": "^1.2.0",
     "apollo-link-state": "^0.0.4",
+    "apollo-link-ws": "^1.0.1",
     "apollo-server-express": "^1.2.0",
     "autoprefixer": "^7.1.6",
     "babel-jest": "^21.2.0",

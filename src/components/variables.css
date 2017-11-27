@@ -17,6 +17,7 @@
    * Z-index
    * ======================================================================== */
   --login-depth: 100;
+  --messager-depth: 99;
 
   /*
    * Media queries breakpoints

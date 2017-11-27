@@ -354,10 +354,10 @@ if (!module.hot) {
 if (module.hot) {
   app.hot = module.hot;
 
-  // module.hot.accept(['./routes', './schema']);
   module.hot.accept();
+  // module.hot.accept();
 
-  module.hot.accept(['./core/subscriptions'], () => {
+  module.hot.accept(() => {
     try {
       addGraphQLSubscriptions(websocketServer);
       // tslint:disable-next-line:no-console
@@ -367,7 +367,6 @@ if (module.hot) {
       console.error(error.stack);
     }
   });
-  
 
   module.hot.dispose(() => {
     console.log('close');

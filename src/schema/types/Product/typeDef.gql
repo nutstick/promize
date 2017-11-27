@@ -68,7 +68,7 @@ type Product implements Node {
   createAt: Date!
   updateAt: Date!
 
-  # testHot: String!
+  testHot: String!
 
   suggestProducts: [Product]
 }

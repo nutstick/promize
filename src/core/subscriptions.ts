@@ -1,16 +1,20 @@
 import { execute, subscribe } from 'graphql';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
-import { Schema } from '../schema';
+import { database } from '../schema/models/index';
 
 let subscriptionServer;
 
 const addSubscriptions = (httpServer) => {
+  const { Schema } = require('../schema');
   subscriptionServer = new SubscriptionServer({
     execute,
     subscribe,
     schema: Schema,
     onConnect(connectionParams, webSocket) {
-      return ({ connectionParams });
+      return {
+        connectionParams,
+        database,
+      };
     },
   }, {
       server: httpServer,
@@ -20,7 +24,6 @@ const addSubscriptions = (httpServer) => {
 };
 
 const addGraphQLSubscriptions = (httpServer) => {
-  console.log('module', module.hot.data);
   if (module.hot && module.hot.data) {
     const prevServer = module.hot.data.subscriptionServer;
     if (prevServer && prevServer.wsServer) {

@@ -6,7 +6,7 @@ import * as React from 'react';
 import { QueryProps } from 'react-apollo';
 import { ChildProps } from 'react-apollo/types';
 import { Link } from 'react-router-dom';
-import { Image, Loader } from 'semantic-ui-react';
+import { Form, Icon, Image, Input, Loader, Button } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
 import { ICommandContent, IMessage, IPictureContent, ITextContent } from '../../schema/types/Traderoom/index';
 import { IUser } from '../../schema/types/User/index';
@@ -38,6 +38,7 @@ namespace MessagesLayout {
   export interface State {
     activeTradeRoom: string;
     messages?: IMessage[];
+    inputValue: string;
   }
 }
 
@@ -58,11 +59,16 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
 
     this.state = {
       activeTradeRoom: null,
+      messages: [],
+      inputValue: '',
     };
   }
 
   private onTradeRoomClick(traderoom) {
-    this.unsubscribe();
+    const { state, setState } = this;
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
 
     this.setState({
       activeTradeRoom: traderoom,
@@ -75,7 +81,7 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
       },
     }).then((results: any) => {
       this.setState({
-        messages: results.me.traderoom.messages,
+        messages: results.data.me.traderoom.messages,
       });
 
       this.unsubscribe = this.context.client.subscribe({
@@ -84,48 +90,83 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
           id: this.state.activeTradeRoom,
         },
       }).subscribe({
-        next({ data }) {
-          if (this.state.messages.find((message) => message._id === data._id)) {
+        next: function({ data: { messageAdded } }) {
+          if (!this.state.messages.find((message) => message._id === messageAdded._id)) {
             this.setState({
-              messages: this.state.messages.concat([data]),
+              messages: this.state.messages.concat([messageAdded]),
             });
           }
-        },
+        }.bind(this),
       }).unsubscribe;
     });
   }
 
   public render() {
-    console.log(this.context.client.subscribe);
     const { loading: traderoomsLoading, error: traderoomsError, me } = this.props.traderooms;
     return (
       <div className={s.root}>
+        <div className={s.header}>
+          <div className={s.close}><Icon name="x"/></div>
+        </div>
         <div className={s.tradeRoomsWrapper}>
           {
             !traderoomsLoading && !traderoomsError && me ? me.traderooms.length ?
             me.traderooms.map((traderoom) => (
-              <a href="#" onClick={this.onTradeRoomClick.bind(this, traderoom._id)}>
-                <Image avatar src={traderoom.participants[0].avatar} />
+              <a href="#" className={s.tradeRoomIcon} onClick={this.onTradeRoomClick.bind(this, traderoom._id)}>
+                <Image avatar src={traderoom.participants.find((user) => user._id !== me._id).avatar} />
               </a>
             )) : <div></div> : <div><Loader active /></div>
           }
         </div>
         <div className={s.messagesWrapper}>
         {
-          this.state.activeTradeRoom && !this.props.messages.loading && this.props.messages.error ?
-            this.props.messages.me.traderoom.messages.map((message) => (
-              <div className={cx(s.message, { [s.own]: message.owner._id === me._id })}>
-                {(message.content as ITextContent).text || ((message.content as IPictureContent).pictureUrl && (
-                  <Image src={(message.content as IPictureContent).pictureUrl}></Image>
-                )) || ((message.content as ICommandContent).command && (
-                  <div>
-                    {(message.content as ICommandContent).command}
-                    {(message.content as ICommandContent).arguments.join(' ')}
+          this.state.activeTradeRoom ? (
+            <div>
+              <div className={s.messages}>
+                {this.state.messages && me ? this.state.messages.map((message) => (
+                  <div className={cx(s.message, { [s.own]: message.owner._id === me._id })}>
+                    {(message.content as ITextContent).text || ((message.content as IPictureContent).pictureUrl && (
+                      <Image src={(message.content as IPictureContent).pictureUrl}></Image>
+                    )) || ((message.content as ICommandContent).command && (
+                      <div>
+                        {(message.content as ICommandContent).command}
+                        {(message.content as ICommandContent).arguments.join(' ')}
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )) : <div><Loader active /></div>}
               </div>
-            ),
-          ) : this.state.activeTradeRoom ? <div><Loader active /></div> :
+              <Form className={s.inputWrapper} onSubmit={() => {
+                this.props.mutate({
+                  variables: {
+                    traderoom: this.state.activeTradeRoom,
+                    content: {
+                      text: this.state.inputValue,
+                    },
+                  },
+                });
+                this.setState({
+                  inputValue: '',
+                });
+              }}>
+                <div>
+                  <Icon name="picture"/>
+                  <Icon name="computer"/>
+                </div>
+                <Form.Input
+                  className={s.textInput}
+                  action={{ icon: 'send' }}
+                  placeholder="Type message..."
+                  value={this.state.inputValue}
+                  onChange={(e, { value }) => {
+                    this.setState({
+                      inputValue: value,
+                    });
+                  }}
+                />
+              </Form>
+            </div>
+          ) :
           <div>
             Select Trade Room
           </div>
