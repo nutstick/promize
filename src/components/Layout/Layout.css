@@ -26,6 +26,7 @@ a {
 
 :global(#app) {
   position: relative;
+  height: 100%;
 }
 
 /*
@@ -177,4 +178,11 @@ textarea {
   h3 {
     page-break-after: avoid;
   }
+}
+
+.layout {
+  height: inherit;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
 }
