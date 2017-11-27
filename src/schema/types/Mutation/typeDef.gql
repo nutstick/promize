@@ -129,7 +129,7 @@ type Mutation {
   # Edit payment method
   editPaymentMethod(paymentMethod: PaymentMethodInput!): UserType
   # Register to be a CoSeller
-  registerToBeCoSeller(input: CoSellerRegisterInput!): User
+  registerToBeCoSeller(input: CoSellerRegisterInput!): UserType
 
   # Create User
   createUser(input: CreateUserInput!): UserType

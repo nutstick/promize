@@ -9,7 +9,6 @@ const resolver: IResolver<any, any> = {
         promotion_start: promotionStart,
         promotion_end: promotionEnd,
         owner: user._id,
-
       });
     },
 
@@ -165,10 +164,10 @@ const resolver: IResolver<any, any> = {
           id, firstName, middleName, lastName, gender, telNumber, password, avatar,
         },
       },
-      { database },
+      { database, user },
     ) {
-      const userInstance = await database.User.findOne({ _id: id });
-      await database.User.update({ _id: id }, {
+      const userInstance = await database.User.findOne({ _id: user._id });
+      await database.User.update({ _id: user._id }, {
         $set: {
           first_name: firstName ? firstName : userInstance.first_name,
           middle_name: middleName ? middleName : userInstance.middle_name,
@@ -178,7 +177,20 @@ const resolver: IResolver<any, any> = {
           avatar: avatar ? avatar : userInstance.avatar,
         },
       });
-      return await database.User.findOne({ _id: id });
+      return await database.User.findOne({ _id: user._id });
+    },
+
+    async registerToBeCoSeller(_, { input }, { database, user }) {
+      const userInstance = await database.User.findOne({ _id: user._id });
+      console.log(userInstance);
+      await database.User.update({ _id: user._id }, {
+        $set: {
+          tel_number: input.telNumber ? input.telNumber : userInstance.telNumber,
+          citizen_card_image: input.citizenCardImageUrl,
+          type: 'CoSeller',
+        },
+      });
+      return await database.User.findOne({ _id: user._id });
     },
   },
 };
