@@ -80,4 +80,4 @@ export const auth = {
   },
 };
 
-export const uploadDir = path.resolve(__dirname, './public/images');
+export const uploadDir = './public/images';
