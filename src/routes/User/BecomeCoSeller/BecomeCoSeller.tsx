@@ -28,6 +28,7 @@ namespace BecomeCoSeller {
     upload: boolean;
     citizenCardImage?: File;
     telNumber?: string;
+    pending: boolean;
   }
 }
 
@@ -42,6 +43,7 @@ export class BecomeCoSeller extends React.Component<BecomeCoSeller.Props, Become
 
     this.state = {
       upload: false,
+      pending: false,
     };
   }
 
@@ -58,6 +60,10 @@ export class BecomeCoSeller extends React.Component<BecomeCoSeller.Props, Become
                   citizenCardImage: this.state.citizenCardImage,
                 },
               },
+            });
+            this.setState({
+              upload: false,
+              pending: true,
             });
           }}>
             <Card>
@@ -99,9 +105,13 @@ export class BecomeCoSeller extends React.Component<BecomeCoSeller.Props, Become
                 </div>
               </Card.Content>
             </Card>
-          </Form> : <Button color="orange" onClick={() => this.setState({
-            upload: true,
-          })}>Become CoSeller</Button>
+          </Form> : <Button
+            className={s.button}
+            color="orange"
+            disabled={this.state.pending}
+            onClick={() => this.setState({
+              upload: true,
+            })}>{this.state.pending ? 'Pending' : 'Become CoSeller'}</Button>
         }
 
         <h1 className={s.header}>Co-Seller</h1>

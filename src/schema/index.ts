@@ -7,6 +7,7 @@ import { print } from 'graphql/language';
 import { GraphQLInt } from 'graphql/type/scalars';
 import { UnionInputType } from '../core/UnionInputType';
 import { Keyword } from './Keyword';
+import { MessageContentInput } from './Message';
 import * as SchemaType from './schema.gql';
 import * as IntlMessage from './types/IntlMessage';
 import * as Mutation from './types/Mutation';
@@ -17,7 +18,6 @@ import * as Query from './types/Query';
 import * as Subscription from './types/Subscription';
 import * as Traderoom from './types/Traderoom';
 import * as User from './types/User';
-import { MessageContentInput } from './Message';
 
 const schema = [print(SchemaType)];
 const modules = [

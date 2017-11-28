@@ -72,7 +72,15 @@ export class User extends React.Component<User.Props> {
 
   public render() {
     const { user, loading, error } = this.props.data;
-    return (
+    return !loading && !error && !user ? (
+      <div className={s.root}>
+        <Card className={s.mainContent}>
+          <div className={s.notfound}>
+            User not found.
+          </div>
+        </Card>
+      </div>
+    ) : (
       <div className={s.root}>
         <Card className={s.mainContent}>
           <div className={s.sidebar}>
@@ -102,7 +110,7 @@ export class User extends React.Component<User.Props> {
                 <div className={s.menu}>
                   <List selection verticalAlign="middle">
                     {/* Menu Select*/}
-                    {this.props.data.me._id === user._id ? (
+                    {this.props.data.me && this.props.data.me._id === user._id ? (
                       <div>
                         <ul>
                           <li>
@@ -218,7 +226,7 @@ export class User extends React.Component<User.Props> {
                 <Route path="/users/:id/payment" component={PaymentMethod} />
                 {!(user as ICoSeller).coseller && <Route path="/users/:id/coseller" component={BecomeCoSeller} />}
                 <Route render={() => (
-                  <Redirect to={`/user/${this.props.match.params.id}`} />
+                  <Redirect to={`/users/${this.props.match.params.id}`} />
                 )} />
               </Switch>
             ) : !loading && !error && (user as ICoSeller).coseller ? (
@@ -226,15 +234,15 @@ export class User extends React.Component<User.Props> {
                 <Route exact path="/users/:id" component={Activities} />
                 <Route path="/users/:id/products" component={Products} />
                 <Route render={() => (
-                  <Redirect to={`/user/${this.props.match.params.id}`} />
+                  <Redirect to={`/users/${this.props.match.params.id}`} />
                 )} />
               </Switch>
             ) : (
                   <Switch>
                     <Route exact path="/users/:id" component={Activities} />
-                    <Route render={() => (
-                      <Redirect to={`/user/${this.props.match.params.id}`} />
-                    )} />
+                    {!loading && !error && <Route render={() => (
+                      <Redirect to={`/users/${this.props.match.params.id}`} />
+                    )} />}
                   </Switch>
                 )}
           </div>
