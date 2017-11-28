@@ -8,6 +8,7 @@
  */
 
 /* eslint-disable max-len */
+import * as path from 'path';
 
 if (process.env.BROWSER) {
   throw new Error(
@@ -79,4 +80,4 @@ export const auth = {
   },
 };
 
-export const uploadDir = './public/images';
+export const uploadDir = path.resolve(__dirname, './public/images');

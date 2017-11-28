@@ -112,7 +112,7 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
         },
       }).subscribe({
         next: function({ data: { messageAdded } }) {
-          if (!this.state.messages.find((message) => message._id === messageAdded._id)) {
+          if (messageAdded && !this.state.messages.find((message) => message._id === messageAdded._id)) {
             this.setState({
               messages: this.state.messages.concat([messageAdded]),
             });
@@ -123,6 +123,7 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
   }
 
   public render() {
+    console.log(this.state.messages);
     const { loading: traderoomsLoading, error: traderoomsError, me } = this.props.traderooms;
     return (
       <div className={s.root}>

@@ -56,22 +56,30 @@
 }
 
 .content {
-  background-color: #dadada;
+  background-color: rgba(0, 0, 0, 0.01);
   flex: 7 0 auto;
 }
 
 
 .active {
-  font-weight: bold;
-  color: rgb(231, 53, 53);
+  color: #ffffff;
+  background: var(--primary-color);
+  border-radius: 7px;
 }
 
 li {
   width: 100%;
   margin: 0;
   display: block;
-  padding: 1rem;
-  border: 1px solid #ece8e8;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 1rem;
+  > a {
+    padding: 1rem;
+    color: var(--dark-grey);
+    display: block;
+  }
+  // border: 1px solid #ece8e8;
 }
 
 li:hover {
@@ -100,7 +108,7 @@ ul {
   display: inline-block;
   padding: 1rem;
   cursor: pointer;
-  border: 1px solid #ece8e8;
+  // border: 1px solid #ece8e8;
   border-radius: 5px;
   }
 }
