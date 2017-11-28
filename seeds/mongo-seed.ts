@@ -59,7 +59,7 @@ export async function seed(database: Database) {
         email: m.email,
         password: m.password,
       },
-      avatar: m.url,
+      avatar: 'https://www.realmadrid.com/img/cuadrada_300px/cristiano1.jpg',
       type: 'CoSeller',
     });
 
@@ -104,15 +104,15 @@ export async function seed(database: Database) {
             email: m.email,
             password: m.password,
           },
-          avatar: m.url,
+          avatar: 'https://www.realmadrid.com/img/cuadrada_300px/cristiano1.jpg',
           type: 'User',
         });
-        await database.Receipt.create({
-          buyer: user._id,
-          product: product._id,
-          size: product.sizes[0]._id,
-          color: product.colors[0]._id,
-        });
+        // await database.Receipt.create({
+        //   buyer: user._id,
+        //   product: product._id,
+        //   size: product.sizes[0]._id,
+        //   color: product.colors[0]._id,
+        // });
       }
     }
   }
