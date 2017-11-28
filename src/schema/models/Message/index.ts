@@ -1,4 +1,3 @@
-import * as Iridium from 'iridium';
 import { Collection, Instance, ObjectID, Property, Validate } from 'iridium';
 
 interface ITextMessage {

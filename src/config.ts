@@ -7,9 +7,6 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-/* eslint-disable max-len */
-import * as path from 'path';
-
 if (process.env.BROWSER) {
   throw new Error(
     'Do not import `config.ts` from inside the client-side code.',

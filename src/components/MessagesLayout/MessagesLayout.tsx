@@ -1,11 +1,9 @@
-import { ApolloClient } from 'apollo-client';
 import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import { ChildProps, MutationFunc, QueryProps } from 'react-apollo';
-import { Link } from 'react-router-dom';
-import { Button, Form, Icon, Image, Input, Loader } from 'semantic-ui-react';
+import { Form, Icon, Image, Loader } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
 import { TradeRoomModalQuery } from '../../apollo/tradeRoomModal/index';
 import * as SETTRADEROOMMODALMUTATION from '../../apollo/tradeRoomModal/SetTradeRoomModal.gql';
@@ -83,7 +81,6 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
   }
 
   private onTradeRoomClick(traderoom) {
-    const { state, setState } = this;
     if (this.unsubscribe) {
       this.unsubscribe();
     }
@@ -123,7 +120,6 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
   }
 
   public render() {
-    console.log(this.state.messages);
     const { loading: traderoomsLoading, error: traderoomsError, me } = this.props.traderooms;
     return (
       <div className={s.root}>

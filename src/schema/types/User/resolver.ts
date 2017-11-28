@@ -1,11 +1,7 @@
-import { GraphQLError } from 'graphql';
-import { toObjectID } from 'iridium';
 import { IReceiptDocument } from '../../models/Receipt/index';
 import { IUserDocument } from '../../models/User/index';
-import { base64, unbase64 } from '../base64';
-import { IResolver, ResolverFn, TypeResolver } from '../index';
+import { IResolver, TypeResolver } from '../index';
 import { pagination } from '../Pagination/resolver';
-import { ITradeRoom } from '../Traderoom/index';
 
 const UserTypeResolver: TypeResolver<IUserDocument> = {
   firstName({ first_name }) {

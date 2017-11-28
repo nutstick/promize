@@ -4,7 +4,7 @@ import { ChildProps } from 'react-apollo';
 import { Redirect } from 'react-router';
 import { Route, Switch } from 'react-router-dom';
 import { NavLink, RouteComponentProps } from 'react-router-dom';
-import { Divider, Grid, Icon, Image, List } from 'semantic-ui-react';
+import { Divider, Icon, Image, List } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
 import { Card } from '../../components/Card';
 /* Sub routes */

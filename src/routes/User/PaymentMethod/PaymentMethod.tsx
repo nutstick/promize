@@ -1,7 +1,7 @@
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { ChildProps } from 'react-apollo';
-import Cards  from 'react-credit-cards';
+import Cards from 'react-credit-cards';
 import * as reactCreditCardsCss from 'react-credit-cards/lib/styles-compiled.css';
 import { RouteComponentProps } from 'react-router-dom';
 import { Grid, Loader } from 'semantic-ui-react';

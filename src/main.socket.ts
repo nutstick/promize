@@ -1,5 +1,3 @@
-import * as cookie from 'cookie';
-import * as cookieParser from 'cookie-parser';
 import { execute, subscribe } from 'graphql';
 import * as http from 'http';
 import { SubscriptionServer } from 'subscriptions-transport-ws';

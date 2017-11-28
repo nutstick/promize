@@ -9,8 +9,8 @@ import 'whatwg-fetch';
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { ApolloLink } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
-import { createUploadLink } from 'apollo-upload-client';
 import { WebSocketLink } from 'apollo-link-ws';
+import { createUploadLink } from 'apollo-upload-client';
 import * as FontFaceObserver from 'fontfaceobserver';
 import { getOperationAST } from 'graphql';
 import { createPath } from 'history/PathUtils';
@@ -35,10 +35,6 @@ import createFetch from './createFetch';
   Apollo Client v2
 */
 
-const http = new HttpLink({
-  uri: '/graphql',
-  credentials: 'include',
-});
 const link = createUploadLink({
   uri: '/graphql',
   credentials: 'include',

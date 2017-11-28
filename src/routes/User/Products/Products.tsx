@@ -6,9 +6,9 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { sizeMe } from 'react-sizeme';
 import StackGrid, { easings, transitions } from 'react-stack-grid';
 import * as Waypoint from 'react-waypoint';
-import { Button, Checkbox, Grid, Loader, Radio, Sticky } from 'semantic-ui-react';
+import { Button, Loader } from 'semantic-ui-react';
 import { graphql } from '../../../apollo/graphql';
-import { Card, contentClass, headingClass } from '../../../components/Card';
+import { contentClass } from '../../../components/Card';
 import { ProductCard } from '../../../components/ProductCard';
 import { IPage } from '../../../schema/types/Pagination';
 import { IProduct } from '../../../schema/types/Product';
@@ -129,4 +129,3 @@ export class Products extends React.Component<Products.Props> {
     );
   }
 }
-

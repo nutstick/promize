@@ -1,5 +1,5 @@
 
-import { GraphQLInputObjectType, GraphQLString, ObjectValueNode, GraphQLList } from 'graphql';
+import { GraphQLInputObjectType, GraphQLList, GraphQLString, ObjectValueNode } from 'graphql';
 import { GraphQLInt } from 'graphql/type/scalars';
 import { UnionInputType } from '../core/UnionInputType';
 

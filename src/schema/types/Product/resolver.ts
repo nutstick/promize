@@ -1,4 +1,3 @@
-import { base64 } from '../base64';
 import { IResolver } from '../index';
 
 const resolver: IResolver<any, any> = {
