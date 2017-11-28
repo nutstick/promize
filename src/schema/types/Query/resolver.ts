@@ -8,6 +8,7 @@ import { locales } from '../../../config';
 import { IProductDocument } from '../../models/Product';
 import { base64, unbase64 } from '../base64';
 import { IResolver } from '../index';
+import { pagination } from '../Pagination/resolver';
 import { IProductOrdering } from '../Product';
 
 // A folder with messages
@@ -58,16 +59,7 @@ const resolver: IResolver<any, any> = {
       return JSON.parse(localeData);
     },
 
-    async search(_, { keywords, first, after, last, before, orderBy }: ISearchArgs, { database }) {
-      // Add default sort by _id
-      orderBy = orderBy ? orderBy.concat([{ sort: '_id', direction: 'ASC' }]) : [{ sort: '_id', direction: 'ASC' }];
-
-      // Parse orderBy to mongodb sort format
-      const sort: any = orderBy ? orderBy.reduce((prev, order) => ({
-        ...prev,
-        [order.sort]: (order.direction === 'ASC' ? 1 : -1),
-      }), {}) : {};
-
+    async search(_, { keywords, ...args }: ISearchArgs, { database }) {
       let cursor: Cursor<IProductDocument>;
       if (keywords.length > 0) {
         const searchContext = keywords.reduce((prev, keyword) => {
@@ -107,75 +99,10 @@ const resolver: IResolver<any, any> = {
         cursor = database.Product.find().cursor;
       }
 
-      if (after) {
-        const { name, _id, ...cursorData } = JSON.parse(unbase64(after));
-        if (name !== 'ProductCursor') {
-          throw new GraphQLError('after type is not ProductCursor');
-        }
-        cursor = (cursor as any).min({
-          ...cursorData,
-          ..._id && {
-            _id: toObjectID(_id),
-          },
-        });
-      }
-      if (first) {
-        cursor = cursor.limit(first + 1);
-      }
-      if (before) {
-        const { name, _id, ...cursorData } = JSON.parse(unbase64(before));
-        if (name !== 'ProductCursor') {
-          throw new GraphQLError('before type is not ProductCursor');
-        }
-        cursor = (cursor as any).max({
-          ...cursorData,
-          ..._id && {
-            _id: toObjectID(_id),
-          },
-        });
-      }
-      if (last) {
-        cursor = cursor.limit(last + 1);
-      }
-
-      cursor = cursor.sort(sort);
-
-      const totalCount = await cursor.count();
-      const products = await cursor.toArray();
-
-      // Has next page
-      if (products.length > (first || last)) {
-        const endCursor = base64(JSON.stringify(
-          orderBy.reduce((prev, order) => ({
-            ...prev,
-            [order.sort]: products[products.length - 1][order.sort],
-          }), { name: 'ProductCursor' }),
-        ));
-
-        return {
-          totalCount,
-          edges: products.slice(0, -1).map((product) => ({
-            product,
-            orderBy,
-          })),
-          pageInfo: {
-            endCursor,
-            hasNextPage: true,
-          },
-        };
-      }
-
-      return {
-        totalCount,
-        edges: products.map((product) => ({
-          product,
-          orderBy,
-        })),
-        pageInfo: {
-          endCursor: null,
-          hasNextPage: false,
-        },
-      };
+      return await pagination<IProductDocument>(cursor, {
+        name: 'Product',
+        ...args,
+      });
     },
 
     async product(_, { id }, { database }) {

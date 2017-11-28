@@ -3,16 +3,6 @@ import { IResolver } from '../index';
 
 const resolver: IResolver<any, any> = {
   ProductEdges: {
-    node({ product }) {
-      return product;
-    },
-    cursor({ product, orderBy }) {
-      const value = orderBy.reduce((prev, order) => ({
-        ...prev,
-        [order.sort]: product[order.sort],
-      }), { name: 'ProductCursor' });
-      return base64(JSON.stringify(value));
-    },
   },
   Product: {
     promotionStart({ promotion_start }) {

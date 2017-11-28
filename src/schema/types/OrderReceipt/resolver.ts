@@ -3,16 +3,6 @@ import { IResolver } from '../index';
 
 const resolver: IResolver<any, any> = {
   OrderReceiptEdges: {
-    node({ orderReceipt }) {
-      return orderReceipt;
-    },
-    cursor({ orderReceipt, orderBy }) {
-      const value = orderBy.reduce((prev, order) => ({
-        ...prev,
-        [order.sort]: orderReceipt[order.sort],
-      }), { name: 'OrderReceiptCursor' });
-      return base64(JSON.stringify(value));
-    },
   },
   OrderReceipt: {
     async deliverAddress({ buyer, deliver_address }, _, { database }) {
