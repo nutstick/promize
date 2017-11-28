@@ -486,4 +486,19 @@ const serverConfig: Configuration = {
   },
 };
 
-export default [clientConfig, serverConfig];
+//
+// Configuration for the socket bundle (socket.js)
+// -----------------------------------------------------------------------------
+
+const socketConfig: Configuration = {
+  ...serverConfig,
+
+  name: 'socket',
+  target: 'node',
+
+  entry: {
+    socket: ['babel-polyfill', './src/main.socket.ts'],
+  },
+};
+
+export default [clientConfig, serverConfig, socketConfig];

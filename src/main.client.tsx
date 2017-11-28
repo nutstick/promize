@@ -48,7 +48,9 @@ const link = createUploadLink({
     return !!operationAST && operationAST.operation === 'subscription';
   },
   new WebSocketLink({
+    // uri: 'ws://192.168.43.126:4040/subscriptions',
     uri: 'ws://localhost:4040/subscriptions',
+
     options: {
       reconnect: true,
     },
