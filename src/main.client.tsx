@@ -35,10 +35,7 @@ import createFetch from './createFetch';
   Apollo Client v2
 */
 
-const link = createUploadLink({
-  uri: '/graphql',
-  credentials: 'include',
-}).concat(ApolloLink.split(
+const link = ApolloLink.split(
   (operation) => {
     const operationAST = getOperationAST(operation.query, operation.operationName);
     return !!operationAST && operationAST.operation === 'subscription';
@@ -46,16 +43,15 @@ const link = createUploadLink({
   new WebSocketLink({
     // uri: 'ws://192.168.43.126:4040/subscriptions',
     uri: 'ws://localhost:4040/subscriptions',
-
     options: {
       reconnect: true,
     },
   }),
-  new HttpLink({
+  createUploadLink({
     uri: '/graphql',
     credentials: 'include',
   }),
-));
+);
 
 const fragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData: {

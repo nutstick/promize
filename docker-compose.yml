@@ -5,6 +5,10 @@ services:
     image: mongo
     container_name: mongodb
 
+  redis:
+    image: redis
+    container_name: redis
+
   server:
     build: .
     container_name: server
@@ -12,10 +16,12 @@ services:
       - "3000:3000"
     links:
       - mongodb:mongodb
+      - redis:redis
     depends_on:
       - mongodb
+      - redis:redis
     environment:
       - MONGO_HOST=mongodb
+      - REDIS_HOST=redis
     volumes:
-      - ./src:/app/src
-      - ./seeds:/app/seeds
+      - .:/app
