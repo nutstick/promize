@@ -3,7 +3,7 @@ import * as mkdirp from 'mkdirp';
 import * as shortid from 'shortid';
 import { uploadDir } from '../../../config';
 import { IResolver } from '../index';
-import { MESSAGE_ADDED, pubsub } from '../subscriptions';
+import { MESSAGE_ADDED, pubsub } from '../pubsub';
 
 // Ensure upload directory exists
 mkdirp.sync(uploadDir);

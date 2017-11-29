@@ -1,7 +1,8 @@
 import { withFilter } from 'graphql-subscriptions';
+import { setTimeout } from 'timers';
 import { IMessageDocument } from '../../models/Message';
 import { ISubsciption } from '../index';
-import { MESSAGE_ADDED, pubsub } from '../subscriptions';
+import { MESSAGE_ADDED, pubsub } from '../pubsub';
 
 const resolver: ISubsciption = {
   Subscription: {
@@ -14,8 +15,8 @@ const resolver: ISubsciption = {
       },
       subscribe: withFilter(
         () => pubsub.asyncIterator(MESSAGE_ADDED),
-        ({ traderoom }: IMessageDocument, args) => {
-          return traderoom === args.traderoom;
+        (message: IMessageDocument, args) => {
+          return message && message.traderoom === args.traderoom;
         },
       ),
     },
