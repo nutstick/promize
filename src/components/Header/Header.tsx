@@ -211,4 +211,4 @@ export class Header extends React.Component<Header.Props, Header.State> {
 }
 
 // FIXME: withRouter as decorators
-export default withRouter<{}>(Header);
+export default withRouter<Header.Props>(Header);

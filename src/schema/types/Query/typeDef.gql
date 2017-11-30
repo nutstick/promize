@@ -21,6 +21,4 @@ type Query {
   user(id: ID!): UserType
 
   hashtags: [String]
-
-  testHot: String
 }
