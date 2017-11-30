@@ -40,6 +40,8 @@ export interface IUserType {
 
   traderooms: ITradeRoom[];
   traderoom: ITradeRoom;
+
+  __typename: string;
 }
 
 export enum CoSellerRegisterStatus {
@@ -60,9 +62,15 @@ interface ICoSeller extends IUserType, INode {
   totalBuyOrderReceipts?: number;
 }
 
+interface IAdmin extends IUserType, INode {
+  admin?: boolean;
+  pendingCoSellers: ICoSeller[];
+}
+
 export {
   resolver,
   type,
+  IAdmin,
   IUser,
   ICoSeller,
 };

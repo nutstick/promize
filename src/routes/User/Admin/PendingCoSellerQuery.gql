@@ -1,0 +1,13 @@
+query MyOrderReceipts($first: Int, $after: ID) {
+  me {
+    _id
+    ... on Admin {
+      pendingCoSellers {
+        _id
+        firstName
+        middleName
+        lastName
+      }
+    }
+  }
+}

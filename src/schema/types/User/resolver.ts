@@ -25,13 +25,6 @@ const UserTypeResolver: TypeResolver<IUserDocument> = {
   address({ addresses }, { id }) {
     return addresses.find((address) => address._id === id);
   },
-  async citizenCardImage({ _id, citizen_card_image }, _, { database, user }) {
-    const userInstance = await database.User.findOne({ _id: user._id });
-    if (userInstance._id === _id || userInstance.type === 'Admin') {
-      return citizen_card_image;
-    }
-    return null;
-  },
   async orderReceipts({ _id: buyer }, args, { database }) {
     const cursor = database.Receipt.find({ buyer }).cursor;
 
@@ -70,14 +63,25 @@ const resolver: IResolver<any, any> = {
   },
   User: {
     ...UserTypeResolver,
+    async citizenCardImage({ _id, citizen_card_image }, _, { database, user }) {
+      const userInstance = await database.User.findOne({ _id: user._id });
+      if (userInstance._id === _id || userInstance.type === 'Admin') {
+        return citizen_card_image;
+      }
+      return null;
+    },
     coSellerRegisterStatus({ coseller_register_status }, _, { database }) {
       return coseller_register_status.toUpperCase();
     },
   },
-  Admin: {
-    ...UserTypeResolver,
-  },
   CoSeller: {
+    async citizenCardImage({ _id, citizen_card_image }, _, { database, user }) {
+      const userInstance = await database.User.findOne({ _id: user._id });
+      if (userInstance._id === _id || userInstance.type === 'Admin') {
+        return citizen_card_image;
+      }
+      return null;
+    },
     ...UserTypeResolver,
     coseller() {
       return true;
@@ -119,6 +123,15 @@ const resolver: IResolver<any, any> = {
           status,
         },
       }).count();
+    },
+  },
+  Admin: {
+    ...UserTypeResolver,
+    admin() {
+      return true;
+    },
+    async pendingCoSellers(_, __, { database }) {
+      return await database.User.find({ coseller_register_status: 'Pending' }).toArray();
     },
   },
 };

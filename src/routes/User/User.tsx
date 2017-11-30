@@ -10,6 +10,7 @@ import { Card } from '../../components/Card';
 /* Sub routes */
 import { Account } from '../../routes/User/Account';
 import { Activities } from '../../routes/User/Activities';
+import { Admin } from '../../routes/User/Admin';
 import { BecomeCoSeller } from '../../routes/User/BecomeCoSeller';
 import { BuyOrderReceipts } from '../../routes/User/BuyOrderReceipts';
 import { CreateProduct } from '../../routes/User/CreateProduct';
@@ -17,7 +18,7 @@ import { OrderReceipts } from '../../routes/User/OrderReceipts';
 import { PaymentMethod } from '../../routes/User/PaymentMethod';
 /* Sub routes */
 import { Products } from '../../routes/User/Products';
-import { ICoSeller, IUser } from '../../schema/types/User';
+import { IAdmin, ICoSeller, IUserType } from '../../schema/types/User';
 import * as s from './User.css';
 import * as USERQUERY from './UserQuery.gql';
 
@@ -25,7 +26,7 @@ namespace User {
   export type IProps = RouteComponentProps<{ id: string }>;
 
   export interface MeQuery {
-    user: IUser;
+    user: IUserType;
     me: {
       _id: string;
     };
@@ -120,27 +121,39 @@ export class User extends React.Component<User.Props> {
                               activeClassName={s.active}>
                               <Icon name="feed" />
                               My Activities
-                                </NavLink>
+                            </NavLink>
                           </li>
-                          {(user as ICoSeller).coseller &&
+
+                          {user.__typename === 'Admin' &&
+                            <li>
+                              <NavLink
+                                to={`/users/${this.props.match.params.id}/admin`}
+                                activeClassName={s.active}>
+                                <Icon name="ordered list" />
+                                Admin
+                              </NavLink>
+                            </li>
+                          }
+
+                          {user.__typename === 'CoSeller' &&
                             <li>
                               <NavLink
                                 to={`/users/${this.props.match.params.id}/products`}
                                 activeClassName={s.active}>
                                 <Icon name="shopping basket" />
                                 My Products
-                                  </NavLink>
+                              </NavLink>
                             </li>
                           }
 
-                          {(user as ICoSeller).coseller &&
+                          {user.__typename === 'CoSeller' &&
                             <li>
                               <NavLink
                                 to={`/users/${this.props.match.params.id}/buyorders`}
                                 activeClassName={s.active}>
                                 <Icon name="ordered list" />
                                 Product Orders
-                                  </NavLink>
+                              </NavLink>
                             </li>
                           }
                           <li>
@@ -149,7 +162,7 @@ export class User extends React.Component<User.Props> {
                               activeClassName={s.active}>
                               <Icon name="barcode" />
                               Order receipts
-                                </NavLink>
+                            </NavLink>
                           </li>
                           <li>
                             <NavLink
@@ -157,7 +170,7 @@ export class User extends React.Component<User.Props> {
                               activeClassName={s.active}>
                               <Icon name="settings" />
                               Account setting
-                                </NavLink>
+                            </NavLink>
                           </li>
                           <li>
                             <NavLink
@@ -165,21 +178,21 @@ export class User extends React.Component<User.Props> {
                               activeClassName={s.active}>
                               <Icon name="payment" />
                               Payment setting
-                                </NavLink>
+                            </NavLink>
                           </li>
-                          {!(user as ICoSeller).coseller &&
+                          {user.__typename !== 'CoSeller' &&
                             <li>
                               <NavLink
                                 to={`/users/${this.props.match.params.id}/coseller`}
                                 activeClassName={s.active}>
                                 <Icon name="lock" />
                                 Co-Seller
-                                  </NavLink>
+                              </NavLink>
                             </li>
                           }
                         </ul>
                       </div>
-                    ) : (user as ICoSeller).coseller ? (
+                    ) : user.__typename === 'CoSeller' ? (
                       <div>
                         <List.Item>
                           <List.Content>
@@ -203,10 +216,10 @@ export class User extends React.Component<User.Props> {
                         </List.Item>
                       </div>
                     ) : (
-                          <div>
-                            <NavLink to={`/users/${this.props.match.params.id}`}>Activities</NavLink>
-                          </div>
-                        )}
+                      <div>
+                        <NavLink to={`/users/${this.props.match.params.id}`}>Activities</NavLink>
+                      </div>
+                    )}
                   </List>
                 </div>
             }
@@ -215,12 +228,14 @@ export class User extends React.Component<User.Props> {
             {!loading && !error && this.props.data.me && this.props.data.me._id === user._id ? (
               <Switch>
                 <Route exact path="/users/:id" component={Activities} />
-                {(user as ICoSeller).coseller && <Route
+                {user.__typename === 'CoSeller' && <Route
                   exact
                   path="/users/:id/products"
                   render={(props) => (<Products self {...props} />)} />}
                 <Route path="/users/:id/products/create" component={CreateProduct} />
-                {(user as ICoSeller).coseller && <Route path="/users/:id/buyorders" component={BuyOrderReceipts} />}
+                {user.__typename === 'CoSeller' && <Route path="/users/:id/buyorders" component={BuyOrderReceipts} />}
+
+                {user.__typename === 'Admin' && <Route path="/users/:id/admin" component={Admin} />}
                 <Route path="/users/:id/receipts" component={OrderReceipts} />
                 <Route path="/users/:id/account" component={Account} />
                 <Route path="/users/:id/payment" component={PaymentMethod} />

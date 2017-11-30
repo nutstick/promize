@@ -123,21 +123,21 @@ export class Header extends React.Component<Header.Props, Header.State> {
                       <Image avatar src={this.props.data.me.avatar} /> Hi! {this.props.data.me.firstName}
                     </Dropdown.Header>
                     <Dropdown.Divider />
-                    {(this.props.data.me as ICoSeller).coseller &&
+                    {this.props.data.me.__typename === 'CoSeller' &&
                       <Dropdown.Item
                         as={Link}
                         to={`/users/${this.props.data.me._id}/products/create`}>
                         Create new product
                       </Dropdown.Item>
                     }
-                    {(this.props.data.me as ICoSeller).coseller &&
+                    {this.props.data.me.__typename === 'CoSeller' &&
                       <Dropdown.Item
                         as={Link}
                         to={`/users/${this.props.data.me._id}/products`}>
                         My Products
                       </Dropdown.Item>
                     }
-                    {(this.props.data.me as ICoSeller).coseller &&
+                    {this.props.data.me.__typename === 'CoSeller' &&
                       <Dropdown.Item
                         as={Link}
                         to={`/users/${this.props.data.me._id}/buyorders`}>
@@ -147,7 +147,15 @@ export class Header extends React.Component<Header.Props, Header.State> {
                         </Label>
                       </Dropdown.Item>
                     }
-                    {(this.props.data.me as ICoSeller).coseller && <Dropdown.Divider />}
+                    {this.props.data.me.__typename === 'CoSeller' && <Dropdown.Divider />}
+                    {this.props.data.me.__typename === 'Admin' &&
+                      <Dropdown.Item
+                        as={Link}
+                        to={`/users/${this.props.data.me._id}/admin`}>
+                        Admin
+                      </Dropdown.Item>
+                    }
+                    {this.props.data.me.__typename === 'Admin' && <Dropdown.Divider />}
                     <Dropdown.Item
                         as={Link}
                         to={`/users/${this.props.data.me._id}/receipts`}>
@@ -164,7 +172,7 @@ export class Header extends React.Component<Header.Props, Header.State> {
                         to={`/users/${this.props.data.me._id}/payment`}>
                         Payment setting
                     </Dropdown.Item>
-                    {!(this.props.data.me as ICoSeller).coseller &&
+                    {this.props.data.me.__typename !== 'CoSeller' &&
                       <Dropdown.Item
                           as={Link}
                           to={`/users/${this.props.data.me._id}/coseller`}>

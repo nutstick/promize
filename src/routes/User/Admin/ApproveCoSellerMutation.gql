@@ -1,0 +1,5 @@
+mutation ApproveCoSeller($id: ID!) {
+  approveUserToCoseller(user_id: $id) {
+    _id
+  } 
+}

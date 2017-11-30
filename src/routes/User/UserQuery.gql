@@ -9,7 +9,6 @@ query UserAndMeQuery($id: ID!) {
     
     ... on CoSeller {
       telNumber
-      coseller
       totalBuyOrderReceipts(status: PAID)
     }
   }

@@ -63,9 +63,6 @@ interface UserType {
   # User avatar
   avatar: String
 
-  # Citizen card image
-  citizenCardImage: String
-
   # Order receipts
   orderReceipts(
     first: Int,
@@ -106,7 +103,7 @@ type User implements UserType, Node {
   # User avatar
   avatar: String
 
-  # # Citizen card image
+  # Citizen card image
   citizenCardImage: String
 
   # Order receipts
@@ -230,12 +227,13 @@ type Admin implements UserType, Node {
     before: ID,
     orderBy: [OrderReceiptOrdering],
   ): OrderReceiptPage
-
-  # # Citizen card image
-  citizenCardImage: String
     
   traderooms: [TradeRoom]
   traderoom(id: ID!): TradeRoom
+
+  admin: Boolean
+  # Pending CoSellers
+  pendingCoSellers: [User]
 
   createAt: Date!
   updateAt: Date!
