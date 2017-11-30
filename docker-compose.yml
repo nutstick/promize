@@ -19,7 +19,7 @@ services:
       - redis:redis
     depends_on:
       - mongodb
-      - redis:redis
+      - redis
     environment:
       - MONGO_HOST=mongodb
       - REDIS_HOST=redis
