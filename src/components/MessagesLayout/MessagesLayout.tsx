@@ -5,11 +5,11 @@ import * as React from 'react';
 import { ChildProps, MutationFunc, QueryProps } from 'react-apollo';
 import { Form, Icon, Image, Loader } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
-import { TradeRoomModalQuery } from '../../apollo/tradeRoomModal/index';
+import { TradeRoomModalQuery } from '../../apollo/tradeRoomModal';
 import * as SETTRADEROOMMODALMUTATION from '../../apollo/tradeRoomModal/SetTradeRoomModal.gql';
 import * as TRADEROOMMODALQUERY from '../../apollo/tradeRoomModal/TradeRoomModalQuery.gql';
-import { ICommandContent, IMessage, IPictureContent, ITextContent } from '../../schema/types/Traderoom/index';
-import { IUser } from '../../schema/types/User/index';
+import { ICommandContent, IMessage, IPictureContent, ITextContent } from '../../schema/types/Traderoom';
+import { IUser } from '../../schema/types/User';
 import * as ADDMESSAGEMUTATION from './AddMessageMutation.gql';
 import * as s from './MessagesLayout.css';
 import * as MESSAGESQUERY from './MessagesQuery.gql';
@@ -121,25 +121,32 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
 
   public render() {
     const { loading: traderoomsLoading, error: traderoomsError, me } = this.props.traderooms;
+    const { tradeRoomModal } = this.props.tradeRoomModal;
+
     return (
       <div className={s.root}>
         <div className={s.header}>
           <div className={s.close}><Icon name="x"/></div>
         </div>
         <div className={s.tradeRoomsWrapper}>
+          <div className={s.tradeRooms}>
           {
             !traderoomsLoading && !traderoomsError && me ? me.traderooms.length ?
             me.traderooms.map((traderoom) => (
-              <a key={traderoom._id}
-                href="#" className={s.tradeRoomIcon} onClick={this.onTradeRoomClick.bind(this, traderoom._id)}>
-                <Image avatar src={traderoom.participants.find((user) => user._id !== me._id).avatar} />
+              <a
+                key={traderoom._id}
+                href="#"
+                className={cx(s.tradeRoomIcon, { [s.active]: traderoom._id === tradeRoomModal.id })}
+                onClick={this.onTradeRoomClick.bind(this, traderoom._id)}>
+                <Image circular src={traderoom.participants.find((user) => user._id !== me._id).avatar} />
               </a>
             )) : <div></div> : <div><Loader active /></div>
           }
+          </div>
         </div>
         <div className={s.messagesWrapper}>
         {
-          this.props.tradeRoomModal.tradeRoomModal.id ? (
+          tradeRoomModal.id ? (
             <div style={{ height: '100%', paddingBottom: 65 }}>
               <div className={s.messages}>
                 <div>
@@ -160,7 +167,7 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
               <Form className={s.inputWrapper} onSubmit={() => {
                 this.props.mutate({
                   variables: {
-                    traderoom: this.props.tradeRoomModal.tradeRoomModal.id,
+                    traderoom: tradeRoomModal.id,
                     content: {
                       text: this.state.inputValue,
                     },

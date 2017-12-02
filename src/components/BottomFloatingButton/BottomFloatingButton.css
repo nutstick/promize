@@ -1,3 +1,5 @@
+@import '../variables.css';
+
 .float {
   & {
     position: fixed;
@@ -6,14 +8,14 @@
     z-index: 120;
   }
   &.show {
-    bottom: 2rem;
+    bottom: 2.5rem;
   }
   > .actionButton {
     display: flex;
     padding: 1rem;
     border-radius: 50%;
     font-size: 1rem;
-    background-color: #5a6669;
+    background-color: var(--primary-color);
     color: #ffffff;
 
     cursor: pointer;

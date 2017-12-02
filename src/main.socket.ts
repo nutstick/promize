@@ -3,7 +3,7 @@ import * as http from 'http';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { wsport } from './config';
 import { Schema } from './schema';
-import { database } from './schema/models/index';
+import { database } from './schema/models';
 
 let server;
 

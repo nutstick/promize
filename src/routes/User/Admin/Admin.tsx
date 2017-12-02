@@ -1,13 +1,16 @@
+import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { ChildProps } from 'react-apollo';
+import * as MdAssignmentInd from 'react-icons/lib/md/assignment-ind';
 import { RouteComponentProps } from 'react-router-dom';
 import { Image, List, Loader } from 'semantic-ui-react';
 import { Button } from 'semantic-ui-react';
 import { graphql } from '../../../apollo/graphql';
+import { contentClass, headingClass } from '../../../components/Card';
 import { IOrderReceipt } from '../../../schema/types/OrderReceipt';
 import { IPage } from '../../../schema/types/Pagination';
-import { ICoSeller } from '../../../schema/types/User/index';
+import { ICoSeller } from '../../../schema/types/User';
 import * as s from './Admin.css';
 import * as APPROVECOSELLERMUTATION from './ApproveCoSellerMutation.gql';
 import * as PENDINGCOSELLERQUERY from './PendingCoSellerQuery.gql';
@@ -48,15 +51,24 @@ export class Admin extends React.Component<Admin.Props> {
   public render() {
     // TODO: Pagination
     return (
-      <div className={s.root} style={{ padding: '3rem' }}>
-        <h1 className={s.header}>Pending CoSeller</h1>
+      <div className={s.root}>
+        <div className={headingClass}>
+          <MdAssignmentInd size={25} style={{
+            marginRight: 2.5,
+          }} color="#ff9521" />
+          <span>Requested Users</span>
+        </div>
         {
           this.props.data.loading || this.props.data.error ? (
-            <div>
-              <Loader />
+            <div className={contentClass}>
+              <Loader active />
+            </div>
+          ) : this.props.data.me.pendingCoSellers.length === 0 ? (
+            <div className={cx(contentClass, s.empty)}>
+              No pending request user yet.
             </div>
           ) : (
-            <List>
+            <List className={contentClass}>
               {this.props.data.me.pendingCoSellers.map(({ avatar, _id, ...node }) => (
                 <List.Item key={_id} className={s.modal}>
                   <List.Content floated="right">

@@ -1,5 +1,5 @@
-import { IReceiptDocument } from '../../models/Receipt/index';
-import { IUserDocument } from '../../models/User/index';
+import { IReceiptDocument } from '../../models/Receipt';
+import { IUserDocument } from '../../models/User';
 import { IResolver, TypeResolver } from '../index';
 import { pagination } from '../Pagination/resolver';
 

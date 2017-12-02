@@ -1,5 +1,6 @@
 .root {
-  padding: 2rem;
+  padding: 0.65em 1em;
+  padding-top: 45px;
 
   > .header {
   

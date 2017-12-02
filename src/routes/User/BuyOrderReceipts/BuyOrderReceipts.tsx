@@ -63,7 +63,7 @@ export class BuyOrderReceipts extends React.Component<BuyOrderReceipts.Props> {
         {
           this.props.data.loading || this.props.data.error ? (
             <div>
-              <Loader />
+              <Loader active />
             </div>
           ) : (
             <div>

@@ -6,7 +6,7 @@ import { sizeMe } from 'react-sizeme';
 import { arrayMove } from 'react-sortable-hoc';
 import { Button, Form } from 'semantic-ui-react';
 import { graphql } from '../../../apollo/graphql';
-import { IUser } from '../../../schema/types/User/index';
+import { IUser } from '../../../schema/types/User';
 import * as s from './CreateProduct.css';
 import * as CREATEPRODUCTMUTATION from './CreateProductMutation.gql';
 import { SortableList } from './SortableList';

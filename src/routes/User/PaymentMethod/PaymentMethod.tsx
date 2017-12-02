@@ -42,7 +42,7 @@ export class PaymentMethod extends React.Component<PaymentMethod.Props> {
         {
           this.props.data.loading || this.props.data.error ? (
             <div>
-              <Loader />
+              <Loader active />
             </div>
           ) : (
             <div>
