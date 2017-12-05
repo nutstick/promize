@@ -1,4 +1,4 @@
-@import '../../components/variables.css';
+@import '../variables.css';
 
 .card {
   position: relative;
@@ -39,7 +39,7 @@
     flex-wrap: wrap;
   }
 
-  @media screen and (width <= 425px) {
+  @media only screen and (width <= 620px) {
     margin: 0.5em;
   }
 }

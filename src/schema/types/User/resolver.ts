@@ -130,8 +130,14 @@ const resolver: IResolver<any, any> = {
     admin() {
       return true;
     },
-    async pendingCoSellers(_, __, { database }) {
-      return await database.User.find({ coseller_register_status: 'Pending' }).toArray();
+    async pendingCoSellers(_, { status, ...args }, { database }) {
+      // Find all receipts of products with status filter
+      const cursor = database.User.find({ coseller_register_status: 'Pending' }).cursor;
+
+      return await pagination(cursor, {
+        name: 'PendingCoSeller',
+        ...args,
+      });
     },
   },
 };

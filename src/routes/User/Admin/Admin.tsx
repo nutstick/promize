@@ -4,13 +4,14 @@ import * as React from 'react';
 import { ChildProps } from 'react-apollo';
 import * as MdAssignmentInd from 'react-icons/lib/md/assignment-ind';
 import { RouteComponentProps } from 'react-router-dom';
-import { Image, List, Loader } from 'semantic-ui-react';
+import * as Waypoint from 'react-waypoint';
 import { Button } from 'semantic-ui-react';
+import { Image, List, Loader } from 'semantic-ui-react';
 import { graphql } from '../../../apollo/graphql';
 import { contentClass, headingClass } from '../../../components/Card';
 import { IOrderReceipt } from '../../../schema/types/OrderReceipt';
 import { IPage } from '../../../schema/types/Pagination';
-import { ICoSeller } from '../../../schema/types/User';
+import { IAdmin, ICoSeller } from '../../../schema/types/User';
 import * as s from './Admin.css';
 import * as APPROVECOSELLERMUTATION from './ApproveCoSellerMutation.gql';
 import * as PENDINGCOSELLERQUERY from './PendingCoSellerQuery.gql';
@@ -21,9 +22,7 @@ namespace Admin {
   export type WithApproveCoSellerMutation = ChildProps<IProps, {}>;
 
   export interface PendingCoSellerQuery {
-    me: {
-      pendingCoSellers: ICoSeller[],
-    };
+    me: IAdmin;
   }
 
   type WithMyAdminQuery = ChildProps<WithApproveCoSellerMutation, PendingCoSellerQuery>;
@@ -49,7 +48,7 @@ export class Admin extends React.Component<Admin.Props> {
   }
 
   public render() {
-    // TODO: Pagination
+    const { me, loading, error } = this.props.data;
     return (
       <div className={s.root}>
         <div className={headingClass}>
@@ -59,17 +58,17 @@ export class Admin extends React.Component<Admin.Props> {
           <span>Requested Users</span>
         </div>
         {
-          this.props.data.loading || this.props.data.error ? (
+          loading || error ? (
             <div className={contentClass}>
               <Loader active />
             </div>
-          ) : this.props.data.me.pendingCoSellers.length === 0 ? (
+          ) : me.pendingCoSellers.edges.length === 0 ? (
             <div className={cx(contentClass, s.empty)}>
               No pending request user yet.
             </div>
           ) : (
             <List className={contentClass}>
-              {this.props.data.me.pendingCoSellers.map(({ avatar, _id, ...node }) => (
+              {me.pendingCoSellers.edges.map(({ node: { avatar, _id, ...node } }) => (
                 <List.Item key={_id} className={s.modal}>
                   <List.Content floated="right">
                     <Button onClick={() => {
@@ -86,6 +85,26 @@ export class Admin extends React.Component<Admin.Props> {
                   </List.Content>
                 </List.Item>
               ))}
+              {me.pendingCoSellers.pageInfo.hasNextPage && <Waypoint
+                onEnter={() => {
+                  this.props.data.fetchMore({
+                    variables: {
+                      after: me.pendingCoSellers.pageInfo.endCursor,
+                    },
+                    updateQuery(previousResult, { fetchMoreResult }) {
+                      const newEdges = fetchMoreResult.search.edges;
+                      const pageInfo = fetchMoreResult.search.pageInfo;
+                      return newEdges.length ? {
+                        pendingCoSellers: {
+                          __typename: previousResult.pendingCoSellers.__typename,
+                          edges: [...previousResult.pendingCoSellers.edges, ...newEdges],
+                          pageInfo,
+                        },
+                      } : previousResult;
+                    },
+                  });
+                }}
+              />}
             </List>
           )
         }

@@ -12,6 +12,7 @@ import * as MdRedeemIcon from 'react-icons/lib/md/redeem';
 import { Redirect } from 'react-router';
 import { NavLink, RouteComponentProps } from 'react-router-dom';
 import { Route, Switch } from 'react-router-dom';
+import { sizeMe } from 'react-sizeme';
 import { Divider, Icon, Image, Label, List } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
 import { Card } from '../../components/Card';
@@ -33,6 +34,15 @@ import * as USERQUERY from './UserQuery.gql';
 namespace User {
   export type IProps = RouteComponentProps<{ id: string }>;
 
+  export type WithSizeMe = {
+    self?: boolean,
+    size?: {
+      width?: number,
+      height?: number,
+      position?: number,
+    };
+  } & IProps;
+
   export interface MeQuery {
     user: IUserType;
     me: {
@@ -40,12 +50,13 @@ namespace User {
     };
   }
 
-  type WithMeQuery = ChildProps<IProps, MeQuery>;
+  type WithMeQuery = ChildProps<WithSizeMe, MeQuery>;
 
   export type Props = WithMeQuery;
 }
 
 @withStyles(s)
+@sizeMe()
 @graphql<User.IProps, User.MeQuery>(USERQUERY, {
   options(props) {
     return {
@@ -128,17 +139,19 @@ export class User extends React.Component<User.Props> {
           }
           {
             loading || error ? <div className={s.menu}></div> :
-            (<div>
+            (<div className={s.menuWrapper}>
               {/* Menu Select*/}
               {this.props.data.me && this.props.data.me._id === user._id ? (
-              <List relaxed className={s.menuList}>
+              <List relaxed className={s.menuList} horizontal>
                 <List.Item>
                   <List.Content>
                     <NavLink
                       to={`/users/${this.props.match.params.id}`}
                       exact
                       activeClassName={s.active}>
-                      <MdExploreIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
+                      {this.props.size.width >= 620 &&
+                        <MdExploreIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
+                      }
                       My Activities
                     </NavLink>
                   </List.Content>
@@ -149,7 +162,9 @@ export class User extends React.Component<User.Props> {
                     <NavLink
                       to={`/users/${this.props.match.params.id}/admin`}
                       activeClassName={s.active}>
-                      <MdAssignmentIndIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
+                      {this.props.size.width >= 620 &&
+                        <MdAssignmentIndIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
+                      }
                       Admin
                     </NavLink>
                   </List.Content>
@@ -160,7 +175,9 @@ export class User extends React.Component<User.Props> {
                     <NavLink
                       to={`/users/${this.props.match.params.id}/products`}
                       activeClassName={s.active}>
-                      <MdRedeemIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
+                      {this.props.size.width >= 620 &&
+                        <MdRedeemIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
+                      }
                       My Products
                     </NavLink>
                   </List.Content>
@@ -171,7 +188,9 @@ export class User extends React.Component<User.Props> {
                     <NavLink
                       to={`/users/${this.props.match.params.id}/buyorders`}
                       activeClassName={s.active}>
-                      <MdLoyaltyIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
+                      {this.props.size.width >= 620 &&
+                        <MdLoyaltyIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
+                      }
                       Product Orders
                     </NavLink>
                   </List.Content>
@@ -181,7 +200,9 @@ export class User extends React.Component<User.Props> {
                     <NavLink
                       to={`/users/${this.props.match.params.id}/receipts`}
                       activeClassName={s.active}>
-                      <MdLocalOfferIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
+                      {this.props.size.width >= 620 &&
+                        <MdLocalOfferIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
+                      }
                       Order receipts
                     </NavLink>
                   </List.Content>
@@ -191,7 +212,9 @@ export class User extends React.Component<User.Props> {
                     <NavLink
                       to={`/users/${this.props.match.params.id}/account`}
                       activeClassName={s.active}>
-                      <MdPersonOutlineIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
+                      {this.props.size.width >= 620 &&
+                        <MdPersonOutlineIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
+                      }
                       Account setting
                     </NavLink>
                   </List.Content>
@@ -201,7 +224,9 @@ export class User extends React.Component<User.Props> {
                     <NavLink
                       to={`/users/${this.props.match.params.id}/payment`}
                       activeClassName={s.active}>
-                      <MdPaymentIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
+                      {this.props.size.width >= 620 &&
+                        <MdPaymentIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
+                      }
                       Payment setting
                     </NavLink>
                   </List.Content>
@@ -212,7 +237,9 @@ export class User extends React.Component<User.Props> {
                     <NavLink
                       to={`/users/${this.props.match.params.id}/coseller`}
                       activeClassName={s.active}>
-                      <MdLockOutlineIcon  size={24} color="#ff8500" style={{ marginRight: 8 }} />
+                      {this.props.size.width >= 620 &&
+                        <MdLockOutlineIcon  size={24} color="#ff8500" style={{ marginRight: 8 }} />
+                      }
                       Co-Seller
                     </NavLink>
                   </List.Content>
@@ -225,7 +252,9 @@ export class User extends React.Component<User.Props> {
                     <NavLink
                       to={`/users/${this.props.match.params.id}`}
                       activeClassName={s.active}>
-                      <Icon name="feed" />
+                      {this.props.size.width >= 620 &&
+                        <MdExploreIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
+                      }
                       Activities
                     </NavLink>
                   </List.Content>
@@ -235,7 +264,9 @@ export class User extends React.Component<User.Props> {
                     <NavLink
                       to={`/users/${this.props.match.params.id}/products`}
                       activeClassName={s.active}>
-                      <Icon name="shopping bag" />
+                      {this.props.size.width >= 620 &&
+                        <MdRedeemIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
+                      }
                       Products
                     </NavLink>
                   </List.Content>
@@ -248,7 +279,9 @@ export class User extends React.Component<User.Props> {
                     <NavLink
                       to={`/users/${this.props.match.params.id}`}
                       activeClassName={s.active}>
-                      <Icon name="feed" />
+                      {this.props.size.width >= 620 &&
+                        <MdExploreIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
+                      }
                       Activities
                     </NavLink>
                   </List.Content>

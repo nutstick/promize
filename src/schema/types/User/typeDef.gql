@@ -1,3 +1,26 @@
+input UserOrdering {
+  sort: UserSort!
+  direction: Direction! = ASC
+}
+
+enum UserSort {
+  createAt
+  updateAt
+}
+
+# Edges for UserQuery
+type UserEdges implements Edges {
+  node: User!
+  cursor: ID!
+}
+
+# User relay-style pagination query
+type UserPage implements Page {
+  totalCount: Int!
+  edges: [UserEdges]
+  pageInfo: PageInfo
+}
+
 # Account data type
 type Account {
   # Email
@@ -233,7 +256,13 @@ type Admin implements UserType, Node {
 
   admin: Boolean
   # Pending CoSellers
-  pendingCoSellers: [User]
+  pendingCoSellers(
+    first: Int,
+    after: ID,
+    last: Int,
+    before: ID,
+    orderBy: [UserOrdering],
+  ): UserPage
 
   createAt: Date!
   updateAt: Date!

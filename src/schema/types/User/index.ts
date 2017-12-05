@@ -64,7 +64,7 @@ interface ICoSeller extends IUserType, INode {
 
 interface IAdmin extends IUserType, INode {
   admin?: boolean;
-  pendingCoSellers: ICoSeller[];
+  pendingCoSellers: IPage<ICoSeller>;
 }
 
 export {

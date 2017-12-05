@@ -5,6 +5,7 @@ import { ChildProps } from 'react-apollo';
 import { defineMessages, FormattedMessage, IntlProvider } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { sizeMe } from 'react-sizeme';
 import { Container, Dropdown, Icon, Image, Label, Menu } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
 import * as TOGGLELOGINMODALMUTATION from '../../apollo/login/ToggleLoginModalMutation.gql';
@@ -18,7 +19,15 @@ import * as logoUrl from './promizeLogoWhite.svg';
 
 namespace Header {
   export type WithRouter = RouteComponentProps<{}>;
-  export type WithToggleLoginMutation = ChildProps<WithRouter, {}>;
+  export type WithSizeMe = {
+    self?: boolean,
+    size?: {
+      width?: number,
+      height?: number,
+      position?: number,
+    };
+  } & WithRouter;
+  export type WithToggleLoginMutation = ChildProps<WithSizeMe, {}>;
   export type Props = ChildProps<WithToggleLoginMutation, { me: IUser | ICoSeller }>;
 
   export interface State {
@@ -50,6 +59,7 @@ const messages = defineMessages({
 });
 
 @withStyles(s)
+@sizeMe()
 @graphql(TOGGLELOGINMODALMUTATION)
 @graphql(MEQUERY)
 export class Header extends React.Component<Header.Props, Header.State> {
@@ -88,9 +98,21 @@ export class Header extends React.Component<Header.Props, Header.State> {
       </span>
     );
 
-    return (
+    return this.props.size.width <= 620 ? (
+      <div className={cx(s.root, s.mobile, s.bg)}>
+        <div className={cx(s.menu, s.transparent)}>
+          <Icon className={s.burger} name="bars"/>
+          <Link className={s.logoWrapper} to="/">
+            <img
+              className={s.logo}
+              src={logoUrl}
+              alt="Promize" />
+          </Link>
+        </div>
+      </div>
+    ) : (
       <div className={cx(s.root, s.bg)}>
-        <Menu className={s.menu} size="small" borderless>
+        <Menu className={cx(s.menu, s.black)} size="small" borderless>
           <Container>
             <Menu.Item className={s.welcome}as="welcome">
               <FormattedMessage {...messages.welcome} />

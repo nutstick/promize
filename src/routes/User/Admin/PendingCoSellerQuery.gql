@@ -1,12 +1,21 @@
-query MyOrderReceipts($first: Int, $after: ID) {
+query PendingCoSeller($first: Int, $after: ID) {
   me {
     _id
     ... on Admin {
-      pendingCoSellers {
-        _id
-        firstName
-        middleName
-        lastName
+      pendingCoSellers(first: $first, after: $after) {
+        edges {
+          node {
+            _id
+            firstName
+            middleName
+            lastName
+          }
+          cursor
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
       }
     }
   }
