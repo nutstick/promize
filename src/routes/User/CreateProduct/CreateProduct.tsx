@@ -160,7 +160,13 @@ export class CreateProduct extends React.Component<CreateProduct.Props, CreatePr
           promotionEnd: this.getAsDate(this.state.promotionEndDate, this.state.promotionEndTime),
        },
       },
-    });
+    })
+      .then((data) => {
+        this.props.history.push(`/users/${this.props.match.params.id}/products`);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   public render() {

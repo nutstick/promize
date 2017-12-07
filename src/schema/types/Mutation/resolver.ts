@@ -42,7 +42,7 @@ const resolver: IResolver<any, any> = {
         return await database.Product.insert({
           ...input,
           pictures: picturesUrl.map((picture) => {
-            return picture.path.slice(1);
+            return '/' + picture.path.slice(1);
           }),
           promotion_start: promotionStart,
           promotion_end: promotionEnd,

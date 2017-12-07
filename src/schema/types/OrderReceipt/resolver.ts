@@ -1,4 +1,5 @@
 import { IResolver } from '../index';
+import { toObjectID } from 'iridium';
 
 const resolver: IResolver<any, any> = {
   OrderReceiptEdges: {
@@ -39,6 +40,9 @@ const resolver: IResolver<any, any> = {
         }
       }
     },
+    async creator({ buyer }, _, { database }) {
+      return await database.User.findOne({ _id: toObjectID(buyer) });
+    },
     status({ payment_completed, product_delivered, product_received }) {
       return payment_completed ? 'PAID' : product_delivered ? 'DELIVERED' : product_received ?
         'RECEIVED' : 'CREATED';
@@ -54,9 +58,6 @@ const resolver: IResolver<any, any> = {
     },
     async product({ product }, _, { database }) {
       return await database.Product.findOne({ _id: product });
-    },
-    async creator({ buyer }, _, { database }) {
-      return await database.User.findOne({ _id: buyer });
     },
   },
 };
