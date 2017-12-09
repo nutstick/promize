@@ -8,13 +8,8 @@ import { graphql } from '../../apollo/graphql';
 import { TradeRoomModalQuery } from '../../apollo/tradeRoomModal';
 import * as SETTRADEROOMMODALMUTATION from '../../apollo/tradeRoomModal/SetTradeRoomModal.gql';
 import * as TRADEROOMMODALQUERY from '../../apollo/tradeRoomModal/TradeRoomModalQuery.gql';
-<<<<<<< HEAD
-import { ICommandContent, IMessage, IPictureContent, ITextContent } from '../../schema/types/TradeRoom/index';
-import { IUser } from '../../schema/types/User/index';
-=======
 import { ICommandContent, IMessage, IPictureContent, ITextContent } from '../../schema/types/Traderoom';
 import { IUser } from '../../schema/types/User';
->>>>>>> 1dee39204d72b27bba793e3d18660a1b831b3920
 import * as ADDMESSAGEMUTATION from './AddMessageMutation.gql';
 import * as s from './MessagesLayout.css';
 import * as MESSAGESQUERY from './MessagesQuery.gql';
