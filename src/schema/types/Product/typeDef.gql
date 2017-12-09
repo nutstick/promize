@@ -1,3 +1,17 @@
+input ProductOrdering {
+  sort: ProductSort!
+  direction: Direction! = ASC
+}
+
+enum ProductSort {
+  price
+  originalPrice
+  promotionStart
+  promotionEnd
+  createAt
+  updateAt
+}
+
 # Edges for ProductQuery
 type ProductEdges implements Edges {
   node: Product!
@@ -15,6 +29,7 @@ enum ProductEnum {
   Product
   BuyNowProduct
 }
+
 type Color implements Node {
   _id: ID!
   color: String!
@@ -35,7 +50,7 @@ type Product implements Node {
   _id: ID!
   name: String!
   description: String
-  
+
   originalPrice: Int
   type: ProductEnum!
   price: Int
@@ -49,7 +64,7 @@ type Product implements Node {
   promotionStart: Date!
   promotionEnd: Date!
   owner: CoSeller!
-  
+
   createAt: Date!
   updateAt: Date!
 

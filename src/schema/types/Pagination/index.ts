@@ -1,12 +1,14 @@
 import resolver from './resolver';
 import * as type from './typeDef.gql';
 
+type Direction = 'ASC' | 'DESC';
+
 interface INode {
   _id?: string;
 }
 
 interface IPageInfo {
-  endCurosr?: string;
+  endCursor?: string;
   hasNextPage?: boolean;
 }
 
@@ -27,4 +29,5 @@ export {
   INode,
   IEdge,
   IPage,
+  Direction,
 };

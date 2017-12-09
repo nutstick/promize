@@ -1,6 +1,9 @@
 import { IResolver } from '../index';
+import { toObjectID } from 'iridium';
 
 const resolver: IResolver<any, any> = {
+  OrderReceiptEdges: {
+  },
   OrderReceipt: {
     async deliverAddress({ buyer, deliver_address }, _, { database }) {
       const creator_data = await database.User.findOne({ _id: buyer });
@@ -37,29 +40,24 @@ const resolver: IResolver<any, any> = {
         }
       }
     },
+    async creator({ buyer }, _, { database }) {
+      return await database.User.findOne({ _id: toObjectID(buyer) });
+    },
+    status({ payment_completed, product_delivered, product_received }) {
+      return payment_completed ? 'PAID' : product_delivered ? 'DELIVERED' : product_received ?
+        'RECEIVED' : 'CREATED';
+    },
     paymentCompletedAt({ payment_completed_at }) {
       return payment_completed_at;
-    },
-    paymentCompleted({ payment_completed }) {
-      return payment_completed;
     },
     productDeliveredAt({ product_delivered_at }) {
       return product_delivered_at;
     },
-    productDelivered({ product_delivered }) {
-      return product_delivered;
-    },
     productReceivedAt({ product_received_at }) {
       return product_received_at;
     },
-    productReceived({ product_received }) {
-      return product_received;
-    },
     async product({ product }, _, { database }) {
       return await database.Product.findOne({ _id: product });
-    },
-    async creator({ buyer }, _, { database }) {
-      return await database.User.findOne({ _id: buyer });
     },
   },
 };

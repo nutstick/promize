@@ -1,3 +1,8 @@
+enum Direction {
+  ASC
+  DESC
+}
+
 # Base Node
 interface Node {
   _id: ID!

@@ -4,7 +4,9 @@ node_modules
 # Compiled assets
 dist
 output/babelcache
+public/images
 .awcache
+coverage
 
 # Logs
 npm-debug.log*
@@ -12,3 +14,4 @@ yarn-error.log*
 yarn.lock
 .DS_Store
 .vscode/launch.json
+

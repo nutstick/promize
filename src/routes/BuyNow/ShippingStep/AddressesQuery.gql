@@ -1,5 +1,6 @@
 query Addresses {
   me {
+    _id
     addresses {
       _id
       address

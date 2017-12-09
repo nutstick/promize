@@ -1,9 +1,12 @@
-import { GraphQLInputObjectType, GraphQLString } from 'graphql';
+import { GraphQLUpload } from 'apollo-upload-server';
+import { GraphQLInputObjectType, GraphQLString, ObjectValueNode } from 'graphql';
 import * as GraphQLDate from 'graphql-date';
 import { makeExecutableSchema } from 'graphql-tools';
-import * as UnionInputType from 'graphql-union-input-type';
 import { print } from 'graphql/language';
 import { GraphQLInt } from 'graphql/type/scalars';
+import { UnionInputType } from '../core/UnionInputType';
+import { Keyword } from './Keyword';
+import { MessageContentInput } from './Message';
 import * as SchemaType from './schema.gql';
 import * as IntlMessage from './types/IntlMessage';
 import * as Mutation from './types/Mutation';
@@ -11,54 +14,25 @@ import * as OrderReceipt from './types/OrderReceipt';
 import * as Pagination from './types/Pagination';
 import * as Product from './types/Product';
 import * as Query from './types/Query';
+import * as Subscription from './types/Subscription';
+import * as Traderoom from './types/Traderoom';
 import * as User from './types/User';
 
 const schema = [print(SchemaType)];
 const modules = [
-  Pagination,
-  User,
   IntlMessage,
-  Query,
-  Product,
-  OrderReceipt,
   Mutation,
+  OrderReceipt,
+  Pagination,
+  Product,
+  Query,
+  Subscription,
+  Traderoom,
+  User,
 ];
 
-const UserIDKeyword = new GraphQLInputObjectType({
-  name: 'UserIDKeywordInput',
-  fields: () => {
-    return {
-      id: {
-        type: GraphQLString,
-      },
-    };
-  },
-});
-
-const HashtagKeyword = new GraphQLInputObjectType({
-  name: 'HashtagKeywordInput',
-  fields: () => {
-    return {
-      keyword: {
-        type: GraphQLString,
-      },
-    };
-  },
-});
-
-const SpecialKeyword = new GraphQLInputObjectType({
-  name: 'SpecialKeywordInput',
-  fields: () => {
-    return {
-      special_keyword: {
-        type: GraphQLString,
-      },
-    };
-  },
-});
-
 const OldAddressInput = new GraphQLInputObjectType({
-  name: 'old_index',
+  name: 'OldAddressInput',
   fields: () => {
     return {
       _id: {
@@ -68,8 +42,8 @@ const OldAddressInput = new GraphQLInputObjectType({
   },
 });
 
-const OldPaymentInput = new GraphQLInputObjectType({
-  name: 'old_index',
+const OldPaymentMethodInput = new GraphQLInputObjectType({
+  name: 'OldPaymentMethodInput',
   fields: () => {
     return {
       _id: {
@@ -80,7 +54,7 @@ const OldPaymentInput = new GraphQLInputObjectType({
 });
 
 const NewAddressInput = new GraphQLInputObjectType({
-  name: 'new_object',
+  name: 'NewAddressInput',
   fields: () => {
     return {
       address: {
@@ -99,8 +73,8 @@ const NewAddressInput = new GraphQLInputObjectType({
   },
 });
 
-const NewPaymentInput = new GraphQLInputObjectType({
-  name: 'new_object',
+const NewPaymentMethodInput = new GraphQLInputObjectType({
+  name: 'NewPaymenMethodtInput',
   fields: () => {
     return {
       creditCardNumber: {
@@ -117,10 +91,17 @@ const NewPaymentInput = new GraphQLInputObjectType({
 });
 
 const AddressInputCreate = new UnionInputType({
-  name: 'address',
-  InputType: [OldAddressInput, NewAddressInput],
+  name: 'AddressInputCreate',
+  inputTypes: [OldAddressInput, NewAddressInput],
+  resolveTypeFromValue(value) {
+    if (value._id) {
+      return OldAddressInput;
+    } else {
+      return NewAddressInput;
+    }
+  },
   resolveTypeFromAst: function resolveTypeFromAst(ast) {
-    if (ast.fields[0].name.value === '_id') {
+    if ((ast as ObjectValueNode).fields[0].name.value === '_id') {
       return OldAddressInput;
     } else {
       return NewAddressInput;
@@ -129,27 +110,20 @@ const AddressInputCreate = new UnionInputType({
 });
 
 const PaymentInputCreate = new UnionInputType({
-  name: 'paymentMethod',
-  InputType: [OldPaymentInput, NewPaymentInput],
-  resolveTypeFromAst: function resolveTypeFromAst(ast) {
-    if (ast.fields[0].name.value === '_id') {
-      return OldPaymentInput;
+  name: 'PaymentMethodInputCreate',
+  inputTypes: [OldPaymentMethodInput, NewPaymentMethodInput],
+  resolveTypeFromValue(value) {
+    if (value._id) {
+      return OldPaymentMethodInput;
     } else {
-      return NewPaymentInput;
+      return NewPaymentMethodInput;
     }
   },
-});
-
-const Keyword = new UnionInputType({
-  name: 'Keyword',
-  InputType: [UserIDKeyword, HashtagKeyword, SpecialKeyword],
   resolveTypeFromAst: function resolveTypeFromAst(ast) {
-    if (ast.fields[0].name.value === 'id') {
-      return UserIDKeyword;
-    } else if (ast.fields[0].name.value === 'keyword') {
-      return HashtagKeyword;
+    if ((ast as ObjectValueNode).fields[0].name.value === '_id') {
+      return OldPaymentMethodInput;
     } else {
-      return SpecialKeyword;
+      return NewPaymentMethodInput;
     }
   },
 });
@@ -160,6 +134,8 @@ const resolvers = Object.assign({
   Keyword,
   AddressInputCreate,
   PaymentInputCreate,
+  Upload: GraphQLUpload,
+  MessageContentInput,
 },
   ...(modules.map((m) => m.resolver).filter((res) => res)),
 );

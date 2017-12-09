@@ -1,0 +1,30 @@
+query UserProduct($id: ID!, $first: Int, $after: ID) {
+  user(id: $id) {
+    _id
+    ... on CoSeller {
+      products(first: $first, after: $after) {
+        edges {
+          node {
+            _id
+            name
+            description
+            hashtags
+            pictures
+            owner {
+              _id
+              firstName
+              middleName
+              lastName
+            }
+          }
+          cursor
+        }
+        totalCount
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+      }
+    }
+  }
+}

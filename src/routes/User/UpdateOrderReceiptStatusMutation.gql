@@ -1,0 +1,11 @@
+mutation UpdateOrderReceiptStatus($id: ID!, $input: EditOrderReceiptInput) {
+  editOrderReceipt(id: $id, input: $input) {
+    _id
+    paymentCompletedAt
+    paymentCompleted
+    productDeliveredAt
+    productDelivered
+    productReceivedAt
+    productReceived
+  } 
+}

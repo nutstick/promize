@@ -1,0 +1,21 @@
+@import '../../../components/variables.css';
+
+.root {
+  padding: 0.65em 1em;
+  padding-top: 45px;
+}
+
+.empty {
+  font-style: italic;
+  text-align: center;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  color: var(--grey);
+}
+
+.head {
+  width: 100%;
+  border-bottom: 1px solid var(--dark-grey);
+  text-align: center;
+}

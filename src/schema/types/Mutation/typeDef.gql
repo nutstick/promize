@@ -11,23 +11,28 @@ input SizeInput {
   size: String
 }
 
+input AccountInput {
+  email: String!
+  password: String!
+}
+
 input CreateProductInput {
   name: String!
   description: String
   originalPrice: Int
   type: ProductEnum!
   price: Int!
-  pictures: [String]!
+  pictures: [Upload!]!
   hashtags: [String]!
-  colors: [ColorInput]
-  sizes: [SizeInput]
+  colors: [String]
+  sizes: [String]
   categories: [CategoryInput]
   promotionStart: Date!
   promotionEnd: Date!
 }
 
 input EditProductInput {
-  product: ID!
+  id: ID!
   price: Int
   pictures: [String]
   hashtags: [String]
@@ -46,14 +51,37 @@ input CreateOrderReceiptInput {
 }
 
 input EditOrderReceiptInput {
-  receipt: ID!
-  paymentCompleted: Boolean,
-  productDelivered: Boolean,
-  productReceived: Boolean,
+  id: ID!
+  status: OrderReceiptStatus
+  # paymentCompleted: Boolean,
+  # productDelivered: Boolean,
+  # productReceived: Boolean,
+}
+
+input CreateUserInput {
+  firstName: String!
+  middleName: String
+  lastName: String!
+  gender: GenderEnum!
+  telNumber: String
+  addresses: [AddressInput]
+  avatar: String!
+  account: AccountInput!
+}
+
+input EditUserInput {
+  firstName: String
+  middleName: String
+  lastName: String
+  gender: GenderEnum
+  telNumber: String
+  avatar: String
+  password: String
 }
 
 # Address type
 input AddressInput {
+  _id: ID
   # Address detail
   address: String!
   # City
@@ -66,25 +94,77 @@ input AddressInput {
 
 # Payment Method type
 input PaymentMethodInput {
+  _id: ID
   # Credit card number
   creditCardNumber: String!
   validFromMonth: Int!
   validFromYear: Int!
 }
 
+# CoSeller Register input
+input CoSellerRegisterInput {
+  telNumber: String!
+  citizenCardImage: Upload!
+}
+
+input ApproveUserToCosellerINput {
+  _id: ID!
+}
+
+input CreateTradeRoomInput {
+  product: ID!
+  participants: [String]!
+}
+
+input EditTradeRoomInput {
+  id: ID!
+  detail: String
+  price: Float
+  size: String
+  color: String
+}
+
 # Mutations
 type Mutation {
+  # Upload file
+  uploadFile(file: Upload!): Boolean!
+
   # Create Product
-  createProduct(input: CreateProductInput): Product
+  createProduct(input: CreateProductInput!): Product
   # Edit Product
-  editProduct(input: EditProductInput): Product
+  editProduct(input: EditProductInput!): Product
 
   # Create OrderReceipt
-  createOrderReceipt(input: CreateOrderReceiptInput): OrderReceipt
+  createOrderReceipt(input: CreateOrderReceiptInput!): OrderReceipt
   # Edit OrderReceipt
-  editOrderReceipt(input: EditOrderReceiptInput): OrderReceipt
+  editOrderReceipt(input: EditOrderReceiptInput!): OrderReceipt
 
-  addAddress(address: AddressInput): UserType
+  # Add address for CreateOrderReceipt
+  addAddress(address: AddressInput!): UserType
+  # Edit address
+  editAddress(address: AddressInput!): UserType
+  # Add paymentMethod for CreateOrderReceipt
+  addPaymentMethod(paymentMethod: PaymentMethodInput!): UserType
+  # Edit payment method
+  editPaymentMethod(paymentMethod: PaymentMethodInput!): UserType
+  
+  # Register to be a CoSeller
+  registerToBeCoSeller(input: CoSellerRegisterInput!): User
+  # Approve User to CoSeller
+  approveUserToCoseller(user_id: ID!): CoSeller
 
-  addPaymentMethod(paymentMethod: PaymentMethodInput): UserType
+  # Create User
+  createUser(input: CreateUserInput!): UserType
+  # Edit User
+  editUser(input: EditUserInput!): UserType
+  
+  # Create TradeRoom
+  createTradeRoom(input: CreateTradeRoomInput!): TradeRoom
+  # Update TradeRoom
+  editTradeRoom(input: EditTradeRoomInput!): TradeRoom
+  # Confirm Buy
+  confirmBuyInTradeRoom(id: ID!): TradeRoom
+
+  # Add message
+  addMessage(content: MessageContentInput!, traderoom: ID!): Message
 }

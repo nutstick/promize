@@ -15,7 +15,7 @@ export namespace Hashtag {
 export class Hashtag extends React.Component<Hashtag.Props> {
   public render() {
     return (
-      <Link className={s.root} to={`/search?keywords=[{keyword:${this.props.text}}]`}>
+      <Link className={s.root} to={`/search?keywords=${JSON.stringify({ keyword: this.props.text })}`}>
         <div className={s.content}>
           <span
             className={s.hashtag}

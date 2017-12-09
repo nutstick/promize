@@ -1,0 +1,132 @@
+@import '../../components/variables.css';
+
+.root {
+  display: flex;
+  padding: 0.6em 0 40px;
+  margin-top: var(--overlap-card-top);
+  margin-bottom: var(--overlap-card-bottom);
+}
+
+.container {
+  display: flex;
+  min-height: 100%;
+}
+
+.sidebar {
+  display: flex;
+  width: 15rem;
+  flex-direction: column;
+  margin-left: 1em;
+}
+
+.profile {
+  padding: 1.5rem;
+
+  > .profileImage {
+    min-height: 120px;
+  }
+
+  > .name {
+    margin-top: 1em;
+    text-align:center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    line-height: 2rem;
+  }
+
+  > .detail {
+    color: var(--secondary-color);
+    text-align: center;
+    line-height: 1.5rem;
+  }
+}
+
+.mainContent{
+  display: flex;
+  flex: 1;
+  padding: 0 !important;
+}
+
+.container {
+  margin: 30px;
+}
+
+.content {
+  background-color: rgba(0, 0, 0, 0.01);
+  flex: 7 0 auto;
+}
+
+.menuList {
+  list-style-type: none;
+  display:inline-block;
+  margin: 0;
+  width: 100%;
+
+  :global(.item:first) {
+    border-top: 1px;
+  }
+  :global(.item) {
+    white-space: nowrap;
+  }
+  :global(.content) {
+    padding: 0.24em 1em;
+    > a {
+      font-family: var(--font-family-base);
+      color: var(--dark-grey);
+      font-size: 16px;
+      line-height: 28px;
+
+      &.active, &:active {
+        font-weight: bold;
+      }
+    }
+  }
+  /*> li {
+    width: 100%;
+    display: block;
+
+    > a {
+      padding: 1rem;
+      color: var(--dark-grey);
+      display: block;
+
+      &.active, &:hover {
+        color: #ffffff;
+        background: var(--primary-color);
+        border-radius: 7px;
+      }
+    }
+  }*/
+}
+
+@media (max-width: 620px) {
+  .root {
+    flex-direction: column;
+
+    .sidebar {
+      width: 100%;
+      margin: 0;
+    }
+
+    .menuWrapper {
+      padding: 0 1em;
+    }
+    
+    .menuList {
+      display: flex !important;
+      flex-direction: row;
+      overflow: hidden;
+      padding-bottom: 8px !important;
+      &:hover {
+        overflow: auto;
+        padding-bottom: 0px !important;
+      }
+      &::-webkit-scrollbar {
+        height: 8px;
+      }
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+    }
+  }
+}

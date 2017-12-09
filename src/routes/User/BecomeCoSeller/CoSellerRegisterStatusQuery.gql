@@ -1,0 +1,8 @@
+query CoSellerRegisterStatus {
+  me {
+    _id
+    ... on User {
+      coSellerRegisterStatus
+    }
+  }
+}

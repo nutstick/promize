@@ -1,19 +1,20 @@
-import { Core, Model, toObjectID } from 'iridium';
-import MockDate from 'mockdate';
+import { Model, toObjectID } from 'iridium';
+import * as MockDate from 'mockdate';
 import { IProductDocument, Product } from '../';
+import { Database } from '../../';
 import { mongodb } from '../../../../config';
 import { IUserDocument, User } from '../../User';
 
 // tslint:disable-next-line:no-var-requires
 const m = require('casual');
 
-const core = new Core({
+const database = new Database({
   ...mongodb,
   database: 'test',
 });
 
-const model = new Model<IProductDocument, Product>(core, Product);
-const userModel = new Model<IUserDocument, User>(core, User);
+// const model = new Model<IProductDocument, Product>(database, Product);
+// const userModel = new Model<IUserDocument, User>(database, User);
 
 // Pass generator as callback
 const array_of = (times, generator) => {
@@ -24,8 +25,8 @@ const start_date = m.moment;
 const end_date = start_date.add(Math.floor(Math.floor(Math.random() * 60)), 'days');
 
 beforeAll(async (done) => {
-  await core.connect();
-  await core.connection.dropDatabase();
+  await database.connect();
+  await database.connection.dropDatabase();
 
   // Fixed new Date
   MockDate.set('7/9/2017');
@@ -34,7 +35,7 @@ beforeAll(async (done) => {
 });
 
 afterAll(async (done) => {
-  await core.close();
+  await database.close();
 
   // Reset mock date
   MockDate.reset();
@@ -44,10 +45,11 @@ afterAll(async (done) => {
 
 describe('Product Model', () => {
   it('Product create correctly', async () => {
-    const user = await userModel.create({
+    const user = await database.User.create({
       first_name: m.first_name,
       last_name: m.last_name,
       tel_number: m.phone,
+      gender: m.random_element(['male', 'female']),
       account: {
         email: m.email,
         password: m.password,
@@ -55,7 +57,7 @@ describe('Product Model', () => {
       avatar: m.url,
     });
 
-    await model.create({
+    await database.Product.create({
       name: 'Zara',
       description: 'Zara clothes',
       original_price: 1000,
@@ -84,7 +86,7 @@ describe('Product Model', () => {
     });
 
     // Should be able to find a product that has been created.
-    const product = await model.findOne({ name: 'Zara' });
+    const product = await database.Product.findOne({ name: 'Zara' });
     // TODO: expect all fields
     // expect(deepRemoveFields(product.toJSON(), ['_id'])).toMatchSnapshot();
   });

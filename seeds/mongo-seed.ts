@@ -54,11 +54,12 @@ export async function seed(database: Database) {
       first_name: m.first_name,
       last_name: m.last_name,
       tel_number: m.phone,
+      gender: m.random_element(['male', 'female']),
       account: {
         email: m.email,
         password: m.password,
       },
-      avatar: m.url,
+      avatar: 'https://www.realmadrid.com/img/cuadrada_300px/cristiano1.jpg',
       type: 'CoSeller',
     });
 
@@ -98,11 +99,12 @@ export async function seed(database: Database) {
           first_name: m.first_name,
           last_name: m.last_name,
           tel_number: m.phone,
+          gender: m.random_element(['male', 'female']),
           account: {
             email: m.email,
             password: m.password,
           },
-          avatar: m.url,
+          avatar: 'https://www.realmadrid.com/img/cuadrada_300px/cristiano1.jpg',
           type: 'User',
         });
         // await database.Receipt.create({
@@ -110,7 +112,6 @@ export async function seed(database: Database) {
         //   product: product._id,
         //   size: product.sizes[0]._id,
         //   color: product.colors[0]._id,
-        //   number_of_items: Math.floor(Math.random() * 5) + 1,
         // });
       }
     }

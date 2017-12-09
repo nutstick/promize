@@ -20,12 +20,19 @@ body {
   height: 100%;
 }
 
+body ::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 10px;
+  height: 10px;
+}
+
 a {
   color: #0074c2;
 }
 
 :global(#app) {
   position: relative;
+  height: 100%;
 }
 
 /*
@@ -177,4 +184,11 @@ textarea {
   h3 {
     page-break-after: avoid;
   }
+}
+
+.layout {
+  height: inherit;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
 }

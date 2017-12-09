@@ -105,4 +105,34 @@ module.exports = {
   // unmockedModulePathPatterns: // [array<string>]
 
   // verbose: true, // [boolean]
+
+  globals: {
+    'ts-jest': {
+      babelConfig: {
+        presets: [
+          // A Babel preset that can automatically determine the Babel plugins and polyfills
+          // https://github.com/babel/babel-preset-env
+          [
+            'env',
+            {
+              targets: {
+                // browsers: pkg.browserslist,
+                // uglify: true,
+                node: 'current',
+              },
+              modules: false,
+              useBuiltIns: false,
+              debug: false,
+            },
+          ],
+          // Experimental ECMAScript proposals
+          // https://babeljs.io/docs/plugins/#presets-stage-x-experimental-presets-
+          'stage-2',
+          // JSX, Flow
+          // https://github.com/babel/babel/tree/master/packages/babel-preset-react
+          'react',
+        ],
+      },
+    }
+  }
 };

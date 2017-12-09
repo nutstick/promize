@@ -2,26 +2,6 @@ import { IResolver } from '../index';
 
 const resolver: IResolver<any, any> = {
   ProductEdges: {
-    node(root) {
-      return root;
-    },
-    cursor({ _id }) {
-      return _id;
-    },
-  },
-  ProductPage: {
-    async totalCount(root) {
-      return await root.count();
-    },
-    async edges(root) {
-      return await root.toArray();
-    },
-    pageInfo(root) {
-      return {
-        endCursor: root.next(),
-        hasNextPage: root.cursor.hasNext(),
-      };
-    },
   },
   Product: {
     promotionStart({ promotion_start }) {

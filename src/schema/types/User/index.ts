@@ -1,7 +1,8 @@
 import { IAddress } from '../../models/User/address';
 import { IOrderReceipt } from '../OrderReceipt';
 import { INode, IPage } from '../Pagination';
-import { IProduct } from '../Product/index';
+import { IProduct } from '../Product';
+import { ITradeRoom } from '../Traderoom';
 import resolver from './resolver';
 import * as type from './typeDef.gql';
 
@@ -10,11 +11,14 @@ export interface IPaymentMethod {
   creditCardNumber?: string;
 }
 
-interface IAccount {
-  email: string;
+export interface IAccount {
+  email?: string;
+  facebookAccessCode?: string;
+  googleAccessCode?: string;
 }
 
-interface IUserType {
+export interface IUserType {
+  _id?: string;
   firstName?: string;
   middleName?: string;
   lastName?: string;
@@ -27,23 +31,46 @@ interface IUserType {
   paymentMethod?: IPaymentMethod;
   paymentMethods?: IPaymentMethod[];
 
+  citizenCardImage: string;
+
   avatar?: string;
-  orderReceipts?: IOrderReceipt[];
+  orderReceipts?: IPage<IOrderReceipt>;
   createAt?: Date;
   updateAt?: Date;
+
+  traderooms: ITradeRoom[];
+  traderoom: ITradeRoom;
+
+  __typename: string;
 }
 
-interface IUser extends IUserType, INode {}
+export enum CoSellerRegisterStatus {
+  CLOSE,
+  SEND,
+  APPROVING,
+  APPROVED,
+}
+
+interface IUser extends IUserType, INode {
+  coSellerRegisterStatus: CoSellerRegisterStatus;
+}
 
 interface ICoSeller extends IUserType, INode {
   coseller?: boolean;
   products?: IPage<IProduct>;
-  buyOrderReceipts?: IOrderReceipt[];
+  buyOrderReceipts?: IPage<IOrderReceipt>;
+  totalBuyOrderReceipts?: number;
+}
+
+interface IAdmin extends IUserType, INode {
+  admin?: boolean;
+  pendingCoSellers: IPage<ICoSeller>;
 }
 
 export {
   resolver,
   type,
+  IAdmin,
   IUser,
   ICoSeller,
 };

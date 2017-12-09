@@ -1,0 +1,6 @@
+mutation CoSellerRegister($input: CoSellerRegisterInput!) {
+  registerToBeCoSeller(input: $input) {
+    _id
+    coSellerRegisterStatus
+  }
+}

@@ -22,6 +22,7 @@ describe('User Model', () => {
       first_name: m.first_name,
       last_name: m.last_name,
       tel_number: m.phone,
+      gender: m.random_element(['male', 'female']),
       account: {
         email: m.email,
         password: m.password,

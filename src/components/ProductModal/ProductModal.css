@@ -1,12 +1,11 @@
 @import '../variables.css';
-
 .root {
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 6em;
+  /* padding: 80px; */
 
   overflow-y: auto;
   z-index: var(--login-depth);
@@ -18,40 +17,62 @@
   > .modal {
     background-color: #fff;
     width: 100%;
-    max-width: 935px;
     pointer-events: auto;
-    height: 450px;
+    margin: auto;
+    /* max-width: 935px; */    
+    /* height: 450px; */
 
     > .wrapper {
       position: relative;
-      height: 100%;
+      width: 100%;
+      /* height: 100%; */
+      /* overflow: hidden; */
+      display:flex;
+      flex-wrap:wrap;
+      flex-direction:row;
 
       > .imgContainer {
-        height: 100%;
-        justify-content: center;
-        margin-right: 335px;
+        /* height: 100%; */
+        /* justify-content: center; */
+        /* margin-right: 335px; */
+        /* max-width: 600px; */
+        /* width: 100%; */
+        /* height: 600px; */
         background: #000;
       }
 
+      .contentWrap{
+        /* display: block; */
+        /* min-width: 335px; */
+        /* max-width: 600px; */
+      }     
+
       .header {
         border-bottom: 1px solid #efefef;
-        height: 78px;
+        /* height: 78px; */
         margin-right: 0;
-        padding: 20px 0;
-        position: absolute;
-        right: 24px;
-        top: 0;
-        width: 287px;
+        padding: 20px 2em;
+        /* position: absolute; */
+        /* right: 24px; */
+        /* top: 0; */
+        width: 100%;
+      }
+
+      .owner{
+        font-size: 1.2em;
+        margin-top: 1em;
+        /* margin-bottom: 0.5em; */
+        color: #606060;
       }
 
       .content {
         bottom: 65px;
         box-sizing: border-box;
         padding: 0 2em 2em 2em;
-        position: absolute;
+        /* position: absolute; */
         right: 0;
         top: 78px;
-        width: 335px;
+        width: 100%;
 
         display: flex;
         flex-direction: column;
@@ -60,8 +81,14 @@
         > .textWrapper {
           padding-top: 1em;
           > .hashtags {
-            margin-bottom: 0.8em;
+            margin-bottom: 1em;
             // margin-top: 1.5em;
+          }
+          > .description {
+            margin-bottom: 0.8em;
+            display: flex;
+            width: 100%;
+            word-wrap: break-word;           
           }
         }
       }
@@ -69,14 +96,14 @@
       .buttonWrapper {
         box-sizing: border-box;
         padding: 0 2em 2em 2em;
-        position: absolute;
+        /* position: absolute; */
         bottom: 0;
         right: 0;
-        width: 335px;
+        width: 100%;
       
         display: flex;
         flex-direction: row-reverse;
-        justify-content: space-between;
+        /* justify-content: space-between; */
       }
     }
   }
@@ -228,7 +255,80 @@
   margin-bottom: 0.8em;
   > .label {
     display: inline-block;
-    width: 45px;
+    width: 55px;
     margin-right: 8px;
+    font-weight: bold;
+    font-size: 1.2em;
   }
 }
+
+@media screen and (max-width: 949px) {
+  
+    .root{
+      padding: 60px;
+    }
+    
+    .contentWrap { 
+      width: 100%;
+      /* height: 600px; */
+    }
+    .imgContainer{
+      width: 100%;
+      height: 400px;
+    }
+  }
+  
+  @media screen and (max-width: 500px) {
+    
+      .root{
+        padding: 20px;
+      }
+      
+      .contentWrap { 
+        width: 100%;
+        /* height: 600px; */
+      }
+      .imgContainer{
+        width: 100%;
+        height: 400px;
+      }
+  }
+  
+  @media screen and (min-width: 950px) {
+    .root{
+      padding: 80px;
+    }
+  
+    .modal{
+      height: 100%;
+    }
+    .contentWrap { 
+      height: 100%;
+      width: 35%;
+      
+    }
+    .imgContainer{
+      flex-grow: 2;
+      width: 65%;
+    }
+    .wrapper{
+      flex-wrap: nowrap;
+      height: 100%;
+    }
+    .buttonWrapper {
+      box-sizing: border-box;
+      padding: 0 2em 2em 2em;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+    
+      display: flex;
+      flex-direction: row-reverse;
+      /* justify-content: space-between; */
+    }
+
+    .buttonWrapper>a{
+      margin-left: 10px;
+    }
+  }

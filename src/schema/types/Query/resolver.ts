@@ -1,8 +1,12 @@
 import * as BluebirdPromise from 'bluebird';
 import * as fs from 'fs';
+import { Cursor } from 'mongodb';
 import { join } from 'path';
 import { locales } from '../../../config';
+import { IProductDocument } from '../../models/Product';
 import { IResolver } from '../index';
+import { pagination } from '../Pagination/resolver';
+import { IProductOrdering } from '../Product';
 
 // A folder with messages
 // In development, source dir will be used
@@ -13,6 +17,15 @@ const readFile = BluebirdPromise.promisify(fs.readFile);
 interface IHashtag {
   _id: null;
   uniqueValues: { $addToSet: '$hashtag' };
+}
+
+interface ISearchArgs {
+  keywords: any[];
+  first: number;
+  after: string;
+  last: number;
+  before: string;
+  orderBy: IProductOrdering[];
 }
 
 const resolver: IResolver<any, any> = {
@@ -43,9 +56,9 @@ const resolver: IResolver<any, any> = {
       return JSON.parse(localeData);
     },
 
-    search(_, { keywords, first, after }, { database }) {
-      let products;
-      if (keywords) {
+    async search(_, { keywords, ...args }: ISearchArgs, { database }) {
+      let cursor: Cursor<IProductDocument>;
+      if (keywords.length > 0) {
         const searchContext = keywords.reduce((prev, keyword) => {
           if (keyword.id) {
             return [...prev, {
@@ -75,19 +88,18 @@ const resolver: IResolver<any, any> = {
           }
         }, []);
 
-        products = database.Product.find({
+        cursor = database.Product.find({
           $and: searchContext,
-        });
+        }).cursor;
       } else {
-        products = database.Product.find();
+        // No keyword specific
+        cursor = database.Product.find().cursor;
       }
-      if (first) {
-        products = products.skip(after);
-      }
-      if (after) {
-        products = products.limit(first);
-      }
-      return products;
+
+      return await pagination<IProductDocument>(cursor, {
+        name: 'Product',
+        ...args,
+      });
     },
 
     async product(_, { id }, { database }) {
@@ -109,6 +121,11 @@ const resolver: IResolver<any, any> = {
       return hashtag[0].uniqueValues;
     },
 
+    async user(_, { id }, { database }) {
+      return await database.User.findOne({
+        _id: id,
+      });
+    },
   },
 };
 

@@ -2,12 +2,12 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import ApolloClient from 'apollo-client';
 import { graphql } from 'graphql';
 import gql from 'graphql-tag';
-import MockDate from 'mockdate';
+import * as MockDate from 'mockdate';
 import { Schema } from '../../../';
 import { mongodb } from '../../../../config';
 import { ServerLink } from '../../../../core/ServerLink';
 import { Database } from '../../../models';
-import { IOrderReceipt } from '../../OrderReceipt/index';
+import { IOrderReceipt } from '../../OrderReceipt';
 import resolver from '../resolver';
 
 interface Mutation {
@@ -40,6 +40,7 @@ beforeAll(async (done) => {
     first_name: 'Ammarin',
     last_name: 'Jetthakun',
     tel_number: '0123456789',
+    gender: 'male',
     account: {
       email: 'ammarinjtk@gmail.com',
       password: 'donttell',
@@ -80,7 +81,7 @@ afterAll(async (done) => {
 it('Mutation createProduct should insert new product into mongodb', async () => {
   await resolver.Mutation.createProduct({}, {
     input: {
-      _id: '585b11e7adb8b5f2d655da01',
+      id: '585b11e7adb8b5f2d655da01',
       name: 'a',
       type: 'Product',
       pictures: ['https://th-live-02.slatic.net/p/7/hequ-1483111676-123106' +
@@ -96,7 +97,12 @@ it('Mutation createProduct should insert new product into mongodb', async () => 
       promotionEnd: new Date(),
       owner: user._id,
     },
-  }, { database });
+  }, {
+    database,
+    user: {
+      _id: user._id,
+    },
+  });
 
   // Should be able to find a product that has been created.
   const product = await database.Product.findOne({ name: 'a' });
@@ -120,7 +126,6 @@ it('Mutation createProduct should insert new product into mongodb', async () => 
 //         product: '585b11e7adb8b5f2d655da01',
 //         size: { size: 'S' },
 //         color: { color: 'red' },
-//         numberOfItems: 1,
 //         deliverAddress: '585b11e7adb8b5f2d655da01',
 //         paymentMethod: '585b11e7adb8b5f2d655da01',
 //         remark: 'note something',

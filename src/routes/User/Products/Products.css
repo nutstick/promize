@@ -1,0 +1,31 @@
+.root {
+  padding: 1em;
+
+  > .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  > .content {
+    color: #555;
+    width: 100%;
+  }
+
+  > .notFound {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 4em;
+
+    > img {
+      width: 60%;
+      display: block;
+      margin: auto;
+    }
+    > .text {
+      text-align: center;
+      font-size: x-large;
+      color: #bdc4cc;
+    }
+  }
+}

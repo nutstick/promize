@@ -6,9 +6,13 @@
 // Import all the third party stuff
 import 'whatwg-fetch';
 
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
+import { ApolloLink } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
+import { WebSocketLink } from 'apollo-link-ws';
+import { createUploadLink } from 'apollo-upload-client';
 import * as FontFaceObserver from 'fontfaceobserver';
+import { getOperationAST } from 'graphql';
 import { createPath } from 'history/PathUtils';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -30,21 +34,51 @@ import createFetch from './createFetch';
 /*
   Apollo Client v2
 */
-const http = new HttpLink({
-  uri: '/graphql',
-  credentials: 'include',
+
+const link = ApolloLink.split(
+  (operation) => {
+    const operationAST = getOperationAST(operation.query, operation.operationName);
+    return !!operationAST && operationAST.operation === 'subscription';
+  },
+  new WebSocketLink({
+    // uri: 'ws://192.168.43.126:4040/subscriptions',
+    uri: 'ws://localhost:4040/subscriptions',
+    options: {
+      reconnect: true,
+    },
+  }),
+  createUploadLink({
+    uri: '/graphql',
+    credentials: 'include',
+  }),
+);
+
+const fragmentMatcher = new IntrospectionFragmentMatcher({
+  introspectionQueryResultData: {
+    __schema: {
+      types: [{
+        kind: 'INTERFACE',
+        name: 'UserType',
+        possibleTypes: [{ name: 'User' }, { name: 'CoSeller' }],
+      }],
+    },
+  },
 });
+
 const cache = new InMemoryCache({
   dataIdFromObject(value: any) {
-    if (value._id) {
+    if (value.__typename.match(/(Page|Edges)/)) {
+      return null;
+    } else if (value._id) {
       return `${value.__typename}:${value._id}`;
     } else if (value.node) {
       return `${value.__typename}:${value.node._id}`;
     }
   },
+  fragmentMatcher,
 }).restore(window.App.apollo);
 const client = createApolloClient({
-  link: http,
+  link,
   ssrForceFetchDelay: 100,
   cache,
 });

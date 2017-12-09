@@ -1,0 +1,8 @@
+mutation AddPaymentMethod($input: PaymentMethodInput!) {
+  addPaymentMethod(paymentMethod: $input) {
+    _id
+    paymentMethods {
+      _id
+    }
+  }
+}
