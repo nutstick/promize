@@ -13,11 +13,6 @@
 }
 
 .sidebar {
-<<<<<<< HEAD
-  // flex: 0 0 12em;
-  flex: 1 0 auto;
-=======
->>>>>>> 1dee39204d72b27bba793e3d18660a1b831b3920
   display: flex;
   width: 15rem;
   flex-direction: column;
@@ -47,13 +42,9 @@
 }
 
 .mainContent{
-<<<<<<< HEAD
-  flex: 1;
-=======
   display: flex;
   flex: 1;
   padding: 0 !important;
->>>>>>> 1dee39204d72b27bba793e3d18660a1b831b3920
 }
 
 .container {
@@ -62,45 +53,13 @@
 
 .content {
   background-color: rgba(0, 0, 0, 0.01);
-<<<<<<< HEAD
-}
-.active {
-  font-weight: bold;
-  color: rgb(231, 53, 53);
-}
-
-li {
-  width: 100%;
-  margin: 0;
-  display: block;
-  padding: 1rem;
-  padding-left: 2em;
-  border: 1px solid #e4e0e0;
-  border-top-color: transparent;
-  border-left-color: transparent;
-  border-right-color: transparent;
-}
-
-li:hover {
-  color: rgb(231, 53, 53);
-}
-
-a:hover {
-  color: rgb(231, 53, 53);
-}
-=======
   flex: 7 0 auto;
 }
->>>>>>> 1dee39204d72b27bba793e3d18660a1b831b3920
 
 .menuList {
   list-style-type: none;
   display:inline-block;
   margin: 0;
-<<<<<<< HEAD
-  padding: 0;
-=======
->>>>>>> 1dee39204d72b27bba793e3d18660a1b831b3920
   width: 100%;
 
   :global(.item:first) {
@@ -109,28 +68,6 @@ a:hover {
   :global(.item) {
     white-space: nowrap;
   }
-<<<<<<< HEAD
-  ul {
-    list-style-type: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-  }
-
-  li {
-    margin: 0; 
-    float:left;
-    padding: 1rem;
-    cursor: pointer;
-    text-align: center;
-    border: 1px solid #e4e0e0;
-    border-bottom-color: transparent;
-  }
-}
-@media (min-width: 620px) {
-  .iconNewLine {
-    display: none;
-=======
   :global(.content) {
     padding: 0.24em 1em;
     > a {
@@ -191,6 +128,5 @@ a:hover {
         background: transparent;
       }
     }
->>>>>>> 1dee39204d72b27bba793e3d18660a1b831b3920
   }
 }
