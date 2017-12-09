@@ -7,8 +7,6 @@ import * as cookieParser from 'cookie-parser';
 import * as express from 'express';
 import * as expressJwt from 'express-jwt';
 import { UnauthorizedError as Jwt401Error } from 'express-jwt';
-import { execute, subscribe } from 'graphql';
-import { createServer } from 'http';
 import * as jwt from 'jsonwebtoken';
 import * as nodeFetch from 'node-fetch';
 import * as path from 'path';
@@ -29,7 +27,6 @@ import { api, auth, locales, port, wsport } from './config';
 import passport from './core/passport';
 import { requestLanguage } from './core/requestLanguage';
 import { ServerLink } from './core/ServerLink';
-import { addGraphQLSubscriptions } from './core/subscriptions';
 import createFetch from './createFetch';
 import Routes from './routes';
 import ErrorPage from './routes/Error/ErrorPage';
@@ -42,6 +39,8 @@ import { database } from './schema/models';
  */
 interface HotExpress extends express.Express {
   hot: any;
+
+  wsServer: any;
 }
 
 const app = express() as HotExpress;
@@ -58,7 +57,7 @@ global.navigator.userAgent = global.navigator.userAgent || 'all';
 //
 // Register Node.js middleware
 // -----------------------------------------------------------------------------
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 app.use(cookieParser());
 app.use(
   requestLanguage({
@@ -135,26 +134,10 @@ app.use('/graphql', bodyParser.json(), apolloUploadExpress({ uploadDir: './publi
     },
     rootValue: { request: req },
   })));
-
 app.get('/graphiql', graphiqlExpress({
   endpointURL: '/graphql',
   subscriptionsEndpoint: `ws://localhost:${wsport}/subscriptions`,
 }));
-
-//
-// Register Websocket middleware
-// -----------------------------------------------------------------------------
-const websocketServer = createServer((_request, response) => {
-  response.writeHead(404);
-  response.end();
-});
-
-websocketServer.listen(wsport, () => {
-  // tslint:disable-next-line:no-console
-  console.log(`Websocket server listening on port ${wsport}`);
-
-  addGraphQLSubscriptions(websocketServer);
-});
 
 //
 // Register server-side rendering middleware
@@ -357,30 +340,6 @@ if (module.hot) {
   app.hot = module.hot;
 
   module.hot.accept();
-  // module.hot.accept();
-
-  module.hot.accept(() => {
-    try {
-      addGraphQLSubscriptions(websocketServer);
-      // tslint:disable-next-line:no-console
-      console.log('Attached addGraphQLSubscriptions to module.hot');
-    } catch (error) {
-      // tslint:disable-next-line:no-console
-      console.error(error.stack);
-    }
-  });
-
-  module.hot.dispose(() => {
-    console.log('close');
-    try {
-      if (websocketServer) {
-        websocketServer.close();
-      }
-    } catch (error) {
-      // tslint:disable-next-line:no-console
-      console.error(error.stack);
-    }
-  });
 }
 
 export default app;

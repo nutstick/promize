@@ -1,0 +1,22 @@
+query PendingCoSeller($first: Int, $after: ID) {
+  me {
+    _id
+    ... on Admin {
+      pendingCoSellers(first: $first, after: $after) {
+        edges {
+          node {
+            _id
+            firstName
+            middleName
+            lastName
+          }
+          cursor
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+      }
+    }
+  }
+}

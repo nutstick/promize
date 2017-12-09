@@ -1,17 +1,20 @@
-import { ApolloClient } from 'apollo-client';
 import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import { ChildProps, MutationFunc, QueryProps } from 'react-apollo';
-import { Link } from 'react-router-dom';
-import { Button, Form, Icon, Image, Input, Loader } from 'semantic-ui-react';
+import { Form, Icon, Image, Loader } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
-import { TradeRoomModalQuery } from '../../apollo/tradeRoomModal/index';
+import { TradeRoomModalQuery } from '../../apollo/tradeRoomModal';
 import * as SETTRADEROOMMODALMUTATION from '../../apollo/tradeRoomModal/SetTradeRoomModal.gql';
 import * as TRADEROOMMODALQUERY from '../../apollo/tradeRoomModal/TradeRoomModalQuery.gql';
+<<<<<<< HEAD
 import { ICommandContent, IMessage, IPictureContent, ITextContent } from '../../schema/types/TradeRoom/index';
 import { IUser } from '../../schema/types/User/index';
+=======
+import { ICommandContent, IMessage, IPictureContent, ITextContent } from '../../schema/types/Traderoom';
+import { IUser } from '../../schema/types/User';
+>>>>>>> 1dee39204d72b27bba793e3d18660a1b831b3920
 import * as ADDMESSAGEMUTATION from './AddMessageMutation.gql';
 import * as s from './MessagesLayout.css';
 import * as MESSAGESQUERY from './MessagesQuery.gql';
@@ -83,7 +86,6 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
   }
 
   private onTradeRoomClick(traderoom) {
-    const { state, setState } = this;
     if (this.unsubscribe) {
       this.unsubscribe();
     }
@@ -112,7 +114,7 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
         },
       }).subscribe({
         next: function({ data: { messageAdded } }) {
-          if (!this.state.messages.find((message) => message._id === messageAdded._id)) {
+          if (messageAdded && !this.state.messages.find((message) => message._id === messageAdded._id)) {
             this.setState({
               messages: this.state.messages.concat([messageAdded]),
             });
@@ -124,25 +126,32 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
 
   public render() {
     const { loading: traderoomsLoading, error: traderoomsError, me } = this.props.traderooms;
+    const { tradeRoomModal } = this.props.tradeRoomModal;
+
     return (
       <div className={s.root}>
         <div className={s.header}>
           <div className={s.close}><Icon name="x"/></div>
         </div>
         <div className={s.tradeRoomsWrapper}>
+          <div className={s.tradeRooms}>
           {
             !traderoomsLoading && !traderoomsError && me ? me.traderooms.length ?
             me.traderooms.map((traderoom) => (
-              <a key={traderoom._id}
-                href="#" className={s.tradeRoomIcon} onClick={this.onTradeRoomClick.bind(this, traderoom._id)}>
-                <Image avatar src={traderoom.participants.find((user) => user._id !== me._id).avatar} />
+              <a
+                key={traderoom._id}
+                href="#"
+                className={cx(s.tradeRoomIcon, { [s.active]: traderoom._id === tradeRoomModal.id })}
+                onClick={this.onTradeRoomClick.bind(this, traderoom._id)}>
+                <Image circular src={traderoom.participants.find((user) => user._id !== me._id).avatar} />
               </a>
             )) : <div></div> : <div><Loader active /></div>
           }
+          </div>
         </div>
         <div className={s.messagesWrapper}>
         {
-          this.props.tradeRoomModal.tradeRoomModal.id ? (
+          tradeRoomModal.id ? (
             <div style={{ height: '100%', paddingBottom: 65 }}>
               <div className={s.messages}>
                 <div>
@@ -163,7 +172,7 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
               <Form className={s.inputWrapper} onSubmit={() => {
                 this.props.mutate({
                   variables: {
-                    traderoom: this.props.tradeRoomModal.tradeRoomModal.id,
+                    traderoom: tradeRoomModal.id,
                     content: {
                       text: this.state.inputValue,
                     },

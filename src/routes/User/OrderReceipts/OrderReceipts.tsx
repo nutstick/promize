@@ -1,12 +1,15 @@
+import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { ChildProps } from 'react-apollo';
+import * as MdLocalOfferIcon from 'react-icons/lib/md/local-offer';
 import { RouteComponentProps } from 'react-router-dom';
 import { Loader } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import { graphql } from '../../../apollo/graphql';
+import { contentClass, headingClass } from '../../../components/Card';
 import { IOrderReceipt } from '../../../schema/types/OrderReceipt';
 import { IPage } from '../../../schema/types/Pagination';
-import { Button, Icon } from 'semantic-ui-react';
 import * as UPDATEORDERRECEIPTSTATUSMUTATION from '../UpdateOrderReceiptStatusMutation.gql';
 import * as MYORDERRECEIPTSQUERY from './MyOrderReceiptsQuery.gql';
 import * as s from './OrderReceipts.css';
@@ -58,15 +61,24 @@ export class OrderReceipts extends React.Component<OrderReceipts.Props> {
   public render() {
     // TODO: Pagination
     return (
-      <div className={s.root} style={{ padding: '3rem' }}>
-        <h1 className={s.header}>Order Receipts</h1>
+      <div className={s.root}>
+        <div className={headingClass}>
+          <MdLocalOfferIcon size={25} style={{
+            marginRight: 2.5,
+          }} color="#ff9521" />
+          <span>Order Receipts</span>
+        </div>
         {
           this.props.data.loading || this.props.data.error ? (
-            <div>
-              <Loader />
+            <div className={contentClass}>
+              <Loader active />
+            </div>
+          ) : this.props.data.me.orderReceipts.edges.length === 0 ? (
+            <div className={cx(contentClass, s.empty)}>
+              No order receipts found.
             </div>
           ) : (
-            <div>
+            <div className={contentClass}>
               {this.props.data.me.orderReceipts.edges.map(({ node }) => (
                 <div key={node._id} className={s.modal}>
                   <div className={s.pictureWrapper}>

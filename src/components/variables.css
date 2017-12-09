@@ -3,7 +3,7 @@
    * Typography
    * ======================================================================== */
 
-  --font-family-base: 'Segoe UI', 'HelveticaNeue-Light', sans-serif;
+  --font-family-base: 'Open Sans', 'HelveticaNeue-Light', sans-serif;
 
   /*
    * Layout
@@ -11,19 +11,22 @@
 
   --max-content-width: 800px;
   --max-outter-content-width: 1000px;
+  --overlap-card-top: -120px;
+  --overlap-card-bottom: 120px;
 
 
   /*
    * Z-index
    * ======================================================================== */
-  --login-depth: 100;
-  --messager-depth: 110;
+  --login-depth: 1003;
+  --messager-depth: 1010;
 
   /*
    * Media queries breakpoints
    * ======================================================================== */
 
-  --screen-xs-min: 480px;  /* Extra small screen / phone */
+  // --screen-xs-min: 480px;  /* Extra small screen / phone */
+  --screen-xs-min: 620px;  /* Extra small screen / phone */
   --screen-sm-min: 768px;  /* Small screen / tablet */
   --screen-md-min: 992px;  /* Medium screen / desktop */
   --screen-lg-min: 1200px; /* Large screen / wide desktop */
@@ -41,11 +44,6 @@
   --secondary-color: #5a6669;
 
   --dimed-dark-grey: rgba(0, 0, 0, 0.7);
-
-  @custom-media --small-xs (width >= 480px);
-  @custom-media --small-sm (width >= 768px);
-  @custom-media --small-md (width >= 992px);
-  @custom-media --small-lg (width >= 1200px);
 
   /*
    * Media queries breakpoints

@@ -1,8 +1,7 @@
 FROM node:8.4.0
 
 # Install yarn
-# RUN curl -o- -L https://yarnpkg.com/install.sh | bash
-RUN npm install -g yarn
+RUN npm i -g yarn
 
 RUN mkdir -p /app
 
@@ -16,5 +15,7 @@ RUN npm install typescript --global
 ADD . .
 
 EXPOSE 3000
+
+EXPOSE 4040
 
 CMD [ "yarn", "start" ]

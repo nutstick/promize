@@ -7,7 +7,7 @@ import { Schema } from '../../../';
 import { mongodb } from '../../../../config';
 import { ServerLink } from '../../../../core/ServerLink';
 import { Database } from '../../../models';
-import { IOrderReceipt } from '../../OrderReceipt/index';
+import { IOrderReceipt } from '../../OrderReceipt';
 import resolver from '../resolver';
 
 interface Mutation {

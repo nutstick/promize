@@ -1,9 +1,13 @@
+import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { ChildProps } from 'react-apollo';
-import { RouteComponentProps } from 'react-router-dom';
-import { Card, Loader } from 'semantic-ui-react';
+import * as MdLocationOnIcon from 'react-icons/lib/md/location-on';
+import * as MdPersonOutlineIcon from 'react-icons/lib/md/person-outline';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import { Button, Card, Icon, Loader } from 'semantic-ui-react';
 import { graphql } from '../../../apollo/graphql';
+import { contentClass, headingClass } from '../../../components/Card';
 import { IAddress } from '../../../schema/models/User/address';
 import { IAccount } from '../../../schema/types/User';
 import * as s from './Account.css';
@@ -35,60 +39,79 @@ export class Account extends React.Component<Account.Props> {
     super(props);
   }
 
+  private addAddress() {
+    return false;
+  }
+
   public render() {
     return (
-      <div className={s.root} style={{ padding: '3rem' }}>
-        <h1 className={s.header}>My Account</h1>
-        {
-          this.props.data.loading || this.props.data.error ? (
+      <div className={s.root}>
+        <div className={headingClass}>
+          <MdPersonOutlineIcon size={25} style={{
+            marginRight: 2.5,
+          }} color="#ff9521" />
+          <span>Account settings</span>
+        </div>
+        {this.props.data.loading || this.props.data.error ? (
+          <div className={contentClass}>
+            <Loader active />
+          </div>
+        ) : (
+          <div className={contentClass} style={{ flexDirection: 'column' }}>
             <div>
-              <Loader />
-            </div>
-          ) : (
-            <div>
-              <h4>
               {this.props.data.me.account && this.props.data.me.account.email ?
                 ('Email : ' + this.props.data.me.account.email) :
                 ''}
-              </h4>
-              <h3>Address</h3>
-              {this.props.data.me.addresses.map((address) => (
-                <div className={s.modal}>
-                  <div className={s.contentWrapper}>
-                    <div className={s.contentHeader}>
-                      <div className={s.wrapContainer}>
-                        <div className={s.downContent}>
-                          <h3 className={s.addressid}>{address._id}</h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={s.contentDetail}>
-                      <div className={s.leftContent}>
-                        <div className={s.address}>
-                          <div className={s.label}>Address </div>
-                          <div className={s.value}>{address.address}</div>
-                        </div>
-                        <div className={s.address}>
-                          <div className={s.label}>City </div>
-                          <div className={s.value}>{address.city}</div>
-                        </div>
-                        <div className={s.address}>
-                          <div className={s.label}>Country </div>
-                          <div className={s.value}>{address.country}</div>
-                        </div>
-                        <div className={s.address}>
-                          <div className={s.label}>Zipcode </div>
-                          <div className={s.value}>{address.zip}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-              ))}
             </div>
-          )
-        }
+            <div>
+              Facebook: {this.props.data.me.account.facebookAccessCode ? (
+                <Button color="facebook" size="tiny">
+                  <Icon name="facebook" /> Linked
+                </Button>
+              ) : (
+                <Button color="facebook" size="tiny">
+                  <Icon name="facebook" /> Link
+                </Button>
+              )}
+            </div>
+            <div>
+              Google: {this.props.data.me.account.googleAccessCode ? (
+                <Button color="google plus" size="tiny">
+                  <Icon name="google plus" /> Linked
+                </Button>
+              ) : (
+                <Button color="google plus" size="tiny">
+                  <Icon name="google plus" /> Link
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
+        <div className={headingClass}>
+          <MdLocationOnIcon size={25} style={{
+            marginRight: 2.5,
+          }} color="#ff9521" />
+          <span>Addresses</span>
+        </div>
+        {this.props.data.loading || this.props.data.error ? (
+          <div className={contentClass}>
+            <Loader />
+          </div>
+        ) : this.props.data.me.addresses.length === 0 ? (
+          <div className={cx(contentClass, s.empty)}>
+            No address found.
+            <a onClick={this.addAddress.bind(this)}>Add address</a>
+          </div>
+        ) : this.props.data.me.addresses.map((address) => (
+          <Card>
+            <Card.Content>
+              <p>Address: {address.address}</p>
+              <p>City: {address.city}</p>
+              <p>Country: {address.country}</p>
+              <p>Zip: {address.zip}</p>
+            </Card.Content>
+          </Card>
+        ))}
       </div>
     );
   }

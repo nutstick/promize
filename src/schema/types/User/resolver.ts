@@ -1,11 +1,7 @@
-import { GraphQLError } from 'graphql';
-import { toObjectID } from 'iridium';
-import { Cursor } from 'mongodb';
-import { IReceiptDocument } from '../../models/Receipt/index';
-import { IUserDocument } from '../../models/User/index';
-import { base64, unbase64 } from '../base64';
-import { IResolver, ResolverFn, TypeResolver } from '../index';
-import { ITradeRoom } from '../TradeRoom/index';
+import { IReceiptDocument } from '../../models/Receipt';
+import { IUserDocument } from '../../models/User';
+import { IResolver, TypeResolver } from '../index';
+import { pagination } from '../Pagination/resolver';
 
 const UserTypeResolver: TypeResolver<IUserDocument> = {
   firstName({ first_name }) {
@@ -29,94 +25,13 @@ const UserTypeResolver: TypeResolver<IUserDocument> = {
   address({ addresses }, { id }) {
     return addresses.find((address) => address._id === id);
   },
-  async citizenCardImage({ _id, citizen_card_image }, _, { database, user }) {
-    const userInstance = await database.User.findOne({ _id: user._id });
-    if (userInstance._id === _id || userInstance.type === 'Admin') {
-      return citizen_card_image;
-    }
-    return null;
-  },
-  async orderReceipts({ _id: buyer }, { first, after, last, before, orderBy }, { database }) {
-    // Add default sort by _id
-    orderBy = orderBy ? orderBy.concat([{ sort: '_id', direction: 'ASC' }]) : [{ sort: '_id', direction: 'ASC' }];
+  async orderReceipts({ _id: buyer }, args, { database }) {
+    const cursor = database.Receipt.find({ buyer }).cursor;
 
-    // Parse orderBy to mongodb sort format
-    const sort: any = orderBy ? orderBy.reduce((prev, order) => ({
-      ...prev,
-      [order.sort]: (order.direction === 'ASC' ? 1 : -1),
-    }), {}) : {};
-
-    let cursor = database.Receipt.find({ buyer }).cursor;
-
-    if (after) {
-      const { name, _id, ...cursorData } = JSON.parse(unbase64(after));
-      if (name !== 'OrderReceiptCursor') {
-        throw new GraphQLError('after type is not OrderReceiptCursor');
-      }
-      cursor = (cursor as any).min({
-        ...cursorData,
-        ..._id && {
-          _id: toObjectID(_id),
-        },
-      });
-    }
-    if (first) {
-      cursor = cursor.limit(first + 1);
-    }
-    if (before) {
-      const { name, _id, ...cursorData } = JSON.parse(unbase64(before));
-      if (name !== 'OrderReceiptCursor') {
-        throw new GraphQLError('before type is not OrderReceiptCursor');
-      }
-      cursor = (cursor as any).max({
-        ...cursorData,
-        ..._id && {
-          _id: toObjectID(_id),
-        },
-      });
-    }
-    if (last) {
-      cursor = cursor.limit(last + 1);
-    }
-
-    cursor = cursor.sort(sort);
-
-    const totalCount = await cursor.count();
-    const orderReceipts = await cursor.toArray();
-
-    // Has next page
-    if (orderReceipts.length > (first || last)) {
-      const endCursor = base64(JSON.stringify(
-        orderBy.reduce((prev, order) => ({
-          ...prev,
-          [order.sort]: orderReceipts[orderReceipts.length - 1][order.sort],
-        }), { name: 'OrderReceiptCursor' }),
-      ));
-
-      return {
-        totalCount,
-        edges: orderReceipts.slice(0, -1).map((orderReceipt) => ({
-          orderReceipts,
-          orderBy,
-        })),
-        pageInfo: {
-          endCursor,
-          hasNextPage: true,
-        },
-      };
-    }
-
-    return {
-      totalCount,
-      edges: orderReceipts.map((orderReceipt) => ({
-        orderReceipt,
-        orderBy,
-      })),
-      pageInfo: {
-        endCursor: null,
-        hasNextPage: false,
-      },
-    };
+    return await pagination<IReceiptDocument>(cursor, {
+      name: 'OrderReceipt',
+      ...args,
+    });
   },
   async traderooms({ _id }, _, { database }) {
     return await database.Traderoom.find({ participants: _id }).toArray();
@@ -148,114 +63,41 @@ const resolver: IResolver<any, any> = {
   },
   User: {
     ...UserTypeResolver,
+    async citizenCardImage({ _id, citizen_card_image }, _, { database, user }) {
+      const userInstance = await database.User.findOne({ _id: user._id });
+      if (userInstance._id === _id || userInstance.type === 'Admin') {
+        return citizen_card_image;
+      }
+      return null;
+    },
     coSellerRegisterStatus({ coseller_register_status }, _, { database }) {
       return coseller_register_status.toUpperCase();
     },
   },
-  Admin: {
-    ...UserTypeResolver,
-  },
   CoSeller: {
+    async citizenCardImage({ _id, citizen_card_image }, _, { database, user }) {
+      const userInstance = await database.User.findOne({ _id: user._id });
+      if (userInstance._id === _id || userInstance.type === 'Admin') {
+        return citizen_card_image;
+      }
+      return null;
+    },
     ...UserTypeResolver,
     coseller() {
       return true;
     },
-    async products({ _id: owner }, { first, after, last, before, orderBy }, { database }) {
-      // Add default sort by _id
-      orderBy = orderBy ? orderBy.concat([{ sort: '_id', direction: 'ASC' }]) : [{ sort: '_id', direction: 'ASC' }];
-
-      // Parse orderBy to mongodb sort format
-      const sort: any = orderBy ? orderBy.reduce((prev, order) => ({
-        ...prev,
-        [order.sort]: (order.direction === 'ASC' ? 1 : -1),
-      }), {}) : {};
-
-      let cursor = database.Product.find({ owner }).cursor;
-
-      if (after) {
-        const { name, _id, ...cursorData } = JSON.parse(unbase64(after));
-        if (name !== 'ProductCursor') {
-          throw new GraphQLError('after type is not ProductCursor');
-        }
-        cursor = (cursor as any).min({
-          ...cursorData,
-          ..._id && {
-            _id: toObjectID(_id),
-          },
-        });
-      }
-      if (first) {
-        cursor = cursor.limit(first + 1);
-      }
-      if (before) {
-        const { name, _id, ...cursorData } = JSON.parse(unbase64(before));
-        if (name !== 'ProductCursor') {
-          throw new GraphQLError('before type is not ProductCursor');
-        }
-        cursor = (cursor as any).max({
-          ...cursorData,
-          ..._id && {
-            _id: toObjectID(_id),
-          },
-        });
-      }
-      if (last) {
-        cursor = cursor.limit(last + 1);
-      }
-
-      cursor = cursor.sort(sort);
-
-      const totalCount = await cursor.count();
-      const products = await cursor.toArray();
-
-      // Has next page
-      if (products.length > (first || last)) {
-        const endCursor = base64(JSON.stringify(
-          orderBy.reduce((prev, order) => ({
-            ...prev,
-            [order.sort]: products[products.length - 1][order.sort],
-          }), { name: 'ProductCursor' }),
-        ));
-
-        return {
-          totalCount,
-          edges: products.slice(0, -1).map((product) => ({
-            product,
-            orderBy,
-          })),
-          pageInfo: {
-            endCursor,
-            hasNextPage: true,
-          },
-        };
-      }
-
-      return {
-        totalCount,
-        edges: products.map((product) => ({
-          product,
-          orderBy,
-        })),
-        pageInfo: {
-          endCursor: null,
-          hasNextPage: false,
-        },
-      };
+    async products({ _id: owner }, args, { database }) {
+      const cursor = database.Product.find({ owner }).cursor;
+      return await pagination(cursor, {
+        name: 'Product',
+        ...args,
+      });
     },
-    async buyOrderReceipts({ _id: owner }, { first, after, last, before, orderBy, status }, { database }) {
-      // Add default sort by _id
-      orderBy = orderBy ? orderBy.concat([{ sort: '_id', direction: 'ASC' }]) : [{ sort: '_id', direction: 'ASC' }];
-
-      // Parse orderBy to mongodb sort format
-      const sort: any = orderBy ? orderBy.reduce((prev, order) => ({
-        ...prev,
-        [order.sort]: (order.direction === 'ASC' ? 1 : -1),
-      }), {}) : {};
-
+    async buyOrderReceipts({ _id: owner }, { status, ...args }, { database }) {
       // Find all products
       const products = await database.Product.find({ owner }, { _id: 1 }).toArray();
       // Find all receipts of products with status filter
-      let cursor = database.Receipt.find({
+      const cursor = database.Receipt.find({
         product: {
           $in: products.map((product) => product._id),
         },
@@ -264,75 +106,10 @@ const resolver: IResolver<any, any> = {
         },
       }).cursor;
 
-      if (after) {
-        const { name, _id, ...cursorData } = JSON.parse(unbase64(after));
-        if (name !== 'OrderReceiptCursor') {
-          throw new GraphQLError('after type is not OrderReceiptCursor');
-        }
-        cursor = (cursor as any).min({
-          ...cursorData,
-          ..._id && {
-            _id: toObjectID(_id),
-          },
-        });
-      }
-      if (first) {
-        cursor = cursor.limit(first + 1);
-      }
-      if (before) {
-        const { name, _id, ...cursorData } = JSON.parse(unbase64(before));
-        if (name !== 'OrderReceiptCursor') {
-          throw new GraphQLError('before type is not OrderReceiptCursor');
-        }
-        cursor = (cursor as any).max({
-          ...cursorData,
-          ..._id && {
-            _id: toObjectID(_id),
-          },
-        });
-      }
-      if (last) {
-        cursor = cursor.limit(last + 1);
-      }
-
-      cursor = cursor.sort(sort);
-
-      const totalCount = await cursor.count();
-      const orderReceipts = await cursor.toArray();
-
-      // Has next page
-      if (orderReceipts.length > (first || last)) {
-        const endCursor = base64(JSON.stringify(
-          orderBy.reduce((prev, order) => ({
-            ...prev,
-            [order.sort]: orderReceipts[orderReceipts.length - 1][order.sort],
-          }), { name: 'OrderReceiptCursor' }),
-        ));
-
-        return {
-          totalCount,
-          edges: orderReceipts.slice(0, -1).map((orderReceipt) => ({
-            orderReceipts,
-            orderBy,
-          })),
-          pageInfo: {
-            endCursor,
-            hasNextPage: true,
-          },
-        };
-      }
-
-      return {
-        totalCount,
-        edges: orderReceipts.map((orderReceipt) => ({
-          orderReceipt,
-          orderBy,
-        })),
-        pageInfo: {
-          endCursor: null,
-          hasNextPage: false,
-        },
-      };
+      return await pagination(cursor, {
+        name: 'BuyOrderReceipts',
+        ...args,
+      });
     },
     async totalBuyOrderReceipts({ owner }, { status }, { database }) {
       // Find all products
@@ -346,6 +123,21 @@ const resolver: IResolver<any, any> = {
           status,
         },
       }).count();
+    },
+  },
+  Admin: {
+    ...UserTypeResolver,
+    admin() {
+      return true;
+    },
+    async pendingCoSellers(_, { status, ...args }, { database }) {
+      // Find all receipts of products with status filter
+      const cursor = database.User.find({ coseller_register_status: 'Pending' }).cursor;
+
+      return await pagination(cursor, {
+        name: 'PendingCoSeller',
+        ...args,
+      });
     },
   },
 };

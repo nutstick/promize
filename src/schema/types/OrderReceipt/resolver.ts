@@ -1,18 +1,8 @@
-import { base64 } from '../base64';
 import { IResolver } from '../index';
+import { toObjectID } from 'iridium';
 
 const resolver: IResolver<any, any> = {
   OrderReceiptEdges: {
-    node({ orderReceipt }) {
-      return orderReceipt;
-    },
-    cursor({ orderReceipt, orderBy }) {
-      const value = orderBy.reduce((prev, order) => ({
-        ...prev,
-        [order.sort]: orderReceipt[order.sort],
-      }), { name: 'OrderReceiptCursor' });
-      return base64(JSON.stringify(value));
-    },
   },
   OrderReceipt: {
     async deliverAddress({ buyer, deliver_address }, _, { database }) {
@@ -50,6 +40,9 @@ const resolver: IResolver<any, any> = {
         }
       }
     },
+    async creator({ buyer }, _, { database }) {
+      return await database.User.findOne({ _id: toObjectID(buyer) });
+    },
     status({ payment_completed, product_delivered, product_received }) {
       return payment_completed ? 'PAID' : product_delivered ? 'DELIVERED' : product_received ?
         'RECEIVED' : 'CREATED';
@@ -65,9 +58,6 @@ const resolver: IResolver<any, any> = {
     },
     async product({ product }, _, { database }) {
       return await database.Product.findOne({ _id: product });
-    },
-    async creator({ buyer }, _, { database }) {
-      return await database.User.findOne({ _id: buyer });
     },
   },
 };

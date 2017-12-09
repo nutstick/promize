@@ -1,3 +1,26 @@
+input UserOrdering {
+  sort: UserSort!
+  direction: Direction! = ASC
+}
+
+enum UserSort {
+  createAt
+  updateAt
+}
+
+# Edges for UserQuery
+type UserEdges implements Edges {
+  node: User!
+  cursor: ID!
+}
+
+# User relay-style pagination query
+type UserPage implements Page {
+  totalCount: Int!
+  edges: [UserEdges]
+  pageInfo: PageInfo
+}
+
 # Account data type
 type Account {
   # Email
@@ -63,9 +86,6 @@ interface UserType {
   # User avatar
   avatar: String
 
-  # Citizen card image
-  citizenCardImage: String
-
   # Order receipts
   orderReceipts(
     first: Int,
@@ -106,7 +126,7 @@ type User implements UserType, Node {
   # User avatar
   avatar: String
 
-  # # Citizen card image
+  # Citizen card image
   citizenCardImage: String
 
   # Order receipts
@@ -219,6 +239,9 @@ type Admin implements UserType, Node {
   # User avatar
   avatar: String
 
+  traderooms: [TradeRoom]
+  traderoom(id: ID!): TradeRoom
+
   # Order receipts
   orderReceipts(
     first: Int,
@@ -227,12 +250,19 @@ type Admin implements UserType, Node {
     before: ID,
     orderBy: [OrderReceiptOrdering],
   ): OrderReceiptPage
-
-  # # Citizen card image
-  citizenCardImage: String
     
   traderooms: [TradeRoom]
   traderoom(id: ID!): TradeRoom
+
+  admin: Boolean
+  # Pending CoSellers
+  pendingCoSellers(
+    first: Int,
+    after: ID,
+    last: Int,
+    before: ID,
+    orderBy: [UserOrdering],
+  ): UserPage
 
   createAt: Date!
   updateAt: Date!

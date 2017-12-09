@@ -22,7 +22,7 @@ input CreateProductInput {
   originalPrice: Int
   type: ProductEnum!
   price: Int!
-  pictures: [String]!
+  pictures: [Upload!]!
   hashtags: [String]!
   colors: [String]
   sizes: [String]

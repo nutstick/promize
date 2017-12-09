@@ -1,7 +1,7 @@
 import * as Iridium from 'iridium';
 import { Collection, Index, Instance, ObjectID, Property, Transform } from 'iridium';
 import { ObjectID as id } from 'mongodb';
-import { IProductDocument } from '../Product/index';
+import { IProductDocument } from '../Product';
 import { Account, IAccountDocument } from './account';
 import { Address, IAddress } from './address';
 import { IPaymentMethod, PaymentMethod } from './paymentmethod';

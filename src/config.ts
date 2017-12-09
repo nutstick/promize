@@ -7,8 +7,6 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-/* eslint-disable max-len */
-
 if (process.env.BROWSER) {
   throw new Error(
     'Do not import `config.ts` from inside the client-side code.',
@@ -30,6 +28,11 @@ export const mongodb = {
   host: process.env.MONGO_HOST || `localhost`,
   port: parseInt(process.env.MONGO_PORT, 10) || 27017,
   database: process.env.MONGO_DB || 'promize',
+};
+
+export const redis = {
+  host: process.env.REDIS_HOST || `localhost`,
+  port: parseInt(process.env.REDIS_PORT, 10) || 6379,
 };
 
 export const api = {

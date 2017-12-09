@@ -13,6 +13,9 @@ const resolver: IResolver<any, any> = {
     },
   },
   Message: {
+    createAt({ createAt }) {
+      return new Date(createAt);
+    },
     async owner({ owner }, _, { database }) {
       return await database.User.findOne({ _id: owner });
     },

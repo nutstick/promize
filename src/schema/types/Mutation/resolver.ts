@@ -3,7 +3,7 @@ import * as mkdirp from 'mkdirp';
 import * as shortid from 'shortid';
 import { uploadDir } from '../../../config';
 import { IResolver } from '../index';
-import { MESSAGE_ADDED, pubsub } from '../subscriptions';
+import { MESSAGE_ADDED, pubsub } from '../pubsub';
 
 // Ensure upload directory exists
 mkdirp.sync(uploadDir);
@@ -15,13 +15,13 @@ const storeUpload = async ({ stream, filename }) => {
   return new Promise<{ id: string, path: string }>((resolve, reject) =>
     stream
       .pipe(createWriteStream(path))
-      .on('finish', () => resolve({ id, path }))
+      .on('finish', () => resolve({ id, path: `/${path.split('/').slice(2).join('/')}` }))
       .on('error', reject),
   );
 };
 
 const processUpload = async (upload) => {
-  const { stream, filename, mimetype, encoding } = await upload;
+  const { stream, filename } = await upload;
   return await storeUpload({ stream, filename });
 };
 
@@ -34,27 +34,16 @@ const resolver: IResolver<any, any> = {
     // },
 
     // tslint:disable-next-line:max-line-length
-    async createProduct(_, { input: { promotionStart, promotionEnd, pictures, price, colors, sizes, ...input } }, { database, user }) {
+    async createProduct(_, { input: { promotionStart, promotionEnd, pictures, price, ...input } }, { database, user }) {
+      const picturesUrl = await Promise.all((pictures as Array<Promise<any>>).map(processUpload));
       const userInstance = await database.User.findOne({ _id: user._id });
       // Only CoSeller can create product
       if (userInstance.type === 'CoSeller') {
-        const color: any = [];
-        for (const i of colors) {
-          color.push({ color: i });
-        }
-
-        const size: any = [];
-        for (const i of sizes) {
-          size.push({ size: i });
-        }
-        // console.log(pictures);
-        // console.log(pictures[0]);
-        // console.log(pictures[0][0]);
         return await database.Product.insert({
           ...input,
-          colors: color,
-          sizes: size,
-          pictures,
+          pictures: picturesUrl.map((picture) => {
+            return '/' + picture.path.slice(1);
+          }),
           promotion_start: promotionStart,
           promotion_end: promotionEnd,
           owner: user._id,
@@ -209,7 +198,7 @@ const resolver: IResolver<any, any> = {
         await database.User.update({ _id: user._id }, {
           $set: {
             tel_number: input.telNumber ? input.telNumber : userInstance.telNumber,
-            citizen_card_image: citizenCardImageUrl,
+            citizen_card_image: citizenCardImageUrl.path.slice(1),
             coseller_register_status: 'Pending',
           },
         });
@@ -278,7 +267,7 @@ const resolver: IResolver<any, any> = {
       });
     },
 
-    async editTradeRoom(_, { input: {id, ...input } }, { database, user }) {
+    async editTradeRoom(_, { input: { id, ...input } }, { database, user }) {
       return await database.Traderoom.update({ _id: id }, {
         ...input,
       });
@@ -300,8 +289,27 @@ const resolver: IResolver<any, any> = {
         owner: user._id,
       });
 
-      pubsub.publish(MESSAGE_ADDED, message);
-
+      if (content.text) {
+        pubsub.publish(MESSAGE_ADDED, message);
+      } else if (content.command) {
+        switch (content.command) {
+          case 'color': {
+            database.Traderoom.update({ _id: traderoom }, {
+              $set: { color: content.arguments[0] },
+            });
+          }
+          case 'size': {
+            database.Traderoom.update({ _id: traderoom }, {
+              $set: { size: content.arguments[0] },
+            });
+          }
+          case 'price': {
+            database.Traderoom.update({ _id: traderoom }, {
+              $set: { price: content.arguments[0] },
+            });
+          }
+        }
+      }
       return message;
     },
   },
