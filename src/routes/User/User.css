@@ -78,7 +78,7 @@
 .empty {
   display: flex;
   justify-content: center;
-  padding: 2em 0 !important;
+  padding: 5em 0 !important;
   font-style: italic;
   text-align: center;
   font-size: 1rem;
