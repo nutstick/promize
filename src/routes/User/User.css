@@ -41,7 +41,7 @@
   }
 }
 
-.mainContent{
+.mainContent {
   display: flex;
   flex: 1;
   padding: 0 !important;
@@ -57,6 +57,10 @@
 }
 
 @media (max-width: 620px) {
+  .mainContent {
+    min-height: 320px;
+  }
+
   .root {
     flex-direction: column;
 
@@ -69,4 +73,14 @@
       padding: 0 1em;
     }
   }
+}
+
+.empty {
+  display: flex;
+  justify-content: center;
+  padding: 2em 0 !important;
+  font-style: italic;
+  text-align: center;
+  font-size: 1rem;
+  color: var(--grey);
 }

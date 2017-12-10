@@ -6,23 +6,18 @@
 }
 
 .empty {
-  font-style: italic;
-  text-align: center;
-  font-size: 1rem;
-  display: flex;
-  justify-content: center;
-  color: var(--grey);
+  composes: empty from "../User.css";
 }
 
 .modal{
-  border-radius: 5px;
+  display: flex;
+  flex-wrap: nowrap;
   width: 100%;
   margin: 20px 0px;
   padding: 5px;
-  display: flex;
-  flex-wrap: nowrap;
   background: white;
   border-color: solid darkgray;
+  border-radius: 5px;
   /* -webkit-box-shadow: 0px 5px 32px -12px rgba(0,0,0,0.5);
   -moz-box-shadow: 0px 5px 32px -12px rgba(0,0,0,0.5);
   box-shadow: 0px 5px 32px -12px rgba(0,0,0,0.5); */
@@ -35,34 +30,34 @@
 }
 
 .pictureWrapper{
-  margin: 10px;
   /* max-width: 300px; */
   /* height: 100%; */
   /* flex-grow: 1; */
   width: 35%;
-  overflow:hidden;
-  max-height: 200px;
   max-width: 350px;
+  max-height: 200px;
+  margin: 10px;
+  overflow:hidden;
 }
 
 .picture{
-  object-fit: cover;
   width: 100%;
   height: 100%;
   background: black;
+  object-fit: cover;
 }
 
 .contentWrapper{
-  padding: 10px;
   /* flex-grow: 3; */
   width: 65%;
+  padding: 10px;
   
 }
 
 .wrapContainer{
   display: flex;
-  flex-wrap: nowrap;
   flex-flow: row-reverse;
+  flex-wrap: nowrap;
 }
 
 .topContent{
@@ -74,16 +69,16 @@
 }
 
 .contentHeader{
-  padding-bottom: 0.2em;
   margin-bottom: 0.2em;
+  padding-bottom: 0.2em;
   border-bottom: 1px solid #efefef;
   
 }
 
 .receiptId{
-  text-align: right;
   margin-top: 0px;
   margin-bottom: 0px;
+  text-align: right;
   color: #ff9521;
   font-size: 0.9em;
 }
@@ -101,8 +96,8 @@
 }
 
 .contentFooter{
-  font-size: 0.8em;
   margin-bottom: 20px;
+  font-size: 0.8em;
 }
 
 .contentFooter>div{
@@ -129,15 +124,15 @@
 }
 
 .shipTo{
-  font-size: 10px;
   /* margin-top: 0.5em;*/
   margin-bottom: 0.2em;
+  font-size: 10px;
   font-weight: bold;
 }
 
 .shippingInfo>span{
-  font-size: 11px;
   margin-right: 0.5em;
+  font-size: 11px;
 }
 
 .shippingInfo{
@@ -227,8 +222,8 @@
      width: 100%;
    }
    .pictureWrapper{
-     max-width: 1000px;
      width: 100%;
+     max-width: 1000px;
      /* margin-bottom: 0px; */
      height: 200px;
    }
