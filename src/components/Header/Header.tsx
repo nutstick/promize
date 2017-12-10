@@ -11,6 +11,7 @@ import { graphql } from '../../apollo/graphql';
 import * as TOGGLELOGINMODALMUTATION from '../../apollo/login/ToggleLoginModalMutation.gql';
 import { parseSearch } from '../../core/urlParser';
 import { ICoSeller, IUser } from '../../schema/types/User';
+import { IconButton } from '../IconButton';
 import { LanguageSwitcher } from '../LanguageSwitcher';
 import { SearchInput } from '../SearchInput/SearchInput';
 import * as s from './Header.css';
@@ -76,21 +77,6 @@ export class Header extends React.Component<Header.Props, Header.State> {
     this.props.history.push(`/search?keywords=${params}`);
   }
 
-  // private onRouteChanged() {
-  //   const search = parseSearch(this.props.location);
-  //   if (search) {
-  //     this.setState({
-  //       search,
-  //     });
-  //   }
-  // }
-
-  // componentDidUpdate(prevProps) {
-  //   if (this.props.location !== prevProps.location) {
-  //     this.onRouteChanged();
-  //   }
-  // }
-
   public render() {
     const trigger = this.props.data.me && (
       <span>
@@ -101,13 +87,17 @@ export class Header extends React.Component<Header.Props, Header.State> {
     return this.props.size.width <= 620 ? (
       <div className={cx(s.root, s.mobile, s.bg)}>
         <div className={cx(s.menu, s.transparent)}>
-          <Icon className={s.burger} name="bars"/>
-          <Link className={s.logoWrapper} to="/">
-            <img
-              className={s.logo}
-              src={logoUrl}
-              alt="Promize" />
-          </Link>
+          <IconButton className={s.burger} scale={1}>
+            <Icon name="bars"/>
+          </IconButton>
+          <div className={s.logoWrapper}>
+            <Link to="/">
+              <img
+                className={s.logo}
+                src={logoUrl}
+                alt="Promize" />
+            </Link>
+          </div>
         </div>
       </div>
     ) : (

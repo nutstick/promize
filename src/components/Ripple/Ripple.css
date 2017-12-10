@@ -1,27 +1,28 @@
-.Ripple {
+.ripple {
   position: absolute;
   background: rgba(0, 0, 0, 0.2);
   border-radius: 50%;
   transform: scale(0);
   opacity: 1;
 
-  &.is-reppling {
-    animation: ripple 0.5s linear;
+  &.x3 {
+    animation: x3 0.5s linear;
   }
-
-  &-parent {
-    overflow: hidden;
-    // Parent Position Should be Relative, Absolute or Fixed Not Static
-    position: relative;
-    // position: absolute;
-    // position: fixed;
+  &.x1 {
+    animation: x1 0.33s linear;
   }
 }
 
-
-@keyframes ripple {
+@keyframes x3 {
   100% {
     transform: scale(3);
+    opacity: 0;
+  }
+}
+
+@keyframes x1 {
+  100% {
+    transform: scale(1);
     opacity: 0;
   }
 }

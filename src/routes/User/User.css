@@ -2,9 +2,9 @@
 
 .root {
   display: flex;
-  padding: 0.6em 0 40px;
   margin-top: var(--overlap-card-top);
   margin-bottom: var(--overlap-card-bottom);
+  padding: 0.6em 0 40px;
 }
 
 .container {
@@ -14,8 +14,8 @@
 
 .sidebar {
   display: flex;
-  width: 15rem;
   flex-direction: column;
+  width: 15rem;
   margin-left: 1em;
 }
 
@@ -52,51 +52,8 @@
 }
 
 .content {
-  background-color: rgba(0, 0, 0, 0.01);
   flex: 7 0 auto;
-}
-
-.menuList {
-  list-style-type: none;
-  display:inline-block;
-  margin: 0;
-  width: 100%;
-
-  :global(.item:first) {
-    border-top: 1px;
-  }
-  :global(.item) {
-    white-space: nowrap;
-  }
-  :global(.content) {
-    padding: 0.24em 1em;
-    > a {
-      font-family: var(--font-family-base);
-      color: var(--dark-grey);
-      font-size: 16px;
-      line-height: 28px;
-
-      &.active, &:active {
-        font-weight: bold;
-      }
-    }
-  }
-  /*> li {
-    width: 100%;
-    display: block;
-
-    > a {
-      padding: 1rem;
-      color: var(--dark-grey);
-      display: block;
-
-      &.active, &:hover {
-        color: #ffffff;
-        background: var(--primary-color);
-        border-radius: 7px;
-      }
-    }
-  }*/
+  background-color: rgba(0, 0, 0, 0.01);
 }
 
 @media (max-width: 620px) {
@@ -110,23 +67,6 @@
 
     .menuWrapper {
       padding: 0 1em;
-    }
-    
-    .menuList {
-      display: flex !important;
-      flex-direction: row;
-      overflow: hidden;
-      padding-bottom: 8px !important;
-      &:hover {
-        overflow: auto;
-        padding-bottom: 0px !important;
-      }
-      &::-webkit-scrollbar {
-        height: 8px;
-      }
-      &::-webkit-scrollbar-track {
-        background: transparent;
-      }
     }
   }
 }

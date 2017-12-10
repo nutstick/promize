@@ -1,14 +1,16 @@
 import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
+import * as s from './Ripple.css';
 
 export namespace Ripple {
   export interface IProps {
-    cursorPos?: {
-      top: number,
-      left: number,
-      time: Date,
+    cursorPos: {
+      top?: any,
+      left?: any,
+      time?: number,
     };
+    scale?: number;
   }
 
   export type Props = IProps;
@@ -22,6 +24,7 @@ export namespace Ripple {
   }
 }
 
+@withStyles(s)
 export class Ripple extends React.Component<Ripple.Props, Ripple.State> {
   constructor(props) {
     super(props);
@@ -75,8 +78,9 @@ export class Ripple extends React.Component<Ripple.Props, Ripple.State> {
     }
   }
   public render() {
+    const scale = this.props.scale || 3;
     return (
-      <div className={'Ripple ' + (this.state.animate ? 'is-reppling' : '')} ref="ripple" style={{
+      <div className={cx(s.ripple, this.state.animate ? scale === 3 ? s.x3 : s.x1 : '' )} ref="ripple" style={{
           top: `${this.state.top}px`,
           left: `${this.state.left}px`,
           width: `${this.state.width}px`,
