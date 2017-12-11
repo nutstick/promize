@@ -145,54 +145,85 @@ export class CreateProduct extends React.Component<CreateProduct.Props, CreatePr
   }
 
   private onSubmit() {
-    this.props.mutate({
-      variables: {
-        input: {
-          name: this.state.name,
-          description: this.state.description,
-          originalPrice: this.state.originalPrice,
-          type: this.state.price ? 'BuyNowProduct' : 'Product',
-          price: this.state.price,
-          pictures: this.state.pictures,
-          hashtags: this.state.hashtags,
-          colors: this.state.colors,
-          sizes: this.state.sizes,
-          categories: null,
-          promotionStart: this.getAsDate(this.state.promotionStartDate, this.state.promotionStartTime),
-          promotionEnd: this.getAsDate(this.state.promotionEndDate, this.state.promotionEndTime),
-       },
-      },
-      refetchQueries: ['ProductsQuery'],
-    })
-      .then((data) => {
-        this.props.history.push(`/users/${this.props.match.params.id}/products`);
+    // Error check before procede
+    const error: {
+      nameError?: boolean,
+      promotionStartDateError?: boolean,
+      promotionStartTimeError?: boolean,
+      promotionEndDateError?: boolean,
+      promotionEndTimeError?: boolean,
+    } = {};
+    if (!this.state.name) {
+      error.nameError = true;
+    }
+    if (!this.state.promotionStartDate) {
+      error.promotionStartDateError = true;
+    }
+    if (!this.state.promotionStartTime) {
+      error.promotionStartTimeError = true;
+    }
+    if (!this.state.promotionEndDate) {
+      error.promotionEndDateError = true;
+    }
+    if (!this.state.promotionEndTime) {
+      error.promotionEndTimeError = true;
+    }
+
+    if (Object.keys(error).length === 0) {
+      return this.props.mutate({
+        variables: {
+          input: {
+            name: this.state.name,
+            description: this.state.description,
+            originalPrice: this.state.originalPrice,
+            type: this.state.price ? 'BuyNowProduct' : 'Product',
+            price: this.state.price,
+            pictures: this.state.pictures,
+            hashtags: this.state.hashtags,
+            colors: this.state.colors,
+            sizes: this.state.sizes,
+            categories: null,
+            promotionStart: this.getAsDate(this.state.promotionStartDate, this.state.promotionStartTime),
+            promotionEnd: this.getAsDate(this.state.promotionEndDate, this.state.promotionEndTime),
+        },
+        },
+        refetchQueries: ['ProductsQuery'],
       })
-      .catch((error) => {
-        this.setState({
-          nameError: false,
-          promotionStartDateError: false,
-          promotionStartTimeError: false,
-          promotionEndDateError: false,
-          promotionEndTimeError: false,
-          hashtags: [],
-          color: '',
-          colors: [],
-          size: '',
-          sizes: [],
-          error,
+        .then((data) => {
+          this.props.history.push(`/users/${this.props.match.params.id}/products`);
+        })
+        .catch((err) => {
+          this.setState({
+            // nameError: false,
+            // promotionStartDateError: false,
+            // promotionStartTimeError: false,
+            // promotionEndDateError: false,
+            // promotionEndTimeError: false,
+            // hashtags: [],
+            // color: '',
+            // colors: [],
+            // size: '',
+            // sizes: [],
+            error: err,
+          });
         });
-      });
+    }
+
+    this.setState({
+      ...this.state,
+      ...error,
+    });
   }
 
   public render() {
     return (
       <div className={s.root}>
         <h1>New Product</h1>
-        <Message
+        {this.state.error && <Message
           error
           header="There was some errors with your submission"
           list={this.state.error}
-        />
+        />}
         <Form onSubmit={this.onSubmit.bind(this)}>
           <div className={s.imageWrapper}>
             <Form.Field>

@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt-nodejs';
 import * as Iridium from 'iridium';
 import { Collection, Index, Instance, ObjectID, Property, Transform } from 'iridium';
 import { ObjectID as id } from 'mongodb';
@@ -99,6 +100,8 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
     user.createAt = new Date();
     user.updateAt = new Date();
 
+    user.account.password = bcrypt.hashSync(user.account.password, bcrypt.genSaltSync(8), null);
+
     user.type = user.type || 'User';
 
     if (!user.account.facebook && !user.account.password) {
@@ -113,6 +116,9 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
   }
 
   static onSaving(user: User, changes: Iridium.Changes) {
+    if (changes.$set && changes.$set['account.password']) {
+      changes.$set['account.password'] = bcrypt.hashSync(changes.$set['account.password'], bcrypt.genSaltSync(8), null);
+    }
     user.updateAt = new Date();
   }
 
@@ -164,6 +170,10 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
       valid_from_month: payment_method.valid_from_month,
       valid_from_year: payment_method.valid_from_year,
     });
+  }
+
+  comparePassword(password) {
+    return bcrypt.compareSync(password, this.password);
   }
 }
 

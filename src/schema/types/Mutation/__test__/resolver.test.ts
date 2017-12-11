@@ -102,7 +102,8 @@ it('Mutation createProduct should insert new product into mongodb', async () => 
     user: {
       _id: user._id,
     },
-  });
+    req: {},
+  } as any);
 
   // Should be able to find a product that has been created.
   const product = await database.Product.findOne({ name: 'a' });

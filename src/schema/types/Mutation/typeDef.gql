@@ -134,6 +134,13 @@ type Mutation {
   # Edit Product
   editProduct(input: EditProductInput!): Product
 
+  # Create User
+  createUser(input: CreateUserInput!): UserType
+  # Edit User
+  editUser(input: EditUserInput!): UserType
+  # Login
+  login(email: String!, password: String!): UserType
+
   # Create OrderReceipt
   createOrderReceipt(input: CreateOrderReceiptInput!): OrderReceipt
   # Edit OrderReceipt
@@ -152,11 +159,6 @@ type Mutation {
   registerToBeCoSeller(input: CoSellerRegisterInput!): User
   # Approve User to CoSeller
   approveUserToCoseller(user_id: ID!): CoSeller
-
-  # Create User
-  createUser(input: CreateUserInput!): UserType
-  # Edit User
-  editUser(input: EditUserInput!): UserType
   
   # Create TradeRoom
   createTradeRoom(input: CreateTradeRoomInput!): TradeRoom

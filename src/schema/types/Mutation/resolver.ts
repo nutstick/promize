@@ -223,6 +223,27 @@ const resolver: IResolver<any, any> = {
       }
     },
 
+    async login(
+      _,
+      { email, password },
+      { database, req },
+    ) {
+      const emailC = email.toLowerCase();
+      const user = await database.User.findOne({ 'account.email': emailC });
+      if (user && user.comparePassword(password)) {
+        await new Promise((resolve, reject) => {
+          req.logIn(user, (err) => {
+            if (err) {
+              return reject(err);
+            }
+            resolve();
+          });
+        });
+      } else {
+        throw new Error('Incorrect login');
+      }
+    },
+
     async createUser(
       _,
       { input: { firstName, middleName, lastName, telNumber, paymentMethods, ...input } },
