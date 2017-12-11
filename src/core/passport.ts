@@ -1,6 +1,5 @@
 import * as passport from 'passport';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
-import { Strategy as LocalStrategy } from 'passport-local';
 import { auth as config } from '../config';
 import { database } from '../schema/models';
 

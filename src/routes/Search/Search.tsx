@@ -8,7 +8,7 @@ import { RouteComponentProps } from 'react-router';
 import { sizeMe } from 'react-sizeme';
 import StackGrid, { easings, transitions } from 'react-stack-grid';
 import * as Waypoint from 'react-waypoint';
-import { Checkbox, Grid, Loader, Radio, Sticky } from 'semantic-ui-react';
+import { Checkbox, Loader, Radio, Sticky } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
 import { Card, contentClass, headingClass } from '../../components/Card';
 import { ProductCard } from '../../components/ProductCard';

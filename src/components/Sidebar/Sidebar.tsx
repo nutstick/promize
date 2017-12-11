@@ -5,7 +5,6 @@ import { MutationFunc, QueryProps } from 'react-apollo';
 import * as FaSignOutIcon from 'react-icons/lib/fa/sign-out';
 import * as MdAssignmentIndIcon from 'react-icons/lib/md/assignment-ind';
 import * as MdBorderColorIcon from 'react-icons/lib/md/border-color';
-import * as MdExploreIcon from 'react-icons/lib/md/explore';
 import * as MdHomeIcon from 'react-icons/lib/md/home';
 import * as MdLocalOfferIcon from 'react-icons/lib/md/local-offer';
 import * as MdLockOpenIcon from 'react-icons/lib/md/lock-open';
@@ -21,7 +20,7 @@ import { graphql } from '../../apollo/graphql';
 import * as TOGGLELOGINMODALMUTATION from '../../apollo/login/ToggleLoginModalMutation.gql';
 import * as SIDEBARQUERY from '../../apollo/sidebar/SidebarQuery.gql';
 import * as TOGGLESIDEBARMUTATION from '../../apollo/sidebar/ToggleSidebarMutation.gql';
-import { ICoSeller, IUser } from '../../schema/types/User';
+import { IUser } from '../../schema/types/User';
 import * as MEQUERY from '../Header/MeQuery.gql';
 import { Navigator } from '../Navigator';
 
