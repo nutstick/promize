@@ -6,6 +6,7 @@ import * as FaSignOutIcon from 'react-icons/lib/fa/sign-out';
 import * as MdAssignmentIndIcon from 'react-icons/lib/md/assignment-ind';
 import * as MdBorderColorIcon from 'react-icons/lib/md/border-color';
 import * as MdExploreIcon from 'react-icons/lib/md/explore';
+import * as MdHomeIcon from 'react-icons/lib/md/home';
 import * as MdLocalOfferIcon from 'react-icons/lib/md/local-offer';
 import * as MdLockOpenIcon from 'react-icons/lib/md/lock-open';
 import * as MdLockOutlineIcon from 'react-icons/lib/md/lock-outline';
@@ -13,6 +14,7 @@ import * as MdLoyaltyIcon from 'react-icons/lib/md/loyalty';
 import * as MdPaymentIcon from 'react-icons/lib/md/payment';
 import * as MdPersonOutlineIcon from 'react-icons/lib/md/person-outline';
 import * as MdRedeemIcon from 'react-icons/lib/md/redeem';
+import * as MdSearchIcon from 'react-icons/lib/md/search';
 import { Link } from 'react-router-dom';
 import { Image } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
@@ -75,9 +77,14 @@ export class Sidebar extends React.Component<Sidebar.Props> {
     const role = this.props.me.me.__typename;
     return [
       {
-        to: `/users/${me._id}`,
-        text: 'My Activities',
-        NavIcon: MdExploreIcon,
+        to: '/',
+        text: 'Home',
+        NavIcon: MdHomeIcon,
+      },
+      {
+        to: '/search',
+        text: 'Search',
+        NavIcon: MdSearchIcon,
       },
       ...(role === 'Admin' ? [{
         to: `/users/${me._id}/admin`,

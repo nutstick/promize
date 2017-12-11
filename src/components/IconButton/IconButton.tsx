@@ -51,7 +51,8 @@ export class IconButton extends React.Component<IconButton.Props, IconButton.Sta
       <a
         className={cx(this.props.className, s.root)}
         onMouseUp={this.onClick.bind(this)}
-        onTouchEnd={this.onClick.bind(this)}>
+        // onTouchEnd={this.onClick.bind(this)}
+      >
         {this.props.children}
         <Ripple scale={this.props.scale || 1} cursorPos={this.state.cursorPos} />
       </a>
