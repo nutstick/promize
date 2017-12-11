@@ -150,7 +150,7 @@ export class PaymentMethodStep extends React.Component<PaymentMethodStep.Props, 
     if (me && me.paymentMethods) {
       const options = me.paymentMethods.map((paymentMethod) => ({
         key: paymentMethod._id,
-        text: paymentMethod._id,
+        text: paymentMethod.creditCardNumber,
         value: paymentMethod._id,
         content: <PaymentMethodOption {...paymentMethod} />,
       }));
@@ -177,7 +177,10 @@ export class PaymentMethodStep extends React.Component<PaymentMethodStep.Props, 
 
     return (
       <div className={s.root}>
-        {userPaymentMethod}
+        <div className={s.container}>
+          <h4 className={s.header}>Your Payment Method</h4>
+          {userPaymentMethod}
+        </div>
         <Divider horizontal>Or</Divider>
         <div className={s.container}>
           <h4>New Payment Method</h4>

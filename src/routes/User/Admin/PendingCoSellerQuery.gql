@@ -9,6 +9,7 @@ query PendingCoSeller($first: Int, $after: ID) {
             firstName
             middleName
             lastName
+            avatar
           }
           cursor
         }

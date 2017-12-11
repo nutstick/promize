@@ -13,7 +13,7 @@ import { Redirect } from 'react-router';
 import { NavLink, RouteComponentProps } from 'react-router-dom';
 import { Route, Switch } from 'react-router-dom';
 import { sizeMe } from 'react-sizeme';
-import { Divider, Icon, Image, Label } from 'semantic-ui-react';
+import { Icon, Image, Label } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
 import { Card } from '../../components/Card';
 import { Navigator } from '../../components/Navigator';
@@ -28,7 +28,7 @@ import { OrderReceipts } from '../../routes/User/OrderReceipts';
 import { PaymentMethod } from '../../routes/User/PaymentMethod';
 /* Sub routes */
 import { Products } from '../../routes/User/Products';
-import { IAdmin, ICoSeller, IUserType } from '../../schema/types/User';
+import { IUserType } from '../../schema/types/User';
 import * as s from './User.css';
 import * as USERQUERY from './UserQuery.gql';
 
@@ -145,7 +145,7 @@ export class User extends React.Component<User.Props> {
       },
       ...(role === 'User' ? [{
         to: `/users/${this.props.match.params.id}/coseller`,
-        text: 'Co-Seller',
+        text: 'CoSeller',
         NavIcon: MdLockOutlineIcon,
       }] : []),
     ] : [
@@ -236,12 +236,12 @@ export class User extends React.Component<User.Props> {
                 <Route path="/users/:id/receipts" component={OrderReceipts} />
                 <Route path="/users/:id/account" component={Account} />
                 <Route path="/users/:id/payment" component={PaymentMethod} />
-                {!(user as ICoSeller).coseller && <Route path="/users/:id/coseller" component={BecomeCoSeller} />}
+                {user.__typename !== 'CoSeller' && <Route path="/users/:id/coseller" component={BecomeCoSeller} />}
                 <Route render={() => (
                   <Redirect to={`/users/${this.props.match.params.id}`} />
                 )} />
               </Switch>
-            ) : !loading && !error && (user as ICoSeller).coseller ? (
+            ) : !loading && !error && user.__typename === 'CoSeller' ? (
               <Switch>
                 <Route exact path="/users/:id" component={Activities} />
                 <Route path="/users/:id/products" component={Products} />

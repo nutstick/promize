@@ -23,7 +23,7 @@ if (!server) {
         // tslint:disable-next-line:no-console
         console.info(`Websocket server is running at http://localhost:${wsport}/`);
 
-        const subsriptionServer = new SubscriptionServer({
+        SubscriptionServer.create({
           schema: Schema,
           execute,
           subscribe,

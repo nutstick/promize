@@ -43,7 +43,6 @@ export class Ripple extends React.Component<Ripple.Props, Ripple.State> {
     const ripple = this.refs.ripple;
     const button = (ripple as any).parentElement;
 
-    const buttonStyle = window.getComputedStyle(button);
     const buttonPos = button.getBoundingClientRect();
 
     const buttonWidth = button.offsetWidth;

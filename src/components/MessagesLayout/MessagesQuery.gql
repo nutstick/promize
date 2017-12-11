@@ -1,6 +1,8 @@
 query Messages($id: ID!) {
   me {
     _id
+    firstName
+    avatar
     traderoom(id: $id) {
       _id
       participants {

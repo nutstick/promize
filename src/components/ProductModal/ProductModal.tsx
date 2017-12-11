@@ -4,7 +4,7 @@ import * as React from 'react';
 import { ChildProps, MutationFunc } from 'react-apollo';
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button, Icon, Loader } from 'semantic-ui-react';
 import * as slickThemeCss from 'slick-carousel/slick/slick-theme.css';
 import * as slickCss from 'slick-carousel/slick/slick.css';
 import { graphql } from '../../apollo/graphql';
@@ -137,7 +137,9 @@ export class ProductModal extends React.Component<ProductModal.Props> {
       <div className={s.root} onClick={this.onBackgroundClick.bind(this)}>
         <div className={s.modal} onClick={(e) => e.stopPropagation()}>
           {
-            this.props.data.loading ? <div>Loading</div> :
+            this.props.data.loading ? <div className={s.loading}>
+              <Loader active />
+            </div> :
               this.props.data.error ? <div>Error</div> :
                 this.props.data.product ?
                   <div className={s.wrapper}>

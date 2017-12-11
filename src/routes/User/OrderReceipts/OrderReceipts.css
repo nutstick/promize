@@ -74,7 +74,7 @@
   
 }
 
-.receiptId{
+.receiptId {
   margin-top: 0px;
   margin-bottom: 0px;
   text-align: right;
@@ -82,117 +82,117 @@
   font-size: 0.9em;
 }
 
-.productName{
+.productName {
   margin-top: 0em;
   margin-bottom: 0em;
   color: black;
 }
 
-.productOwner{
+.productOwner {
   margin-top: 0.1em;
   margin-bottom: 0px;
   color: #606060;
 }
 
-.contentFooter{
+.contentFooter {
   margin-bottom: 20px;
   font-size: 0.8em;
 }
 
-.contentFooter>div{
+.contentFooter > div {
   margin-bottom: 0.1em;
 }
 
-.titleValueGroup{
+.titleValueGroup {
   margin-bottom: 0.2em; 
 }
 
-.titleValueGroup>div{
+.titleValueGroup > div {
   display: inline;
   margin-right: 15px;
 }
 
-.title{
+.title {
   font-weight: bold;
   font-size: 10px;
 }
 
-.value{
+.value {
   color: #606060;
   font-size: 11px;
 }
 
-.shipTo{
+.shipTo {
   /* margin-top: 0.5em;*/
   margin-bottom: 0.2em;
   font-size: 10px;
   font-weight: bold;
 }
 
-.shippingInfo>span{
+.shippingInfo > span {
   margin-right: 0.5em;
   font-size: 11px;
 }
 
-.shippingInfo{
+.shippingInfo {
   /* margin: 0.5em 0em; */
   margin-bottom: 0.2em;
   color: #606060;
 }
 
-.buttonWrap{
+.buttonWrap {
   float: right;
   margin-top: -15px;
   font-size: 13px;
 }
 
-.contentDetail{
+.contentDetail {
   display: flex;
   flex-wrap: wrap;
 }
 
-.leftContent{
+.leftContent {
   width: 50%;
 }
 
-.rightContent{
+.rightContent {
   width: 50%;
   padding-left: 1em;  
 }
 
-.button{
+.button {
   font-size: 1em !important;
 }
 
 @media screen and (max-width: 950px) {
 
-  .wrapContainer{
+  .wrapContainer {
     display: flex;
     flex-wrap: wrap;
     /* flex-flow: row-reverse; */
   }
   
-  .topContent{
+  .topContent {
     flex-grow: 1;
   }
   
-  .downContent{
+  .downContent {
     flex-grow: 1;
   }
 
-  .receiptId{
+  .receiptId {
     margin-bottom: 0px;
   }
 
-  .contentDetail{
+  .contentDetail {
     flex-wrap: wrap;
   }
   
-  .leftContent{
+  .leftContent {
     width: 100%;
   }
 
-  .rightContent{
+  .rightContent {
     width: 100%;
     padding-left: 0;
   }
@@ -200,27 +200,27 @@
 
 @media screen and (max-width: 766px) {
 
-  .contentDetail{
+  .contentDetail {
     flex-wrap: nowrap;
   }
   
-  .leftContent{
+  .leftContent {
     width: 50%;
   }
 
-  .rightContent{
+  .rightContent {
     width: 50%;
     padding-left: 10px;
   }
   
-   .modal{
+   .modal {
       flex-wrap: wrap;
    }
 
-   .contentWrapper{
+   .contentWrapper {
      width: 100%;
    }
-   .pictureWrapper{
+   .pictureWrapper {
      width: 100%;
      max-width: 1000px;
      /* margin-bottom: 0px; */

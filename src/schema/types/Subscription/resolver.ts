@@ -1,5 +1,4 @@
 import { withFilter } from 'graphql-subscriptions';
-import { setTimeout } from 'timers';
 import { IMessageDocument } from '../../models/Message';
 import { ISubsciption } from '../index';
 import { MESSAGE_ADDED, pubsub } from '../pubsub';

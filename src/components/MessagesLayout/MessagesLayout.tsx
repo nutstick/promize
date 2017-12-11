@@ -11,6 +11,7 @@ import * as TRADEROOMMODALQUERY from '../../apollo/tradeRoomModal/TradeRoomModal
 import { ICommandContent, IMessage, IPictureContent, ITextContent } from '../../schema/types/Traderoom';
 import { IUser } from '../../schema/types/User';
 import * as ADDMESSAGEMUTATION from './AddMessageMutation.gql';
+import * as MessageImage from './Message.svg';
 import * as s from './MessagesLayout.css';
 import * as MESSAGESQUERY from './MessagesQuery.gql';
 import * as MESSAGESSUBSCRIPTION from './MessagesSubscription.gql';
@@ -172,7 +173,22 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
                       text: this.state.inputValue,
                     },
                   },
+                  optimisticResponse: {
+                    addMessage: {
+                      _id: '-1',
+                      owner: this.props.traderooms.me,
+                      content: {
+                        text: this.state.inputValue,
+                        __typename: 'TextContent',
+                      },
+                      createAt: new Date(),
+                      // TODO: Complete flags
+                      // completed: false,
+                      __typename: 'Message',
+                    },
+                  },
                 });
+                // Clear messages input
                 this.setState({
                   inputValue: '',
                 });
@@ -195,8 +211,12 @@ export class MessagesLayout extends React.Component<MessagesLayout.Props, Messag
               </Form>
             </div>
           ) :
-          <div>
-            Select Trade Room
+          <div className={s.select}>
+            <img src={MessageImage} alt="Select trade room" />
+            <span className={s.text}>
+              Please select Trade Room
+              from above.
+            </span>
           </div>
         }
         </div>

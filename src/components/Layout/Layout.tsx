@@ -6,13 +6,10 @@ import { ChildProps, QueryProps } from 'react-apollo';
 import * as semanticsCss from 'semantic-ui-css/semantic.min.css';
 import { Icon } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
-
 import { LoginQuery } from '../../apollo/login';
 import * as LOGINQUERY from '../../apollo/login/LoginQuery.gql';
-
 import { ProductModalQuery } from '../../apollo/productModal';
 import * as PRODUCTMODALQUERY from '../../apollo/productModal/ProductModalQuery.gql';
-
 import { TradeRoomModalQuery } from '../../apollo/tradeRoomModal';
 import * as SETTRADEROOMMODALMUTATION from '../../apollo/tradeRoomModal/SetTradeRoomModal.gql';
 import * as TRADEROOMMODALQUERY from '../../apollo/tradeRoomModal/TradeRoomModalQuery.gql';
@@ -22,6 +19,7 @@ import { Header } from '../Header';
 import { LoginModal } from '../LoginModal';
 import { Main } from '../Main';
 import { ProductModal } from '../ProductModal';
+import { Sidebar } from '../Sidebar';
 import * as s from './Layout.css';
 
 namespace Layout {
@@ -57,6 +55,7 @@ export class Layout extends React.Component<Layout.Props> {
   public render() {
     return (
       <div className={s.layout}>
+        <Sidebar />
         {this.props.productModal.productModal && this.props.productModal.productModal.show &&
           <ProductModal id={this.props.productModal.productModal.id}/>}
         {this.props.login.login && this.props.login.login.modal && <LoginModal />}

@@ -4,7 +4,7 @@ import { ChildProps } from 'react-apollo';
 import { RouteComponentProps } from 'react-router-dom';
 import { sizeMe } from 'react-sizeme';
 import { arrayMove } from 'react-sortable-hoc';
-import { Button, Form } from 'semantic-ui-react';
+import { Button, Form, Message } from 'semantic-ui-react';
 import { graphql } from '../../../apollo/graphql';
 import { IUser } from '../../../schema/types/User';
 import * as s from './CreateProduct.css';
@@ -37,6 +37,7 @@ namespace CreateProduct {
     originalPrice?: number;
     price?: number;
     pictures?: FileList;
+    error?: any;
   }
 }
 
@@ -58,6 +59,7 @@ export class CreateProduct extends React.Component<CreateProduct.Props, CreatePr
       colors: [],
       size: '',
       sizes: [],
+      error: null,
     };
   }
 
@@ -160,12 +162,25 @@ export class CreateProduct extends React.Component<CreateProduct.Props, CreatePr
           promotionEnd: this.getAsDate(this.state.promotionEndDate, this.state.promotionEndTime),
        },
       },
+      refetchQueries: ['ProductsQuery'],
     })
       .then((data) => {
         this.props.history.push(`/users/${this.props.match.params.id}/products`);
       })
       .catch((error) => {
-        console.log(error);
+        this.setState({
+          nameError: false,
+          promotionStartDateError: false,
+          promotionStartTimeError: false,
+          promotionEndDateError: false,
+          promotionEndTimeError: false,
+          hashtags: [],
+          color: '',
+          colors: [],
+          size: '',
+          sizes: [],
+          error,
+        });
       });
   }
 
@@ -173,6 +188,11 @@ export class CreateProduct extends React.Component<CreateProduct.Props, CreatePr
     return (
       <div className={s.root}>
         <h1>New Product</h1>
+        <Message
+          error
+          header="There was some errors with your submission"
+          list={this.state.error}
+        />
         <Form onSubmit={this.onSubmit.bind(this)}>
           <div className={s.imageWrapper}>
             <Form.Field>
@@ -194,15 +214,18 @@ export class CreateProduct extends React.Component<CreateProduct.Props, CreatePr
               label="Name"
               placeholder="Product Name"
               error={this.state.nameError}
+              value={this.state.name}
               onChange={this.onInputChange.bind(this, 'name', true)} />
             <Form.TextArea
               label="Description"
               placeholder="Product Description"
+              value={this.state.description}
               onChange={this.onInputChange.bind(this, 'description', false)} />
+            {/* FIXME: better hashtags input */}
             <Form.Input
               label="Hashtags"
               placeholder="Hashtags"
-              error={this.state.nameError}
+              // value={this.state.hashtags}
               onChange={this.onInputChange.bind(this, 'hashtags', false)} />
             <div>
               <Form.Field>
@@ -261,6 +284,7 @@ export class CreateProduct extends React.Component<CreateProduct.Props, CreatePr
                 placeholder="Date"
                 type="date"
                 error={this.state.promotionStartDateError}
+                value={this.state.promotionStartDate}
                 onChange={this.onInputChange.bind(this, 'promotionStartDate', true)} />
               <Form.Input
                 placeholder="Time"
@@ -275,11 +299,13 @@ export class CreateProduct extends React.Component<CreateProduct.Props, CreatePr
                 placeholder="Date"
                 type="date"
                 error={this.state.promotionEndDateError}
+                value={this.state.promotionEndDate}
                 onChange={this.onInputChange.bind(this, 'promotionEndDate', true)} />
               <Form.Input
                 placeholder="Time"
                 type="time"
                 error={this.state.promotionEndTimeError}
+                value={this.state.promotionEndTime}
                 onChange={this.onInputChange.bind(this, 'promotionEndTime', true)} />
             </Form.Group>
 
@@ -293,6 +319,7 @@ export class CreateProduct extends React.Component<CreateProduct.Props, CreatePr
               <Form.Input
                 placeholder="Price"
                 type="number"
+                value={this.state.price}
                 onChange={this.onInputChange.bind(this, 'price', true)} />
             </Form.Group>
           </div>

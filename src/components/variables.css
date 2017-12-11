@@ -20,6 +20,7 @@
    * ======================================================================== */
   --login-depth: 1003;
   --messager-depth: 1010;
+  --sidebar-depth: 1002;
 
   /*
    * Media queries breakpoints
@@ -27,7 +28,7 @@
 
   // --screen-xs-min: 480px;  /* Extra small screen / phone */
   --screen-xs-min: 620px;  /* Extra small screen / phone */
-  --screen-sm-min: 768px;  /* Small screen / tablet */
+  --screen-sm-min: 768px;  /* Extra small screen / phone */
   --screen-md-min: 992px;  /* Medium screen / desktop */
   --screen-lg-min: 1200px; /* Large screen / wide desktop */
 

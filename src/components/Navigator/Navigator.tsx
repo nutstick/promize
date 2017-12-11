@@ -3,7 +3,6 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import * as MdChevronLeftIcon from 'react-icons/lib/md/chevron-left';
 import * as MdChevronRightIcon from 'react-icons/lib/md/chevron-right';
-import * as Waypoint from 'react-waypoint';
 import { IconButton } from '../IconButton';
 import { Item } from './Item';
 import * as s from './Navigator.css';
@@ -52,9 +51,10 @@ export class Navigator extends React.Component<Navigator.Props, Navigator.State>
     ) > 1;
   }
 
-  private easeInOutCubic(t) {
-    return t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
-  }
+  // TODO: Using animate scroll
+  // private easeInOutCubic(t) {
+  //   return t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+  // }
 
   private onScrollPrev() {
     (this.refs.menu as Element).scrollTo((this.refs.menu as Element).scrollLeft -

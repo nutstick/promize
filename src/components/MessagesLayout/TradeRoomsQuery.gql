@@ -1,6 +1,8 @@
 query TradeRooms {
   me {
     _id
+    firstName
+    avatar
     traderooms {
       _id
       participants {

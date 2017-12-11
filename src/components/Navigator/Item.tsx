@@ -1,4 +1,3 @@
-import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import * as s from './Item.css';
@@ -15,11 +14,20 @@ export namespace Item {
 @withStyles(s)
 export class Item extends React.Component<Item.Props> {
   public render() {
-    const Element = this.props.as;
-    return (
-      <Element className={s.item} role="tab" {...this.props}>
-        {this.props.children}
-      </Element>
-    );
+    const { as, ...props } = this.props;
+    if (this.props.as) {
+      const Element = this.props.as;
+      return (
+        <Element className={s.item} role="tab" {...props}>
+          {this.props.children}
+        </Element>
+      );
+    } else {
+      return (
+        <a className={s.item} role="tab" {...props}>
+          {this.props.children}
+        </a>
+      );
+    }
   }
 }
