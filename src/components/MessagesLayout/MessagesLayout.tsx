@@ -8,7 +8,7 @@ import { graphql } from '../../apollo/graphql';
 import { TradeRoomModalQuery } from '../../apollo/tradeRoomModal';
 import * as SETTRADEROOMMODALMUTATION from '../../apollo/tradeRoomModal/SetTradeRoomModal.gql';
 import * as TRADEROOMMODALQUERY from '../../apollo/tradeRoomModal/TradeRoomModalQuery.gql';
-import { ICommandContent, IMessage, IPictureContent, ITextContent } from '../../schema/types/Traderoom';
+import { ICommandContent, IMessage, IPictureContent, ITextContent } from '../../schema/types/TradeRoom';
 import { IUser } from '../../schema/types/User';
 import * as ADDMESSAGEMUTATION from './AddMessageMutation.gql';
 import * as MessageImage from './Message.svg';
