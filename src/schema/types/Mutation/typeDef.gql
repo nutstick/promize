@@ -16,23 +16,16 @@ input AccountInput {
   password: String!
 }
 
-input Upload {
-  name: String!
-  type: String!
-  size: Int!
-  path: String!
-}
-
 input CreateProductInput {
   name: String!
   description: String
   originalPrice: Int
   type: ProductEnum!
   price: Int!
-  pictures: [String]!
+  pictures: [Upload!]!
   hashtags: [String]!
-  colors: [ColorInput]
-  sizes: [SizeInput]
+  colors: [String]
+  sizes: [String]
   categories: [CategoryInput]
   promotionStart: Date!
   promotionEnd: Date!
@@ -111,11 +104,24 @@ input PaymentMethodInput {
 # CoSeller Register input
 input CoSellerRegisterInput {
   telNumber: String!
-  citizenCardImageUrl: String!
+  citizenCardImage: Upload!
 }
 
 input ApproveUserToCosellerINput {
   _id: ID!
+}
+
+input CreateTradeRoomInput {
+  product: ID!
+  participants: [String]!
+}
+
+input EditTradeRoomInput {
+  id: ID!
+  detail: String
+  price: Float
+  size: String
+  color: String
 }
 
 # Mutations
@@ -143,14 +149,22 @@ type Mutation {
   editPaymentMethod(paymentMethod: PaymentMethodInput!): UserType
   
   # Register to be a CoSeller
-  registerToBeCoSeller(input: CoSellerRegisterInput!): UserType
+  registerToBeCoSeller(input: CoSellerRegisterInput!): User
   # Approve User to CoSeller
-  approveUserToCoseller(user_id: ID!): UserType
+  approveUserToCoseller(user_id: ID!): CoSeller
 
   # Create User
   createUser(input: CreateUserInput!): UserType
   # Edit User
   editUser(input: EditUserInput!): UserType
+  
+  # Create TradeRoom
+  createTradeRoom(input: CreateTradeRoomInput!): TradeRoom
+  # Update TradeRoom
+  editTradeRoom(input: EditTradeRoomInput!): TradeRoom
+  # Confirm Buy
+  confirmBuyInTradeRoom(id: ID!): TradeRoom
 
-  #
+  # Add message
+  addMessage(content: MessageContentInput!, traderoom: ID!): Message
 }

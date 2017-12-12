@@ -1,3 +1,26 @@
+input UserOrdering {
+  sort: UserSort!
+  direction: Direction! = ASC
+}
+
+enum UserSort {
+  createAt
+  updateAt
+}
+
+# Edges for UserQuery
+type UserEdges implements Edges {
+  node: User!
+  cursor: ID!
+}
+
+# User relay-style pagination query
+type UserPage implements Page {
+  totalCount: Int!
+  edges: [UserEdges]
+  pageInfo: PageInfo
+}
+
 # Account data type
 type Account {
   # Email
@@ -63,9 +86,6 @@ interface UserType {
   # User avatar
   avatar: String
 
-  # Citizen card image
-  citizenCardImage: String
-
   # Order receipts
   orderReceipts(
     first: Int,
@@ -74,6 +94,9 @@ interface UserType {
     before: ID,
     orderBy: [OrderReceiptOrdering],
   ): OrderReceiptPage
+
+  traderooms: [TradeRoom]
+  traderoom(id: ID!): TradeRoom
 
   createAt: Date!
   updateAt: Date!
@@ -103,7 +126,7 @@ type User implements UserType, Node {
   # User avatar
   avatar: String
 
-  # # Citizen card image
+  # Citizen card image
   citizenCardImage: String
 
   # Order receipts
@@ -116,6 +139,9 @@ type User implements UserType, Node {
   ): OrderReceiptPage
 
   coSellerRegisterStatus: CoSellerRegisterStatus!
+
+  traderooms: [TradeRoom]
+  traderoom(id: ID!): TradeRoom
 
   createAt: Date!
   updateAt: Date!
@@ -177,8 +203,12 @@ type CoSeller implements UserType, Node {
     orderBy: [OrderReceiptOrdering],
     status: OrderReceiptStatus,
   ): OrderReceiptPage
+
   # Count order receipts with status
   totalBuyOrderReceipts(status: OrderReceiptStatus): Int
+
+  traderooms: [TradeRoom]
+  traderoom(id: ID!): TradeRoom
 
   createAt: Date!
   updateAt: Date!
@@ -209,6 +239,9 @@ type Admin implements UserType, Node {
   # User avatar
   avatar: String
 
+  traderooms: [TradeRoom]
+  traderoom(id: ID!): TradeRoom
+
   # Order receipts
   orderReceipts(
     first: Int,
@@ -217,10 +250,20 @@ type Admin implements UserType, Node {
     before: ID,
     orderBy: [OrderReceiptOrdering],
   ): OrderReceiptPage
+    
+  traderooms: [TradeRoom]
+  traderoom(id: ID!): TradeRoom
 
-  # # Citizen card image
-  citizenCardImage: String
-  
+  admin: Boolean
+  # Pending CoSellers
+  pendingCoSellers(
+    first: Int,
+    after: ID,
+    last: Int,
+    before: ID,
+    orderBy: [UserOrdering],
+  ): UserPage
+
   createAt: Date!
   updateAt: Date!
 }

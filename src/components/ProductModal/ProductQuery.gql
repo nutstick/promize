@@ -30,4 +30,8 @@ query Product($id: ID!) {
     selectedSize @client
     selectedColor @client
   }
+
+  me {
+    _id
+  }
 }

@@ -1,0 +1,6 @@
+query TradeRoomModal {
+  tradeRoomModal @client {
+    id
+    show
+  }
+}

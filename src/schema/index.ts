@@ -1,11 +1,12 @@
+import { GraphQLUpload } from 'apollo-upload-server';
 import { GraphQLInputObjectType, GraphQLString, ObjectValueNode } from 'graphql';
 import * as GraphQLDate from 'graphql-date';
 import { makeExecutableSchema } from 'graphql-tools';
-// import * as UnionInputType from 'graphql-union-input-type';
 import { print } from 'graphql/language';
 import { GraphQLInt } from 'graphql/type/scalars';
 import { UnionInputType } from '../core/UnionInputType';
 import { Keyword } from './Keyword';
+import { MessageContentInput } from './Message';
 import * as SchemaType from './schema.gql';
 import * as IntlMessage from './types/IntlMessage';
 import * as Mutation from './types/Mutation';
@@ -13,17 +14,21 @@ import * as OrderReceipt from './types/OrderReceipt';
 import * as Pagination from './types/Pagination';
 import * as Product from './types/Product';
 import * as Query from './types/Query';
+import * as Subscription from './types/Subscription';
+import * as Traderoom from './types/Traderoom';
 import * as User from './types/User';
 
 const schema = [print(SchemaType)];
 const modules = [
-  Pagination,
-  User,
   IntlMessage,
-  Query,
-  Product,
-  OrderReceipt,
   Mutation,
+  OrderReceipt,
+  Pagination,
+  Product,
+  Query,
+  Subscription,
+  Traderoom,
+  User,
 ];
 
 const OldAddressInput = new GraphQLInputObjectType({
@@ -129,6 +134,8 @@ const resolvers = Object.assign({
   Keyword,
   AddressInputCreate,
   PaymentInputCreate,
+  Upload: GraphQLUpload,
+  MessageContentInput,
 },
   ...(modules.map((m) => m.resolver).filter((res) => res)),
 );

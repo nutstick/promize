@@ -2,8 +2,11 @@ scalar Date
 scalar Keyword
 scalar AddressInputCreate
 scalar PaymentInputCreate
+scalar Upload
+scalar MessageContentInput
 
 schema {
   query: Query
   mutation: Mutation
+  subscription: Subscription
 }

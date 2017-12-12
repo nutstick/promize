@@ -1,8 +1,10 @@
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { ChildProps } from 'react-apollo';
+import Cards from 'react-credit-cards';
+import * as reactCreditCardsCss from 'react-credit-cards/lib/styles-compiled.css';
 import { RouteComponentProps } from 'react-router-dom';
-import { Card } from 'semantic-ui-react';
+import { Grid, Loader } from 'semantic-ui-react';
 import { graphql } from '../../../apollo/graphql';
 import { IPaymentMethod } from '../../../schema/types/User';
 import * as PAYMENTMETHODSQUERY from './../../../apollo/PaymentMethodsQuery.gql';
@@ -25,7 +27,7 @@ namespace PaymentMethod {
   export type Props = WithPaymentMethodsQuery;
 }
 
-@withStyles(s)
+@withStyles(reactCreditCardsCss, s)
 @graphql<PaymentMethod.IProps, {}>(ADDPAYMENTMETHODMUTATION)
 @graphql<PaymentMethod.WithAddPaymentMethodMutation, PaymentMethod.PaymentMethodsQuery>(PAYMENTMETHODSQUERY)
 export class PaymentMethod extends React.Component<PaymentMethod.Props> {
@@ -37,14 +39,28 @@ export class PaymentMethod extends React.Component<PaymentMethod.Props> {
     return (
       <div className={s.root} style={{ padding: '3rem' }}>
         <h1 className={s.header}>Manange Payment Method</h1>
-
-        {this.props.data.me.paymentMethods.map((paymentMethod) => (
-          <Card>
-              <h4>Visa card</h4>
-              {paymentMethod.creditCardNumber}
-              <br/>
-          </Card>
-        ))}
+        {
+          this.props.data.loading || this.props.data.error ? (
+            <div>
+              <Loader active />
+            </div>
+          ) : (
+            <div>
+              <Grid>
+                {this.props.data.me.paymentMethods.map((paymentMethod) => (
+                  <Grid.Column mobile={14} tablet={7} computer={5}>
+                    <Cards
+                      number={paymentMethod.creditCardNumber.replace(/#/g, '')}
+                      name={' '}
+                      expiry={' '}
+                      cvc={' '}
+                    />
+                  </Grid.Column>
+                ))}
+              </Grid>
+            </div>
+          )
+        }
       </div>
     );
   }

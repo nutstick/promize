@@ -1,0 +1,40 @@
+type TextContent {
+  text: String!
+}
+
+type PictureContent {
+  pictureUrl: String!
+  size: Int!
+}
+
+type CommandContent {
+  command: String!
+  arguments: [String]
+}
+
+union MessageContent = TextContent | PictureContent | CommandContent
+
+type Message implements Node {
+  _id: ID!
+  content: MessageContent!
+  owner: UserType!
+  createAt: Date!
+}
+
+type TradeRoom implements Node {
+  _id: ID!
+  participants: [UserType]
+
+  orderProduct: Product!
+  detail: String
+  price: Float
+
+  size: String
+  color: String
+
+  buyConfirm: Boolean!
+  buyConfirmAt: Date
+
+  # TODO: Message Page
+  messages: [Message]
+}

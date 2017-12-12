@@ -1,4 +1,3 @@
-import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { SortableContainer } from 'react-sortable-hoc';

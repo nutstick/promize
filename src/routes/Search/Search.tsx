@@ -4,7 +4,7 @@ import * as React from 'react';
 import { ChildProps } from 'react-apollo';
 import * as FaFilterIcon from 'react-icons/lib/fa/filter';
 import * as MdSortIcon from 'react-icons/lib/md/sort';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import { sizeMe } from 'react-sizeme';
 import StackGrid, { easings, transitions } from 'react-stack-grid';
 import * as Waypoint from 'react-waypoint';
@@ -43,7 +43,6 @@ namespace Search {
 
 @withStyles(s)
 @sizeMe()
-@(withRouter as any)
 @graphql<Search.WithRouter, Search.SearchQuery>(SEARCHQUERY, {
   options(props) {
     return {

@@ -1,31 +1,72 @@
+import { createWriteStream } from 'fs';
+import * as mkdirp from 'mkdirp';
+import * as shortid from 'shortid';
+import { uploadDir } from '../../../config';
 import { IResolver } from '../index';
+import { MESSAGE_ADDED, pubsub } from '../pubsub';
+
+// Ensure upload directory exists
+mkdirp.sync(uploadDir);
+
+const storeUpload = async ({ stream, filename }) => {
+  const id = shortid.generate();
+  const path = `${uploadDir}/${id}-${filename}`;
+
+  return new Promise<{ id: string, path: string }>((resolve, reject) =>
+    stream
+      .pipe(createWriteStream(path))
+      .on('finish', () => resolve({ id, path: `/${path.split('/').slice(2).join('/')}` }))
+      .on('error', reject),
+  );
+};
+
+const processUpload = async (upload) => {
+  const { stream, filename } = await upload;
+  return await storeUpload({ stream, filename });
+};
 
 const resolver: IResolver<any, any> = {
   Mutation: {
 
-    async uploadFile(root, { file }, { database }) {
-      // console.log(root);
-      return true;
-    },
+    // async uploadFile(root, { file }, { database }) {
+    //   console.log(root);
+    //   return true;
+    // },
 
-    async createProduct(_, { input: { promotionStart, promotionEnd, price, ...input } }, { database, user }) {
+    // tslint:disable-next-line:max-line-length
+    async createProduct(_, { input: { promotionStart, promotionEnd, pictures, price, ...input } }, { database, user }) {
+      const picturesUrl = await Promise.all((pictures as Array<Promise<any>>).map(processUpload));
+      const userInstance = await database.User.findOne({ _id: user._id });
       // Only CoSeller can create product
-      return await database.Product.insert({
-        ...input,
-        promotion_start: promotionStart,
-        promotion_end: promotionEnd,
-        owner: user._id,
-      });
+      if (userInstance.type === 'CoSeller') {
+        return await database.Product.insert({
+          ...input,
+          pictures: picturesUrl.map((picture) => {
+            return '/' + picture.path.slice(1);
+          }),
+          promotion_start: promotionStart,
+          promotion_end: promotionEnd,
+          owner: user._id,
+        });
+      } else {
+        throw new Error(`You must be CoSeller to create product`);
+      }
     },
 
-    async editProduct(_, { input: { id, ...input } }, { database }) {
+    async editProduct(_, { input: { id, ...input } }, { database, user }) {
+      const userInstance = await database.User.findOne({ _id: user._id });
+      const productInstance = await database.Product.findOne({ _id: id });
       // Only owner can edit
-      // FIXME: Cant merge fields like originalPrice, promotionStart convert to camel case first
-      await database.Product.update({ _id: id }, {
-        $set: {
-          ...input,
-        },
-      });
+      if (userInstance.type === 'CoSeller' && productInstance.owner === user._id) {
+        // FIXME: Cant merge fields like originalPrice, promotionStart convert to camel case first
+        await database.Product.update({ _id: id }, {
+          $set: {
+            ...input,
+          },
+        });
+      } else {
+        throw new Error(`You must be Product Owner to edit product`);
+      }
       return await database.Product.findOne({ _id: id });
     },
 
@@ -150,12 +191,14 @@ const resolver: IResolver<any, any> = {
     },
 
     async registerToBeCoSeller(_, { input }, { database, user }) {
+      const citizenCardImageUrl = await processUpload(input.citizenCardImage);
+
       const userInstance = await database.User.findOne({ _id: user._id });
       if (userInstance.type === 'User') {
         await database.User.update({ _id: user._id }, {
           $set: {
             tel_number: input.telNumber ? input.telNumber : userInstance.telNumber,
-            citizen_card_image: input.citizenCardImageUrl,
+            citizen_card_image: citizenCardImageUrl.path.slice(1),
             coseller_register_status: 'Pending',
           },
         });
@@ -218,6 +261,57 @@ const resolver: IResolver<any, any> = {
       return await database.User.findOne({ _id: user._id });
     },
 
+    async createTradeRoom(_, { input }, { database, user }) {
+      return await database.Traderoom.insert({
+        ...input,
+      });
+    },
+
+    async editTradeRoom(_, { input: { id, ...input } }, { database, user }) {
+      return await database.Traderoom.update({ _id: id }, {
+        ...input,
+      });
+    },
+
+    async confirmBuyInTradeRoom(_, { id }, { database, user }) {
+      return await database.Traderoom.update({ _id: id }, {
+        $set: {
+          buy_confirm: true,
+          buy_confirm_at: new Date(),
+        },
+      });
+    },
+
+    async addMessage(_, { content, traderoom }, { database, user }) {
+      const message = await database.Message.create({
+        traderoom,
+        content,
+        owner: user._id,
+      });
+
+      if (content.text) {
+        pubsub.publish(MESSAGE_ADDED, message);
+      } else if (content.command) {
+        switch (content.command) {
+          case 'color': {
+            database.Traderoom.update({ _id: traderoom }, {
+              $set: { color: content.arguments[0] },
+            });
+          }
+          case 'size': {
+            database.Traderoom.update({ _id: traderoom }, {
+              $set: { size: content.arguments[0] },
+            });
+          }
+          case 'price': {
+            database.Traderoom.update({ _id: traderoom }, {
+              $set: { price: content.arguments[0] },
+            });
+          }
+        }
+      }
+      return message;
+    },
   },
 };
 

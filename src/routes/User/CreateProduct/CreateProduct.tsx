@@ -1,17 +1,12 @@
-import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { ChildProps } from 'react-apollo';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import { sizeMe } from 'react-sizeme';
-import { arrayMove, SortableContainer, SortableElement } from 'react-sortable-hoc';
-import { Button, Checkbox, Form, Grid, Input, Loader, Radio, Sticky } from 'semantic-ui-react';
+import { arrayMove } from 'react-sortable-hoc';
+import { Button, Form } from 'semantic-ui-react';
 import { graphql } from '../../../apollo/graphql';
-import { Card, contentClass, headingClass } from '../../../components/Card';
-import { ProductCard } from '../../../components/ProductCard';
-import { IPage } from '../../../schema/types/Pagination';
-import { IProduct } from '../../../schema/types/Product';
-import { IUser } from '../../../schema/types/User/index';
+import { IUser } from '../../../schema/types/User';
 import * as s from './CreateProduct.css';
 import * as CREATEPRODUCTMUTATION from './CreateProductMutation.gql';
 import { SortableList } from './SortableList';
@@ -49,8 +44,6 @@ namespace CreateProduct {
 @sizeMe()
 @graphql<CreateProduct.IProps, {}>(CREATEPRODUCTMUTATION)
 export class CreateProduct extends React.Component<CreateProduct.Props, CreateProduct.State> {
-  private grid: any;
-
   constructor(props) {
     super(props);
 
@@ -122,27 +115,31 @@ export class CreateProduct extends React.Component<CreateProduct.Props, CreatePr
   }
 
   private getAsDate(date, time) {
-    let hours = Number(time.match(/^(\d+)/)[1]);
-    const minutes = Number(time.match(/:(\d+)/)[1]);
-    const AMPM = time.match(/\s(.*)$/)[1];
-    if (AMPM === 'pm' && hours < 12) {
-      hours = hours + 12;
+    try {
+      let hours = Number(time.match(/^(\d+)/)[1]);
+      const minutes = Number(time.match(/:(\d+)/)[1]);
+      const AMPM = time.match(/\s(.*)$/)[1];
+      if (AMPM === 'pm' && hours < 12) {
+        hours = hours + 12;
+      }
+      if (AMPM === 'am' && hours === 12) {
+        hours = hours - 12;
+      }
+      let sHours = hours.toString();
+      let sMinutes = minutes.toString();
+      if (hours < 10) {
+        sHours = '0' + sHours;
+      }
+      if (minutes < 10) {
+        sMinutes = '0' + sMinutes;
+      }
+      time = sHours + ':' + sMinutes + ':00';
+      const d = new Date(date);
+      const n = d.toISOString().substring(0, 10);
+      return new Date(n + 'T' + time);
+    } catch (err) {
+      return new Date(`${date} ${time}`);
     }
-    if (AMPM === 'am' && hours === 12) {
-      hours = hours - 12;
-    }
-    let sHours = hours.toString();
-    let sMinutes = minutes.toString();
-    if (hours < 10) {
-      sHours = '0' + sHours;
-    }
-    if (minutes < 10) {
-      sMinutes = '0' + sMinutes;
-    }
-    time = sHours + ':' + sMinutes + ':00';
-    const d = new Date(date);
-    const n = d.toISOString().substring(0, 10);
-    return new Date(n + 'T' + time);
   }
 
   private onSubmit() {
@@ -163,11 +160,16 @@ export class CreateProduct extends React.Component<CreateProduct.Props, CreatePr
           promotionEnd: this.getAsDate(this.state.promotionEndDate, this.state.promotionEndTime),
        },
       },
-    });
+    })
+      .then((data) => {
+        this.props.history.push(`/users/${this.props.match.params.id}/products`);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   public render() {
-    const { user, mutate } = this.props;
     return (
       <div className={s.root}>
         <h1>New Product</h1>
@@ -226,6 +228,7 @@ export class CreateProduct extends React.Component<CreateProduct.Props, CreatePr
                 }
               </Form.Field>
             </div>
+            <br/>
             <div key="colors">
               <Form.Field>
                 <label>Color</label>
@@ -250,6 +253,7 @@ export class CreateProduct extends React.Component<CreateProduct.Props, CreatePr
                 }
               </Form.Field>
             </div>
+            <br/>
 
             <Form.Group inline>
               <Form.Input

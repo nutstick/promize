@@ -23,7 +23,7 @@ import * as LOCALEQUERY from './apollo/intl/LocaleQuery.gql';
 import * as assets from './assets.json';
 import App from './components/App';
 import { Html } from './components/Html';
-import { api, auth, locales, port } from './config';
+import { api, auth, locales, port, wsport } from './config';
 import passport from './core/passport';
 import { requestLanguage } from './core/requestLanguage';
 import { ServerLink } from './core/ServerLink';
@@ -39,6 +39,8 @@ import { database } from './schema/models';
  */
 interface HotExpress extends express.Express {
   hot: any;
+
+  wsServer: any;
 }
 
 const app = express() as HotExpress;
@@ -55,7 +57,7 @@ global.navigator.userAgent = global.navigator.userAgent || 'all';
 //
 // Register Node.js middleware
 // -----------------------------------------------------------------------------
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 app.use(cookieParser());
 app.use(
   requestLanguage({
@@ -123,7 +125,7 @@ app.get('/logout', (req, res) => {
 //
 // Register API middleware
 // -----------------------------------------------------------------------------
-app.use('/graphql', bodyParser.json(), apolloUploadExpress({ uploadDir: './' }),
+app.use('/graphql', bodyParser.json(), apolloUploadExpress({ uploadDir: './public/images' }),
   graphqlExpress((req) => ({
     schema: Schema,
     context: {
@@ -132,12 +134,14 @@ app.use('/graphql', bodyParser.json(), apolloUploadExpress({ uploadDir: './' }),
     },
     rootValue: { request: req },
   })));
-app.get('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
+app.get('/graphiql', graphiqlExpress({
+  endpointURL: '/graphql',
+  subscriptionsEndpoint: `ws://localhost:${wsport}/subscriptions`,
+}));
 
 //
 // Register server-side rendering middleware
 // -----------------------------------------------------------------------------
-// TODO: Wait for apollo-link-state to support promise
 const setLocale = async (client: ApolloClient<any>, { locale, initialNow }, { cache }) => {
   const { data } = await client.query<IntlQuery>({
     query: INTLQUERY,
@@ -222,15 +226,6 @@ app.get('*', async (req, res, next) => {
       cookie: req.headers.cookie,
       // apolloClient,
     });
-
-    // const state = {
-    //   locales: {
-    //     availableLocales: locales,
-    //   },
-    //   runtimeVariable: {
-    //     initialNow: Date.now(),
-    //   },
-    // };
 
     // Fetch locale's messages
     const locale = req.language;
@@ -326,7 +321,7 @@ app.use((err, req, res, next) => {
 
 //
 // Launch the server
-// -----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // tslint:disable-next-line:no-console
 const promise = database.connect().catch((err) => console.error(err.stack));
 if (!module.hot) {

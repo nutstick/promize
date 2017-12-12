@@ -1,0 +1,5 @@
+mutation AddMessage($traderoom: ID!, $content: MessageContentInput!) {
+  addMessage(traderoom: $traderoom, content: $content) {
+    _id
+  }
+}

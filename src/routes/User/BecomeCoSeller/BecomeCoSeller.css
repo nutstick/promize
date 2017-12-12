@@ -1,5 +1,8 @@
 .root {
   padding: 2rem;
+  background: rgba(254, 140, 39, 0.25);
+  height: 100%;
+  position: relative;
 
   > .header {
   
@@ -7,4 +10,11 @@
   > .content {
     color: #555;
   }
+}
+
+
+.button {
+      position: absolute;
+    top: calc(50% - 40px);
+    left: calc(50% - 85px);
 }

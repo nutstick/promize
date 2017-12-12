@@ -1,0 +1,5 @@
+mutation CreateTradeRoom($input: CreateTradeRoomInput!) {
+  createTradeRoom(input: $input) {
+    _id
+  }
+}

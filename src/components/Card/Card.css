@@ -1,4 +1,4 @@
-@import '../../components/variables.css';
+@import '../variables.css';
 
 .card {
   position: relative;
@@ -7,7 +7,7 @@
   box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.15);
   padding: 1em 0.6em;
 
-  > .heading {
+  .heading {
     position: relative;
     display: flex;
     align-items: flex-end;
@@ -33,13 +33,13 @@
     }
   }
 
-  > .content {
+  .content {
     display: flex;
     padding: 1em 1.5em 1.5em;
     flex-wrap: wrap;
   }
 
-  @media screen and (width <= 425px) {
+  @media only screen and (width <= 620px) {
     margin: 0.5em;
   }
 }
