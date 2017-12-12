@@ -244,6 +244,34 @@ const resolver: IResolver<any, any> = {
       }
     },
 
+    async register(
+      _,
+      { input },
+      { database, req },
+    ) {
+      const { firstName, middleName, lastName, telNumber, email, password, ...props } = input;
+      const user = await database.User.insert({
+        ...props,
+        first_name: firstName,
+        middle_name: middleName,
+        last_name: lastName,
+        tel_number: telNumber,
+        account: {
+          email,
+          password,
+        },
+      });
+
+      return await new Promise((resolve, reject) => {
+        req.logIn(user, (err) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve();
+        });
+      });
+    },
+
     async createUser(
       _,
       { input: { firstName, middleName, lastName, telNumber, paymentMethods, ...input } },
