@@ -1,6 +1,7 @@
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { ChildProps } from 'react-apollo/types';
+import { RouteComponentProps } from 'react-router';
 import { Button, Form, Grid, Image } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
 import { Card } from '../../components/Card';
@@ -8,7 +9,7 @@ import * as s from './Register.css';
 import * as REGISTERMUTATION from './RegisterMutation.gql';
 
 namespace Register {
-  export type Props = ChildProps<{}, {}>;
+  export type Props = ChildProps<RouteComponentProps<{}>, {}>;
 
   export interface State {
     firstName?: string;
@@ -154,7 +155,7 @@ export class Register extends React.Component<Register.Props, Register.State> {
         refetchQueries: ['Me', 'TradeRooms', 'UserAndMe'],
       })
         .then(() => {
-          this.props.mutate({});
+          this.props.history.push('/');
         })
         .catch((err) => {
           this.setState({

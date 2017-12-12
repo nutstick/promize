@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt-nodejs';
+import * as bcrypt from 'bcrypt-nodejs';
 import * as Iridium from 'iridium';
 import { Collection, Index, Instance, ObjectID, Property, Transform } from 'iridium';
 import { ObjectID as id } from 'mongodb';
@@ -41,7 +41,7 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
   // Name
   @Property(/^.+$/, true)
   first_name: string;
-  @Property(/^.+$/, false)
+  @Property(false)
   middle_name: string;
   @Property(/^.+$/, true)
   last_name: string;
@@ -173,7 +173,7 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
   }
 
   comparePassword(password) {
-    return bcrypt.compareSync(password, this.password);
+    return bcrypt.compareSync(password, this.account.password);
   }
 }
 

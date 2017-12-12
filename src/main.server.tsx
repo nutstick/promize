@@ -126,11 +126,12 @@ app.get('/logout', (req, res) => {
 // Register API middleware
 // -----------------------------------------------------------------------------
 app.use('/graphql', bodyParser.json(), apolloUploadExpress({ uploadDir: './public/images' }),
-  graphqlExpress((req) => ({
+  graphqlExpress((req, res) => ({
     schema: Schema,
     context: {
       database,
       req,
+      res,
       user: req.user,
     },
     rootValue: { request: req },
