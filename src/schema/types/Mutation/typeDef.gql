@@ -65,8 +65,20 @@ input CreateUserInput {
   gender: GenderEnum!
   telNumber: String
   addresses: [AddressInput]
-  avatar: String!
-  account: AccountInput!
+  avatar: String
+  email: String!
+  password: String!
+}
+
+input RegisterInput {
+  firstName: String!
+  middleName: String
+  lastName: String!
+  gender: GenderEnum!
+  telNumber: String
+  avatar: String
+  email: String!
+  password: String!
 }
 
 input EditUserInput {
@@ -140,6 +152,8 @@ type Mutation {
   editUser(input: EditUserInput!): UserType
   # Login
   login(email: String!, password: String!): UserType
+  # Register
+  register(input: RegisterInput!): UserType
 
   # Create OrderReceipt
   createOrderReceipt(input: CreateOrderReceiptInput!): OrderReceipt

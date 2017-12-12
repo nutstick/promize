@@ -135,7 +135,7 @@ export class LoginModal extends React.Component<LoginModal.Props, LoginModal.Sta
               error={this.state.passwordError}
               type="password"
               onChange={this.onInputChange.bind(this, 'password', true)} />
-            <Button type="submit" fluid secondary> Log in </Button>
+            <Button type="submit" fluid secondary loading={this.state.logining}> Log in </Button>
             <br />
             <div className={s.forgetPassword}>
               <Link to="/forget-password" >Forget Password</Link>
