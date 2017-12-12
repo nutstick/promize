@@ -2,7 +2,7 @@ import { IAddress } from '../../models/User/address';
 import { IOrderReceipt } from '../OrderReceipt';
 import { INode, IPage } from '../Pagination';
 import { IProduct } from '../Product';
-import { ITradeRoom } from '../Traderoom';
+import { ITradeRoom } from '../TradeRoom';
 import resolver from './resolver';
 import * as type from './typeDef.gql';
 

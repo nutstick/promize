@@ -9,9 +9,7 @@ import { Button } from 'semantic-ui-react';
 import { Image, List, Loader } from 'semantic-ui-react';
 import { graphql } from '../../../apollo/graphql';
 import { contentClass, headingClass } from '../../../components/Card';
-import { IOrderReceipt } from '../../../schema/types/OrderReceipt';
-import { IPage } from '../../../schema/types/Pagination';
-import { IAdmin, ICoSeller } from '../../../schema/types/User';
+import { IAdmin } from '../../../schema/types/User';
 import * as s from './Admin.css';
 import * as APPROVECOSELLERMUTATION from './ApproveCoSellerMutation.gql';
 import * as PENDINGCOSELLERQUERY from './PendingCoSellerQuery.gql';
@@ -76,6 +74,7 @@ export class Admin extends React.Component<Admin.Props> {
                         variables: {
                           id: _id,
                         },
+                        refetchQueries: ['PendingCoSeller'],
                       });
                     }}>Approve</Button>
                   </List.Content>

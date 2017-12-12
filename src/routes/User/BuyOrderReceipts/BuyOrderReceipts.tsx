@@ -41,6 +41,7 @@ namespace BuyOrderReceipts {
           first: 10,
         };
       },
+      fetchPolicy: 'network-only',
     },
   },
 )

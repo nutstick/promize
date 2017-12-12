@@ -4,7 +4,7 @@ import * as React from 'react';
 import { ChildProps } from 'react-apollo';
 import * as MdLocationOnIcon from 'react-icons/lib/md/location-on';
 import * as MdPersonOutlineIcon from 'react-icons/lib/md/person-outline';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import { Button, Card, Icon, Loader } from 'semantic-ui-react';
 import { graphql } from '../../../apollo/graphql';
 import { contentClass, headingClass } from '../../../components/Card';

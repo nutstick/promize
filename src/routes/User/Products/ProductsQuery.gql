@@ -1,4 +1,4 @@
-query UserProduct($id: ID!, $first: Int, $after: ID) {
+query ProductsQuery($id: ID!, $first: Int, $after: ID) {
   user(id: $id) {
     _id
     ... on CoSeller {

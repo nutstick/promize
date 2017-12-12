@@ -130,6 +130,7 @@ app.use('/graphql', bodyParser.json(), apolloUploadExpress({ uploadDir: './publi
     schema: Schema,
     context: {
       database,
+      req,
       user: req.user,
     },
     rootValue: { request: req },

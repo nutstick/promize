@@ -8,7 +8,6 @@ import 'whatwg-fetch';
 
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { ApolloLink } from 'apollo-link';
-import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { createUploadLink } from 'apollo-upload-client';
 import * as FontFaceObserver from 'fontfaceobserver';
@@ -60,6 +59,10 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
         kind: 'INTERFACE',
         name: 'UserType',
         possibleTypes: [{ name: 'User' }, { name: 'CoSeller' }],
+      }, {
+        kind: 'UNION',
+        name: 'MessageContent',
+        possibleTypes: [{ name: 'TextContent' }, { name: 'PictureContent' }, { name: 'CommandContent' }],
       }],
     },
   },

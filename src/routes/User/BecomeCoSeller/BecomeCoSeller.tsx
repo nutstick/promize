@@ -12,6 +12,11 @@ import * as COSELLERREGISTERSTATUSQUERY from './CoSellerRegisterStatusQuery.gql'
 namespace BecomeCoSeller {
   export type IProps = RouteComponentProps<{ id: string }>;
 
+  export interface CoSellerRegisterMutation {
+    _id: string;
+    coSellerRegisterStatus: string;
+  }
+
   export type WithCoSellerRegisterMutation = ChildProps<IProps, {}>;
 
   export interface CoSellerRegisterStatusQuery {
@@ -33,7 +38,7 @@ namespace BecomeCoSeller {
 }
 
 @withStyles(s)
-@graphql<BecomeCoSeller.IProps, {}>(COSELLERREGISTERMUTATION)
+@graphql<BecomeCoSeller.IProps, BecomeCoSeller.CoSellerRegisterMutation>(COSELLERREGISTERMUTATION)
 @graphql<BecomeCoSeller.WithCoSellerRegisterMutation, BecomeCoSeller.CoSellerRegisterStatusQuery>(
   COSELLERREGISTERSTATUSQUERY,
 )
@@ -60,6 +65,19 @@ export class BecomeCoSeller extends React.Component<BecomeCoSeller.Props, Become
                   citizenCardImage: this.state.citizenCardImage,
                 },
               },
+              refetchQueries: ['CoSellerRegisterStatus'],
+              // TODO: Use update query
+              // updateQueries: {
+              //   CoSellerRegisterStatus(previousResult, { mutationResult }) {
+              //     return {
+              //       ...previousResult,
+              //       me: {
+              //         ...previousResult.me,
+              //         coSellerRegisterStatus: mutationResult.data.coSellerRegisterStatus,
+              //       },
+              //     },
+              //   },
+              // },
             });
             this.setState({
               upload: false,
@@ -114,7 +132,7 @@ export class BecomeCoSeller extends React.Component<BecomeCoSeller.Props, Become
             })}>{this.state.pending ? 'Pending' : 'Become CoSeller'}</Button>
         }
 
-        <h1 className={s.header}>Co-Seller</h1>
+        <h1 className={s.header}>CoSeller</h1>
       </div>
     );
   }

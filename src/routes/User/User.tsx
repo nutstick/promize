@@ -13,9 +13,10 @@ import { Redirect } from 'react-router';
 import { NavLink, RouteComponentProps } from 'react-router-dom';
 import { Route, Switch } from 'react-router-dom';
 import { sizeMe } from 'react-sizeme';
-import { Divider, Icon, Image, Label, List } from 'semantic-ui-react';
+import { Icon, Image, Label } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
 import { Card } from '../../components/Card';
+import { Navigator } from '../../components/Navigator';
 /* Sub routes */
 import { Account } from '../../routes/User/Account';
 import { Activities } from '../../routes/User/Activities';
@@ -27,11 +28,21 @@ import { OrderReceipts } from '../../routes/User/OrderReceipts';
 import { PaymentMethod } from '../../routes/User/PaymentMethod';
 /* Sub routes */
 import { Products } from '../../routes/User/Products';
-import { IAdmin, ICoSeller, IUserType } from '../../schema/types/User';
+import { IUserType } from '../../schema/types/User';
 import * as s from './User.css';
 import * as USERQUERY from './UserQuery.gql';
 
 namespace User {
+  export interface Menu {
+    to: string;
+    text: React.ReactNode;
+    NavIcon?: React.ComponentClass<{
+      size?: number,
+      color?: string,
+      style?: any,
+    }>;
+  }
+
   export type IProps = RouteComponentProps<{ id: string }>;
 
   export type WithSizeMe = {
@@ -96,8 +107,65 @@ export class User extends React.Component<User.Props> {
     return `${Math.floor(diff / 365)} Year${diff > 730 && s}`;
   }
 
+  private menu(role: string, me: boolean): User.Menu[] {
+    return me ? [
+      {
+        to: `/users/${this.props.match.params.id}`,
+        text: 'My Activities',
+        NavIcon: MdExploreIcon,
+      },
+      ...(role === 'Admin' ? [{
+        to: `/users/${this.props.match.params.id}/admin`,
+        text: 'Admin',
+        NavIcon: MdAssignmentIndIcon,
+      }] : []),
+      ...(role === 'CoSeller' ? [{
+        to: `/users/${this.props.match.params.id}/products`,
+        text: 'My Products',
+        NavIcon: MdRedeemIcon,
+      }, {
+        to: `/users/${this.props.match.params.id}/buyorders`,
+        text: 'Product Orders',
+        NavIcon: MdLoyaltyIcon,
+      }] : []),
+      {
+        to: `/users/${this.props.match.params.id}/receipts`,
+        text: 'Order receipts',
+        NavIcon: MdLocalOfferIcon,
+      },
+      {
+        to: `/users/${this.props.match.params.id}/account`,
+        text: 'Account setting',
+        NavIcon: MdPersonOutlineIcon,
+      },
+      {
+        to: `/users/${this.props.match.params.id}/payment`,
+        text: 'Payment setting',
+        NavIcon: MdPaymentIcon,
+      },
+      ...(role === 'User' ? [{
+        to: `/users/${this.props.match.params.id}/coseller`,
+        text: 'CoSeller',
+        NavIcon: MdLockOutlineIcon,
+      }] : []),
+    ] : [
+      {
+        to: `/users/${this.props.match.params.id}`,
+        text: 'Activities',
+        NavIcon: MdExploreIcon,
+      },
+      ...(role === 'CoSeller' ? [{
+        to: `/users/${this.props.match.params.id}/products`,
+        text: 'Products',
+        NavIcon: MdRedeemIcon,
+      }] : []),
+    ];
+  }
+
   public render() {
-    const { user, loading, error } = this.props.data;
+    const mobile = this.props.size.width <= 620;
+    const { me, user, loading, error } = this.props.data;
+
     return !loading && !error && !user ? (
       <div className={s.root}>
         <Card className={s.mainContent}>
@@ -141,153 +209,14 @@ export class User extends React.Component<User.Props> {
             loading || error ? <div className={s.menu}></div> :
             (<div className={s.menuWrapper}>
               {/* Menu Select*/}
-              {this.props.data.me && this.props.data.me._id === user._id ? (
-              <List relaxed className={s.menuList} horizontal>
-                <List.Item>
-                  <List.Content>
-                    <NavLink
-                      to={`/users/${this.props.match.params.id}`}
-                      exact
-                      activeClassName={s.active}>
-                      {this.props.size.width >= 620 &&
-                        <MdExploreIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
-                      }
-                      My Activities
-                    </NavLink>
-                  </List.Content>
-                </List.Item>
-                {user.__typename === 'Admin' &&
-                <List.Item>
-                  <List.Content>
-                    <NavLink
-                      to={`/users/${this.props.match.params.id}/admin`}
-                      activeClassName={s.active}>
-                      {this.props.size.width >= 620 &&
-                        <MdAssignmentIndIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
-                      }
-                      Admin
-                    </NavLink>
-                  </List.Content>
-                </List.Item>}
-                {user.__typename === 'CoSeller' &&
-                <List.Item>
-                  <List.Content>
-                    <NavLink
-                      to={`/users/${this.props.match.params.id}/products`}
-                      activeClassName={s.active}>
-                      {this.props.size.width >= 620 &&
-                        <MdRedeemIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
-                      }
-                      My Products
-                    </NavLink>
-                  </List.Content>
-                </List.Item>}
-                {user.__typename === 'CoSeller' &&
-                <List.Item>
-                  <List.Content>
-                    <NavLink
-                      to={`/users/${this.props.match.params.id}/buyorders`}
-                      activeClassName={s.active}>
-                      {this.props.size.width >= 620 &&
-                        <MdLoyaltyIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
-                      }
-                      Product Orders
-                    </NavLink>
-                  </List.Content>
-                </List.Item>}
-                <List.Item>
-                  <List.Content>
-                    <NavLink
-                      to={`/users/${this.props.match.params.id}/receipts`}
-                      activeClassName={s.active}>
-                      {this.props.size.width >= 620 &&
-                        <MdLocalOfferIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
-                      }
-                      Order receipts
-                    </NavLink>
-                  </List.Content>
-                </List.Item>
-                <List.Item>
-                  <List.Content>
-                    <NavLink
-                      to={`/users/${this.props.match.params.id}/account`}
-                      activeClassName={s.active}>
-                      {this.props.size.width >= 620 &&
-                        <MdPersonOutlineIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
-                      }
-                      Account setting
-                    </NavLink>
-                  </List.Content>
-                </List.Item>
-                <List.Item>
-                  <List.Content>
-                    <NavLink
-                      to={`/users/${this.props.match.params.id}/payment`}
-                      activeClassName={s.active}>
-                      {this.props.size.width >= 620 &&
-                        <MdPaymentIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
-                      }
-                      Payment setting
-                    </NavLink>
-                  </List.Content>
-                </List.Item>
-                {user.__typename === 'User' &&
-                <List.Item>
-                  <List.Content>
-                    <NavLink
-                      to={`/users/${this.props.match.params.id}/coseller`}
-                      activeClassName={s.active}>
-                      {this.props.size.width >= 620 &&
-                        <MdLockOutlineIcon  size={24} color="#ff8500" style={{ marginRight: 8 }} />
-                      }
-                      Co-Seller
-                    </NavLink>
-                  </List.Content>
-                </List.Item>}
-              </List>
-              ) : user.__typename === 'CoSeller' ? (
-              <List relaxed className={s.menuList}>
-                <List.Item>
-                  <List.Content>
-                    <NavLink
-                      to={`/users/${this.props.match.params.id}`}
-                      activeClassName={s.active}>
-                      {this.props.size.width >= 620 &&
-                        <MdExploreIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
-                      }
-                      Activities
-                    </NavLink>
-                  </List.Content>
-                </List.Item>
-                <List.Item>
-                  <List.Content>
-                    <NavLink
-                      to={`/users/${this.props.match.params.id}/products`}
-                      activeClassName={s.active}>
-                      {this.props.size.width >= 620 &&
-                        <MdRedeemIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
-                      }
-                      Products
-                    </NavLink>
-                  </List.Content>
-                </List.Item>
-              </List>
-              ) : (
-              <List relaxed className={s.menuList}>
-                <List.Item>
-                  <List.Content>
-                    <NavLink
-                      to={`/users/${this.props.match.params.id}`}
-                      activeClassName={s.active}>
-                      {this.props.size.width >= 620 &&
-                        <MdExploreIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
-                      }
-                      Activities
-                    </NavLink>
-                  </List.Content>
-                </List.Item>
-              </List>
-              )}
+              <Navigator scrollable={mobile} horizontal={mobile}>
+                {this.menu(user.__typename, me && user._id === me._id).map(({ to, text, NavIcon }) => (
+                  <Navigator.Item as={NavLink} to={to} exact>
+                    {!mobile && <NavIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />}
+                    {text}
+                  </Navigator.Item>
+                ))}
+              </Navigator>
             </div>)
           }
         </div>
@@ -307,12 +236,12 @@ export class User extends React.Component<User.Props> {
                 <Route path="/users/:id/receipts" component={OrderReceipts} />
                 <Route path="/users/:id/account" component={Account} />
                 <Route path="/users/:id/payment" component={PaymentMethod} />
-                {!(user as ICoSeller).coseller && <Route path="/users/:id/coseller" component={BecomeCoSeller} />}
+                {user.__typename !== 'CoSeller' && <Route path="/users/:id/coseller" component={BecomeCoSeller} />}
                 <Route render={() => (
                   <Redirect to={`/users/${this.props.match.params.id}`} />
                 )} />
               </Switch>
-            ) : !loading && !error && (user as ICoSeller).coseller ? (
+            ) : !loading && !error && user.__typename === 'CoSeller' ? (
               <Switch>
                 <Route exact path="/users/:id" component={Activities} />
                 <Route path="/users/:id/products" component={Products} />

@@ -1,0 +1,37 @@
+@import '../variables.css';
+
+.root {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  white-space: nowrap;
+  user-select: none;
+
+  &.scrollable {
+    overflow: hidden;
+
+    .menu {
+      touch-action: pan-x;
+    }
+  }
+
+  .menu {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: auto;
+    white-space: nowrap;
+    width: 100%;
+
+    &.horizontal {
+      flex-direction: row;
+      width: auto;
+
+      &::-webkit-scrollbar {
+        display: none;
+        -webkit-appearance: none;
+      }
+    }
+  }
+}

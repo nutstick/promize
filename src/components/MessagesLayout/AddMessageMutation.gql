@@ -1,5 +1,24 @@
 mutation AddMessage($traderoom: ID!, $content: MessageContentInput!) {
   addMessage(traderoom: $traderoom, content: $content) {
     _id
+    owner {
+      _id
+      firstName
+      avatar
+    }
+    content {
+      ... on TextContent {
+        text
+      }
+      ... on PictureContent {
+        pictureUrl
+        size
+      }
+      ... on CommandContent {
+        command
+        arguments
+      }
+    }
+    createAt
   }
 }

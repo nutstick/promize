@@ -40,6 +40,7 @@ namespace OrderReceipts {
           first: 10,
         };
       },
+      fetchPolicy: 'network-only',
     },
   },
 )

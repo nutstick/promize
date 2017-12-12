@@ -1,5 +1,5 @@
-import { IResolver } from '../index';
 import { toObjectID } from 'iridium';
+import { IResolver } from '../index';
 
 const resolver: IResolver<any, any> = {
   OrderReceiptEdges: {
