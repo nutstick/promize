@@ -7,12 +7,10 @@ RUN mkdir -p /app
 
 WORKDIR /app
 
-ADD package.json .
+ADD . .
 RUN yarn install --quiet
 
 RUN npm install typescript --global
-
-ADD . .
 
 EXPOSE 3000
 
