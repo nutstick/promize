@@ -27,27 +27,27 @@ export class ItemSelector extends React.Component<ItemSelector.Props> {
             {option.text}
           </div>
         ) : (
-          <div
-            className="ui button"
-            key={option.value}
-            onClick={(e) => {
-              if (this.props.onChange) {
-                this.props.onChange(e, option.value);
-              }
-            }}>
-            {option.text}
-          </div>
-        ))}
+            <div
+              className="ui button"
+              key={option.value}
+              onClick={(e) => {
+                if (this.props.onChange) {
+                  this.props.onChange(e, option.value);
+                }
+              }}>
+              {option.text}
+            </div>
+          ))}
       </div>
     ) :
-    // TODO:
-    <Select
-      placeholder="Select your country"
-      options={this.props.options}
-      onChange={(e, data) => {
-        if (this.props.onChange) {
-          this.props.onChange(e, data.value);
-        }
-      }}/>;
+      // TODO:
+      <Select
+        placeholder="Select your options"
+        options={this.props.options}
+        onChange={(e, data) => {
+          if (this.props.onChange) {
+            this.props.onChange(e, data.value);
+          }
+        }} />;
   }
 }

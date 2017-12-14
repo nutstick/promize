@@ -68,7 +68,7 @@ export class BuyOrderReceipts extends React.Component<BuyOrderReceipts.Props> {
           <MdLocalOfferIcon size={25} style={{
             marginRight: 2.5,
           }} color="#ff9521" />
-          <span>Order Receipts</span>
+          <span>My Product Order</span>
         </div>
         {
           this.props.data.loading || this.props.data.error ? (
@@ -80,98 +80,98 @@ export class BuyOrderReceipts extends React.Component<BuyOrderReceipts.Props> {
               No order receipts found.
             </div>
           ) : (
-            <div className={contentClass}>
-              {this.props.data.me.buyOrderReceipts.edges.map(({ node }) => (
-                <div key={node._id} className={s.modal}>
-                  <div className={s.pictureWrapper}>
-                    <img className={s.picture} src={node.product.pictures[0]} />
-                  </div>
-                  <div className={s.contentWrapper}>
-                    <div className={s.contentHeader}>
-                      <div className={s.wrapContainer}>
-                        <div className={s.topContent}>
-                          <h6 className={s.receiptId}>ORDER ID : {node._id}</h6>
+                <div className={contentClass}>
+                  {this.props.data.me.buyOrderReceipts.edges.map(({ node }) => (
+                    <div key={node._id} className={s.modal}>
+                      <div className={s.pictureWrapper}>
+                        <img className={s.picture} src={node.product.pictures[0]} />
+                      </div>
+                      <div className={s.contentWrapper}>
+                        <div className={s.contentHeader}>
+                          <div className={s.wrapContainer}>
+                            <div className={s.topContent}>
+                              <h6 className={s.receiptId}>ORDER ID : {node._id}</h6>
+                            </div>
+                            <div className={s.downContent}>
+                              <h3 className={s.productName}>{node.product.name}</h3>
+                            </div>
+                          </div>
+                          <h6 className={s.productOwner}>{this.name(node.creator)}</h6>
                         </div>
-                        <div className={s.downContent}>
-                          <h3 className={s.productName}>{node.product.name}</h3>
+                        <div className={s.contentDetail}>
+                          <div className={s.leftContent}>
+                            <div className={s.titleValueGroup}>
+                              <div className={s.title}>SIZE</div>
+                              <div className={s.value}>{node.size.size}</div>
+                              <div className={s.title}>COLOR</div>
+                              <div className={s.value}>{node.color.color}</div>
+                            </div>
+                            <div>
+                              <div className={s.shipTo}>
+                                SHIPPING INFORMATION
+                      </div>
+                              <div className={s.shippingInfo}>
+                                <span>{node.deliverAddress.address}</span>
+                                <span>{node.deliverAddress.city}</span>
+                                <span>{node.deliverAddress.country}</span>
+                                <span>{node.deliverAddress.zip}</span>
+                              </div>
+                            </div>
+                            <div className={s.titleValueGroup}>
+                              <div className={s.title}>TRACKING NUMBER</div>
+                              <div className={s.value}>{node.trackingId}</div>
+                            </div>
+                            <div className={s.titleValueGroup}>
+                              <div className={s.title}>REMARK</div>
+                              <div className={s.value}>{node.remark}</div>
+                            </div>
+                          </div>
+
+                          <div className={s.rightContent}>
+                            <div className={s.contentFooter}>
+                              <div className={s.titleValueGroup}>
+                                <div className={s.title}>PRODUCT DELIVERED</div>
+                                <div className={s.value}>{node.productDelivered}</div>
+                                <div className={s.title}>AT</div>
+                                <div className={s.value}>{node.productDeliveredAt}</div>
+                              </div>
+
+                              <div className={s.titleValueGroup}>
+                                <div className={s.title}>PAYMEMT COMPLETED</div>
+                                <div className={s.value}>{node.paymentCompleted}</div>
+                                <div className={s.title}>AT</div>
+                                <div className={s.value}>{node.paymentCompletedAt}</div>
+                              </div>
+
+                              <div className={s.titleValueGroup}>
+                                <div className={s.title}>PRODUCT RECEIVED</div>
+                                <div className={s.value}>{node.productReceived}</div>
+                                <div className={s.title}>AT</div>
+                                <div className={s.value}>{node.productReceivedAt}</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className={s.buttonWrap}>
+                          <a onClick={(e) => this.props.mutate({
+                            variables: {
+                              id: node._id,
+                              input: {
+                                status: 'RECEIVED',
+                              },
+                            },
+                          })}>
+                            <Button className="s.button" color="orange">
+                              <Button.Content>Confirm Received</Button.Content>
+                            </Button>
+                          </a>
                         </div>
                       </div>
-                      <h6 className={s.productOwner}>{this.name(node.creator)}</h6>
                     </div>
-                    <div className={s.contentDetail}>
-                      <div className={s.leftContent}>
-                        <div className={s.titleValueGroup}>
-                          <div className={s.title}>SIZE</div>
-                          <div className={s.value}>{node.size.size}</div>
-                          <div className={s.title}>COLOR</div>
-                          <div className={s.value}>{node.color.color}</div>
-                        </div>
-                        <div>
-                          <div className={s.shipTo}>
-                            SHIPPING INFORMATION
-                      </div>
-                          <div className={s.shippingInfo}>
-                            <span>{node.deliverAddress.address}</span>
-                            <span>{node.deliverAddress.city}</span>
-                            <span>{node.deliverAddress.country}</span>
-                            <span>{node.deliverAddress.zip}</span>
-                          </div>
-                        </div>
-                        <div className={s.titleValueGroup}>
-                          <div className={s.title}>TRACKING NUMBER</div>
-                          <div className={s.value}>{node.trackingId}</div>
-                        </div>
-                        <div className={s.titleValueGroup}>
-                          <div className={s.title}>REMARK</div>
-                          <div className={s.value}>{node.remark}</div>
-                        </div>
-                      </div>
-
-                      <div className={s.rightContent}>
-                        <div className={s.contentFooter}>
-                          <div className={s.titleValueGroup}>
-                            <div className={s.title}>PRODUCT DELIVERED</div>
-                            <div className={s.value}>{node.productDelivered}</div>
-                            <div className={s.title}>AT</div>
-                            <div className={s.value}>{node.productDeliveredAt}</div>
-                          </div>
-
-                          <div className={s.titleValueGroup}>
-                            <div className={s.title}>PAYMEMT COMPLETED</div>
-                            <div className={s.value}>{node.paymentCompleted}</div>
-                            <div className={s.title}>AT</div>
-                            <div className={s.value}>{node.paymentCompletedAt}</div>
-                          </div>
-
-                          <div className={s.titleValueGroup}>
-                            <div className={s.title}>PRODUCT RECEIVED</div>
-                            <div className={s.value}>{node.productReceived}</div>
-                            <div className={s.title}>AT</div>
-                            <div className={s.value}>{node.productReceivedAt}</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className={s.buttonWrap}>
-                      <a onClick={(e) => this.props.mutate({
-                        variables: {
-                          id: node._id,
-                          input: {
-                            status: 'RECEIVED',
-                          },
-                        },
-                      })}>
-                        <Button className="s.button" color="orange">
-                          <Button.Content>Confirm Received</Button.Content>
-                        </Button>
-                      </a>
-                    </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          )
+              )
         }
       </div>
     );
