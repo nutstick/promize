@@ -12,7 +12,7 @@
 .modal{
   display: flex;
   flex-wrap: nowrap;
-  width: 100%;
+  width: 60%;
   margin: 20px 0px;
   padding: 5px;
   background: white;
