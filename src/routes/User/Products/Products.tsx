@@ -48,6 +48,7 @@ namespace Products {
         after: null,
         first: 20,
       },
+      fetchPolicy: 'network-only',
     };
   },
 })

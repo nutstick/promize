@@ -6,12 +6,7 @@
 }
 
 .empty {
-  font-style: italic;
-  text-align: center;
-  font-size: 1rem;
-  display: flex;
-  justify-content: center;
-  color: var(--grey);
+  composes: empty from "../User.css";
 }
 
 .head {

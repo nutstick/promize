@@ -27,7 +27,17 @@ body ::-webkit-scrollbar {
 }
 
 a {
-  color: #0074c2;
+  color: var(--primary-color);
+}
+
+a:hover {
+  color: var(--secondary-color);
+  text-decoration: none;
+}
+
+a:active {
+  color: var(--secondary-color);
+  text-decoration: none;
 }
 
 :global(#app) {

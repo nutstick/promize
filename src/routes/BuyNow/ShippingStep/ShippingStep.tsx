@@ -132,7 +132,7 @@ export class ShippingStep extends React.Component<ShippingStep.Props, ShippingSt
     if (me && me.addresses) {
       const options = me.addresses.map((address) => ({
         key: address._id,
-        text: address._id,
+        text: `${address.address} ${address.city},${address.country} ${address.zip}`,
         value: address._id,
         content: <AddressOption {...address} />,
       }));
@@ -159,9 +159,12 @@ export class ShippingStep extends React.Component<ShippingStep.Props, ShippingSt
 
     return (
       <div className={s.root}>
-        {userAddresses}
+        <div className={s.content}>
+          <h4 className={s.header}>Your Addresses</h4>
+          {userAddresses}
+        </div>
         <Divider horizontal>Or</Divider>
-        <div className={s.newAddress}>
+        <div className={s.content}>
           <h4 className={s.header}>New Shipping Address</h4>
           <span className={s.remark}>*Indicates a required fields</span>
           <Form>

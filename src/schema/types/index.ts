@@ -2,6 +2,8 @@ import { Database } from '../models';
 
 export interface IContext {
   database: Database;
+  req: Express.Request;
+  res?: Express.Response;
   user?: {
     _id?: string,
   };

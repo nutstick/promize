@@ -1,19 +1,19 @@
 @import '../variables.css';
 
 .root {
-  overflow: hidden;
   position: fixed;
-  height: 750px;
-  max-height: calc(100vh - 160px);
-  width: 100%;
-  max-width: 425px;
-  bottom: 7rem;
   right: 2rem;
-  background: #fff;
-  box-shadow: 0 1px 3px 3px rgba(0,0,0,.05);
-  border-radius: 4px;
+  bottom: 7rem;
 
   z-index: var(--messager-depth);
+  width: 100%;
+  max-width: 425px;
+  height: 750px;
+  max-height: calc(100vh - 160px);
+  overflow: hidden;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px 3px rgba(0,0,0,.05);
 }
 
 .header {
@@ -23,8 +23,8 @@
   background: var(--dark-grey);
 
   > .close {
-    line-height: 1em;
     padding: 1em;
+    line-height: 1em;
     color: #fff;
   }
 }
@@ -34,17 +34,19 @@
   border-bottom: 1px solid #ccc;
 
   > .tradeRooms {
-    padding: 0.8em;
+    position: relative;
     display: -webkit-box;
     flex-direction: row;
+    height: calc(60px + 0.6em);
+    padding: 0.3em;
     overflow-x: auto;
 
     > .tradeRoomIcon {
+      position: relative;
+      display: block;
       width: 60px;
       height: 60px;
-      display: block;
       margin-right: 1em;
-      position: relative;
 
       &::after {
         content: '';
@@ -53,8 +55,8 @@
         z-index: 1001;
         width: 100%;
         height: 100%;
-        box-shadow: 0px 0px 0px 3px var(--primary-color);
         border-radius: 50%;
+        box-shadow: 0px 0px 0px 3px var(--primary-color);
         opacity: 0;
         transition: opacity 0.3s ease-in-out;
       }
@@ -67,48 +69,65 @@
 
 .messagesWrapper {
   display: block;
-  height: calc(100% - 60px - 4.6em);
   width: 100%;
+  height: calc(100% - 60px - 4.6em);
 
   .messages {
-    height: 100%;
     width: 100%;
+    height: 100%;
     overflow-y: scroll;
   }
   .inputWrapper {
-    width: 100%;
     position: absolute;
     bottom: 0;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    width: 100%;
   }
 
   .textInput {
     display: block;
   }
   .textInput input {
-    border-radius: 0 !important;
+    padding: 1.3em 1em !important;
     border: 0 !important;
     border-top: 1px solid #ccc !important;
-    padding: 1.3em 1em !important;
+    border-radius: 0 !important;
   }
 }
 
 .message {
-  background-color: #f1f0f0;
-  color: #7b7e82;
+  float: left;
+  clear: both;
   max-width: 70%;
   margin: 1px 0;
-  padding: 6px 12px;
-  border-radius: 14px;
   margin: 5px;
-  clear: both;
-  float: left;
+  padding: 6px 12px;
+  background-color: #f1f0f0;
+  border-radius: 14px;
+  color: #7b7e82;
 }
 
 .own {
   float: right;
   background-color: rgb(255, 126, 41);
   color: #fff;
+}
+
+.select {
+  display: flex;
+  flex-direction: column;
+  margin: 4em 0;
+
+  > img {
+    display: block;
+    width: 40%;
+    margin: auto;
+  }
+  > .text {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #bdc4cc;
+  }
 }

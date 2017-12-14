@@ -1,16 +1,17 @@
 import * as cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
-import { ChildProps } from 'react-apollo';
+import { MutationFunc, QueryProps } from 'react-apollo';
 import { defineMessages, FormattedMessage, IntlProvider } from 'react-intl';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { sizeMe } from 'react-sizeme';
 import { Container, Dropdown, Icon, Image, Label, Menu } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
 import * as TOGGLELOGINMODALMUTATION from '../../apollo/login/ToggleLoginModalMutation.gql';
+import * as TOGGLESIDEBARMUTATION from '../../apollo/sidebar/ToggleSidebarMutation.gql';
 import { parseSearch } from '../../core/urlParser';
 import { ICoSeller, IUser } from '../../schema/types/User';
+import { IconButton } from '../IconButton';
 import { LanguageSwitcher } from '../LanguageSwitcher';
 import { SearchInput } from '../SearchInput/SearchInput';
 import * as s from './Header.css';
@@ -27,8 +28,25 @@ namespace Header {
       position?: number,
     };
   } & WithRouter;
-  export type WithToggleLoginMutation = ChildProps<WithSizeMe, {}>;
-  export type Props = ChildProps<WithToggleLoginMutation, { me: IUser | ICoSeller }>;
+
+  type MeQuery<P> = P & {
+    me?: QueryProps & Partial<{
+      me: IUser,
+    }>;
+  };
+  export type WithMe = MeQuery<WithSizeMe>;
+
+  type ToggleSidebarMutataion<P> = P & {
+    toggleSidebar?: MutationFunc<{}>;
+  };
+  export type WithToggleSidebarMutataion = ToggleSidebarMutataion<WithMe>;
+
+  type ToggleLoginModalMutataion<P> = P & {
+    toggleLoginModal?: MutationFunc<{}>;
+  };
+  export type WithToggleLoginModalMutation = ToggleLoginModalMutataion<WithToggleSidebarMutataion>;
+
+  export type Props = WithToggleLoginModalMutation;
 
   export interface State {
     search?: string | string[];
@@ -60,8 +78,9 @@ const messages = defineMessages({
 
 @withStyles(s)
 @sizeMe()
-@graphql(TOGGLELOGINMODALMUTATION)
-@graphql(MEQUERY)
+@graphql(MEQUERY, { name: 'me' })
+@graphql(TOGGLESIDEBARMUTATION, { name: 'toggleSidebar' })
+@graphql(TOGGLELOGINMODALMUTATION, { name: 'toggleLoginModal' })
 export class Header extends React.Component<Header.Props, Header.State> {
   static contextTypes = {
     intl: IntlProvider.childContextTypes.intl,
@@ -76,38 +95,33 @@ export class Header extends React.Component<Header.Props, Header.State> {
     this.props.history.push(`/search?keywords=${params}`);
   }
 
-  // private onRouteChanged() {
-  //   const search = parseSearch(this.props.location);
-  //   if (search) {
-  //     this.setState({
-  //       search,
-  //     });
-  //   }
-  // }
-
-  // componentDidUpdate(prevProps) {
-  //   if (this.props.location !== prevProps.location) {
-  //     this.onRouteChanged();
-  //   }
-  // }
-
   public render() {
-    const trigger = this.props.data.me && (
+    const trigger = this.props.me.me && (
       <span>
-        <Image avatar src={this.props.data.me.avatar} /> {this.props.data.me.firstName}
+        <Image avatar src={this.props.me.me.avatar} /> {this.props.me.me.firstName}
       </span>
     );
 
     return this.props.size.width <= 620 ? (
       <div className={cx(s.root, s.mobile, s.bg)}>
         <div className={cx(s.menu, s.transparent)}>
-          <Icon className={s.burger} name="bars"/>
-          <Link className={s.logoWrapper} to="/">
-            <img
-              className={s.logo}
-              src={logoUrl}
-              alt="Promize" />
-          </Link>
+          <IconButton className={s.burger} scale={1} onClick={() => this.props.toggleSidebar({})}>
+            <Icon name="bars"/>
+          </IconButton>
+          <div className={s.logoWrapper}>
+            <Link to="/">
+              <img
+                className={s.logo}
+                src={logoUrl}
+                alt="Promize" />
+            </Link>
+          </div>
+        </div>
+      <div className={s.mobileSearch}>
+          <SearchInput
+            url={this.props.location.pathname}
+            keywords={parseSearch(this.props.location) || []}
+            onSubmit={this.onSearchSubmit.bind(this)}/>
         </div>
       </div>
     ) : (
@@ -117,9 +131,9 @@ export class Header extends React.Component<Header.Props, Header.State> {
             <Menu.Item className={s.welcome}as="welcome">
               <FormattedMessage {...messages.welcome} />
               {
-                this.props.data.loading ? <div /> :
-                this.props.data.error ? <div /> :
-                this.props.data.me ? <span className={s.highlightedText}>{this.props.data.me.firstName}</span> :
+                this.props.me.loading ? <div /> :
+                this.props.me.error ? <div /> :
+                this.props.me.me ? <span className={s.highlightedText}>{this.props.me.me.firstName}</span> :
                 <div className={s.hideOnMobile}>
                   <span className={s.highlightedText}>
                     <FormattedMessage {...messages.join} />
@@ -136,68 +150,68 @@ export class Header extends React.Component<Header.Props, Header.State> {
                 <LanguageSwitcher />
               </Menu.Item>
               {
-                this.props.data.loading ? <div /> :
-                this.props.data.error ? <div /> :
-                this.props.data.me ?
+                this.props.me.loading ? <div /> :
+                this.props.me.error ? <div /> :
+                this.props.me.me ?
                 <Dropdown trigger={trigger} pointing className="link item">
                   <Dropdown.Menu>
-                    <Dropdown.Header as={Link} to={`/users/${this.props.data.me._id}`} style={{ display: 'block' }}>
-                      <Image avatar src={this.props.data.me.avatar} /> Hi! {this.props.data.me.firstName}
+                    <Dropdown.Header as={Link} to={`/users/${this.props.me.me._id}`} style={{ display: 'block' }}>
+                      <Image avatar src={this.props.me.me.avatar} /> Hi! {this.props.me.me.firstName}
                     </Dropdown.Header>
                     <Dropdown.Divider />
-                    {this.props.data.me.__typename === 'CoSeller' &&
+                    {this.props.me.me.__typename === 'CoSeller' &&
                       <Dropdown.Item
                         as={Link}
-                        to={`/users/${this.props.data.me._id}/products/create`}>
+                        to={`/users/${this.props.me.me._id}/products/create`}>
                         Create new product
                       </Dropdown.Item>
                     }
-                    {this.props.data.me.__typename === 'CoSeller' &&
+                    {this.props.me.me.__typename === 'CoSeller' &&
                       <Dropdown.Item
                         as={Link}
-                        to={`/users/${this.props.data.me._id}/products`}>
+                        to={`/users/${this.props.me.me._id}/products`}>
                         My Products
                       </Dropdown.Item>
                     }
-                    {this.props.data.me.__typename === 'CoSeller' &&
+                    {this.props.me.me.__typename === 'CoSeller' &&
                       <Dropdown.Item
                         as={Link}
-                        to={`/users/${this.props.data.me._id}/buyorders`}>
+                        to={`/users/${this.props.me.me._id}/buyorders`}>
                         Product Orders
                         <Label circular as="a" color="orange">
-                          {(this.props.data.me as ICoSeller).totalBuyOrderReceipts}
+                          {(this.props.me.me as ICoSeller).totalBuyOrderReceipts}
                         </Label>
                       </Dropdown.Item>
                     }
-                    {this.props.data.me.__typename === 'CoSeller' && <Dropdown.Divider />}
-                    {this.props.data.me.__typename === 'Admin' &&
+                    {this.props.me.me.__typename === 'CoSeller' && <Dropdown.Divider />}
+                    {this.props.me.me.__typename === 'Admin' &&
                       <Dropdown.Item
                         as={Link}
-                        to={`/users/${this.props.data.me._id}/admin`}>
+                        to={`/users/${this.props.me.me._id}/admin`}>
                         Admin
                       </Dropdown.Item>
                     }
-                    {this.props.data.me.__typename === 'Admin' && <Dropdown.Divider />}
+                    {this.props.me.me.__typename === 'Admin' && <Dropdown.Divider />}
                     <Dropdown.Item
                         as={Link}
-                        to={`/users/${this.props.data.me._id}/receipts`}>
+                        to={`/users/${this.props.me.me._id}/receipts`}>
                         Order receipts
                     </Dropdown.Item>
                     <Dropdown.Divider />
                     <Dropdown.Item
                         as={Link}
-                        to={`/users/${this.props.data.me._id}/account`}>
+                        to={`/users/${this.props.me.me._id}/account`}>
                         Account setting
                     </Dropdown.Item>
                     <Dropdown.Item
                         as={Link}
-                        to={`/users/${this.props.data.me._id}/payment`}>
+                        to={`/users/${this.props.me.me._id}/payment`}>
                         Payment setting
                     </Dropdown.Item>
-                    {this.props.data.me.__typename !== 'CoSeller' &&
+                    {this.props.me.me.__typename !== 'CoSeller' &&
                       <Dropdown.Item
                           as={Link}
-                          to={`/users/${this.props.data.me._id}/coseller`}>
+                          to={`/users/${this.props.me.me._id}/coseller`}>
                           Become CoSeller
                       </Dropdown.Item>
                     }
@@ -210,7 +224,7 @@ export class Header extends React.Component<Header.Props, Header.State> {
                   </Dropdown.Menu>
                 </Dropdown>
                 : <Menu.Item className={s.item}>
-                  <a href="#" onClick={(e) => { this.props.mutate({}); }}>
+                  <a href="#" onClick={(e) => { this.props.toggleLoginModal({}); }}>
                     <Icon name="lock" />
                     <FormattedMessage {...messages.logIn} />
                   </a>

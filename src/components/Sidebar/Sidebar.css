@@ -1,0 +1,44 @@
+@import '../variables.css';
+
+.root {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: var(--sidebar-depth);
+  display: none;
+
+  > .sidebar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -100%;
+    width: 320px;
+    max-width: 90%;
+    padding: 1em;
+    background: #fff;
+    transition: all 0.3s ease-in-out;
+  }
+
+  > .background {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+  &.show {
+    display: block;
+    > .sidebar {
+      left: 0;
+    }
+    > .background {
+      opacity: 1;
+    }
+  }
+}

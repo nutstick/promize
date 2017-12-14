@@ -14,6 +14,7 @@ services:
     container_name: server
     ports:
       - "3000:3000"
+      - "4040:4040"
     links:
       - mongodb:mongodb
       - redis:redis
@@ -25,3 +26,4 @@ services:
       - REDIS_HOST=redis
     volumes:
       - .:/app
+      - /app/node_modules      

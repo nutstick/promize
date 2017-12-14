@@ -6,23 +6,17 @@
 }
 
 .empty {
-  font-style: italic;
-  text-align: center;
-  font-size: 1rem;
-  display: flex;
-  justify-content: center;
-  color: var(--grey);
+  composes: empty from "../User.css";
 }
-
 .modal{
-  border-radius: 5px;
-  width: 100%;
-  margin: 20px 0px;
-  padding: 5px;
   display: flex;
   flex-wrap: nowrap;
+  width: 60%;
+  margin: 20px 0px;
+  padding: 5px;
   background: white;
   border-color: solid darkgray;
+  border-radius: 5px;
   /* -webkit-box-shadow: 0px 5px 32px -12px rgba(0,0,0,0.5);
   -moz-box-shadow: 0px 5px 32px -12px rgba(0,0,0,0.5);
   box-shadow: 0px 5px 32px -12px rgba(0,0,0,0.5); */
@@ -35,34 +29,34 @@
 }
 
 .pictureWrapper{
-  margin: 10px;
   /* max-width: 300px; */
   /* height: 100%; */
   /* flex-grow: 1; */
   width: 35%;
-  overflow:hidden;
-  max-height: 200px;
   max-width: 350px;
+  max-height: 200px;
+  margin: 10px;
+  overflow:hidden;
 }
 
 .picture{
-  object-fit: cover;
   width: 100%;
   height: 100%;
   background: black;
+  object-fit: cover;
 }
 
 .contentWrapper{
-  padding: 10px;
   /* flex-grow: 3; */
   width: 65%;
+  padding: 10px;
   
 }
 
 .wrapContainer{
   display: flex;
-  flex-wrap: nowrap;
   flex-flow: row-reverse;
+  flex-wrap: nowrap;
 }
 
 .topContent{
@@ -74,131 +68,131 @@
 }
 
 .contentHeader{
-  padding-bottom: 0.2em;
   margin-bottom: 0.2em;
+  padding-bottom: 0.2em;
   border-bottom: 1px solid #efefef;
   
 }
 
-.receiptId{
-  text-align: right;
+.receiptId {
   margin-top: 0px;
   margin-bottom: 0px;
+  text-align: right;
   color: #ff9521;
   font-size: 0.9em;
 }
 
-.productName{
+.productName {
   margin-top: 0em;
   margin-bottom: 0em;
   color: black;
 }
 
-.productOwner{
+.productOwner {
   margin-top: 0.1em;
   margin-bottom: 0px;
   color: #606060;
 }
 
-.contentFooter{
-  font-size: 0.8em;
+.contentFooter {
   margin-bottom: 20px;
+  font-size: 0.8em;
 }
 
-.contentFooter>div{
+.contentFooter > div {
   margin-bottom: 0.1em;
 }
 
-.titleValueGroup{
+.titleValueGroup {
   margin-bottom: 0.2em; 
 }
 
-.titleValueGroup>div{
+.titleValueGroup > div {
   display: inline;
   margin-right: 15px;
 }
 
-.title{
+.title {
   font-weight: bold;
   font-size: 10px;
 }
 
-.value{
+.value {
   color: #606060;
   font-size: 11px;
 }
 
-.shipTo{
-  font-size: 10px;
+.shipTo {
   /* margin-top: 0.5em;*/
   margin-bottom: 0.2em;
+  font-size: 10px;
   font-weight: bold;
 }
 
-.shippingInfo>span{
-  font-size: 11px;
+.shippingInfo > span {
   margin-right: 0.5em;
+  font-size: 11px;
 }
 
-.shippingInfo{
+.shippingInfo {
   /* margin: 0.5em 0em; */
   margin-bottom: 0.2em;
   color: #606060;
 }
 
-.buttonWrap{
+.buttonWrap {
   float: right;
   margin-top: -15px;
   font-size: 13px;
 }
 
-.contentDetail{
+.contentDetail {
   display: flex;
   flex-wrap: wrap;
 }
 
-.leftContent{
+.leftContent {
   width: 50%;
 }
 
-.rightContent{
+.rightContent {
   width: 50%;
   padding-left: 1em;  
 }
 
-.button{
+.button {
   font-size: 1em !important;
 }
 
 @media screen and (max-width: 950px) {
 
-  .wrapContainer{
+  .wrapContainer {
     display: flex;
     flex-wrap: wrap;
     /* flex-flow: row-reverse; */
   }
   
-  .topContent{
+  .topContent {
     flex-grow: 1;
   }
   
-  .downContent{
+  .downContent {
     flex-grow: 1;
   }
 
-  .receiptId{
+  .receiptId {
     margin-bottom: 0px;
   }
 
-  .contentDetail{
+  .contentDetail {
     flex-wrap: wrap;
   }
   
-  .leftContent{
+  .leftContent {
     width: 100%;
   }
 
-  .rightContent{
+  .rightContent {
     width: 100%;
     padding-left: 0;
   }
@@ -206,29 +200,29 @@
 
 @media screen and (max-width: 766px) {
 
-  .contentDetail{
+  .contentDetail {
     flex-wrap: nowrap;
   }
   
-  .leftContent{
+  .leftContent {
     width: 50%;
   }
 
-  .rightContent{
+  .rightContent {
     width: 50%;
     padding-left: 10px;
   }
   
-   .modal{
+   .modal {
       flex-wrap: wrap;
    }
 
-   .contentWrapper{
+   .contentWrapper {
      width: 100%;
    }
-   .pictureWrapper{
-     max-width: 1000px;
+   .pictureWrapper {
      width: 100%;
+     max-width: 1000px;
      /* margin-bottom: 0px; */
      height: 200px;
    }

@@ -8,6 +8,7 @@ import { state as intl } from './intl';
 import { state as login } from './login';
 import { state as product } from './product';
 import { state as productModal } from './productModal';
+import { state as sidebar } from './sidebar';
 import { state as tradeRoomModal } from './tradeRoomModal';
 
 interface IOptions {
@@ -29,6 +30,7 @@ export const createApolloClient = ({ link, ...options }: IOptions) => {
       ...intl.Query,
       ...login.Query,
       ...productModal.Query,
+      ...sidebar.Query,
       ...tradeRoomModal.Query,
     },
     Mutation: {
@@ -37,8 +39,9 @@ export const createApolloClient = ({ link, ...options }: IOptions) => {
       })),
       ...intl.Mutation,
       ...login.Mutation,
-      ...productModal.Mutation,
       ...product.Mutation,
+      ...productModal.Mutation,
+      ...sidebar.Mutation,
       ...tradeRoomModal.Mutation,
     },
     Product: {

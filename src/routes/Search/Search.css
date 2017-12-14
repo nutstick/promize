@@ -4,14 +4,27 @@
   margin: 0 auto;
   margin-top: -120px;
   padding: 0.6em 0 40px;
+
+  @media only screen and (width >= 992px) {
+    & {
+      display: flex;
+    }
+  }
 }
 
 .left {
-  position: absolute;
+  position: relative;
   width: 100%;
+
+  @media only screen and (width >= 992px) {
+    & {
+      width: 250px;
+    }
+  }
 }
 
 .results {
+  flex: 1;
   min-height: calc(100vh - 240px);
 }
 
@@ -25,8 +38,8 @@
   margin-bottom: 4em;
 
   > img {
-    width: 60%;
     display: block;
+    width: 60%;
     margin: auto;
   }
   > .text {
@@ -39,12 +52,5 @@
 .productList {
   > :global(*) {
     width: 100%;
-  }
-}
-
-
-@media only screen and (max-width: 960px) {
-  .left {
-    position: relative;
   }
 }

@@ -65,8 +65,20 @@ input CreateUserInput {
   gender: GenderEnum!
   telNumber: String
   addresses: [AddressInput]
-  avatar: String!
-  account: AccountInput!
+  avatar: String
+  email: String!
+  password: String!
+}
+
+input RegisterInput {
+  firstName: String!
+  middleName: String
+  lastName: String!
+  gender: GenderEnum!
+  telNumber: String
+  avatar: String
+  email: String!
+  password: String!
 }
 
 input EditUserInput {
@@ -134,6 +146,15 @@ type Mutation {
   # Edit Product
   editProduct(input: EditProductInput!): Product
 
+  # Create User
+  createUser(input: CreateUserInput!): UserType
+  # Edit User
+  editUser(input: EditUserInput!): UserType
+  # Login
+  login(email: String!, password: String!): UserType
+  # Register
+  register(input: RegisterInput!): UserType
+
   # Create OrderReceipt
   createOrderReceipt(input: CreateOrderReceiptInput!): OrderReceipt
   # Edit OrderReceipt
@@ -152,11 +173,6 @@ type Mutation {
   registerToBeCoSeller(input: CoSellerRegisterInput!): User
   # Approve User to CoSeller
   approveUserToCoseller(user_id: ID!): CoSeller
-
-  # Create User
-  createUser(input: CreateUserInput!): UserType
-  # Edit User
-  editUser(input: EditUserInput!): UserType
   
   # Create TradeRoom
   createTradeRoom(input: CreateTradeRoomInput!): TradeRoom

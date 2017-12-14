@@ -147,7 +147,7 @@ type User implements UserType, Node {
   updateAt: Date!
 }
 
-# Co-Seller type
+# CoSeller type
 type CoSeller implements UserType, Node {
   _id: ID!
   # First name

@@ -47,7 +47,7 @@ export const state = {
       const data = {
         ...product,
         selectedSize: size,
-        selectedColor: product && product.selectedSize,
+        selectedColor: product && product.selectedColor,
       };
 
       cache.writeFragment({
