@@ -80,9 +80,9 @@ const resolver: IResolver<any, any> = {
             return [...prev, {
               $or: [
                 { hashtags: keyword.keyword },
-                { 'categories.category': keyword.keyword },
-                { 'colors.color': keyword.keyword },
-                { 'sizes.size': keyword.keyword },
+                { 'categories.category': keyword.keyword.toLowerCase() },
+                { 'colors.color': keyword.keyword.toLowerCase() },
+                { 'sizes.size': keyword.keyword.toUpperCase() },
                 { name: { $regex: '.*' + keyword.keyword + '.*' } },
               ],
             }];
