@@ -50,7 +50,7 @@
 
 .pictureWrapper {
   display: flex!important;
-  max-height: 200px;
+  max-height: 500px;
   // max-width: 100%;
   
   >.image {
