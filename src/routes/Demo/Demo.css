@@ -35,9 +35,3 @@
     color: #bdc4cc;
   }
 }
-
-.productList {
-  > :global(*) {
-    width: 100%;
-  }
-}

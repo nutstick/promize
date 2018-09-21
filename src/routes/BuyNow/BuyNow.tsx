@@ -63,22 +63,22 @@ export class BuyNow extends React.Component<BuyNow.Props, BuyNow.State> {
     document.title = 'BuyNow';
   }
 
-  private previosStep() {
+  private previosStep = () => {
     this.setState({ step: this.state.step - 1 });
   }
 
-  private nextStep() {
+  private nextStep = () => {
     this.setState({ step: this.state.step + 1 });
   }
 
-  private onShippingStateChange(field, value) {
+  private onShippingStateChange = (field, value) => {
     this.setState({
       ...this.state,
       [field]: value,
     });
   }
 
-  private onPaymentStateChange(field, value) {
+  private onPaymentStateChange = (field, value) => {
     this.setState({
       ...this.state,
       [field]: value,
@@ -149,23 +149,23 @@ export class BuyNow extends React.Component<BuyNow.Props, BuyNow.State> {
             <div className={this.state.step === 1 ? s.show : s.hidden}>
               <ProductStep
                 id={this.props.match.params.id}
-                next={this.nextStep.bind(this)} />
+                next={this.nextStep} />
             </div>
           }
           {
             <div className={this.state.step === 2 ? s.show : s.hidden}>
               <ShippingStep
-                prev={this.previosStep.bind(this)}
-                next={this.nextStep.bind(this)}
-                onStateChange={this.onShippingStateChange.bind(this)} />
+                prev={this.previosStep}
+                next={this.nextStep}
+                onStateChange={this.onShippingStateChange} />
             </div>
           }
           {
             <div className={this.state.step === 3 ? s.show : s.hidden}>
               <PaymentMethodStep
-                prev={this.previosStep.bind(this)}
-                next={this.nextStep.bind(this)}
-                onStateChange={this.onPaymentStateChange.bind(this)} />
+                prev={this.previosStep}
+                next={this.nextStep}
+                onStateChange={this.onPaymentStateChange} />
             </div>
           }
           {
@@ -173,7 +173,7 @@ export class BuyNow extends React.Component<BuyNow.Props, BuyNow.State> {
               <Review
                 history={this.props.history}
                 location={this.props.location}
-                prev={this.previosStep.bind(this)}
+                prev={this.previosStep}
                 id={this.props.match.params.id}
                 address={this.state.address}
                 city={this.state.city}

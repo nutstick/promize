@@ -28,7 +28,6 @@ import App from './components/App';
 import { ErrorReporter } from './core/devUtils';
 import { updateMeta } from './core/DOMUtils';
 import history from './core/history';
-import createFetch from './createFetch';
 
 /*
   Apollo Client v2
@@ -40,7 +39,6 @@ const link = ApolloLink.split(
     return !!operationAST && operationAST.operation === 'subscription';
   },
   new WebSocketLink({
-    // uri: 'ws://192.168.43.126:4040/subscriptions',
     uri: 'ws://localhost:4040/subscriptions',
     options: {
       reconnect: true,
@@ -77,6 +75,7 @@ const cache = new InMemoryCache({
     } else if (value.node) {
       return `${value.__typename}:${value.node._id}`;
     }
+    return null;
   },
   fragmentMatcher,
 }).restore(window.App.apollo);
@@ -100,13 +99,7 @@ openSansObserver.load().then(() => {
   document.body.classList.remove('font-loaded');
 });
 
-// Universal HTTP client
-const fetch = createFetch(self.fetch, {
-  baseUrl: window.App.apiUrl,
-});
-
 // Set locale
-
 const context = {
   // Enables critical path CSS rendering
   // https://github.com/kriasoft/isomorphic-style-loader
@@ -115,7 +108,6 @@ const context = {
     const removeCss = styles.map((x) => x._insertCss());
     return () => { removeCss.forEach((f) => f()); };
   },
-  fetch,
   // For react-apollo
   client,
   // intl instance as it can be get with injectIntl

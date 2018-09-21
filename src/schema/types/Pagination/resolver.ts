@@ -1,6 +1,7 @@
 import { GraphQLError } from 'graphql';
 import { toObjectID } from 'iridium';
 import { Cursor as MongoCursor } from 'mongodb';
+import { IResolver } from '..';
 
 export type Base64String = string;
 
@@ -134,3 +135,8 @@ export async function pagination<T = any>(cursor: MongoCursor<T>, options: Pagin
     },
   };
 }
+
+const resolver: IResolver<any, any> = {
+};
+
+export default resolver;

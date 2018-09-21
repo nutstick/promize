@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { Layout } from '../components/Layout';
 import { BuyNow } from '../routes/BuyNow';
 import { BuyNowSuccess } from '../routes/BuyNowSuccess';
+import { Demo } from '../routes/Demo';
 import { Home } from '../routes/Home';
 import { NotFound } from '../routes/NotFound';
 import { Register } from '../routes/Register';
@@ -18,6 +19,7 @@ export default (props) => (
       <Route path="/users/:id" component={User} />
       <Route path="/products/:id/buynow/success" component={BuyNowSuccess} />
       <Route path="/products/:id/buynow" component={BuyNow} />
+      <Route path="/demo" component={Demo} />
       <Route component={NotFound} />
     </Switch>
   </Layout>

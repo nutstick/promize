@@ -8,7 +8,6 @@ import * as express from 'express';
 import * as expressJwt from 'express-jwt';
 import { UnauthorizedError as Jwt401Error } from 'express-jwt';
 import * as jwt from 'jsonwebtoken';
-import * as nodeFetch from 'node-fetch';
 import * as path from 'path';
 import * as PrettyError from 'pretty-error';
 import * as React from 'react';
@@ -20,14 +19,13 @@ import { createApolloClient } from './apollo';
 import { IntlQuery } from './apollo/intl';
 import * as INTLQUERY from './apollo/intl/IntlQuery.gql';
 import * as LOCALEQUERY from './apollo/intl/LocaleQuery.gql';
-import * as assets from './assets.json';
+import * as chunks from './chunk-manifest.json';
 import App from './components/App';
 import { Html } from './components/Html';
 import { api, auth, locales, port, wsport } from './config';
 import passport from './core/passport';
 import { requestLanguage } from './core/requestLanguage';
 import { ServerLink } from './core/ServerLink';
-import createFetch from './createFetch';
 import Routes from './routes';
 import ErrorPage from './routes/Error/ErrorPage';
 import * as errorPageStyle from './routes/Error/ErrorPage.css';
@@ -205,6 +203,7 @@ app.get('*', async (req, res, next) => {
         } else if (value.node) {
           return `${value.__typename}:${value.node._id}`;
         }
+        return null;
       },
       fragmentMatcher,
     });
@@ -220,13 +219,6 @@ app.get('*', async (req, res, next) => {
       }),
       ssrMode: true,
       cache,
-    });
-
-    // Universal HTTP client
-    const fetch = createFetch(nodeFetch, {
-      baseUrl: api.serverUrl,
-      cookie: req.headers.cookie,
-      // apolloClient,
     });
 
     // Fetch locale's messages
@@ -247,7 +239,6 @@ app.get('*', async (req, res, next) => {
         // eslint-disable-next-line no-underscore-dangle
         styles.forEach((style) => css.add(style._getCss()));
       },
-      fetch,
       // Apollo Client for use with react-apollo
       client,
       // intl instance as it can be get with injectIntl
@@ -256,7 +247,7 @@ app.get('*', async (req, res, next) => {
 
     const component = (
       <App context={context}>
-        <StaticRouter location={location} context={context}>
+        <StaticRouter location={location}>
           <Routes />
         </StaticRouter>
       </App>
@@ -267,6 +258,16 @@ app.get('*', async (req, res, next) => {
     // await BluebirdPromise.delay(0);
     const children = ReactDOM.renderToString(component);
 
+    const scripts = new Set();
+    const addChunk = (chunk) => {
+      if (chunks[chunk]) {
+        chunks[chunk].forEach((asset) => scripts.add(asset));
+      } else if (__DEV__) {
+        throw new Error(`Chunk with name '${chunk}' cannot be found`);
+      }
+    };
+    addChunk('client');
+
     const data: Html.IProps = {
       title: 'Promize',
       // TODO: description
@@ -274,7 +275,7 @@ app.get('*', async (req, res, next) => {
       styles: [
         { id: 'css', cssText: [...css].join('') },
       ],
-      scripts: [assets.vendor.js, assets.client.js],
+      scripts: Array.from(scripts),
       app: {
         apiUrl: api.clientUrl,
         apollo: cache.extract(),

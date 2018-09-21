@@ -10,7 +10,6 @@ import * as LOCALEQUERY from '../../apollo/intl/LocaleQuery.gql';
 namespace App {
   export interface Context {
     insertCss: any;
-    fetch: any;
     client: ApolloClient<any>;
     intl: any;
   }
@@ -47,8 +46,6 @@ class App extends React.Component<App.Props, App.State> {
     // Enables critical path CSS rendering
     // https://github.com/kriasoft/isomorphic-style-loader
     insertCss: PropTypes.func.isRequired,
-    // Universal HTTP client
-    fetch: PropTypes.func.isRequired,
     // Apollo Client
     client: PropTypes.object.isRequired,
     // ReactIntl

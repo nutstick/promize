@@ -12,7 +12,7 @@ import * as MdRedeemIcon from 'react-icons/lib/md/redeem';
 import { Redirect } from 'react-router';
 import { NavLink, RouteComponentProps } from 'react-router-dom';
 import { Route, Switch } from 'react-router-dom';
-import { sizeMe } from 'react-sizeme';
+import * as sizeMe from 'react-sizeme';
 import { Icon, Image, Label } from 'semantic-ui-react';
 import { graphql } from '../../apollo/graphql';
 import { Card } from '../../components/Card';

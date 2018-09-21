@@ -250,7 +250,7 @@ export class ProductModal extends React.Component<ProductModal.Props> {
                           }}>
                           <Button.Content visible>Contact Seller</Button.Content>
                           <Button.Content hidden>
-                            <Icon name="talk outline" />
+                            <Icon name="talk" />
                           </Button.Content>
                         </Button>
                       </div>

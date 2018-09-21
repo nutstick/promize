@@ -1,10 +1,11 @@
 import generate from 'babel-generator';
 import { readFileSync } from 'fs';
 import { ObjectID as id } from 'mongodb';
+import * as path from 'path';
 import { Database } from '../src/schema/models';
 // tslint:disable-next-line:no-var-requires
 const m = require('casual');
-let rawdata = readFileSync('/app/seeds/data.json', 'utf-8');
+let rawdata = readFileSync(path.resolve('./seeds/data.json'), 'utf-8');
 rawdata = JSON.parse(rawdata);
 const chunkUserItem = [];
 const chunk = 10;
@@ -30,7 +31,7 @@ export async function seed(database: Database) {
       tel_number: m.phone,
       gender: m.random_element(['male', 'female']),
       account: {
-        email: first_name.toLowerCase() + '@hotmail.com',
+        email: i === 0 ? 'seller1@promize.com' : first_name.toLowerCase() + '@hotmail.com',
         password: '123456',
       },
       avatar: 'https://www.realmadrid.com/img/cuadrada_300px/cristiano1.jpg',
@@ -93,5 +94,28 @@ export async function seed(database: Database) {
       }
     }
   }
-
+  await database.User.create({
+    first_name: m.first_name,
+    last_name: m.last_name,
+    tel_number: m.phone,
+    gender: m.random_element(['male', 'female']),
+    account: {
+      email: 'admin@promize.com',
+      password: 'admin',
+    },
+    avatar: 'https://www.realmadrid.com/img/cuadrada_300px/cristiano1.jpg',
+    type: 'Admin',
+  });
+  await database.User.create({
+    first_name: m.first_name,
+    last_name: m.last_name,
+    tel_number: m.phone,
+    gender: m.random_element(['male', 'female']),
+    account: {
+      email: 'user1@promize.com',
+      password: '123456',
+    },
+    avatar: 'https://www.realmadrid.com/img/cuadrada_300px/cristiano1.jpg',
+    type: 'User',
+  });
 }

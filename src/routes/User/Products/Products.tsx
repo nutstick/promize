@@ -3,7 +3,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { ChildProps } from 'react-apollo';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { sizeMe } from 'react-sizeme';
+import * as sizeMe from 'react-sizeme';
 import StackGrid, { easings, transitions } from 'react-stack-grid';
 import * as Waypoint from 'react-waypoint';
 import { Button, Loader } from 'semantic-ui-react';

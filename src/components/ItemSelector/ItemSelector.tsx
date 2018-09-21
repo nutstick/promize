@@ -29,7 +29,7 @@ export class ItemSelector extends React.Component<ItemSelector.Props> {
         ) : (
             <div
               className="ui button"
-              key={option.value}
+              key={`${option.value}`}
               onClick={(e) => {
                 if (this.props.onChange) {
                   this.props.onChange(e, option.value);

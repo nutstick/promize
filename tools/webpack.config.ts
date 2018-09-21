@@ -1,12 +1,17 @@
-import * as AssetsPlugin from 'assets-webpack-plugin';
-import * as cssnano from 'cssnano';
+import * as fs from 'fs';
 import * as path from 'path';
 import * as webpack from 'webpack';
 import { Configuration, Resolve } from 'webpack';
+import * as WebpackAssetsManifest from 'webpack-assets-manifest';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import * as nodeExternals from 'webpack-node-externals';
 import * as pkg from '../package.json';
 import overrideRules from './lib/overrideRules';
+
+const ROOT_DIR = path.resolve(__dirname, '..');
+const resolvePath = (...args) => path.resolve(ROOT_DIR, ...args);
+const SRC_DIR = resolvePath('src');
+const BUILD_DIR = resolvePath('dist');
 
 export const isDebug = !process.argv.includes('--release');
 const isVerbose = process.argv.includes('--verbose');
@@ -26,35 +31,35 @@ const minimizeCssOptions = {
 // client-side (client.js) and server-side (server.js) bundles
 // -----------------------------------------------------------------------------
 
-console.log(path.resolve(__dirname, '../node_modules/react-icons'));
+const config: webpack.Configuration = {
+  context: ROOT_DIR,
 
-const config: any = {
-  context: path.resolve(__dirname, '..'),
+  mode: isDebug ? 'development' : 'production',
 
   output: {
-    path: path.resolve(__dirname, '../dist/public/assets'),
+    path: resolvePath(BUILD_DIR, 'public/assets'),
     publicPath: '/assets/',
     pathinfo: isVerbose,
     filename: isDebug ? '[name].js' : '[name].[chunkhash:8].js',
     chunkFilename: isDebug
       ? '[name].chunk.js'
       : '[name].[chunkhash:8].chunk.js',
-    devtoolModuleFilenameTemplate: (info) => path.resolve(info.absoluteResourcePath),
+    devtoolModuleFilenameTemplate: (info) => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/'),
   },
 
   resolve: {
-    // modules: [
-    //   path.resolve(__dirname, '../src'),
-    //   'node_modules',
-    // ],
     extensions: ['.webpack.js', '.web.js', '.js', '.jsx', '.json', '.ts', '.tsx'],
     modules: ['node_modules', 'src'],
   },
 
   module: {
+    // Make missing exports an error instead of warning
+    strictExportPresence: true,
+
     rules: [
       {
         test: /\.ts(x?)$/,
+        include: [SRC_DIR, resolvePath('tools')],
         loader: 'awesome-typescript-loader',
         options: {
           useBabel: true,
@@ -108,7 +113,6 @@ const config: any = {
             ],
           },
         },
-        exclude: [/node_modules/],
       },
       {
         test: /react-icons\/(.)*(.js)$/,
@@ -242,7 +246,7 @@ const config: any = {
     chunks: isVerbose,
     chunkModules: isVerbose,
     cached: isVerbose,
-    // cachedAssets: isVerbose,
+    cachedAssets: isVerbose,
   },
 
   // Choose a developer tool to enhance debugging
@@ -280,55 +284,50 @@ const clientConfig: Configuration = {
     }),
 
     // Emit a file with assets paths
-    // https://github.com/sporto/assets-webpack-plugin#options
-    new AssetsPlugin({
-      path: path.resolve(__dirname, '../dist'),
-      filename: 'assets.json',
-      prettyPrint: true,
+    // https://github.com/webdeveric/webpack-assets-manifest#options
+    new WebpackAssetsManifest({
+      output: `${BUILD_DIR}/asset-manifest.json`,
+      publicPath: true,
+      writeToDisk: true,
+      customize: ({ key, value }) => {
+        // You can prevent adding items to the manifest by returning false.
+        if (key.toLowerCase().endsWith('.map')) { return false; }
+        return { key, value };
+      },
+      done: (manifest, stats) => {
+        // Write chunk-manifest.json.json
+        const chunkFileName = `${BUILD_DIR}/chunk-manifest.json`;
+        try {
+          const fileFilter = (file) => !file.endsWith('.map');
+          const addPath = (file) => manifest.getPublicPath(file);
+          const chunkFiles = stats.compilation.chunkGroups.reduce((acc, c) => {
+            acc[c.name] = [
+              ...(acc[c.name] || []),
+              ...c.chunks.reduce(
+                (files, cc) => [
+                  ...files,
+                  ...cc.files.filter(fileFilter).map(addPath),
+                ],
+                [],
+              ),
+            ];
+            return acc;
+          }, Object.create(null));
+          fs.writeFileSync(chunkFileName, JSON.stringify(chunkFiles, null, 2));
+        } catch (err) {
+          console.error(`ERROR: Cannot write ${chunkFileName}: `, err);
+          if (!isDebug) { process.exit(1); }
+        }
+      },
     }),
 
-    // Move modules that occur in multiple entry chunks to a new entry chunk (the commons chunk).
-    // http://webpack.github.io/docs/list-of-plugins.html#commonschunkplugin
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: (module) => /node_modules/.test(module.resource),
-    }),
-
-    ...isDebug ? [] : [
-      // Decrease script evaluation time
-      // https://github.com/webpack/webpack/blob/master/examples/scope-hoisting/README.md
-      new webpack.optimize.ModuleConcatenationPlugin(),
-
-      // Minimize all JavaScript output of chunks
-      // https://github.com/mishoo/UglifyJS2#compressor-options
-      new (webpack as any).optimize.UglifyJsPlugin({
-        sourceMap: true,
-        compress: {
-          screw_ie8: true, // React doesn't support IE8
-          warnings: isVerbose,
-          unused: true,
-          dead_code: true,
-        },
-        mangle: {
-          screw_ie8: true,
-        },
-        output: {
-          comments: false,
-          screw_ie8: true,
-        },
-      }),
-
-      new webpack.NormalModuleReplacementPlugin(
-        /^\.\.\/routes\/.+$/,
-        (resource) => {
-          resource.request = `${resource.request}/async`;
-        },
-      ),
-    ],
-
-    // Webpack Bundle Analyzer
-    // https://github.com/th0r/webpack-bundle-analyzer
-    ...isAnalyze ? [new BundleAnalyzerPlugin()] : [],
+    ...(isDebug
+      ? []
+      : [
+          // Webpack Bundle Analyzer
+          // https://github.com/th0r/webpack-bundle-analyzer
+          ...(isAnalyze ? [new BundleAnalyzerPlugin()] : []),
+        ]),
   ],
 
   // Choose a developer tool to enhance debugging
@@ -362,7 +361,7 @@ const serverConfig: Configuration = {
 
   output: {
     ...config.output,
-    path: path.resolve(__dirname, '../dist'),
+    path: BUILD_DIR,
     filename: '[name].js',
     chunkFilename: 'chunks/[name].js',
     libraryTarget: 'commonjs2',
@@ -375,7 +374,7 @@ const serverConfig: Configuration = {
   module: {
     ...config.module,
 
-    rules: overrideRules((config.module as webpack.NewModule).rules, (rule) => {
+    rules: overrideRules(config.module.rules, (rule) => {
       // Override babel-preset-env configuration for Node.js
       if (rule.loader === 'awesome-typescript-loader') {
         const x = {
@@ -450,7 +449,8 @@ const serverConfig: Configuration = {
     }),
   },
   externals: [
-    './assets.json',
+    './chunk-manifest.json',
+    './asset-manifest.json',
     nodeExternals({
       whitelist: [/\.(css|less|scss|sss)$/, /\.(bmp|gif|jpe?g|png|svg)$/],
     }),

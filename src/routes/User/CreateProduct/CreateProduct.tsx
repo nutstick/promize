@@ -2,7 +2,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import * as React from 'react';
 import { ChildProps } from 'react-apollo';
 import { RouteComponentProps } from 'react-router-dom';
-import { sizeMe } from 'react-sizeme';
+import * as sizeMe from 'react-sizeme';
 import { arrayMove } from 'react-sortable-hoc';
 import { Button, Form, Message } from 'semantic-ui-react';
 import { graphql } from '../../../apollo/graphql';
@@ -95,28 +95,31 @@ export class CreateProduct extends React.Component<CreateProduct.Props, CreatePr
     }
   }
 
-  private onAddOption(field, to) {
+  private onAddOption = (field: 'size' | 'color', to: 'sizes' | 'colors') => {
     if (this.state[field].trim().length) {
       this.setState({
+        ...this.state,
         [field]: '',
         [to]: this.state[to].concat([this.state[field].trim()]),
       });
     }
   }
 
-  private onSortEnd(field, { oldIndex, newIndex }) {
+  private onSortEnd = (field: 'size' | 'color', { oldIndex, newIndex }) => {
     this.setState({
+      ...this.state,
       [field]: arrayMove(this.state[field], oldIndex, newIndex),
     });
   }
 
-  private onRemoveOption(field, value) {
+  private onRemoveOption = (field: 'sizes' | 'colors', value) => {
     this.setState({
+      ...this.state,
       [field]: this.state[field].filter((_, index) => index !== value),
     });
   }
 
-  private getAsDate(date, time) {
+  private getAsDate = (date, time) => {
     try {
       let hours = Number(time.match(/^(\d+)/)[1]);
       const minutes = Number(time.match(/:(\d+)/)[1]);
@@ -144,7 +147,7 @@ export class CreateProduct extends React.Component<CreateProduct.Props, CreatePr
     }
   }
 
-  private onSubmit() {
+  private onSubmit = async () => {
     // Error check before procede
     const error: {
       nameError?: boolean,
@@ -170,43 +173,32 @@ export class CreateProduct extends React.Component<CreateProduct.Props, CreatePr
     }
 
     if (Object.keys(error).length === 0) {
-      return this.props.mutate({
-        variables: {
-          input: {
-            name: this.state.name,
-            description: this.state.description,
-            originalPrice: this.state.originalPrice,
-            type: this.state.price ? 'BuyNowProduct' : 'Product',
-            price: this.state.price,
-            pictures: this.state.pictures,
-            hashtags: this.state.hashtags,
-            colors: this.state.colors,
-            sizes: this.state.sizes,
-            categories: null,
-            promotionStart: this.getAsDate(this.state.promotionStartDate, this.state.promotionStartTime),
-            promotionEnd: this.getAsDate(this.state.promotionEndDate, this.state.promotionEndTime),
-        },
-        },
-        refetchQueries: ['ProductsQuery'],
-      })
-        .then((data) => {
-          this.props.history.push(`/users/${this.props.match.params.id}/products`);
-        })
-        .catch((err) => {
-          this.setState({
-            // nameError: false,
-            // promotionStartDateError: false,
-            // promotionStartTimeError: false,
-            // promotionEndDateError: false,
-            // promotionEndTimeError: false,
-            // hashtags: [],
-            // color: '',
-            // colors: [],
-            // size: '',
-            // sizes: [],
-            error: err,
-          });
+      try {
+        const data = await this.props.mutate({
+          variables: {
+            input: {
+              name: this.state.name,
+              description: this.state.description,
+              originalPrice: this.state.originalPrice,
+              type: this.state.price ? 'BuyNowProduct' : 'Product',
+              price: this.state.price,
+              pictures: this.state.pictures,
+              hashtags: this.state.hashtags,
+              colors: this.state.colors,
+              sizes: this.state.sizes,
+              categories: null,
+              promotionStart: this.getAsDate(this.state.promotionStartDate, this.state.promotionStartTime),
+              promotionEnd: this.getAsDate(this.state.promotionEndDate, this.state.promotionEndTime),
+          },
+          },
+          refetchQueries: ['ProductsQuery'],
         });
+        this.props.history.push(`/users/${this.props.match.params.id}/products`);
+      } catch (err) {
+        this.setState({
+          error: err,
+        });
+      }
     }
 
     this.setState({

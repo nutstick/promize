@@ -5,7 +5,7 @@ import { ChildProps } from 'react-apollo';
 import * as FaFilterIcon from 'react-icons/lib/fa/filter';
 import * as MdSortIcon from 'react-icons/lib/md/sort';
 import { RouteComponentProps } from 'react-router';
-import { sizeMe } from 'react-sizeme';
+import * as sizeMe from 'react-sizeme';
 import StackGrid, { easings, transitions } from 'react-stack-grid';
 import * as Waypoint from 'react-waypoint';
 import { Checkbox, Loader, Radio, Sticky } from 'semantic-ui-react';
@@ -55,8 +55,6 @@ namespace Search {
   },
 })
 export class Search extends React.Component<Search.Props> {
-  private grid: any;
-
   constructor(props) {
     super(props);
     this.state = {
@@ -71,42 +69,6 @@ export class Search extends React.Component<Search.Props> {
   public render() {
     return (
       <div className={s.root}>
-        <Sticky className={s.left} bottomOffset={0}>
-          <Card>
-            <div className={headingClass}>
-              <FaFilterIcon size={18} style={{
-                marginRight: 2.5,
-              }} color="#ff9521" />
-              <span>Search Filter</span>
-            </div>
-            <div className={s.content}>
-              <span>Type</span>
-              <ul>
-                <Checkbox label="Buy now product" defaultChecked/><br/>
-                <Checkbox label="New product" defaultChecked/>
-              </ul>
-            <hr />
-              <span>Price Range</span>
-              <ul>
-                <input type="range" min={0} max={5} /><br/>
-              </ul>
-            </div>
-
-            <hr />
-            <div className={headingClass}>
-              <MdSortIcon size={18} style={{
-                marginRight: 2.5,
-              }} color="#ff9521" />
-              <span>Sort</span>
-            </div>
-            <div className={s.content}>
-              <ul>
-                <Radio name="sortBy" label="Price" /><br/>
-                <Radio name="sortBy" label="View" /><br/>
-              </ul>
-            </div>
-          </Card>
-        </Sticky>
         <Card className={s.results}>
           {
             this.props.data.loading ? <Loader active /> :
@@ -118,20 +80,9 @@ export class Search extends React.Component<Search.Props> {
             </div> :
             this.props.data.search && <div className={cx(contentClass, s.productList)}>
               <StackGrid
-                gridRef={(grid) => this.grid = grid}
-                duration={400}
                 columnWidth={this.props.size.width <= 425 ? '100%' : 180}
                 gutterWidth={5}
                 gutterHeight={5}
-                easing={easings.cubicOut}
-                appearDelay={60}
-                appear={transition.appear}
-                appeared={transition.appeared}
-                enter={transition.enter}
-                entered={transition.entered}
-                leaved={transition.leaved}
-                enableSSR={false}
-                monitorImagesLoaded
               >
                 {this.props.data.search.edges.map((product) => (
                   <ProductCard key={`PRODUCT-${product.node._id}`} product={product.node} />

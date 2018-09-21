@@ -261,5 +261,6 @@
       "-o-animation-fill-mode",
       "animation-fill-mode"
     ]
-  }
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

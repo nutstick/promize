@@ -105,7 +105,7 @@ class User extends Instance<IUserDocument, User> implements IUserDocument {
     user.type = user.type || 'User';
 
     if (!user.account.facebook && !user.account.password) {
-      return Promise.reject(new Error('expected one login method'));
+      throw new Error('expected one login method');
     }
 
     user.coseller_register_status = user.coseller_register_status || 'Idle';

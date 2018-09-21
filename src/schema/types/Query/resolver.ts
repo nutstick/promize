@@ -56,7 +56,7 @@ const resolver: IResolver<any, any> = {
       return JSON.parse(localeData);
     },
 
-    async search(_, { keywords, ...args }: ISearchArgs, { database }) {
+    async search(_, { keywords = [], ...args }: ISearchArgs, { database }) {
       let cursor: Cursor<IProductDocument>;
       if (keywords.length > 0) {
         const searchContext = keywords.reduce((prev, keyword) => {
@@ -87,6 +87,7 @@ const resolver: IResolver<any, any> = {
               ],
             }];
           }
+          return [];
         }, []);
 
         cursor = database.Product.find({

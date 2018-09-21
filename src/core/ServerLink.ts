@@ -40,7 +40,7 @@ export class ServerLink extends ApolloLink {
       )
         .then((data) => {
           if (canceled) {
-            return;
+            return null;
           }
           // we have data and can send it to back up the link chain
           observer.next(data);

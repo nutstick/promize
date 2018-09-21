@@ -11,7 +11,7 @@ import * as browserSync from 'browser-sync';
 import * as cp from 'child_process';
 import * as express from 'express';
 import * as path from 'path';
-import * as createLaunchEditorMiddleware from 'react-dev-utils/errorOverlayMiddleware';
+import * as errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware';
 import * as webpack from 'webpack';
 import * as webpackDevMiddleware from 'webpack-dev-middleware';
 import * as webpackHotMiddleware from 'webpack-hot-middleware';
@@ -23,7 +23,7 @@ import webpackConfig from './webpack.config';
 const isDebug = !process.argv.includes('--release');
 process.argv.push('--watch');
 
-const [clientConfig, serverConfig, socketConfig] = webpackConfig;
+const [clientConfig, serverConfig] = webpackConfig;
 
 const watchOptions = {
   // Watching may not work with NFS and machines in VirtualBox
@@ -33,14 +33,15 @@ const watchOptions = {
   ignored: /node_modules/,
 };
 
-function createCompilationPromise(name, compiler, config) {
+function createCompilationPromise(name: string, compiler: webpack.Compiler, config: any) {
   return new Promise((resolve, reject) => {
     let timeStart = new Date();
-    compiler.plugin('compile', () => {
+    compiler.hooks.compile.tap(name, () => {
       timeStart = new Date();
       console.info(`[${format(timeStart)}] Compiling '${name}'...`);
     });
-    compiler.plugin('done', (stats) => {
+
+    compiler.hooks.done.tap(name, (stats) => {
       console.info(stats.toString(config.stats));
       const timeEnd = new Date();
       const time = timeEnd.getTime() - timeStart.getTime();
@@ -62,7 +63,7 @@ function createCompilationPromise(name, compiler, config) {
 }
 
 let server;
-let socketProcess;
+// let socketProcess;
 
 /**
  * Launches a development web server with "live reload" functionality -
@@ -74,30 +75,24 @@ async function start() {
   }
 
   server = express();
-  server.use(createLaunchEditorMiddleware());
+  server.use(errorOverlayMiddleware());
   server.use(express.static(path.resolve(__dirname, '../public')));
 
   // Configure client-side hot module replacement
-  (clientConfig.entry as webpack.Entry).client = [
-    'react-error-overlay',
-    'react-hot-loader/patch',
-    'webpack-hot-middleware/client?reload=true',
-  ]
+  (clientConfig.entry as webpack.Entry).client = ['./tools/lib/webpackHotDevClient']
     .concat((clientConfig.entry as webpack.Entry).client)
-    .sort((a, b) => (b.includes('polyfill') as any) - (a.includes('polyfill') as any));
+    .sort((a, b) => (b as any).includes('polyfill') - (a as any).includes('polyfill'));
   clientConfig.output.filename = clientConfig.output.filename.replace('chunkhash', 'hash');
   clientConfig.output.chunkFilename = clientConfig.output.chunkFilename.replace('chunkhash', 'hash');
-  const loader = (clientConfig.module as webpack.NewModule).rules
-  .find((x) => (x as any).loader === 'awesome-typescript-loader') as any;
-  loader.options.babelOptions.plugins = (loader.options.babelOptions.plugins || [])
-    .concat(['react-hot-loader/babel']);
-  loader.loaders = ['react-hot-loader/webpack', `${loader.loader}?${JSON.stringify(loader.options)}`];
-  delete loader.loader;
-  delete loader.options;
+  // const loader = (clientConfig.module as webpack.NewModule).rules
+  // .find((x) => (x as any).loader === 'awesome-typescript-loader') as any;
+  // loader.options.babelOptions.plugins = (loader.options.babelOptions.plugins || [])
+  //   .concat(['react-hot-loader/babel']);
+  // loader.loaders = ['react-hot-loader/webpack', `${loader.loader}?${JSON.stringify(loader.options)}`];
+  // delete loader.loader;
+  // delete loader.options;
   clientConfig.plugins.push(
-    new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
   );
 
   // Save the server-side bundle files to the file system after compilation
@@ -105,32 +100,28 @@ async function start() {
   serverConfig.output.hotUpdateMainFilename = 'updates/[hash].hot-update.json';
   serverConfig.output.hotUpdateChunkFilename = 'updates/[id].[hash].hot-update.js';
   serverConfig.plugins.push(
-    new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
   );
 
   // Configure socket compilation
-  socketConfig.output.hotUpdateMainFilename = 'updates/[hash].hot-update.json';
-  socketConfig.output.hotUpdateChunkFilename = 'updates/[id].[hash].hot-update.js';
-  socketConfig.plugins.push(
-    // new webpack.HotModuleReplacementPlugin(),
-    // new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.NamedModulesPlugin(),
-  );
+  // socketConfig.output.hotUpdateMainFilename = 'updates/[hash].hot-update.json';
+  // socketConfig.output.hotUpdateChunkFilename = 'updates/[id].[hash].hot-update.js';
+  // socketConfig.plugins.push(
+  //   new webpack.NamedModulesPlugin(),
+  // );
   // Configure compilation
   await run(clean);
 
   const multiCompiler = webpack(webpackConfig);
-  const clientCompiler = (multiCompiler as any).compilers.find(
+  const clientCompiler = multiCompiler.compilers.find(
     (compiler) => compiler.name === 'client',
   );
-  const serverCompiler = (multiCompiler as any).compilers.find(
+  const serverCompiler = multiCompiler.compilers.find(
     (compiler) => compiler.name === 'server',
   );
-  const socketCompiler = (multiCompiler as any).compilers.find(
-    (compiler) => compiler.name === 'socket',
-  );
+  // const socketCompiler = multiCompiler.compilers.find(
+  //   (compiler) => compiler.name === 'socket',
+  // );
   const clientPromise = createCompilationPromise(
     'client',
     clientCompiler,
@@ -141,17 +132,17 @@ async function start() {
     serverCompiler,
     serverConfig,
   );
-  const socketPromise = createCompilationPromise(
-    'socket',
-    socketCompiler,
-    socketConfig,
-  );
+  // const socketPromise = createCompilationPromise(
+  //   'socket',
+  //   socketCompiler,
+  //   socketConfig,
+  // );
 
   // https://github.com/webpack/webpack-dev-middleware
   server.use(
     webpackDevMiddleware(clientCompiler, {
       publicPath: clientConfig.output.publicPath,
-      quiet: true,
+      // quiet: true,
       watchOptions,
       headers: { 'Access-Control-Allow-Origin': '*' },
       serverSideRender: true,
@@ -164,7 +155,7 @@ async function start() {
   let appPromise;
   let appPromiseResolve;
   let appPromiseIsResolved = true;
-  serverCompiler.plugin('compile', () => {
+  serverCompiler.hooks.compile.tap('compile', () => {
     if (!appPromiseIsResolved) {
       return;
     }
@@ -172,21 +163,21 @@ async function start() {
     appPromise = new Promise((resolve) => (appPromiseResolve = resolve));
   });
 
-  let socketServerPromise;
-  let socketServerPromiseResolve;
-  let socketServerPromiseIsResolved = true;
-  socketCompiler.plugin('compile', () => {
-    if (socketProcess || (socketProcess && !socketProcess.killed)) {
-      socketProcess.kill('SIGTERM');
-    }
-    if (!socketServerPromiseIsResolved) {
-      return;
-    }
-    socketServerPromiseIsResolved = false;
-    socketServerPromise = new Promise((resolve) =>
-      (socketServerPromiseResolve = resolve),
-    );
-  });
+  // let socketServerPromise;
+  // let socketServerPromiseResolve;
+  // let socketServerPromiseIsResolved = true;
+  // socketCompiler.hooks.compile.tap('compile', () => {
+  //   if (socketProcess || (socketProcess && !socketProcess.killed)) {
+  //     socketProcess.kill('SIGTERM');
+  //   }
+  //   if (!socketServerPromiseIsResolved) {
+  //     return;
+  //   }
+  //   socketServerPromiseIsResolved = false;
+  //   socketServerPromise = new Promise((resolve) =>
+  //     (socketServerPromiseResolve = resolve),
+  //   );
+  // });
 
   let app;
   server.use((req, res) => {
@@ -239,15 +230,15 @@ async function start() {
       });
   }
 
-  function checkForUpdateSocket() {
-    // only reload if it has already been spawned once and thus compiled
-    if (socketProcess) {
-      socketProcess = cp.spawn('node', ['./dist/socket.js'], {
-        stdio: 'inherit',
-      });
-    }
-    return Promise.resolve();
-  }
+  // function checkForUpdateSocket() {
+  //   // only reload if it has already been spawned once and thus compiled
+  //   if (socketProcess) {
+  //     socketProcess = cp.spawn('node', ['./dist/socket.js'], {
+  //       stdio: 'inherit',
+  //     });
+  //   }
+  //   return Promise.resolve();
+  // }
 
   serverCompiler.watch(watchOptions, (error, stats) => {
     if (app && !error && !stats.hasErrors()) {
@@ -258,19 +249,19 @@ async function start() {
     }
   });
 
-  socketCompiler.watch(watchOptions, (error, stats) => {
-    if (!error && !stats.hasErrors()) {
-      checkForUpdateSocket().then(() => {
-        socketServerPromiseIsResolved = true;
-        socketServerPromiseResolve();
-      });
-    }
-  });
+  // socketCompiler.watch(watchOptions, (error, stats) => {
+  //   if (!error && !stats.hasErrors()) {
+  //     checkForUpdateSocket().then(() => {
+  //       socketServerPromiseIsResolved = true;
+  //       socketServerPromiseResolve();
+  //     });
+  //   }
+  // });
 
   // Wait until both client-side and server-side bundles are ready
   await clientPromise;
   await serverPromise;
-  await socketPromise;
+  // await socketPromise;
 
   process.env.MESSAGES_DIR = path.join(__dirname, '../src/messages/');
 
@@ -278,11 +269,11 @@ async function start() {
   console.info(`[${format(timeStart)}] Launching server...`);
 
   // spawn socket process
-  if (!socketProcess || (socketProcess && socketProcess.killed)) {
-    socketProcess = cp.spawn('node', ['./dist/socket.js'], {
-      stdio: 'inherit',
-    });
-  }
+  // if (!socketProcess || (socketProcess && socketProcess.killed)) {
+  //   socketProcess = cp.spawn('node', ['./dist/socket.js'], {
+  //     stdio: 'inherit',
+  //   });
+  // }
 
   // Load compiled src/server.js as a middleware
   app = require('../dist/server').default;
@@ -293,22 +284,11 @@ async function start() {
   await new Promise((resolve, reject) =>
     browserSync.create().init({
       // https://www.browsersync.io/docs/options
-      // server: 'src/main.server.tsx',
       server: {
         baseDir: 'src/main.server.tsx',
         middleware: [server],
       },
       open: !process.argv.includes('--silent'),
-      // ...(isDebug ? {
-      //   online: !!process.env.ONLINE || false,
-      //   ghostmode: !!process.env.GHOSTMODE || false,
-      //   notify: false,
-      //   scrollProportionally: false,
-      //   logFileChanges: false,
-      //   logSnippet: false,
-      //   minify: false,
-      //   timestamps: false,
-      // } : { notify: false, ui: false }),
         ...(isDebug ? {} : { notify: false, ui: false }),
     }, (error, bs) => (error ? reject(error) : resolve(bs))),
   );

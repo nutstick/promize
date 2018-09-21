@@ -10,17 +10,20 @@ interface INode {
 interface IPageInfo {
   endCursor?: string;
   hasNextPage?: boolean;
+  __typename: string;
 }
 
 interface IEdge<T> {
   node: T;
   cursor: string;
+  __typename: string;
 }
 
 interface IPage<T> {
   totalCount?: number;
   edges: Array<IEdge<T>>;
   pageInfo: IPageInfo;
+  __typename: string;
 }
 
 export {

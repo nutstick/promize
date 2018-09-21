@@ -140,25 +140,29 @@ export class Sidebar extends React.Component<Sidebar.Props> {
             {/* Menu Select*/}
             <Navigator>
               {this.props.me.me && this.props.me.me._id ? [
-                ...this.menu().map(({ to, text, NavIcon }) => (
-                  <Navigator.Item as={Link} to={to} onClick={() => { this.props.toggleSidebar({}); }}>
+                ...this.menu().map(({ to, text, NavIcon }, index) => (
+                  <Navigator.Item
+                    key={`navbar-item-${text}`}
+                    as={Link} to={to}
+                    onClick={() => { this.props.toggleSidebar({}); }}
+                  >
                     <NavIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
                     {text}
                   </Navigator.Item>
                 )),
-                <Navigator.Item href="/logout">
+                <Navigator.Item key="navbar-item-logout" href="/logout">
                   <FaSignOutIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
                   Log Out
                 </Navigator.Item>,
               ] : [
-                <Navigator.Item href="#" onClick={(e) => {
+                <Navigator.Item key="navbar-item-login" href="#" onClick={(e) => {
                   this.props.toggleLoginModal({});
                   this.props.toggleSidebar({});
                 }}>
                   <MdLockOpenIcon size={24} color="#ff8500" style={{ marginRight: 8 }} />
                   Log In
                 </Navigator.Item>,
-                <Navigator.Item href="#" onClick={(e) => {
+                <Navigator.Item key="navbar-item-signup" href="#" onClick={(e) => {
                   this.props.toggleLoginModal({});
                   this.props.toggleSidebar({});
                 }}>

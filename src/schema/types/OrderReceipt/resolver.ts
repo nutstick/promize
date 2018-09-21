@@ -12,6 +12,7 @@ const resolver: IResolver<any, any> = {
           return i;
         }
       }
+      return null;
     },
     trackingId({ tracking_id }) {
       return tracking_id;
@@ -23,6 +24,7 @@ const resolver: IResolver<any, any> = {
           return i;
         }
       }
+      return null;
     },
     async color({ product, color }, _, { database }) {
       const product_data = await database.Product.findOne({ _id: product });
@@ -31,6 +33,7 @@ const resolver: IResolver<any, any> = {
           return i;
         }
       }
+      return null;
     },
     async size({ product, size }, _, { database }) {
       const product_data = await database.Product.findOne({ _id: product });
@@ -39,6 +42,7 @@ const resolver: IResolver<any, any> = {
           return i;
         }
       }
+      return null;
     },
     async creator({ buyer }, _, { database }) {
       return await database.User.findOne({ _id: toObjectID(buyer) });
